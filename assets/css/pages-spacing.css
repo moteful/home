@@ -1,0 +1,15 @@
+/* ============================================================
+   pages-spacing.css — 各页面统一行距规则（V0.3.7）
+   与 tools/image-tool.html 的页面私有 CSS 同款规范：
+   间距只允许 4 的倍数（设计规范硬性要求）。
+   ① .field gap 6→12px：卡片内「区域标题 ↔ 控件」统一 12
+   ② .stack gap 12→8px：堆叠容器统一 8
+   ③ main.page padding-top 0→12px：导航栏与首行内容统一 12
+   ④ .field-label flex 化：带图标/纯文本标题行盒恒定，左右列对齐
+   注：template.html 为页面模板不引用本文件；image-tool.html 由
+   其私有 image-tool.css 承载同款规则。
+   ============================================================ */
+.field{gap:12px}
+.stack{gap:8px}
+main.page{padding-top:12px}
+.field-label{display:flex;align-items:center;gap:6px}

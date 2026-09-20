@@ -1,0 +1,43 @@
+# ===== 系统 / 临时文件 =====
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.bak-*
+*~
+cache/
+
+# ===== 编辑器 / IDE =====
+*.swp
+*~
+.vscode/
+.idea/
+
+# ===== 本地密钥 / 环境变量（绝不入仓） =====
+.env
+.env.*
+*.local
+
+# ===== 说明 =====
+# 本项目为零依赖纯前端站点，无 node_modules / 构建产物需忽略。
+# .workbuddy/ 记忆目录不在本仓库内，无需忽略。
+# 构建/临时脚本（如 _pm_*.py）请勿入仓，已在上层目录处理。
+
+# ===== 治理核验截图（临时产物，不入仓） =====
+_governance/_shots/
+
+# ===== 真机验收 / 内部文档（不入仓） =====
+# _pwtest/ 为 Playwright 验收临时脚本与截图（90+ 文件，约 9MB+），属机器产物，开源前必须排除
+_pwtest/
+# 内部交接文档（含内部流程信息，开源前必须排除）
+HANDOVER.md
+
+# ===== 注意：dev/ 不可排除（曾误排除，已修正）=====
+# dev/json.html（JSON 工具，v0.7.1 上线）与 dev/regex.html（正则测试器，v0.7.2 上线）
+# 均为正式工具页：已在 site-config.json.pages 登记、drawer 抽屉导航有入口、lint 归入 legacyPages。
+# 「dev」只是历史目录名，不是开发调试目录，必须随仓库开源。
+
+# 发布包（由 prepare 脚本生成，非源码）
+publish/

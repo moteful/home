@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title data-i18n="title_credits">Credits — Moteful</title>
+<meta name="description" content="Open-source libraries and technologies used by Moteful.">
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统 -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+<link rel="stylesheet" href="../assets/css/moteful.css">
+<link rel="stylesheet" href="../assets/css/pages-spacing.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+<body>
+
+
+
+
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+
+<main class="page">
+  <!-- 沿用既有说明：moteful.css 暂无"正文阅读窄栏"class（如 .reading{max-width:720px}）；本页沿用 .page 通栏，内容以 .panel 承载，不擅自新增样式以免风格漂移。 -->
+  <!-- V0.9.6 修正：原文列出的三项第三方依赖声明，经代码逐项核对均与事实不符 ——
+       ① 打包功能为自研零依赖实现（见 assets/js/zip.js 头部注释）；
+       ② 站内 HEIC 格式明确不支持（导入时直接跳过并提示，见 tool.js 提示文案）；
+       ③ 全站未使用该加速方案。
+       现改为仅列经核对属实的依赖；未启用的未来项移至「Planned」并明确标注尚未使用。 -->
+  <section class="panel">
+    <h1 class="sec-title" data-i18n="title_credits">Credits</h1>
+    <p class="muted" data-i18n="credits_intro">Moteful is built on open web standards, and it keeps third-party dependencies to a minimum.</p>
+  </section>
+
+  <section class="panel">
+    <h3 data-i18n="credits_used_h">What the tools actually use</h3>
+    <ul class="muted">
+      <li data-i18n="credits_used_1">Browser-native Canvas, File and Blob APIs for decoding, drawing and export</li>
+      <li data-i18n="credits_used_2">MotefulZip, a ZIP writer written for this site with no dependencies, so no packaging library is needed</li>
+      <li data-i18n="credits_used_3">Lucide icon paths (ISC licence), embedded in the site's own script rather than fetched from a CDN</li>
+      <li data-i18n="credits_used_4">Your device's own system fonts, so no font files are downloaded</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h3 data-i18n="credits_planned_h">Planned, not in use yet</h3>
+    <p class="muted" data-i18n="credits_planned_intro">Nothing listed below is used by any tool today. This page will be updated when it ships.</p>
+    <ul class="muted">
+      <li data-i18n="credits_planned_1">WebAssembly codecs for faster conversion of large files</li>
+      <li data-i18n="credits_planned_2">onnxruntime-web for optional on-device processing</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h3 data-i18n="credits_thanks_h">Licences and thanks</h3>
+    <p class="muted" data-i18n="credits_thanks_p1">Moteful's interface icons come from Lucide and are used under the ISC licence; a subset of them is derived from the Feather project and is used under the MIT licence (copyright Cole Bemis). Everything else, including the tools, styles and scripts, is written in-house.</p>
+    <p class="muted" data-i18n="credits_thanks_p2">The only third-party asset in use is the Lucide icon set described above; no other third-party code is bundled with these tools. Thanks to the Lucide project and the Feather project, and to everyone who has reported a bug or sent feedback.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<button class="to-top" id="toTop" aria-label="Back to top"><i data-lucide="arrow-up"></i></button>
+<div id="toasts" aria-live="polite"></div>
+
+<script src="../assets/i18n/en.js"></script>
+<script src="../assets/i18n/zh.js"></script>
+<script src="../assets/i18n/i18n.js"></script>
+<script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
+</body>
+</html>

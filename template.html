@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>__TITLE__ · Moteful</title>
+<meta name="description" content="__DESC__">
+<!-- 主题预置，防闪烁 -->
+<script>(function(){var t=null;try{t=localStorage.getItem('mf-theme')}catch(e){}
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.dataset.theme=t;})();</script>
+<link rel="stylesheet" href="assets/css/moteful.css">
+<script src="assets/js/moteful.js" defer></script>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="logo" href="index.html">
+    <span class="logo-mark"><!-- 品牌图标槽：换标时替换为内联 SVG --><i data-lucide="zap"></i></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <!-- 桌面导航：规范 .nav-links 下划线从中心展开；≤960px 收进 ☰ 抽屉 -->
+  <nav class="nav-links" aria-label="主导航">
+    <a href="index.html" class="on">全部工具</a>
+    <a href="#">开发者</a>
+    <a href="#">图片处理</a>
+    <a href="support.html">赞助</a>
+  </nav>
+  <div class="nav-acts">
+    <div class="theme-sw" role="radiogroup" aria-label="主题">
+      <button class="sw-btn" data-set-theme="light" aria-label="浅色"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="深色"><i data-lucide="moon"></i></button>
+    </div>
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop aria-label="切换语种">
+        <i data-lucide="globe"></i><span class="lang-label">简体中文</span>
+        <i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('navDrawer')" aria-label="打开菜单">
+      <i data-lucide="menu"></i>
+    </button>
+  </div>
+</header>
+
+<main class="page">
+<!-- __MAIN__ · 页面内容区：AI / 人工只允许填写此区域
+     规则：只用 moteful.css 白名单 class；禁 <style> / 内联视觉样式 / 硬编码色；
+     行为只调 moteful.js API；缺组件停下询问。 -->
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><i data-lucide="zap"></i></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline">SMALL TOOLS, FULLY LOADED</span>
+      <p class="footer-entity">Moteful 工作室 · 深圳木否科技有限公司<br>深圳市南山区科技园 · 深南大道 10000 号</p>
+    </div>
+    <nav><h4>工具</h4><a href="tools/image-tool.html">图片批量压缩</a><a href="#">JSON 格式化</a><a href="#">Favicon 生成</a></nav>
+    <nav><h4>资源</h4><a href="#">设计规范</a><a href="#">更新日志</a><a href="#">路线图</a></nav>
+    <nav><h4>联系</h4>
+      <a href="mailto:hi@moteful.app"><i data-lucide="mail"></i>hi@moteful.app</a>
+      <a href="#"><i data-lucide="github"></i>GitHub</a>
+      <a href="#"><i data-lucide="message-circle"></i>反馈</a>
+    </nav>
+  </div>
+  <div class="footer-bar">
+    © <span data-year>2025</span> Moteful 工作室（深圳木否科技有限公司）版权所有
+    <a href="#">粤ICP备2025090505号-1</a>
+    <span class="sp"></span>
+    <span>Design System v0905-r7</span><a href="#">隐私</a><a href="#">条款</a>
+  </div>
+</footer>
+
+<!-- 移动端导航抽屉 -->
+<div class="drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="导航菜单">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>菜单</h3>
+      <button class="modal-x" data-dclose aria-label="关闭"><i data-lucide="x"></i></button></div>
+    <nav class="mnav" aria-label="主导航">
+      <a href="index.html" class="on"><i data-lucide="layout-grid"></i>全部工具</a>
+      <a href="#"><i data-lucide="code"></i>开发者</a>
+      <a href="#"><i data-lucide="image"></i>图片处理</a>
+      <a href="support.html"><i data-lucide="heart"></i>赞助</a>
+    </nav>
+  </aside>
+</div>
+
+<button class="to-top" id="toTop" aria-label="返回顶部"><i data-lucide="arrow-up"></i></button>
+<div id="toasts" aria-live="polite"></div>
+</body>
+</html>

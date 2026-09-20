@@ -1,0 +1,126 @@
+/* =====================================================================
+   image-tool 页面级私有样式（仅 tools/image-tool.html 引用）
+   依据「四文件只读铁律」允许的页面级缺口方案：本文件不触碰
+   moteful.css / moteful.js / template.html / 设计规范 四件只读文件。
+
+   V0.3 新增：拖入区缩略图画廊、结果表格边框修复、边距区紧凑排布、
+   静态 PNG 质量提示、文件增大显示。
+   ===================================================================== */
+
+/* ---------- 步进器可编辑输入框：清理 UA 原生外观（黑字/边框） ---------- */
+input.step-val{
+  color:inherit;              /* 继承主题文字色（浅/暗自动适配，消灭原生黑字） */
+  background:none;            /* 透出 .step 容器的 var(--surface) */
+  border-top:none;            /* 去原生上下边框；保留 .step-val 自带的左右分隔线 */
+  border-bottom:none;
+  outline:none;
+  width:72px;                 /* 数值框定宽 72px（控件范式铁律） */
+  min-width:72px;
+  font-variant-numeric:tabular-nums;  /* 数字等宽（设计规范硬性要求） */
+}
+
+/* 聚焦光环：与系统 .input:focus 同款令牌，不改观感 */
+input.step-val:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px var(--ring);
+}
+
+/* ---------- 拖入区：空态/画廊态切换 ----------
+   .dz-empty / .dz-gallery / .dz-g-head / .dz-count / .dz-g-acts /
+   .dz-g-list / .dz-thumb / .dz-idx / .dz-rm 的组件定义已于 V0.6
+   提升到 _governance/missing_styles_proposal.css 共享层，
+   由 image-tool / stitch / annotate 三页复用同一份。
+   本页仅保留缩略图的光标语义。 ---------- */
+.dz-thumb{cursor:default}
+
+/* 已导入态 dropzone 收缩：取消居中、左对齐、贴边 */
+.dropzone.mini{padding:16px;min-height:0;background:var(--surface);align-items:stretch;text-align:left;gap:0}
+
+/* 拖拽高亮（tool.js 使用 .dragover；moteful.css 原配 .drag 无实际触发） */
+.dropzone.dragover{border-color:var(--primary);background:var(--primary-soft)}
+
+/* ---------- 结果表格：底部横线用 border-radius:0 解决，横向滚动保留 ---------- */
+#results .table-wrap{border-radius:0;overflow:auto}
+#results .table{width:100%}
+#results .table th:last-child,
+#results .table td:last-child{white-space:nowrap;width:1px}
+
+/* ---------- 结果文件名：超过12个汉字单行省略，悬停显示全名 ---------- */
+#results .r-name{
+  display:inline-block;
+  max-width:12em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  vertical-align:middle;
+}
+
+/* ---------- 变化率箭头：chevrons双箭头，变大红/变小绿 ---------- */
+/* 大小列所有子元素统一中线对齐，避免 baseline 与 inline-flex 混排错位 */
+#results .r-orig,
+#results .r-arrow,
+#results .r-new{display:inline-block;vertical-align:middle}
+#results .r-rate{display:inline-flex;align-items:center;gap:2px;vertical-align:middle}
+#results .r-rate .rate-icon{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#results .r-rate.rate-up{color:var(--danger)}
+#results .r-rate.rate-down{color:var(--success)}
+
+/* ---------- 高级编辑：边距区紧凑排布（标签右对齐贴近控件） ---------- */
+/* V0.3.2：系统 .set-row 自带虚线分隔（moteful.css L312），用户指定本卡片内不需要 → 页面级去除 */
+#cropFreeCtl .set-row{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center;justify-content:start;border-bottom:none}
+#cropFreeCtl .set-row:last-child{border-bottom:none}
+#cropFreeCtl .set-row > span{text-align:right;font-size:14px}
+/* V0.3.2：.step 虽是 inline-flex，但作为 grid item 默认被 stretch 拉满列宽 → 强制收回内容宽 */
+#cropFreeCtl .set-row .step{justify-self:start}
+
+/* ---------- 翻转区默认态固定：与旋转同列，避免被高级折叠驱动 ---------- */
+#advBody .field:first-child .field-label:nth-of-type(1){margin-top:0}
+
+/* ---------- 行2 两列顶部对齐（V0.3.1） ---------- */
+/* 根因：系统 .row 为 align-items:center，左列（翻转+改尺寸）比右列（旋转）高，
+   垂直居中会把旋转标签压低 ~38px，翻转与旋转无法水平对齐 */
+#rowTransform{align-items:flex-start}
+
+/* ---------- 分段按钮宽度稳定：切换选中不再跳动（V0.3.1） ---------- */
+/* 根因：moteful.css 选中态 font-weight:600 撑宽文字，inline-flex 按钮随选中变宽。
+   修复：布局字重统一 400（宽度恒定），选中态用 text-shadow 模拟加粗观感（不占布局宽度） */
+.seg .seg-t{font-weight:400}
+.seg input:checked + .seg-t{font-weight:400;
+  text-shadow:0 0 .6px currentColor,0 0 .6px currentColor}
+
+/* ---------- 间距对齐设计规范 4 的倍数（V0.3.5） ---------- */
+/* 设计规范要求间距只用 4 的倍数（4/8/12/16/20/24/32/40/48/64）。
+   系统组件两处间距违规且本页导航栏与首行内容间距为 0（紧贴）：
+   ① .field gap 6px → 12px：卡片内「区域标题 ↔ 控件」行距统一 12
+   ② .stack gap 12px → 8px：堆叠容器（参数区主容器/改尺寸子控件/高级编辑体/裁剪与边距容器）行距统一 8
+   ③ main.page padding-top 0 → 12px：导航栏与首行内容之间统一 12 */
+.field{gap:12px}
+.stack{gap:8px}
+main.page{padding-top:12px}
+
+/* ---------- 行1 两列顶部对齐（V0.3.6） ---------- */
+/* 根因：与行2同款——系统 .row 垂直居中，右列（质量：滑块+常显PNG提示）比左列（输出格式）高，
+   居中把左列压低 14.4px，「输出格式」与「质量」标题错位 */
+#rowFormat{align-items:flex-start}
+
+/* ---------- 标题行盒统一（V0.3.6） ---------- */
+/* 根因：带图标与纯文本的标题行盒高度差 2px（图标 baseline 撑行），左右列标题顶对齐后仍差 2px。
+   修复：标题改 flex 垂直居中（图标与文字中线对齐、gap 6px 与分段按钮图标间距规范一致），行盒高度恒定 */
+.field-label{display:flex;align-items:center;gap:6px}
+
+/* ---------- 临时提示（V0.9）：已收口到全站统一 Toast，原 #v01Note 私有浮层定位一并移除 ---------- */
+
+/* ---------- 窄屏适配（<640px）：隐藏尺寸列 + 下载按钮只显图标 ---------- */
+@media (max-width:639px){
+  #results .table th:nth-child(4),
+  #results .table td:nth-child(4){display:none}
+  #results .r-dl-txt{display:none}
+}
+
+
+/* ========== V0.5 SEO 折叠面板：功能介绍 / 使用场景 / 常见问题 ==========
+   已提升为全站共享定义 —— 见 _governance/missing_styles_proposal.css
+   「[已采用 V0.5] SEO 折叠面板」一节（image-tool 与 stitch 两页复用同一份，
+   避免页面私有 CSS 双源漂移）。本页由 head 中注入的
+   missing_styles_proposal.css link 加载该样式。
+   ======================================================================= */

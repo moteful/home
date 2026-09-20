@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title data-i18n="title_tool">图片工具集 - 批量压缩/格式转换/尺寸调整 | Moteful</title>
+<meta name="keywords" content="图片压缩,批量图片处理,格式转换,PNG转JPEG,WEBP转换,图片尺寸调整,图片旋转,图片翻转,图片裁剪,在线图片工具,免费图片压缩,隐私图片处理">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph（社交分享卡片） -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" id="ogTitle" content="图片工具集 - 批量压缩/格式转换/尺寸调整 | Moteful">
+<meta property="og:description" id="ogDesc" content="免费在线图片批量处理工具，支持批量压缩、格式转换、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私。">
+<meta property="og:url" content="https://moteful.app/tools/image-tool.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="图片工具集 - 批量压缩/格式转换/尺寸调整 | Moteful">
+<meta name="twitter:description" content="免费在线图片批量处理工具，全部在浏览器本地运行，图片不上传，保护隐私。">
+
+<!-- canonical（防重复内容） -->
+<link rel="canonical" href="https://moteful.app/tools/image-tool.html">
+
+<!-- 结构化数据 JSON-LD（工具应用） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "图片工具集",
+  "alternateName": "Moteful Image Toolkit",
+  "description": "免费在线图片批量处理工具，支持批量压缩、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。",
+  "url": "https://moteful.app/tools/image-tool.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "批量压缩图片",
+    "格式转换（PNG/JPEG/WEBP互转）",
+    "尺寸调整（百分比/最长边/精确宽高）",
+    "图片旋转（90°/180°/270°）",
+    "水平/垂直翻转",
+    "自由裁剪",
+    "批量处理进度条",
+    "ZIP打包下载",
+    "实时对比预览",
+    "单张放大预览",
+    "100% 本地运行，图片不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+<meta name="description" id="metaDesc" content="免费在线图片批量处理工具，支持批量压缩、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/recommend.css">
+<!-- 页面级私有样式（四文件只读铁律·页面级缺口方案）：清理 .step-val 作为可编辑 input 时的浏览器原生外观（黑字/边框） -->
+<link rel="stylesheet" href="../assets/css/image-tool.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/recommend.js" defer></script>
+<script>
+// SEO：页面加载和语言切换时更新 meta description / og:description
+(function(){
+  function updateSeoMeta(){
+    try{
+      var desc = (window.I18N && window.I18N.t && window.I18N.t('meta_desc_tool')) ||
+                 (window.MOTEFUL_I18N && window.MOTEFUL_I18N.zh && window.MOTEFUL_I18N.zh.meta_desc_tool) ||
+                 '免费在线图片批量处理工具，支持批量压缩、格式转换、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私。';
+      var metaDesc = document.getElementById('metaDesc');
+      var ogDesc = document.getElementById('ogDesc');
+      if(metaDesc) metaDesc.setAttribute('content', desc);
+      if(ogDesc) ogDesc.setAttribute('content', desc);
+    }catch(e){}
+  }
+  // 页面加载时更新
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', updateSeoMeta);
+  } else {
+    updateSeoMeta();
+  }
+  // 语言切换时更新（监听 lang-item 点击）
+  document.addEventListener('click', function(e){
+    if(e.target.closest('.lang-item')){
+      setTimeout(updateSeoMeta, 50);
+    }
+  });
+})();
+</script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+<body data-nav="image">
+
+
+
+
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item on" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+
+<main class="page">
+  <div class="row">
+    <h1 class="sec-title" data-i18n="title_tool">Image Toolkit</h1>
+    <span class="tag t-success"><i data-lucide="shield-check"></i><span data-i18n="badge_local">Processed locally — never uploaded</span></span>
+  </div>
+  <p class="muted" data-i18n="page_sub">Compress, convert and resize images right in your browser. No uploads, no size limits.</p>
+
+  <!-- V0.1 工作区：导入 → 压缩 → 转格式 → 打包下载（核心闭环；ID/data-* 与 tool.js 契约冻结） -->
+  <section class="stack">
+    <!-- 导入区（V0.3：空态提示 / 已导入态缩略图画廊 + 计数 + 重置）：.dropzone 系规范组件 -->
+    <div class="dropzone" id="dropzone" tabindex="0" role="button" data-i18n-aria="v022_aria_import">
+      <div class="dz-empty" id="dzEmpty">
+        <div class="dz-ico"><i data-lucide="upload-cloud"></i></div>
+        <div class="up-main">
+          <h4 data-i18n="v022_up_drop">Drop images to get started</h4>
+          <p data-i18n="v022_up_pick">or click to browse your device</p>
+        </div>
+        <div class="dz-note"><i data-lucide="lock"></i><span data-i18n="v022_up_support">Supports JPG, PNG and WebP — files never leave your device</span></div>
+      </div>
+      <div class="dz-gallery" id="dzGallery" hidden style="display:none">
+        <div class="dz-g-head">
+          <span class="dz-count" id="dzCount"></span>
+          <div class="dz-g-acts">
+            <button type="button" class="btn btn-ghost btn-sm" id="addMoreBtn"><i data-lucide="image"></i><span data-i18n="v022_up_more">Add more images</span></button>
+            <button type="button" class="btn btn-secondary btn-sm" id="dzResetBtn"><i data-lucide="trash-2"></i><span data-i18n="v022_dz_reset">Reset</span></button>
+          </div>
+        </div>
+        <div class="dz-g-list" id="dzGalleryList"></div>
+      </div>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </div>
+
+    <!-- 隐私声明（V0.2.2 上移）：规范 16 章 .alert.a-success -->
+    <p class="alert a-success"><i data-lucide="lock"></i><span data-i18n="v01_privacy">Everything runs inside your browser. Files never leave this device.</span></p>
+
+    <!-- 控制条（V0.1 输出设置 + V0.2 变换设置）：布局 = .panel.stack + .row/.field（规范 07/22 章） -->
+    <div class="panel stack" id="controls" hidden style="display:none">
+      <!-- 行1：输出格式 + 质量（V0.3.6：加顶对齐，两列标题与行2一致） -->
+      <div class="row" id="rowFormat">
+        <div class="field">
+          <span class="field-label" data-i18n="v01_format">Output format</span>
+          <div class="row"><div class="segment" role="group" data-i18n-aria="v01_format">
+            <label class="seg" data-fmt="keep"><input type="radio" name="fmt" checked><span class="seg-t" data-i18n="v01_keep">Keep original format</span></label>
+            <label class="seg" data-fmt="image/jpeg"><input type="radio" name="fmt"><span class="seg-t">JPG</span></label>
+            <label class="seg" data-fmt="image/png"><input type="radio" name="fmt"><span class="seg-t">PNG</span></label>
+            <label class="seg" data-fmt="image/webp"><input type="radio" name="fmt"><span class="seg-t">WebP</span></label></div></div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="v01_quality">Quality</span>
+          <span class="row">
+            <input type="range" id="quality" class="slider" min="1" max="100" value="80" style="--p:80%" data-out="qualityNoop" data-i18n-aria="v01_quality">
+            <span class="step">
+              <button type="button" class="step-btn" data-qstep="-1" aria-label="decrease"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="qualityVal">80%</span>
+              <button type="button" class="step-btn" data-qstep="1" aria-label="increase"><i data-lucide="plus"></i></button>
+            </span>
+          </span>
+          <span class="muted" id="pngNote" data-i18n="v01_png_note">PNG is lossless — quality has no effect</span>
+        </div>
+      </div>
+
+      <!-- 行2：左列=翻转+改尺寸，右列=旋转（V0.3.1：翻转与旋转同一水平线，其下为改尺寸） -->
+      <div class="row" id="rowTransform">
+        <div class="field">
+          <span class="field-label"><span data-i18n="v02_flip_label">Flip</span></span>
+          <!-- 翻转图标：moteful.js ICONS 无 flip-h/flip-v（只读不改），用内联 SVG（currentColor 继承 seg-t 配色） -->
+          <div class="row"><div class="segment" role="group" data-i18n-aria="v02_flip_label">
+            <label class="seg" id="flipH"><input type="checkbox"><span class="seg-t"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="m16 7 5 5-5 5"/><path d="m8 7-5 5 5 5"/></svg><span data-i18n="v02_flip_h">Horizontal</span></span></label>
+            <label class="seg" id="flipV"><input type="checkbox"><span class="seg-t"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18"/><path d="m8 8 4-4 4 4"/><path d="m8 16 4 4 4-4"/></svg><span data-i18n="v02_flip_v">Vertical</span></span></label></div></div>
+          <span class="field-label"><i data-lucide="maximize-2"></i> <span data-i18n="v02_size_group">Resize</span></span>
+          <div class="row"><div class="segment" role="group" data-i18n-aria="v02_size_group">
+            <label class="seg" data-size="none"><input type="radio" name="sz" checked><span class="seg-t" data-i18n="v02_size_none">Keep size</span></label>
+            <label class="seg" data-size="percent"><input type="radio" name="sz"><span class="seg-t" data-i18n="v02_size_percent">Percentage</span></label>
+            <label class="seg" data-size="longest"><input type="radio" name="sz"><span class="seg-t" data-i18n="v02_size_longest">Longest side</span></label>
+            <label class="seg" data-size="exact"><input type="radio" name="sz"><span class="seg-t" data-i18n="v02_size_exact">Exact size</span></label></div></div>
+          <span class="stack" id="sizePercentCtl" hidden style="display:none">
+            <span class="field-label" data-i18n="v02_percent_label">Scale (%)</span>
+            <span class="row"><span class="step">
+              <button type="button" class="step-btn" data-step="-1" data-for="sizePercent" aria-label="decrease"><i data-lucide="minus"></i></button>
+              <input type="text" inputmode="numeric" size="6" id="sizePercent" class="step-val" min="1" max="400" value="50">
+              <button type="button" class="step-btn" data-step="1" data-for="sizePercent" aria-label="increase"><i data-lucide="plus"></i></button>
+            </span></span>
+          </span>
+          <span class="stack" id="sizeLongestCtl" hidden style="display:none">
+            <span class="field-label" data-i18n="v02_longest_label">Longest side (px)</span>
+            <span class="row"><span class="step">
+              <button type="button" class="step-btn" data-step="-10" data-for="sizeLongest" aria-label="decrease"><i data-lucide="minus"></i></button>
+              <input type="text" inputmode="numeric" size="6" id="sizeLongest" class="step-val" min="1" max="20000" value="1920">
+              <button type="button" class="step-btn" data-step="10" data-for="sizeLongest" aria-label="increase"><i data-lucide="plus"></i></button>
+            </span></span>
+          </span>
+          <span class="stack" id="sizeExactCtl" hidden style="display:none">
+            <span class="field-label" data-i18n="v02_wh_label">Width x Height (px)</span>
+            <span class="row">
+              <span class="step">
+                <button type="button" class="step-btn" data-step="-10" data-for="sizeW" aria-label="decrease"><i data-lucide="minus"></i></button>
+                <input type="text" inputmode="numeric" size="6" id="sizeW" class="step-val" min="1" max="20000" value="1920">
+                <button type="button" class="step-btn" data-step="10" data-for="sizeW" aria-label="increase"><i data-lucide="plus"></i></button>
+              </span>
+              <span class="mono">×</span>
+              <span class="step">
+                <button type="button" class="step-btn" data-step="-10" data-for="sizeH" aria-label="decrease"><i data-lucide="minus"></i></button>
+                <input type="text" inputmode="numeric" size="6" id="sizeH" class="step-val" min="1" max="20000" value="1080">
+                <button type="button" class="step-btn" data-step="10" data-for="sizeH" aria-label="increase"><i data-lucide="plus"></i></button>
+              </span>
+            </span>
+            <label class="check"><input type="checkbox" id="keepRatio" checked><span class="box" aria-hidden="true"></span><span data-i18n="v02_keep_ratio">Keep aspect ratio (no stretch)</span></label>
+          </span>
+        </div>
+
+        <div class="field">
+          <!-- 缺失图标：moteful.js ICONS 无 rotate，借用 refresh-cw 表达旋转 -->
+          <span class="field-label"><i data-lucide="refresh-cw"></i> <span data-i18n="v02_rotate_label">Rotate</span></span>
+          <div class="row"><div class="segment" role="group" data-i18n-aria="v02_rotate_label">
+            <label class="seg" data-rot="0"><input type="radio" name="rot" checked><span class="seg-t" data-i18n="v02_rot_0">None</span></label>
+            <label class="seg" data-rot="90"><input type="radio" name="rot"><span class="seg-t" data-i18n="v02_rot_90">90°</span></label>
+            <label class="seg" data-rot="180"><input type="radio" name="rot"><span class="seg-t" data-i18n="v02_rot_180">180°</span></label>
+            <label class="seg" data-rot="270"><input type="radio" name="rot"><span class="seg-t" data-i18n="v02_rot_270">270°</span></label></div></div>
+        </div>
+      </div>
+
+      <!-- 高级编辑（V0.2.8/V0905b）：.divider + .row（标签与开关相邻），默认关闭 -->
+      <div class="divider"></div>
+      <div class="row">
+        <span class="field-label" data-i18n="v022_adv">Advanced editing</span>
+        <label class="switch" for="advSwitch"><input type="checkbox" id="advSwitch"><span class="sw-track" aria-hidden="true"><span class="sw-thumb"></span></span></label>
+      </div>
+      <div class="stack" id="advBody" hidden style="display:none">
+        <div class="row">
+          <div class="field">
+            <!-- 缺失图标：moteful.js ICONS 无 crop，裁剪标签暂以纯文字承载 -->
+            <span class="field-label"><span data-i18n="v02_crop_group">Crop</span></span>
+            <div class="row"><div class="segment" role="group" data-i18n-aria="v02_crop_group">
+              <label class="seg" data-crop="none"><input type="radio" name="crop" checked><span class="seg-t" data-i18n="v02_crop_none">No crop</span></label>
+              <label class="seg" data-crop="ratio"><input type="radio" name="crop"><span class="seg-t" data-i18n="v02_crop_ratio">Aspect ratio</span></label>
+              <label class="seg" data-crop="free"><input type="radio" name="crop"><span class="seg-t" data-i18n="v02_crop_free">Custom margins</span></label></div></div>
+            <span class="stack" id="cropRatioCtl" hidden style="display:none">
+              <span class="field-label" data-i18n="v02_crop_ratio_label">Ratio</span>
+              <div class="row"><div class="segment" role="group">
+                <label class="seg" data-ratio="1:1"><input type="radio" name="ratio" checked><span class="seg-t">1:1</span></label>
+                <label class="seg" data-ratio="4:3"><input type="radio" name="ratio"><span class="seg-t">4:3</span></label>
+                <label class="seg" data-ratio="3:2"><input type="radio" name="ratio"><span class="seg-t">3:2</span></label>
+                <label class="seg" data-ratio="16:9"><input type="radio" name="ratio"><span class="seg-t">16:9</span></label></div></div>
+              <span class="muted" data-i18n="v02_crop_hint">Crops the largest area of that ratio, centred on the image</span>
+            </span>
+            <span class="stack" id="cropFreeCtl" hidden style="display:none">
+              <span class="field-label" data-i18n="v02_crop_margins_label">Margins (px)</span>
+              <span class="stack">
+                <span class="set-row"><span data-i18n="v02_margin_top">Top</span>
+                  <span class="step">
+                    <button type="button" class="step-btn" data-step="-1" data-for="mTop" aria-label="decrease"><i data-lucide="minus"></i></button>
+                    <input type="text" inputmode="numeric" size="4" id="mTop" class="step-val" min="0" value="0">
+                    <button type="button" class="step-btn" data-step="1" data-for="mTop" aria-label="increase"><i data-lucide="plus"></i></button>
+                  </span>
+                </span>
+                <span class="set-row"><span data-i18n="v02_margin_bottom">Bottom</span>
+                  <span class="step">
+                    <button type="button" class="step-btn" data-step="-1" data-for="mBottom" aria-label="decrease"><i data-lucide="minus"></i></button>
+                    <input type="text" inputmode="numeric" size="4" id="mBottom" class="step-val" min="0" value="0">
+                    <button type="button" class="step-btn" data-step="1" data-for="mBottom" aria-label="increase"><i data-lucide="plus"></i></button>
+                  </span>
+                </span>
+                <span class="set-row"><span data-i18n="v02_margin_left">Left</span>
+                  <span class="step">
+                    <button type="button" class="step-btn" data-step="-1" data-for="mLeft" aria-label="decrease"><i data-lucide="minus"></i></button>
+                    <input type="text" inputmode="numeric" size="4" id="mLeft" class="step-val" min="0" value="0">
+                    <button type="button" class="step-btn" data-step="1" data-for="mLeft" aria-label="increase"><i data-lucide="plus"></i></button>
+                  </span>
+                </span>
+                <span class="set-row"><span data-i18n="v02_margin_right">Right</span>
+                  <span class="step">
+                    <button type="button" class="step-btn" data-step="-1" data-for="mRight" aria-label="decrease"><i data-lucide="minus"></i></button>
+                    <input type="text" inputmode="numeric" size="4" id="mRight" class="step-val" min="0" value="0">
+                    <button type="button" class="step-btn" data-step="1" data-for="mRight" aria-label="increase"><i data-lucide="plus"></i></button>
+                  </span>
+                </span>
+              </span>
+              <span class="muted" data-i18n="v02_margin_hint">Margins are clamped so at least 1 pixel of the image remains</span>
+            </span>
+          </div>
+
+          <div class="field">
+            <span class="muted" data-i18n="v02_pipeline_hint">Order: crop, then rotate or flip, then resize</span>
+            <span class="row"><button type="button" class="btn btn-secondary btn-sm" id="resetBtn"><i data-lucide="refresh-cw"></i><span data-i18n="v02_reset">Reset</span></button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 操作条（F4 / V0.2.2：处理中锁定参数并显示取消）：布局 = 规范 .row -->
+    <!-- 播放图标：moteful.js ICONS 无 play（只读不改），用内联 SVG（currentColor 继承按钮配色） -->
+    <div class="row" id="actions" hidden style="display:none">
+      <button type="button" class="btn btn-primary" id="processBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span data-i18n="v01_process">Start processing</span></button>
+      <button type="button" class="btn btn-ghost" id="cancelBtn" hidden style="display:none"><i data-lucide="x"></i><span data-i18n="v022_cancel">Cancel</span></button>
+      <button type="button" class="btn btn-secondary" id="zipBtn" disabled><i data-lucide="download"></i><span data-i18n="v01_zip">Download ZIP</span></button>
+      <button type="button" class="btn btn-danger" id="clearBtn"><i data-lucide="trash-2"></i><span data-i18n="v01_clear">Clear all</span></button>
+      <span class="muted" id="countLabel"></span>
+    </div>
+
+    <!-- 进度条 + 预估耗时（F5 / V0.2）：规范 15 章 .progress/.progress-bar + .mono 数字 -->
+    <div class="row" id="progressWrap" hidden style="display:none" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="progress"><span class="progress-bar" id="progressFill"></span></div>
+      <span class="mono" id="progressTxt"></span>
+      <span class="mono" id="etaTxt"></span>
+    </div>
+
+    <!-- 结果列表（F5 / V0.2.2 二合一：行卡片即队列）：规范 14 章 .table 数据表格 -->
+    <div class="panel stack" id="results" hidden style="display:none">
+      <div class="row">
+        <h3 data-i18n="v01_result">Results</h3>
+        <span class="tag t-success" id="totalSaved" hidden></span>
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th data-i18n="v01_th_file">File</th>
+              <th data-i18n="v01_th_size">Size</th>
+              <th data-i18n="v01_th_status">Status</th>
+              <th data-i18n="v01_th_dim">Dimensions</th>
+              <th class="act-th" data-i18n="v01_th_act">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="resultList"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <!-- ===== 预览/对比模态框（V0.4 功能一） ===== -->
+    <!-- ===== 广告位预留（当前无广告，隐藏不显示；将来加广告时在此处插入） ===== -->
+  <!-- <div class="panel ad-slot" id="adSlot" hidden>广告位</div> -->
+<!-- ===== SEO 文字内容：功能介绍 / 使用场景 / 常见问题（折叠面板，默认收起） ===== -->
+  <details class="panel seo-details seo-first-panel">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="seo_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="seo_f_th1">功能</th><th data-i18n="seo_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="seo_f1_name">批量压缩</td><td data-i18n="seo_f1_desc">批量压缩体积，质量1-100精细控制，实时显示压缩率。</td></tr>
+          <tr><td data-i18n="seo_f2_name">格式转换</td><td data-i18n="seo_f2_desc">PNG/JPEG/WEBP 三种格式互转，批量处理，支持透明背景。</td></tr>
+          <tr><td data-i18n="seo_f3_name">尺寸调整</td><td data-i18n="seo_f3_desc">百分比/最长边/精确宽高三种缩放模式，支持等比锁定。</td></tr>
+          <tr><td data-i18n="seo_f4_name">图片变换</td><td data-i18n="seo_f4_desc">旋转/翻转/自由裁剪，支持单张或批量应用。</td></tr>
+          <tr><td data-i18n="seo_f5_name">实时对比预览</td><td data-i18n="seo_f5_desc">拖动滑块左右对比原图与处理后效果，直观查看质量变化。</td></tr>
+          <tr><td data-i18n="seo_f6_name">单张放大预览</td><td data-i18n="seo_f6_desc">点击放大查看细节，支持滚轮缩放、拖动平移、键盘快捷键。</td></tr>
+          <tr><td data-i18n="seo_f7_name">批量处理</td><td data-i18n="seo_f7_desc">进度条+剩余时间预估+可取消，单张下载或 ZIP 打包。</td></tr>
+          <tr><td data-i18n="seo_f8_name">隐私保护</td><td data-i18n="seo_f8_desc">全部本地运行，图片永不上传，无需注册，数据自动清除。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="seo_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="seo_u_th1">场景</th><th data-i18n="seo_u_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="seo_u1_t">网站图片优化</td><td data-i18n="seo_u1_d">压缩网站图片，转 WEBP 格式，提升加载速度</td></tr>
+          <tr><td data-i18n="seo_u2_t">电商商品图处理</td><td data-i18n="seo_u2_d">统一商品图尺寸规格，压缩体积便于上传</td></tr>
+          <tr><td data-i18n="seo_u3_t">社交媒体配图</td><td data-i18n="seo_u3_d">适配各平台尺寸，压缩体积便于发送上传</td></tr>
+          <tr><td data-i18n="seo_u4_t">隐私图片处理</td><td data-i18n="seo_u4_d">证件照等敏感图片本地处理，不上传保护隐私</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="seo_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="seo_q_th1">问题</th><th data-i18n="seo_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="seo_q1">图片会上传到服务器吗？</td><td data-i18n="seo_a1">不会。全部在浏览器本地完成，可断网使用，图片永不上传。</td></tr>
+          <tr><td data-i18n="seo_q2">支持哪些图片格式？</td><td data-i18n="seo_a2">支持 PNG/JPEG/WEBP 导入导出，后续将支持 HEIC/AVIF/GIF。</td></tr>
+          <tr><td data-i18n="seo_q3">一次最多处理多少张图片？</td><td data-i18n="seo_a3">理论无上限，建议单次不超50张。超大图自动启用流式处理防崩。</td></tr>
+          <tr><td data-i18n="seo_q4">处理后的图片有水印吗？</td><td data-i18n="seo_a4">没有。完全免费，无水印无广告，导出纯净结果。</td></tr>
+          <tr><td data-i18n="seo_q5">需要注册登录吗？</td><td data-i18n="seo_a5">不需要。打开即用，无需注册登录，无需下载安装。</td></tr>
+          <tr><td data-i18n="seo_q6">处理记录会保存吗？</td><td data-i18n="seo_a6">下载后5秒自动清除图片记录和临时资源。配置参数会记住，下次自动恢复。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <p class="muted" data-i18n="seo_footer_note">Moteful 提供 · 本地运行 · 图片不上传 · 保护隐私</p>
+<div class="preview-modal" id="previewModal" hidden>
+    <div class="modal-mask" data-dclose></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="图片预览">
+      <div class="modal-bar">
+        <div class="mode-seg">
+          <button type="button" class="seg-btn on" data-mode="preview"><i data-lucide="eye"></i><span data-i18n="v04_preview">Preview</span></button>
+          <button type="button" class="seg-btn" data-mode="compare"><svg viewBox="0 0 24 24" class="seg-icon"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 3v18"/></svg><span data-i18n="v04_compare">Compare</span></button>
+        </div>
+        <button type="button" class="modal-close" data-dclose aria-label="close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <img class="preview-img" id="previewImg" alt="" hidden draggable="false">
+        <div class="compare-area" id="compareArea" hidden>
+          <img class="compare-after" id="compareAfter" alt="" draggable="false">
+          <img class="compare-before" id="compareBefore" alt="" draggable="false">
+          <span class="compare-label label-left" data-i18n="v04_original">Original</span>
+          <span class="compare-label label-right" data-i18n="v04_processed">Processed</span>
+          <div class="compare-divider" id="compareDivider">
+            <div class="compare-handle" id="compareHandle" tabindex="0" role="slider"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <svg viewBox="0 0 24 24" class="handle-icon"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="nav-btn nav-prev" id="navPrev" aria-label="previous"><i data-lucide="chevron-left"></i></button>
+        <button type="button" class="nav-btn nav-next" id="navNext" aria-label="next"><i data-lucide="chevron-right"></i></button>
+        <!-- V0.4 功能二：缩放控件 -->
+        <div class="zoom-controls" id="zoomControls">
+          <button type="button" class="zoom-btn" id="zoomOut" aria-label="zoom out"><i data-lucide="minus"></i></button>
+          <span class="zoom-val" id="zoomVal">适应</span>
+          <button type="button" class="zoom-btn" id="zoomIn" aria-label="zoom in"><i data-lucide="plus"></i></button>
+          <button type="button" class="zoom-btn" id="zoomReset" aria-label="reset zoom"><svg viewBox="0 0 24 24" class="zoom-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+        </div>
+      </div>
+      <div class="modal-info">
+        <span class="info-name" id="infoName"></span>
+        <span class="info-size-wrap"><span class="info-size" id="infoSize"></span><span class="info-rate" id="infoRate"></span></span>
+      </div>
+    </div>
+  </div>
+
+  </main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+<!-- 移动端导航抽屉 -->
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a class="on" href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<button class="to-top" id="toTop" aria-label="Back to top"><i data-lucide="arrow-up"></i></button>
+<div id="toasts" aria-live="polite"></div>
+
+<script src="../assets/i18n/en.js"></script>
+<script src="../assets/i18n/zh.js"></script>
+<script src="../assets/i18n/i18n.js"></script>
+<script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
+<script src="../assets/js/zip.js"></script>
+<script src="../assets/js/transform.js"></script>
+<script src="../assets/js/tool.js"></script>
+<script src="../assets/js/compare.js"></script>
+
+<!-- ============ 缺失清单（四文件只读铁律：moteful.css/moteful.js/template.html/设计规范 严禁 AI 修改；以下仅为登记，处置方式待用户指令） ============
+V0.3 本次改动（页面级方案，assets/css/image-tool.css + tool.js + i18n，未碰四件只读文件）：
+  ①拖入区改缩略图画廊：导入后显示 96px 大缩略图（大于结果区 40px）、每张右上角 X 删除、"当前已放入 N 张图片"提示、重置按钮一键清空；
+  ②PNG 质量提示改为静态默认显示（文案更新为"质量仅对 JPG/WebP 生效；PNG 为无损格式"）；
+  ③翻转区移出"高级编辑"折叠面板，固定到旋转字段下方默认可见，不再随高级编辑动态显隐；
+  ④边距区改为紧凑网格排布（标签右对齐贴近控件，避免过宽间隔）；
+  ⑤结果表格修复底部横线被 .table-wrap 圆角裁短的问题（页面级覆写 border-radius:0）；
+  ⑥文件处理后若体积增大，显示"增大 X%"而非"节省 -X%"；
+  ⑦操作列去掉 HTML width="1"，改用 CSS white-space:nowrap + width:1px 自适应。
+V0905b 已修复：分段条防拉伸、高级编辑开关排布、翻转分段+内联 SVG、输出尺寸移入表格、重置/清空按钮、结果缩略图、分割线全宽、步进器原生黑字。
+剩余真实缺口（规范与 moteful.css 均无对应，已同步 assets/css/missing_styles_proposal.css）：
+  1. [hidden]{display:none!important} 框架兜底（tool.js 已用 setHidden+initHiddenGuard 行为层兜底，首帧另用 inline display:none 静态兜底）
+  2. 进度条 .progress 在 .row 内 flex:1 伸缩
+  3. 结果行错误说明 .err-why/.err-text 样式（现用 .muted 承载，虚线按钮形态缺）；结果区缩略图圆角（现 40x40 直角）
+  4. 上传区中文 toast（"已接收文件 · 本地处理"）需在事实源层改为 i18n（moteful.js 只读）
+已解决：拖入区收缩态 / .dropzone.mini / .dropzone.dragover 已在本页 CSS 中实现，无需再进全局事实源。
+缺失：需要补充 图标 —— moteful.js ICONS 无 flip-h/flip-v/play/crop/rotate，翻转已用内联 SVG 承载，其余暂以现有图标或纯文字承载（moteful.js 只读）
+-->
+<div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
+  <div class="rec-mask" data-rec-close></div>
+  <div class="rec-box">
+    <button class="btn btn-icon btn-secondary btn-close rec-close-icon" type="button" data-rec-close aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="rec-check"><i data-lucide="check-circle"></i></div>
+    <p class="rec-msg" id="recMsg" data-i18n="rec_done">操作成功</p>
+    <p class="rec-sub" data-i18n="rec_sub">感谢使用 Moteful，下面这些功能你可能也用得上：</p>
+    <div class="rec-tip">
+      <span class="rec-tip-text" data-i18n="rec_tip_note">如果这个工具帮到了你，欢迎请作者喝杯咖啡 ☕</span>
+      <a class="btn btn-primary rec-tip-btn" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n="rec_tip_btn">赞助支持</a>
+    </div>
+    <div class="rec-cards" id="recCards">    <a class="rec-card" href="../tools/stitch.html">
+      <i data-lucide="layout-grid"></i>
+      <span data-i18n="nav_m_compress">拼接</span>
+    </a>
+    <a class="rec-card" href="../tools/annotate.html">
+      <i data-lucide="pencil"></i>
+      <span data-i18n="nav_m_annotate">标注</span>
+    </a></div>
+    <button class="btn btn-secondary rec-close-btn" type="button" data-rec-close data-i18n="rec_close">关闭</button>
+  </div>
+</div>
+</body>
+</html>

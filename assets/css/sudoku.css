@@ -1,0 +1,168 @@
+/* 数独 / Sudoku —— 游戏分区专用样式表（V0.8.2）
+   作用域限定 .su-shell，配色变量统一加 su- 前缀，隔离于站点设计令牌（--text/--accent 等），避免串味顶栏/页脚。
+   不进 lint 内联样式扫描。手机端对齐 snake.css 的 body flex 占满模式。
+
+   关键坑（已踩过，这里直接规避）：站点全局 .panel + .panel / .panel > * + * 为 specificity 0,2,0 的 16px 间距规则，
+   会悄悄压过 .su-shell * 重置的 0,1,0，导致面板间/面板内被偷偷加 16px。
+   在 .su-shell 作用域内用 0,3,0 强制归零，间距统一改由栅格 / flex 的 gap 控制。 */
+
+.su-shell *{box-sizing:border-box;margin:0;padding:0}
+.su-shell .panel + .panel{margin-top:0}
+.su-shell .panel > * + *{margin-top:0}
+
+:root{
+  --su-panel:#2b1c40; --su-panel2:#221434; --su-line:#45336a;
+  --su-accent:#c9f24b; --su-accent-deep:#86a81e;
+  --su-text:#f3eefb; --su-dim:#a99ac6; --su-conflict:#ff6f91;
+  --su-font-display:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+  --su-font-body:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;
+}
+.su-shell{
+  font-family:var(--su-font-body); color:var(--su-text);
+  min-height:100vh; position:relative; overflow-x:hidden;
+  display:flex; flex-direction:column; align-items:center;
+  background:
+    radial-gradient(1100px 560px at 82% -10%, rgba(72,202,228,.12), transparent 60%),
+    radial-gradient(900px 520px at 8% 108%, rgba(255,111,145,.10), transparent 60%),
+    linear-gradient(180deg,#1c1229 0%,#170f22 55%,#221537 100%);
+  background-attachment:fixed;
+  -webkit-tap-highlight-color:transparent;
+}
+.su-shell .su-sky{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.su-shell .su-wrap{position:relative;z-index:1;max-width:1060px;width:100%;padding:16px 18px 30px}
+
+/* ══ 机柜三栏 ══ */
+.su-shell .su-cabinet{flex:1;display:grid;grid-template-columns:190px minmax(0,500px) 212px;gap:8px;justify-content:center;min-height:0;overflow:hidden}
+.su-shell .su-side{display:flex;flex-direction:column;gap:12px;overflow-y:auto;min-width:0}
+.su-shell .su-panel{background:linear-gradient(180deg,var(--su-panel),var(--su-panel2));border:1px solid var(--su-line);border-radius:12px;padding:14px}
+.su-shell .su-panel h3{font-size:14px;color:var(--su-dim);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.su-shell .su-panel h3::before{content:'';width:8px;height:8px;background:var(--su-accent);border-radius:2px}
+.su-shell .su-stat-row{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:8px}
+.su-shell .su-stat-row:last-child{margin-bottom:0}
+.su-shell .su-val{font-family:var(--su-font-display);color:var(--su-accent);font-weight:bold}
+.su-shell .su-val.big{font-size:24px}
+
+/* ══ 游戏切换卡片条 ══ */
+/* 卡片条与下方三栏「同宽同位置」：918 = 190（左栏）+500（棋盘）+212（右栏）+8+8（两个 gap）；水平居中后左右两端与三栏对齐 */
+.su-shell .su-game-switch{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin:0 auto 14px;width:100%;max-width:918px}
+.su-shell .su-game-card{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--su-panel);border:1.5px solid var(--su-line);color:var(--su-text);text-decoration:none;font-weight:700;font-size:13px;letter-spacing:.02em;transition:transform .15s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;cursor:pointer}
+.su-shell .su-game-card i{width:16px;height:16px;stroke-width:2}
+.su-shell .su-game-card:hover:not(.soon):not(.on){border-color:var(--su-accent);color:var(--su-accent);transform:translateY(-1px)}
+.su-shell .su-game-card.on{background:var(--su-accent);border-color:var(--su-accent);color:#202a06;box-shadow:0 0 16px rgba(197,255,0,.35),0 4px 0 var(--su-accent-deep)}
+.su-shell .su-game-card.on:hover{transform:translateY(-1px)}
+.su-shell .su-game-card.soon{opacity:.55;cursor:not-allowed}
+.su-shell .su-game-meta{display:flex;align-items:center;gap:6px;margin-left:auto;font-weight:900;color:var(--su-accent);font-size:14px}
+.su-shell .su-game-meta .chip{background:transparent;border:1.5px dashed var(--su-line);color:var(--su-dim)}
+
+/* ══ 屏幕：棋盘 ══ */
+.su-shell .su-board-col{display:flex;justify-content:center;align-items:center;min-width:0}
+.su-shell .su-board-box{background:#170e24;border-radius:16px;padding:12px;box-shadow:0 0 30px rgba(0,0,0,.5),inset 0 0 20px rgba(0,0,0,.3);border:2px solid #342453;position:relative;width:100%;max-width:500px;aspect-ratio:1/1}
+.su-shell canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.su-shell .su-scanlines{position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0px, rgba(0,0,0,.03) 1px, transparent 1px, transparent 3px)}
+
+/* ══ 移动端 HUD 条（默认隐藏，移动端常驻） ══ */
+.su-shell .su-hudbar{display:none}
+.su-shell .su-hb-item{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--su-dim)}
+.su-shell .su-hb-k{font-family:var(--su-font-display);font-size:9px;letter-spacing:.14em}
+.su-shell .su-hb-v{font-family:var(--su-font-display);color:var(--su-text);font-size:16px;font-weight:bold}
+.su-shell .su-hb-v.acc{color:var(--su-accent)}
+.su-shell .su-hb-btn{background:var(--su-panel2);border:1px solid var(--su-line);color:var(--su-text);padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;flex:none}
+.su-shell .su-hb-btn.on{background:var(--su-accent);color:#111;border-color:var(--su-accent)}
+
+/* ══ 控制条 / 数字键盘（桌面隐藏，移动端常驻） ══ */
+.su-shell .su-ctlrow{display:none;flex-shrink:0;padding:12px 0;gap:12px}
+.su-shell .su-ctl-bar{display:flex;flex-wrap:wrap;gap:8px;width:100%}
+.su-shell .su-ctl-bar .su-ctl-btn{flex:1 1 0;min-width:0}
+.su-shell .su-ctl-btn{background:var(--su-panel);border:1px solid var(--su-line);color:var(--su-text);border-radius:8px;font-size:13px;font-family:var(--su-font-display);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px}
+.su-shell .su-ctl-btn.active{background:var(--su-accent-deep);color:#111;border-color:var(--su-accent)}
+.su-shell .su-numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.su-shell .su-numpad button{background:var(--su-panel2);border:1px solid var(--su-line);color:var(--su-text);border-radius:8px;font-size:24px;font-family:var(--su-font-display);font-weight:bold;cursor:pointer;transition:.1s;height:46px}
+.su-shell .su-numpad button:active{background:var(--su-accent);color:#111;transform:scale(.95)}
+
+/* ══ 按钮 / 开关（设置面板与覆盖层通用） ══ */
+.su-shell .su-btn{background:var(--su-panel2);border:1px solid var(--su-line);color:var(--su-text);padding:10px;border-radius:8px;font-size:14px;cursor:pointer;transition:all .2s;text-align:center;font-family:inherit}
+.su-shell .su-btn:hover{background:var(--su-line)}
+.su-shell .su-btn.primary{background:var(--su-accent-deep);border-color:var(--su-accent);color:#111;font-weight:bold}
+.su-shell .su-btn.primary:hover{background:var(--su-accent)}
+.su-shell .su-btn.ghost{background:transparent}
+.su-shell .su-tglrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:14px}
+.su-shell .su-tglrow:last-child{margin-bottom:0}
+.su-shell .su-tgl{width:40px;height:24px;background:#3a1626;border-radius:12px;position:relative;cursor:pointer;transition:.2s;flex:none}
+.su-shell .su-tgl::after{content:'';width:18px;height:18px;background:#ff9db8;border-radius:50%;position:absolute;top:3px;left:3px;transition:.2s}
+.su-shell .su-tgl.on{background:#2c3d16}
+.su-shell .su-tgl.on::after{background:#d3f77a;left:19px}
+
+/* ══ 操作指南 ══ */
+.su-shell .su-keys{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.su-shell kbd{background:#1c1029;border:1px solid var(--su-line);padding:4px 8px;border-radius:4px;font-family:var(--su-font-display);font-size:12px;color:var(--su-dim)}
+
+/* ══ 覆盖层（开始 / 暂停 / 完成 / 生成） ══ */
+.su-shell .su-overlay{position:fixed;inset:0;background:rgba(20,12,31,.95);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;padding:20px;text-align:center}
+.su-shell .su-overlay.hidden{display:none}
+.su-shell .su-ov-title{font-family:var(--su-font-display);font-size:32px;color:var(--su-accent);margin-bottom:8px;text-shadow:0 0 15px rgba(201,242,75,.4);white-space:nowrap}
+.su-shell .su-ov-cn{font-size:18px;color:var(--su-dim);margin-bottom:24px}
+.su-shell .su-ov-stats{background:var(--su-panel);padding:20px;border-radius:12px;margin-bottom:24px;min-width:250px;border:1px solid var(--su-line)}
+.su-shell .su-ov-stats .su-stat-row{display:flex;justify-content:space-between;font-size:14px}
+.su-shell .su-badge{display:inline-block;background:var(--su-accent);color:#111;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:12px;animation:bump .5s ease}
+@keyframes bump{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.su-shell .su-ov-btns{display:flex;gap:12px;width:100%;max-width:300px}
+.su-shell .su-ov-btns .su-btn{flex:1}
+.su-shell .su-shake{animation:shk .3s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* ══ 响应式：平板 / 窄窗（≤940） ══ */
+@media (max-width:940px){
+  .su-shell .su-wrap{padding:12px 10px 18px}
+  .su-shell .su-cabinet{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .su-shell .su-side{flex-direction:row;overflow-x:auto;padding-bottom:8px}
+  .su-shell .su-panel{min-width:200px;flex-shrink:0}
+}
+
+/* ══ 手游壳：手机 / 触屏 = 固定全屏游戏形态 ══ */
+@media (max-width:860px),(pointer:coarse){
+  .su-shell .su-side{display:none}
+  .su-shell .su-cabinet{display:contents}
+  .su-shell .su-board-col{flex:1 1 auto;min-height:0;padding:8px 8px;display:block}
+  .su-shell .su-board-box{width:100%;aspect-ratio:1/1}
+  .su-shell .su-ctlrow{display:flex;flex-direction:column;gap:8px;max-height:240px;padding:6px 0}
+  .su-shell .su-ctl-bar{width:100%}
+  /* 整页竖向铺满：站点页脚隐藏，顶栏保留，高度全部让给棋盘 */
+  body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;overscroll-behavior:none}
+  .topbar{flex:0 0 auto}
+  .footer{display:none}
+  .su-shell{flex:1 1 auto;min-height:0;overflow:hidden}
+  .su-shell .su-wrap{flex:1;min-height:0;display:flex;flex-direction:column;padding:8px}
+  .su-shell .su-hudbar{display:flex !important;background:var(--su-panel);padding:8px 16px;border-bottom:1px solid var(--su-line);gap:16px;flex-shrink:0;align-items:center}
+  .su-shell .su-hb-item{flex:1}
+  .su-shell .su-game-switch{order:-2;margin-top:0;margin-bottom:8px}
+  .su-shell .su-numpad{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ══ 手机端：卡片条单行横向滚动，游戏名称按钮不折行 ══ */
+@media (max-width:560px){
+  .su-shell .su-ctl-bar{width:100%}
+  .su-shell .su-ctl-btn{font-size:11px;padding:6px}
+  .su-shell .su-numpad button{font-size:20px}
+  .su-shell .su-game-switch{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:8px;max-width:100%;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+  .su-shell .su-game-switch::-webkit-scrollbar{display:none}
+  .su-shell .su-game-card{flex:0 0 auto;justify-content:center;padding:7px 12px;font-size:12px;white-space:nowrap}
+  .su-shell .su-game-card i{width:14px;height:14px;flex:0 0 auto}
+  .su-shell .su-game-card span{white-space:nowrap}
+  .su-shell .su-game-meta{display:none}
+}
+
+/* ══ 横屏手机：棋盘居左、操作区居右 ══ */
+@media (max-height:560px) and (orientation:landscape){
+  .su-shell .su-wrap{flex-direction:row}
+  .su-shell .su-board-col{flex:1;min-height:0;padding:8px}
+  .su-shell .su-board-box{height:100%;aspect-ratio:1/1;width:auto}
+  .su-shell .su-ctlrow{flex-direction:column;width:200px;padding:0 12px}
+  .su-shell .su-ctl-bar{width:100%;grid-template-columns:repeat(4,1fr)}
+}
+
+/* ══ 难度切换（启动遮罩已取消，改为常驻入口） ══ */
+.su-shell .su-diffrow{display:flex;gap:8px;margin-bottom:12px}
+.su-shell .su-diffrow .su-btn{flex:1;padding:8px 4px;font-size:13px}
+.su-shell .su-diffrow .su-btn.on{background:var(--su-accent);border-color:var(--su-accent);color:#111;font-weight:bold}
+.su-shell .su-hb-item.su-hb-diff{background:none;border:0;padding:0;font-family:inherit;cursor:pointer}
+.su-shell .su-hb-item.su-hb-diff:active{transform:scale(.94)}

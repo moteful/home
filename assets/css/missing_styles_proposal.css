@@ -1,0 +1,449 @@
+/* =====================================================================
+   Moteful 真实缺口清单 · missing_styles_proposal.css（V0905 三次修订）
+   四文件只读铁律下本文件仅为登记载体，处置方式待用户指令。
+
+   V0905 历史：v1 误把自创组件（.seg-btn/.num-stepper 等）当缺口 → 用户指正后作废；
+   v2 布局缺口 → 用户指正后再次核对规范，发现 .field/.field-label/.set-row/.
+   table/.tag/.btn-icon/.btn-danger/.toast/.muted/.mono 全部可承载 → 已全部映射，
+   本清单第三次缩减为以下真实缺口（规范与 moteful.css 确无对应）。
+   ===================================================================== */
+
+/* ---- 1. 框架兜底（全局；根治需进 moteful.css BASE 区） ----
+   .btn/.row/.panel/.field 等组件自带 display，会压过 UA 的 [hidden]，
+   导致 hidden 属性失效。tool.js 已用 setHidden（style.display）行为层规避，
+   但声明式 hidden（如 <input hidden>、HTML 静态 hidden）仍需此条根治。 */
+[hidden]{display:none!important}
+
+/* ---- 2. 上传区收缩态（导入后 mini 化；规范 .dropzone 仅有展开形态） ---- */
+.up-main{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dropzone.mini{min-height:0;padding:13px 18px;flex-direction:row;justify-content:flex-start;text-align:left}
+.dropzone.mini .dz-ico,.dropzone.mini .up-main{display:none}
+.dropzone.dragover{border-color:var(--primary);background:var(--primary-soft)}   /* tool.js 拖拽高亮类 */
+
+/* ---- 3. 结果表格缩略图（规范 14 章 .table 无缩略图列示例） ---- */
+.r-thumb{width:52px;height:52px;border-radius:var(--r-md);background:var(--surface-2) center/cover no-repeat;border:1px solid var(--border)}
+
+/* ---- 5. 结果行错误说明（文字已用 .muted 承载，虚线下划线按钮形态缺） ---- */
+.err-why{font:inherit;font-size:12px;color:var(--danger);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline dotted}
+
+/* ---- 6. .row 内进度条伸缩（规范 demo 以内联 max-width 示范，工作区需 flex:1） ---- */
+#progressWrap .progress{flex:1;min-width:120px}
+
+/* ---- 7. 窄屏微调（规范 24 章已覆盖 field 纵排等主体，以下为工作区特有） ---- */
+@media (max-width:768px){
+  .dropzone{min-height:160px;padding:24px 16px}
+  .row .btn{flex:0 1 auto}
+}
+
+
+/* ============================================================
+   [已采用 V0.5.2] 导航栏下拉按钮悬停蓝色底边
+   背景：其他导航项（<a>）通过 .nav-links a::after 自带悬停底边，
+        但「图片工具」下拉按钮是 .btn，没有继承该底边。
+   方案：保留按钮 class 为 btn btn-ghost btn-sm（不改 class），
+        在此补 .nav-pop .btn::after，悬停（:hover）与下拉展开
+        （.nav-pop.open，moteful.js 第145行写入）均显蓝色底边，
+        与导航链接视觉一致。用户需求：选 B，悬停也显蓝边。
+   约束：不改动 moteful.css（只读铁律）；选择器限定 .nav-links
+        .nav-pop 前缀，不会误伤其它 .btn。
+        下箭头已在 topbar.html 模板中移除（仅图片工具按钮，
+        语言切换按钮箭头保留）。
+   ============================================================ */
+
+.nav-links .nav-pop .btn {
+  position: relative;
+}
+.nav-links .nav-pop .btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transition: transform var(--dur-fast);
+}
+.nav-links .nav-pop .btn:hover::after,
+.nav-links .nav-pop.open .btn::after {
+  transform: scaleX(1);
+}
+
+/* ============================================================
+   [V0.6] 当前栏目高亮（全站点通用规则）
+   背景：打开某工具页时，导航栏对应分类应呈 hover 同款指示
+         （蓝色底边 + 蓝色文字），让用户知道当前所处栏目。
+   机制：页面 <body data-nav="<key>"> 声明所属分类；topbar 按钮
+         带 data-nav-key="<key>"。两者 key 一致即高亮。
+   实现：复用 nav-pop 悬停蓝边（.btn::after transform:scaleX(1)），
+         不自动展开下拉菜单（避免遮挡内容，用户可悬停/点击展开）。
+   拓展：新增分类时，在 topbar 按钮加 data-nav-key、页面 body 加
+         data-nav，并在本段补一对 body[data-nav=...] 选择器即可。
+   ============================================================ */
+/* 图片工具分类 */
+body[data-nav="image"] .nav-links .nav-pop .btn[data-nav-key="image"] {
+  color: var(--primary);
+}
+body[data-nav="image"] .nav-links .nav-pop .btn[data-nav-key="image"]::after {
+  transform: scaleX(1);
+  background: var(--primary);
+}
+/* 开发者工具分类（V0.7 新增，按上方"拓展"规则补充） */
+body[data-nav="dev"] .nav-links .nav-pop .btn[data-nav-key="dev"] {
+  color: var(--primary);
+}
+body[data-nav="dev"] .nav-links .nav-pop .btn[data-nav-key="dev"]::after {
+  transform: scaleX(1);
+  background: var(--primary);
+}
+/* 游戏分类（V0.7 新增，按上方"拓展"规则补充） */
+body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"] {
+  color: var(--primary);
+}
+body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
+  transform: scaleX(1);
+  background: var(--primary);
+}
+
+/* ============================================================
+   [V0.7] 导航栏分类按钮禁用 Y 轴位移（与 .nav-links a 文字链接一致）
+   背景：分类按钮是 .btn，moteful.css 自带 .btn:hover{translateY(-1px)}
+        与 .btn:active{translateY(1px) scale(.98)}，点击/悬停时整颗按钮
+        会上下位移，与纯文字导航链接（.nav-links a，无位移）观感不一致，
+        用户反馈"当前页对应按钮点击有明显的 Y 轴变化/下沉"。
+   方案：导航分类按钮仅用蓝底边（::after）与蓝色文字指示当前栏目，
+        取消 hover/active 的 transform，使其稳定不位移。
+   约束：仅作用于 .nav-links 内的分类下拉按钮，不动 .nav-acts 里的
+        主题/语言/菜单等真实操作按钮（它们保留按压反馈）。
+   ============================================================ */
+.topbar .nav-links .nav-pop .btn:hover,
+.topbar .nav-links .nav-pop .btn:active {
+  transform: none;
+}
+
+/* ============================================================
+   [V0.7] 下拉菜单当前页高亮（支撑 site-config.json navMenuActive）
+   背景：inject_site.mjs 会按 navMenuActive 给当前页对应的
+         .menu-item 加 on 类，但全站无 .menu-item.on 样式，机制空转。
+   实现：与 .menu-item:hover 同款（primary-soft 底 + primary 字），
+         使当前工具页在下拉中的入口呈持续高亮。
+   ============================================================ */
+.menu-item.on {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.menu-item.on [data-lucide] {
+  color: var(--primary);
+}
+
+
+
+/* ============================================================
+   [已采用 V0.5] SEO 折叠面板（功能介绍 / 使用场景 / 常见问题）
+   背景：V0.5 起 image-tool 页把三个 SEO 区域做成 details/summary
+         折叠面板（默认收起、展开时箭头旋转 180°）；V0.5.2 收尾
+         stitch 页同样需要，属两页共用的组件。
+   方案：原定义写在 image-tool.css（页面私有，仅 image-tool 能用），
+         现提升为本文件共享定义——本文件已由 inject_site.mjs 注入
+         全站 9 页 link，两页复用同一份，避免双源漂移。
+         image-tool.css 中的原定义已同步删除。
+   约束：不改动 moteful.css（只读铁律）；选择器以 .seo- 前缀限定，
+         只作用于 SEO 折叠面板，不误伤 .panel / .table / .stat-grid
+         等既有组件。
+   ============================================================ */
+
+.seo-first-panel{margin-top:16px}
+.seo-details{padding:0;overflow:hidden}
+.seo-summary{
+  display:flex;align-items:center;gap:8px;
+  padding:16px 20px;cursor:pointer;list-style:none;
+  font-size:15px;font-weight:600;color:var(--text);
+  transition:background var(--dur-fast);
+  user-select:none;
+}
+.seo-summary::-webkit-details-marker{display:none}
+.seo-summary:hover{background:var(--surface-2)}
+.seo-summary-title{flex:1}
+.seo-summary-icon{
+  width:16px;height:16px;color:var(--text-3);
+  transition:transform var(--dur-fast);
+}
+.seo-details[open] .seo-summary-icon{transform:rotate(180deg)}
+
+/* 内容容器 A：表格（功能介绍 / 常见问题） */
+.seo-details .table-wrap{
+  padding:0 20px 20px;
+  border-top:1px solid var(--border);
+}
+.seo-details .table-wrap .table{margin-top:16px}
+
+/* 内容容器 B：卡片网格（stitch 使用场景用 .stat-grid 承载，非表格） */
+.seo-details > .stat-grid{
+  padding:16px 20px 20px;
+  border-top:1px solid var(--border);
+}
+
+/* 使用场景描述文字（.stat .nm.seo-desc）：压过 .stat .nm 的"统计数字"样式
+   （26px 粗等宽），统一为正文风格 13px/常规字重 —— 参数与 stitch.css 成功案例一致 */
+.seo-desc{
+  font-size:13px;
+  font-weight:400;
+}
+.seo-details .stat .nm.seo-desc{
+  font-family:var(--font);
+  font-size:13px;
+  font-weight:400;
+  letter-spacing:0;
+  line-height:1.65;
+  color:var(--text);
+}
+
+/* 错误定位选中高亮：is-error 状态下输入框选区改用错误色深底白字（替代全站淡蓝 ::selection，明暗主题均醒目） */
+.is-error::selection{
+  background:var(--danger-fill);
+  color:var(--on-danger);
+}
+
+/* 手机端（<768px）：SEO 表格改成卡片式布局，免横向滚动 */
+@media (max-width:767px){
+  .seo-details .table-wrap{padding:0 16px 16px}
+  .seo-details .table-wrap .table{
+    width:100%;border-collapse:separate;border-spacing:0 8px;
+  }
+  .seo-details .table-wrap .table thead{display:none}
+  .seo-details .table-wrap .table tbody tr{
+    display:block;background:var(--surface-2);
+    border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;margin-bottom:8px;
+  }
+  .seo-details .table-wrap .table tbody tr td{
+    display:block;border:none;padding:0;background:transparent;
+  }
+  .seo-details .table-wrap .table tbody tr td:first-child{
+    font-weight:600;font-size:14px;color:var(--text);
+    margin-bottom:6px;
+  }
+  .seo-details .table-wrap .table tbody tr td:last-child{
+    font-size:13px;color:var(--text-2);line-height:1.6;
+  }
+  .seo-details > .stat-grid{padding:12px 16px 16px}
+  .seo-summary{padding:14px 16px;font-size:14px}
+}
+
+
+/* ============================================================
+   [已采用 V0.6] 导入区双态组件（空态 / 缩略图画廊）
+   背景：image-tool（V0.3 起）确立了「.dropzone 双态」标准——
+         空态用 .dz-empty 做引导，导入后切换为 .dz-gallery
+         （计数 + 操作按钮 + 缩略图网格 .dz-g-list）；stitch 页
+         注释明写「复用 .dropzone 标准组件结构，对齐
+         image-tool.html」，并把这份定义又复制了一遍。
+         V0.6 annotate 页因为引不到这两个页面私有的定义，误另建
+         了一整张「图片队列」卡、自造 .annotate-queue /
+         .annotate-thumbs —— 同一件事在页面上表达两遍，且违反
+         「复用既有组件、零自造样式」。
+   方案：把两页共用的那部分提升为本文件共享定义（与上文 SEO
+         折叠面板同一先例与处置方式），image-tool.css /
+         stitch.css 中的重复定义同步删除，三页复用同一份，
+         消除三源漂移。
+   约束：不改动 moteful.css（只读铁律）；.dropzone.mini /
+         .dropzone.dragover 已在本文件第 2 节定义，
+         此处不重复；stitch 特有的拖拽态（cursor:grab /
+         .dragging / .is-dragging / .drag-over / .dz-insert-line /
+         .dz-move-btns）仍留在 stitch.css，不进共享层；
+         .dz-thumb 的 cursor 由各页按交互语义自行声明
+         （image-tool 默认 / stitch grab / annotate pointer），
+         共享层不写。两页原有重复定义与本份等价；仅把 stitch
+         原硬编码的 #fff 与 0.15s 收敛为设计令牌 var(--tip-fg) /
+         var(--dur-fast)，色差与时差可忽略。
+   ============================================================ */
+
+.dz-empty,.dz-gallery{width:100%}
+.dz-empty{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.dz-gallery{display:flex;flex-direction:column;gap:16px}
+.dz-gallery[hidden],.dz-empty[hidden]{display:none!important}
+.dz-g-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.dz-count{font-size:14px;font-weight:600;color:var(--text)}
+.dz-g-acts{display:flex;align-items:center;gap:8px}
+.dz-g-list{position:relative;display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:12px}
+.dz-thumb{position:relative;aspect-ratio:1;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border);background:var(--surface-2)}
+.dz-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.dz-thumb .dz-idx{position:absolute;top:4px;left:6px;font-size:11px;font-family:var(--mono);color:var(--primary);font-weight:600;text-shadow:0 0 2px var(--surface)}
+.dz-thumb .dz-rm{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:var(--scrim);color:var(--tip-fg);display:grid;place-items:center;opacity:0;transition:opacity var(--dur-fast)}
+.dz-thumb:hover .dz-rm,.dz-thumb:focus-within .dz-rm{opacity:1}
+.dz-thumb .dz-rm [data-lucide]{width:14px;height:14px}
+
+
+/* ============================================================
+   [已合入 moteful.css · 根治 V0.6 用户两次点名问题]
+   背景：用户两次截图点名「按钮被拉宽」「组件之间行距为 0」。
+        根因不在页面写法，而在白名单 moteful.css 的「设计缺省值」：
+        ① .field（moteful.css:139）是列方向 flex 却「未声明
+           align-items」→ 默认 stretch，把内部的 .segment/.step
+           等 inline-flex 控件撑满整列（控件宽=字段宽），按钮间
+           出现大片空隙。这是「拉宽」的唯一根因。
+        ② .panel 内部相邻块（多个 .row / .field 兄弟）之间「没有
+           任何默认外边距」。.row 的 gap 只管容器内部横纵间距，
+           兄弟块之间 gap 管不到 → 「行距为 0」贴死。
+   为什么之前反复犯：三件套铁律下 moteful.css 只读，我历来用
+        「页面私有 CSS 补丁」治标（.page .field{align-items:
+        flex-start} / #xPanel > * + *{margin-top:20px}），等于
+        每个新页面都在考验「记不记得补补丁」——制度上不可靠，
+        所以 V0.1→V0.5→V0.6 连犯三次。
+   根治（治本，必须进 moteful.css，不能只靠页面补丁）：
+        ① .field 显式声明 align-items:flex-start
+           —— 从此任何页面、任何 AI 物理上不可能写出拉宽的分段器。
+        ② .panel 卡内块给默认间距（与 .panel+.panel 的 16px 同量级）
+           ——「行距为 0」物理上不可能再发生。
+   约束：以下两条须由用户授权后合入 moteful.css（只读铁律），
+        合入后 image-tool.css/stitch.css/annotate.css 里对应的
+        「页面补丁」应同步删除（属冗余，删除即净删、零视觉变化）。
+   ============================================================ */
+
+/* 已合入 moteful.css（V0.6 收尾）：以上两条现为全局白名单默认值，本文件不再重复定义，
+   对应页面私有补丁（annotate.css 的 .page .field 对齐声明）已同步删除。 */
+/* ============================================================
+   [已采用 V0.6] 预览/对比模态框（图片放大预览 · 左右翻页 · 缩放）
+   背景：V0.4 image-tool 页确立了「点击缩略图 → 全屏预览灯箱」标准——
+         预览/对比双模式、左右翻页、滚轮/按钮/双击缩放与拖动平移。
+         compare.js（独立模块，window.MFCompare 接口）绑定 #previewModal。
+         V0.6 annotate 页需要同样的放大预览体验，复用同一套结构。
+   方案：原定义写在 image-tool.css（页面私有，仅 image-tool 能用），
+         现提升为本文件共享定义——与上文 SEO 折叠面板（V0.5）、
+         导入区双态（V0.6）同一先例；image-tool.css 中的原定义
+         已同步删除，两页复用同一份，消除双源漂移。
+   约束：不改动 moteful.css（只读铁律）；以 .preview-modal/.modal-/
+         .nav-btn/.zoom-/.compare- 前缀限定，只作用于预览灯箱。
+   ============================================================ */
+
+.preview-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.preview-modal[hidden]{display:none}
+.modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.modal-box{position:relative;z-index:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);width:100%;max-width:720px;height:85vh;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-bar{position:relative;display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface-2)}
+.mode-seg{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:2px;padding:3px;border-radius:var(--r-full);background:var(--surface);border:1px solid var(--border)}
+.mode-seg .seg-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:var(--r-full);font-size:12px;color:var(--text-2);transition:all var(--dur-fast)}
+.mode-seg .seg-btn.on{background:var(--primary-soft);color:var(--primary);font-weight:600}
+.mode-seg .seg-btn [data-lucide],.mode-seg .seg-btn .seg-icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.modal-close{margin-left:auto;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-full);color:var(--text-3);transition:all var(--dur-fast)}
+.modal-close:hover{background:var(--surface-2);color:var(--text)}
+.modal-body{position:relative;flex:1;min-height:320px;display:flex;align-items:center;justify-content:center;background:var(--bg);overflow:hidden}
+.preview-img{width:100%;height:100%;object-fit:contain;display:block;-webkit-user-drag:none;user-drag:none;transform-origin:0 0;transition:transform var(--dur-fast);cursor:zoom-in;will-change:transform}
+.preview-img.zoomed{cursor:grab}
+.preview-img.panning{cursor:grabbing;transition:none}
+.modal-info{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--border);font-size:12px}
+.modal-info .info-name{font-weight:600;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modal-info .info-size-wrap{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.modal-info .info-size{font-family:var(--mono);color:var(--text-2)}
+.modal-info .info-rate{font-family:var(--mono);font-weight:600}
+.modal-info .info-rate.rate-down{color:var(--success)}
+.modal-info .info-rate.rate-up{color:var(--danger)}
+
+/* 左右切换按钮 */
+.nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-full);background:var(--surface);border:1px solid var(--border);color:var(--text-2);box-shadow:var(--shadow);transition:all var(--dur-fast);z-index:5}
+.nav-btn:hover{color:var(--text);border-color:var(--primary)}
+.nav-btn[hidden]{display:none}
+.nav-prev{left:12px}
+.nav-next{right:12px}
+.nav-btn [data-lucide]{width:20px;height:20px}
+
+/* V0.4 功能二：缩放控件 */
+.zoom-controls{position:absolute;bottom:12px;right:12px;display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);padding:4px 8px;box-shadow:var(--shadow);z-index:5}
+.zoom-btn{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-full);border:none;background:var(--surface-2);color:var(--text-2);cursor:pointer;transition:all var(--dur-fast)}
+.zoom-btn:hover{background:var(--surface);color:var(--text)}
+.zoom-btn:active{transform:scale(0.92)}
+.zoom-btn:focus-visible{outline:2px solid var(--ring);outline-offset:1px}
+.zoom-btn [data-lucide],.zoom-btn .zoom-icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.zoom-val{font-size:11px;font-family:var(--mono);color:var(--text-2);min-width:40px;text-align:center;user-select:none}
+
+/* 对比区域 */
+.compare-area{position:absolute;inset:0;cursor:ew-resize;touch-action:none;user-select:none;-webkit-user-select:none}
+.compare-after,.compare-before{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;-webkit-user-drag:none;user-drag:none}
+.compare-before{clip-path:inset(0 50% 0 0)}
+.compare-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--primary);transform:translateX(-50%);z-index:2;pointer-events:none}
+.compare-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:var(--r-full);background:var(--surface);border:2px solid var(--primary);display:flex;align-items:center;justify-content:center;gap:3px;z-index:3;box-shadow:var(--shadow);cursor:grab;touch-action:none;transition:transform var(--dur-fast)}
+.compare-handle:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.1)}
+.compare-handle:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+.compare-handle .handle-icon{width:18px;height:18px;stroke:var(--primary);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.compare-label{position:absolute;top:12px;font-size:11px;font-family:var(--mono);letter-spacing:.05em;padding:3px 10px;border-radius:var(--r-full);background:var(--primary-soft);color:var(--primary);font-weight:600;pointer-events:none;z-index:2}
+.compare-label.label-left{left:12px}
+.compare-label.label-right{right:12px}
+
+/* 响应式：手机端全屏 */
+@media (max-width:639px){
+  .preview-modal{padding:0}
+  .modal-box{max-width:100%;max-height:100vh;height:100vh;border-radius:0;border:none}
+  .modal-body{min-height:0}
+  .compare-handle{width:44px;height:44px}
+  .compare-handle span{height:16px}
+  .nav-btn{width:36px;height:36px}
+  .nav-prev{left:8px}
+  .nav-next{right:8px}
+  .modal-info .info-name{max-width:50%}
+  .zoom-controls{bottom:calc(12px + env(safe-area-inset-bottom));right:8px;padding:6px 10px}
+  .zoom-btn{width:28px;height:28px}
+  .zoom-btn [data-lucide],.zoom-btn .zoom-icon{width:16px;height:16px}
+  .zoom-val{font-size:12px;min-width:44px}
+}
+
+
+/* ============================================================
+   [V0.9.1] 顶栏赞助按钮（♥Support）窄屏图标化
+   背景：V0.9 在 .nav-acts 首位新增 ♥Support 外链按钮后，
+         ≤960px 断点顶栏只剩 logo + nav-acts，按钮带文字标签
+         使 nav-acts 由 191px 增至 275px；在 390px 视口下顶栏总宽
+         达 404px，溢出 14px 并出现横向滚动条（v0.8.2 无此问题，
+         属 V0.9 引入的回归）。
+   方案：≤640px 断点（与既有 .lang-label{display:none} 同断点）
+         隐藏按钮文字标签、按钮收敛为 36px 见方纯图标，
+         与主题/语言/菜单按钮形态一致；图标 + aria-label 保留，
+         无障碍与点击目标不受影响。
+   约束：不改动 moteful.css（只读铁律）；选择器以 .topbar .nav-acts
+         前缀 + PayPal 外链属性限定，不误伤 .nav-acts 内其它按钮。
+         640px 以上不受影响（不隐藏文字），≥410px 视口均无溢出。
+   ============================================================ */
+@media (max-width:640px){
+  /* 顶栏总宽 = logo 103 + gap + nav-acts + 左右内边距 32；
+     390px 视口下原溢出 14px，以下三条共省 25px：
+     ① 赞助按钮文字标签隐藏 + 收敛为 32px 图标（-8）
+     ② nav-acts 间距 10 → 8，移动端更紧凑（-6）
+     实测：390/375/360 视口顶栏总宽均在视口内，横向溢出 0px
+     （原 V0.9 为 14px）；≥641px 断点不受影响，文字标签照常显示。 */
+  .topbar .nav-acts{gap:8px}
+  .topbar .nav-acts > a[href^="https://www.paypal.com"]{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:32px;padding:0;
+  }
+  .topbar .nav-acts > a[href^="https://www.paypal.com"] [data-i18n="nav_support"]{
+    display:none;
+  }
+}
+
+
+/* ============================================================
+   [V1.0] 顶栏语言下拉最小宽度（收口内联样式）
+   背景：_governance/site-blocks/topbar.html 的语种下拉一直带
+         style="min-width:140px" 内联样式（覆盖 .menu 默认 190px），
+         经 inject 下发后每页各 1 处，触发 lint R8（内联样式）warn，
+         且与「样式唯一事实源」原则相悖。
+   方案：删除内联属性，改由本文件承载同一条覆盖规则；
+         选择器限定到顶栏动作区内的下拉，不影响抽屉与其它菜单。
+         视觉零变化（仍是 140px），但全站 R8 warn 各减 1 条。
+   ============================================================ */
+.topbar .nav-acts .pop-end .menu.pop-panel{min-width:140px}
+
+/* ============================================================
+  [品牌资产] logo 三角标（新素材，替换原「渐变方块 + lucide 闪电」）
+  背景：品牌标志更新为纯图形三角标（透明底 PNG，34×34 源尺寸），
+        落在 assets/img/logo-mark.png，由 site-blocks 的 topbar/footer
+        以 <img> 引用。原 .logo-mark 是「渐变方块」容器形态，
+        其蓝底与新三角标同为蓝色系，会把三角轮廓吞掉、无法辨识，
+        故须去掉容器底色与投影；原 hover 的 rotate(-6deg) 会让
+        三角形产生明显歪斜，改为仅轻微放大。
+  方案：选择器与 moteful.css 的 .logo-mark 同特异性，本文件在各页
+        head 中最后加载，可稳定覆盖；不改只读的 moteful.css。
+  ============================================================ */
+.logo-mark{background:none;box-shadow:none;border-radius:0}
+.logo-mark img{display:block;width:34px;height:34px}
+.logo:hover .logo-mark{transform:scale(1.06)}

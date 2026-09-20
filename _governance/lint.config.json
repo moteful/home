@@ -1,0 +1,60 @@
+{
+  "root": "..",
+  "cssSource": "assets/css/moteful.css",
+  "jsFiles": [
+    "assets/js/image-import.js",
+    "assets/js/stitch-core.js",
+    "assets/js/stitch.js",
+    "assets/js/annotate-core.js",
+    "assets/js/annotate.js",
+    "assets/i18n/en.js",
+    "assets/i18n/zh.js",
+    "assets/i18n/i18n.js",
+    "assets/js/blockclear.js",
+    "assets/js/snake.js",
+    "assets/js/sudoku.js"
+  ],
+  "newArchPages": [
+    "index.html",
+    "template.html",
+    "support.html",
+    "legal/about.html",
+    "legal/privacy.html",
+    "legal/terms.html",
+    "legal/credits.html",
+    "legal/contact.html",
+    "tools/image-tool.html",
+    "tools/stitch.html",
+    "tools/annotate.html",
+    "games/block-clear.html",
+    "games/snake.html",
+    "games/sudoku.html",
+    "404.html"
+  ],
+  "legacyPages": [
+    "dev/json.html",
+    "dev/regex.html"
+  ],
+  "rules": {
+    "fontPxLadder": [
+      12,
+      13,
+      14,
+      15,
+      22,
+      32
+    ],
+    "radiusAllowed": [
+      6,
+      10,
+      16,
+      999,
+      50
+    ],
+    "spacingMultiple": 4
+  },
+  "allow": {
+    "cssRootBlockHardcodedColor": true,
+    "cssVarFallbackNumber": true
+  }
+}

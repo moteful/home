@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="title_annotate">图片标注工具 - 在线加水印/马赛克打码 | Moteful</title>
+<meta name="description" content="免费在线图片标注工具，支持文字水印、图片水印、平铺水印、时间戳，以及马赛克打码（矩形框选 / 画笔涂抹）。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
+<meta name="keywords" content="图片标注,加水印,图片水印,文字水印,平铺水印,时间戳,马赛克,打码,图片打码,批量加水印,在线标注工具">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="图片标注工具 - 在线加水印/马赛克打码">
+<meta property="og:description" content="免费在线图片标注工具，支持文字/图片/平铺/时间戳水印与马赛克打码。全部在浏览器本地运行，图片不上传，保护隐私。">
+<meta property="og:url" content="https://moteful.app/tools/annotate.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="图片标注工具 - 在线加水印/马赛克打码">
+<meta name="twitter:description" content="免费在线图片标注工具，支持文字/图片/平铺/时间戳水印与马赛克打码。全部在浏览器本地运行，图片不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/tools/annotate.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "图片标注工具",
+  "alternateName": "Moteful Image Annotate",
+  "description": "免费在线图片标注工具，支持文字水印、图片水印、平铺水印、时间戳与马赛克打码。全部在浏览器本地运行，图片不上传，保护隐私。",
+  "url": "https://moteful.app/tools/annotate.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "文字水印 / 图片水印 / 平铺水印 / 时间戳水印",
+    "马赛克打码（矩形框选 / 画笔涂抹）",
+    "九宫格位置与自定义边距",
+    "批量套用同一组参数",
+    "PNG / JPEG / WEBP 导出，单张或 ZIP 打包",
+    "100% 本地运行，图片不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/recommend.css">
+<link rel="stylesheet" href="../assets/css/annotate.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/recommend.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+<script src="../assets/js/image-import.js" defer></script>
+<script src="../assets/js/zip.js" defer></script>
+<script src="../assets/js/annotate-core.js" defer></script>
+<script src="../assets/js/compare.js" defer></script>
+<script src="../assets/js/annotate.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+
+<body data-nav="image">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item on" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a class="on" href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<main class="page">
+
+  <!-- ===== 隐藏文件输入（放在最前，不干扰 .hero + .panel 相邻选择器） ===== -->
+  <input type="file" id="annotateFileInput" accept="image/png,image/jpeg,image/webp" multiple hidden>
+  <input type="file" id="annotateWmFileInput" accept="image/png,image/jpeg,image/webp" hidden>
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="annotate_kicker">MOTEFUL · 图片工具</div>
+    <h1 data-i18n="annotate_title">图片标注工具</h1>
+    <p data-i18n="annotate_sub">加水印或打马赛克，批量处理，图片不上传。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="annotate_tag_local">100% 本地处理</span>
+      <span class="tag t-gray" data-i18n="annotate_tag_free">免费使用</span>
+    </div>
+  </section>
+
+  <!-- ===== ① 导入卡（.dropzone 双态：空态 .dz-empty / 已导入 .dz-gallery，与 image-tool、stitch 同构） ===== -->
+  <div class="panel">
+    <div class="dropzone" id="annotateImport" tabindex="0" role="button" data-i18n-aria="annotate_aria_import">
+      <div class="dz-empty" id="annotateDzEmpty">
+        <div class="dz-ico"><i data-lucide="upload-cloud"></i></div>
+        <div class="up-main">
+          <h4 data-i18n="annotate_empty_title">拖入图片，开始标注</h4>
+          <p data-i18n="annotate_import_pick">或点击从设备选择</p>
+        </div>
+        <div class="dz-note"><i data-lucide="lock"></i><span data-i18n="annotate_empty_desc">支持 PNG / JPEG / WEBP · 图片不会离开你的设备</span></div>
+      </div>
+      <div class="dz-gallery" id="annotateGallery" hidden>
+        <div class="dz-g-head">
+          <span class="dz-count" id="annotateQueueCount"></span>
+          <div class="dz-g-acts">
+            <button type="button" class="btn btn-ghost btn-sm" id="annotateAddMore"><i data-lucide="image"></i><span data-i18n="annotate_import_more">继续添加</span></button>
+            <button type="button" class="btn btn-secondary btn-sm" id="annotateClearAll"><i data-lucide="trash-2"></i><span data-i18n="annotate_import_clear">清空全部</span></button>
+          </div>
+        </div>
+        <div class="dz-g-list" id="annotateThumbs"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ② 参数卡（水印 / 打码 共用同一张卡，只切内部控件） ===== -->
+  <div class="panel" id="annotateParams" hidden>
+    <div class="demo-label" data-i18n="annotate_sec_params">标注参数</div>
+
+    <div class="segment" role="tablist" data-i18n-aria="annotate_aria_mode">
+      <label class="seg"><input type="radio" name="annotateMode" value="wm" data-annotate-mode="wm" checked><span class="seg-t" role="tab" aria-selected="true" data-i18n="annotate_mode_wm">水印</span></label>
+      <label class="seg"><input type="radio" name="annotateMode" value="ms" data-annotate-mode="ms"><span class="seg-t" role="tab" aria-selected="false" data-i18n="annotate_mode_ms">打码</span></label>
+    </div>
+
+    <!-- 水印参数 -->
+    <div id="annotate-wm" class="row">
+      <div class="field" data-wm-when="text image tile time">
+        <span class="field-label" data-i18n="annotate_wm_type">水印类型</span>
+        <div class="segment">
+          <label class="seg"><input type="radio" name="annotateWmType" value="text" data-wm-type="text" checked><span class="seg-t" data-i18n="annotate_wm_text">文字</span></label>
+          <label class="seg"><input type="radio" name="annotateWmType" value="image" data-wm-type="image"><span class="seg-t" data-i18n="annotate_wm_image">图片</span></label>
+          <label class="seg"><input type="radio" name="annotateWmType" value="tile" data-wm-type="tile"><span class="seg-t" data-i18n="annotate_wm_tile">平铺</span></label>
+          <label class="seg"><input type="radio" name="annotateWmType" value="time" data-wm-type="time"><span class="seg-t" data-i18n="annotate_wm_time">时间戳</span></label>
+        </div>
+      </div>
+      <div class="field" data-wm-when="text tile">
+        <label class="field-label" for="annotateWmContent" data-i18n="annotate_wm_content">水印内容</label>
+        <input type="text" class="input" id="annotateWmContent" value="© Moteful" maxlength="80">
+      </div>
+      <div class="field" data-wm-when="image tile" hidden>
+        <span class="field-label" data-i18n="annotate_wm_upload">水印图片</span>
+        <div class="row">
+          <button type="button" class="btn btn-secondary btn-sm" id="annotateWmPick"><i data-lucide="image"></i><span data-i18n="annotate_wm_upload_pick">选择图片</span></button>
+          <button type="button" class="btn btn-ghost btn-sm" id="annotateWmDrop" hidden><i data-lucide="x"></i><span data-i18n="annotate_wm_upload_clear">移除</span></button>
+          <span class="muted" id="annotateWmName" data-i18n="annotate_wm_upload_none">未选择图片</span>
+        </div>
+      </div>
+      <div class="field" data-wm-when="time" hidden>
+        <span class="field-label" data-i18n="annotate_wm_timefmt">时间格式</span>
+        <div class="segment">
+          <label class="seg"><input type="radio" name="annotateWmFmt" value="date" data-timefmt="date" checked><span class="seg-t" data-i18n="annotate_wm_fmt_date">仅日期</span></label>
+          <label class="seg"><input type="radio" name="annotateWmFmt" value="datetime" data-timefmt="datetime"><span class="seg-t" data-i18n="annotate_wm_fmt_datetime">日期时间</span></label>
+        </div>
+      </div>
+      <div class="field" data-wm-when="text tile time">
+        <span class="field-label" data-i18n="annotate_wm_color">颜色</span>
+        <div class="segment">
+          <label class="seg"><input type="radio" name="annotateWmColor" value="auto" data-wm-color="auto" checked><span class="seg-t" data-i18n="annotate_wm_color_auto">自动</span></label>
+          <label class="seg"><input type="radio" name="annotateWmColor" value="white" data-wm-color="white"><span class="seg-t" data-i18n="annotate_wm_color_white">白色</span></label>
+          <label class="seg"><input type="radio" name="annotateWmColor" value="black" data-wm-color="black"><span class="seg-t" data-i18n="annotate_wm_color_black">黑色</span></label>
+        </div>
+      </div>
+      <div class="field" data-wm-when="text image tile time">
+        <span class="field-label" data-i18n="annotate_wm_size">字号 / 缩放</span>
+        <span class="step" data-min="12" data-max="120">
+          <button type="button" class="step-btn" data-step="-2" data-i18n-aria="annotate_aria_dec"><i data-lucide="minus"></i></button>
+          <span class="step-val" id="annotateWmSize" contenteditable="true" inputmode="numeric" spellcheck="false">24</span>
+          <button type="button" class="step-btn" data-step="2" data-i18n-aria="annotate_aria_inc"><i data-lucide="plus"></i></button>
+        </span>
+      </div>
+      <div class="field" data-wm-when="text image tile time">
+        <span class="field-label" data-i18n="annotate_wm_opacity">透明度</span>
+        <span class="step" data-min="10" data-max="100">
+          <button type="button" class="step-btn" data-step="-5" data-i18n-aria="annotate_aria_dec"><i data-lucide="minus"></i></button>
+          <span class="step-val" id="annotateWmOpacity" contenteditable="true" inputmode="numeric" spellcheck="false">80</span>
+          <button type="button" class="step-btn" data-step="5" data-i18n-aria="annotate_aria_inc"><i data-lucide="plus"></i></button>
+        </span>
+      </div>
+      <div class="field" data-wm-when="text image time">
+        <span class="field-label" data-i18n="annotate_wm_angle">旋转角度</span>
+        <span class="step" data-min="-180" data-max="180">
+          <button type="button" class="step-btn" data-step="-15" data-i18n-aria="annotate_aria_dec"><i data-lucide="minus"></i></button>
+          <span class="step-val" id="annotateWmAngle" contenteditable="true" inputmode="numeric" spellcheck="false">0</span>
+          <button type="button" class="step-btn" data-step="15" data-i18n-aria="annotate_aria_inc"><i data-lucide="plus"></i></button>
+        </span>
+      </div>
+      <div class="field" data-wm-when="text image time">
+        <span class="field-label" data-i18n="annotate_wm_anchor_x">水平位置</span>
+        <div class="segment">
+          <label class="seg"><input type="radio" name="annotateWmH" value="left" data-anchor-x="left"><span class="seg-t" data-i18n="annotate_wm_h_left">左</span></label>
+          <label class="seg"><input type="radio" name="annotateWmH" value="center" data-anchor-x="center"><span class="seg-t" data-i18n="annotate_wm_h_center">中</span></label>
+          <label class="seg"><input type="radio" name="annotateWmH" value="right" data-anchor-x="right" checked><span class="seg-t" data-i18n="annotate_wm_h_right">右</span></label>
+        </div>
+      </div>
+      <div class="field" data-wm-when="text image time">
+        <span class="field-label" data-i18n="annotate_wm_anchor_y">垂直位置</span>
+        <div class="segment">
+          <label class="seg"><input type="radio" name="annotateWmV" value="top" data-anchor-y="top"><span class="seg-t" data-i18n="annotate_wm_v_top">上</span></label>
+          <label class="seg"><input type="radio" name="annotateWmV" value="middle" data-anchor-y="middle"><span class="seg-t" data-i18n="annotate_wm_v_middle">中</span></label>
+          <label class="seg"><input type="radio" name="annotateWmV" value="bottom" data-anchor-y="bottom" checked><span class="seg-t" data-i18n="annotate_wm_v_bottom">下</span></label>
+        </div>
+      </div>
+      <div class="field" data-wm-when="text image time">
+        <span class="field-label" data-i18n="annotate_wm_margin">边距</span>
+        <span class="step" data-min="0" data-max="200">
+          <button type="button" class="step-btn" data-step="-8" data-i18n-aria="annotate_aria_dec"><i data-lucide="minus"></i></button>
+          <span class="step-val" id="annotateWmMargin" contenteditable="true" inputmode="numeric" spellcheck="false">24</span>
+          <button type="button" class="step-btn" data-step="8" data-i18n-aria="annotate_aria_inc"><i data-lucide="plus"></i></button>
+        </span>
+      </div>
+      <div class="field" data-wm-when="tile" hidden>
+        <span class="field-label" data-i18n="annotate_wm_tilegap">平铺间距</span>
+        <span class="step" data-min="80" data-max="400">
+          <button type="button" class="step-btn" data-step="-20" data-i18n-aria="annotate_aria_dec"><i data-lucide="minus"></i></button>
+          <span class="step-val" id="annotateWmTileGap" contenteditable="true" inputmode="numeric" spellcheck="false">160</span>
+          <button type="button" class="step-btn" data-step="20" data-i18n-aria="annotate_aria_inc"><i data-lucide="plus"></i></button>
+        </span>
+      </div>
+    </div>
+
+    <!-- 打码参数 -->
+    <div id="annotate-ms" class="stack" hidden>
+      <div class="row">
+        <div class="field">
+          <span class="field-label" data-i18n="annotate_ms_mode">打码方式</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="annotateMsMode" value="rect" data-ms-mode="rect" checked><span class="seg-t" data-i18n="annotate_ms_rect">矩形框选</span></label>
+            <label class="seg"><input type="radio" name="annotateMsMode" value="brush" data-ms-mode="brush"><span class="seg-t" data-i18n="annotate_ms_brush">画笔涂抹</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="annotate_ms_block">块大小</span>
+          <span class="row">
+            <input type="range" id="annotateMsBlockSlider" class="slider" min="4" max="40" step="1" value="12" style="--p:22%" data-out="msSliderNoop" data-i18n-aria="annotate_ms_block">
+            <span class="step" data-min="4" data-max="40">
+              <button type="button" class="step-btn" data-step="-2" data-i18n-aria="annotate_aria_dec"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="annotateMsBlock" contenteditable="true" inputmode="numeric" spellcheck="false">12</span>
+              <button type="button" class="step-btn" data-step="2" data-i18n-aria="annotate_aria_inc"><i data-lucide="plus"></i></button>
+            </span>
+          </span>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="annotate_ms_brushsize">笔刷直径</span>
+          <span class="row">
+            <input type="range" id="annotateMsBrushSlider" class="slider" min="8" max="80" step="1" value="24" style="--p:22%" data-out="msSliderNoop" data-i18n-aria="annotate_ms_brushsize">
+            <span class="step" data-min="8" data-max="80">
+              <button type="button" class="step-btn" data-step="-4" data-i18n-aria="annotate_aria_dec"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="annotateMsBrush" contenteditable="true" inputmode="numeric" spellcheck="false">24</span>
+              <button type="button" class="step-btn" data-step="4" data-i18n-aria="annotate_aria_inc"><i data-lucide="plus"></i></button>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <button type="button" class="btn btn-ghost btn-sm" id="annotateMsUndo" disabled><i data-lucide="chevron-left"></i><span data-i18n="annotate_ms_undo">撤销</span></button>
+        <button type="button" class="btn btn-ghost btn-sm" id="annotateMsRedo" disabled><i data-lucide="chevron-right"></i><span data-i18n="annotate_ms_redo">重做</span></button>
+        <button type="button" class="btn btn-secondary btn-sm" id="annotateMsClear" disabled><i data-lucide="trash-2"></i><span data-i18n="annotate_ms_clear">清空打码</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ③ 预览卡 ===== -->
+  <div class="panel" id="annotatePreviewPanel" hidden>
+    <div class="demo-label" data-i18n="annotate_sec_preview">预览</div>
+    <div class="float-canvas annotate-stage" id="annotateStage">
+      <!-- 单张模式：用于打码交互 -->
+      <canvas id="annotateCanvas" role="img" data-i18n-aria="annotate_aria_stage"></canvas>
+      <!-- 全部模式：用于水印批量预览 -->
+      <div class="annotate-grid" id="annotateGrid" hidden></div>
+      <!-- 打码画笔光标：半透明圆随鼠标移动，直径=笔刷显示直径 -->
+      <div id="annotateBrushCursor" hidden aria-hidden="true"></div>
+    </div>
+    <div class="row">
+      <span class="muted" data-i18n="annotate_stage_hint">导入图片后显示预览，可拖动圆点调整标注位置</span>
+    </div>
+  </div>
+
+  <!-- ===== ④ 导出卡 ===== -->
+  <div class="panel" id="annotateExportPanel" hidden>
+    <div class="demo-label" data-i18n="annotate_sec_export">导出</div>
+    <div class="row">
+      <div class="field">
+        <span class="field-label" data-i18n="annotate_fmt">输出格式</span>
+        <div class="segment">
+          <label class="seg"><input type="radio" name="annotateFmt" value="png" data-fmt="png" checked><span class="seg-t">PNG</span></label>
+          <label class="seg"><input type="radio" name="annotateFmt" value="jpeg" data-fmt="jpeg"><span class="seg-t">JPEG</span></label>
+          <label class="seg"><input type="radio" name="annotateFmt" value="webp" data-fmt="webp"><span class="seg-t">WEBP</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="annotate-progress" id="annotateProgress" hidden>
+      <div class="progress"><div class="progress-bar" id="annotateProgressFill"></div></div>
+      <span class="muted" id="annotateProgressTxt"></span>
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-primary" data-export disabled><i data-lucide="download"></i><span data-i18n="annotate_export">导出图片</span></button>
+      <button type="button" class="btn btn-secondary" data-export-zip disabled><i data-lucide="folder"></i><span data-i18n="annotate_export_zip">打包下载 ZIP</span></button>
+    </div>
+  </div>
+
+  <!-- ===== ⑤ 广告位预留卡（无广告时 hidden，不占高度、不产生 CLS） ===== -->
+  <div class="panel" id="adSlot" hidden data-i18n="annotate_ad_slot">广告位</div>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="annotate_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="annotate_f_th1">功能</th><th data-i18n="annotate_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="annotate_f1_name">文字水印</td><td data-i18n="annotate_f1_desc">输入文案即可加水印，支持字号、颜色、透明度、旋转角度与九宫格位置。</td></tr>
+          <tr><td data-i18n="annotate_f2_name">图片水印</td><td data-i18n="annotate_f2_desc">上传 PNG / JPEG 作为水印，透明 PNG 保留透明度，按原图宽度等比缩放。</td></tr>
+          <tr><td data-i18n="annotate_f3_name">平铺水印</td><td data-i18n="annotate_f3_desc">水印按固定间距满铺整图，支持整体旋转，常用于防盗图场景。</td></tr>
+          <tr><td data-i18n="annotate_f4_name">时间戳水印</td><td data-i18n="annotate_f4_desc">自动读取照片拍摄时间写入画面，读不到时回退为当前时间。</td></tr>
+          <tr><td data-i18n="annotate_f5_name">马赛克打码</td><td data-i18n="annotate_f5_desc">矩形框选或画笔涂抹，块大小可调，适合遮挡人脸、车牌等敏感信息。</td></tr>
+          <tr><td data-i18n="annotate_f6_name">批量与隐私</td><td data-i18n="annotate_f6_desc">同一组参数可套用到队列内全部图片；全程在浏览器本地处理，不上传、不注册。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="annotate_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="annotate_u1_t">版权声明</div><div class="nm seo-desc" data-i18n="annotate_u1_d">给原创图片加署名与版权水印</div></div>
+      <div class="stat"><div class="lb" data-i18n="annotate_u2_t">隐私打码</div><div class="nm seo-desc" data-i18n="annotate_u2_d">遮挡证件号、车牌等敏感信息</div></div>
+      <div class="stat"><div class="lb" data-i18n="annotate_u3_t">素材防搬运</div><div class="nm seo-desc" data-i18n="annotate_u3_d">平铺水印降低素材被直接搬运的风险</div></div>
+      <div class="stat"><div class="lb" data-i18n="annotate_u4_t">记录时间</div><div class="nm seo-desc" data-i18n="annotate_u4_d">给照片打上拍摄时间便于归档</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="annotate_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="annotate_q_th1">问题</th><th data-i18n="annotate_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="annotate_q1">图片会上传到服务器吗？</td><td data-i18n="annotate_a1">不会。全程在浏览器本地处理，可断网使用。</td></tr>
+          <tr><td data-i18n="annotate_q2">支持哪些图片格式？</td><td data-i18n="annotate_a2">PNG、JPEG、WEBP，导入导出均支持。</td></tr>
+          <tr><td data-i18n="annotate_q3">水印可以批量添加吗？</td><td data-i18n="annotate_a3">可以。同一组参数可一次套用到队列内全部图片。</td></tr>
+          <tr><td data-i18n="annotate_q4">加水印后能撤销吗？</td><td data-i18n="annotate_a4">可以。参数改动随时可调；打码支持撤销与重做。</td></tr>
+          <tr><td data-i18n="annotate_q5">图片会被保留吗？</td><td data-i18n="annotate_a5">不会。下载后处理结果会自动清除，关闭页面即全部销毁。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
+  <!-- ===== 放大预览灯箱（复用 image-tool 的 compare.js 预览模块；结构与 image-tool.html 同构） ===== -->
+  <div class="preview-modal" id="previewModal" hidden>
+    <div class="modal-mask" data-dclose></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="图片预览">
+      <div class="modal-bar">
+        <div class="mode-seg">
+          <button type="button" class="seg-btn on" data-mode="preview"><i data-lucide="eye"></i><span data-i18n="v04_preview">预览</span></button>
+          <button type="button" class="seg-btn" data-mode="compare"><svg viewBox="0 0 24 24" class="seg-icon"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 3v18"/></svg><span data-i18n="v04_compare">对比</span></button>
+        </div>
+        <button type="button" class="modal-close" data-dclose aria-label="close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <img class="preview-img" id="previewImg" alt="" hidden draggable="false">
+        <div class="compare-area" id="compareArea" hidden>
+          <img class="compare-after" id="compareAfter" alt="" draggable="false">
+          <img class="compare-before" id="compareBefore" alt="" draggable="false">
+          <span class="compare-label label-left" data-i18n="v04_original">原图</span>
+          <span class="compare-label label-right" data-i18n="v04_processed">标注后</span>
+          <div class="compare-divider" id="compareDivider">
+            <div class="compare-handle" id="compareHandle" tabindex="0" role="slider"
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <svg viewBox="0 0 24 24" class="handle-icon"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="nav-btn nav-prev" id="navPrev" aria-label="previous"><i data-lucide="chevron-left"></i></button>
+        <button type="button" class="nav-btn nav-next" id="navNext" aria-label="next"><i data-lucide="chevron-right"></i></button>
+        <!-- 缩放控件 -->
+        <div class="zoom-controls" id="zoomControls">
+          <button type="button" class="zoom-btn" id="zoomOut" aria-label="zoom out"><i data-lucide="minus"></i></button>
+          <span class="zoom-val" id="zoomVal">适应</span>
+          <button type="button" class="zoom-btn" id="zoomIn" aria-label="zoom in"><i data-lucide="plus"></i></button>
+          <button type="button" class="zoom-btn" id="zoomReset" aria-label="reset zoom"><svg viewBox="0 0 24 24" class="zoom-icon"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+        </div>
+      </div>
+      <div class="modal-info">
+        <span class="info-name" id="infoName"></span>
+        <span class="info-size-wrap"><span class="info-size" id="infoSize"></span><span class="info-rate" id="infoRate"></span></span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+<div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
+  <div class="rec-mask" data-rec-close></div>
+  <div class="rec-box">
+    <button class="btn btn-icon btn-secondary btn-close rec-close-icon" type="button" data-rec-close aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="rec-check"><i data-lucide="check-circle"></i></div>
+    <p class="rec-msg" id="recMsg" data-i18n="rec_done">操作成功</p>
+    <p class="rec-sub" data-i18n="rec_sub">感谢使用 Moteful，下面这些功能你可能也用得上：</p>
+    <div class="rec-tip">
+      <span class="rec-tip-text" data-i18n="rec_tip_note">如果这个工具帮到了你，欢迎请作者喝杯咖啡 ☕</span>
+      <a class="btn btn-primary rec-tip-btn" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n="rec_tip_btn">赞助支持</a>
+    </div>
+    <div class="rec-cards" id="recCards">    <a class="rec-card" href="../tools/image-tool.html">
+      <i data-lucide="images"></i>
+      <span data-i18n="nav_m_batch">基础功能</span>
+    </a>
+    <a class="rec-card" href="../tools/stitch.html">
+      <i data-lucide="layout-grid"></i>
+      <span data-i18n="nav_m_compress">拼接</span>
+    </a></div>
+    <button class="btn btn-secondary rec-close-btn" type="button" data-rec-close data-i18n="rec_close">关闭</button>
+  </div>
+</div>
+</body>
+</html>

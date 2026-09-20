@@ -1,0 +1,10 @@
+# Moteful — https://moteful.app
+# Generated in V1.0: allow all crawling, block internal dirs
+
+User-agent: *
+Allow: /
+
+Disallow: /_governance/
+Disallow: /_pwtest/
+
+Sitemap: https://moteful.app/sitemap.xml

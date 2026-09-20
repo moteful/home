@@ -1,0 +1,48 @@
+{
+  "_说明": "站点单一配置源：品牌/主体/版本等会变的内容全在这里改，改完跑 node _governance/inject_site.mjs 一键下发全站页面。导航/页脚/抽屉的结构改动请编辑 _governance/site-blocks/ 下的模板文件，不要直接改页面。",
+  "brand": "Moteful",
+  "prevBrand": "Moteful",
+  "_brand说明": "换品牌流程：①把 brand 改成新名（prevBrand 保持旧名不动）②跑 node _governance/inject_site.mjs——脚本自动把全站页面正文/语言包/meta 里的旧名（含全大写形式）替换成新名并回写 prevBrand=新名。平时 prevBrand 应恒等于 brand",
+  "logoIcon": "zap",
+  "tagline": "Free, privacy-first online tools.",
+  "operator": "Moteful 由居住在中国的独立开发者 准哥 运营",
+  "operatorZh": "Moteful 由居住在中国的独立开发者 准哥 运营",
+  "operatorEn": "Moteful is operated by 准哥, an independent developer based in China.",
+  "copyright": "© 2026 Moteful. All tools run locally in your browser.",
+  "version": "v1.1.1",
+  "designSystemLabel": "Design System v0905-r6.1",
+  "navMenuActive": {
+    "_说明": "某页打开导航下拉时高亮哪个菜单项（值=菜单项的 data-i18n 键）；不需要高亮的页面不要写",
+    "tools/image-tool.html": "nav_m_batch",
+    "tools/stitch.html": "nav_m_compress",
+    "tools/annotate.html": "nav_m_annotate",
+    "dev/json.html": "nav_dev_json",
+    "dev/regex.html": "nav_dev_regex",
+    "games/block-clear.html": "nav_g_blockclear",
+    "games/snake.html": "nav_g_snake",
+    "games/sudoku.html": "nav_g_sudoku"
+  },
+  "footerRight": {
+    "_说明": "default=version 显示版本号（读词表 foot_version）；design-system 显示设计系统标签",
+    "default": "version",
+    "overrides": {}
+  },
+  "pages": [
+    "index.html",
+    "support.html",
+    "legal/about.html",
+    "legal/contact.html",
+    "legal/credits.html",
+    "legal/privacy.html",
+    "legal/terms.html",
+    "tools/image-tool.html",
+    "tools/stitch.html",
+    "tools/annotate.html",
+    "dev/json.html",
+    "dev/regex.html",
+    "games/block-clear.html",
+    "games/snake.html",
+    "games/sudoku.html",
+    "404.html"
+  ]
+}
