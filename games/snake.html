@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="title_snake_seo">贪吃蛇 - 在线网页小游戏 | Moteful</title>
+<meta name="description" content="贪吃蛇（Snake）是一款纯前端网页经典街机游戏，支持逐级提速、限时星果、穿墙模式、虚拟摇杆与触屏操作。全部在浏览器本地运行，不联网、不上传，免费畅玩。">
+<meta name="keywords" content="贪吃蛇,贪吃蛇游戏,网页游戏,在线小游戏,经典街机,Snake,单机游戏,浏览器游戏">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="贪吃蛇 - 在线网页小游戏">
+<meta property="og:description" content="纯前端网页经典街机游戏，支持逐级提速、限时星果、穿墙模式、虚拟摇杆与触屏操作。全部浏览器本地运行，不联网、不上传。">
+<meta property="og:url" content="https://moteful.app/games/snake.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="贪吃蛇 - 在线网页小游戏">
+<meta name="twitter:description" content="纯前端网页经典街机游戏，本地运行、不联网、不上传。逐级提速、限时星果、虚拟摇杆、触屏操作一应俱全。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/games/snake.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（网页游戏应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "applicationCategory": "Game",
+  "name": "贪吃蛇",
+  "alternateName": "Snake",
+  "description": "纯前端网页经典街机游戏，支持逐级提速、限时星果、穿墙模式、虚拟摇杆与触屏操作。全部在浏览器本地运行，不联网、不上传。",
+  "url": "https://moteful.app/games/snake.html",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "逐级提速，越吃越快",
+    "每 5 果刷出限时星果（+50 起）",
+    "穿墙模式可边缘穿越",
+    "虚拟摇杆 / 滑动 / 十字键 三种操作",
+    "本地最高分（localStorage）",
+    "100% 浏览器本地运行，不联网、不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+<!-- 游戏分区专用样式表（外部功能样式表，不进 lint 内联扫描；变量统一 sn- 前缀隔离站点令牌） -->
+<link rel="stylesheet" href="../assets/css/snake.css">
+<script src="../assets/js/moteful.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+<script src="../assets/js/snake.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+<body data-nav="game">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item on" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a class="on" href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<!-- ═══════════ 游戏区：整体作用域 .sn-shell，隔离于站点 chrome ═══════════ -->
+<main class="sn-shell">
+  <div id="sky"></div>
+
+  <div class="wrap">
+    <!-- ══ 游戏切换卡片 ══ -->
+    <nav class="sn-game-switch" role="tablist" aria-label="游戏切换">
+      <a class="sn-game-card" href="block-clear.html" role="tab" aria-selected="false">
+        <i data-lucide="gamepad-2"></i><span data-i18n="bc_game_blockclear">方块消除</span>
+      </a>
+      <a class="sn-game-card on" href="snake.html" aria-current="page" role="tab" aria-selected="true">
+        <i data-lucide="worm"></i><span data-i18n="bc_game_snake">贪吃蛇</span>
+      </a>
+      <a class="sn-game-card" href="sudoku.html" role="tab" aria-selected="false">
+        <i data-lucide="grid-3x3"></i><span data-i18n="bc_game_sudoku">数独</span>
+      </a>
+      <a class="sn-game-card soon" href="#" aria-disabled="true" role="tab" aria-selected="false">
+        <i data-lucide="loader-2"></i><span data-i18n="bc_game_soon">敬请期待</span>
+      </a>
+      <div class="sn-game-meta">
+        <span class="sn-chip" data-i18n="sn_chip_hi">最高分</span><b id="hiTop" data-hud="hi">0</b>
+      </div>
+    </nav>
+
+    <!-- ══ 机柜三栏 ══ -->
+    <div class="sn-cabinet">
+      <!-- 左栏：桌面 HUD；手游壳下为设置抽屉 -->
+      <div class="sn-side sn-side-left">
+        <div class="sn-panel">
+          <h3 data-i18n="sn_panel_score">得分</h3>
+          <div class="sn-stat"><span class="sn-val big" data-hud="score">0</span></div>
+          <div class="sn-stat-row">
+            <div class="sn-stat"><span class="k" data-i18n="sn_lb_len">长度</span><span class="sn-val" data-hud="len">3</span></div>
+            <div class="sn-stat"><span class="k" data-i18n="sn_lb_level">等级</span><span class="sn-val" data-hud="lvl">1</span></div>
+          </div>
+          <div class="sn-stat-row">
+            <div class="sn-stat"><span class="k" data-i18n="sn_lb_food">果实</span><span class="sn-val" data-hud="food">0</span></div>
+            <div class="sn-stat"><span class="k" data-i18n="sn_lb_hi">最高</span><span class="sn-val" data-hud="hi">0</span></div>
+          </div>
+          <button class="sn-btn" id="btnMain" type="button" data-i18n="sn_btn_start">开始游戏</button>
+          <button class="sn-btn ghost" id="btnRestart" type="button" data-i18n="sn_btn_restart">重新开始</button>
+        </div>
+        <div class="sn-panel">
+          <h3 data-i18n="sn_panel_toggles">开关</h3>
+          <div class="sn-tglrow"><span data-i18n="sn_tgl_sfx">音效</span><button class="sn-tgl on" id="tSfx" type="button" aria-label="音效"></button></div>
+          <div class="sn-tglrow" id="rowMus"><span data-i18n="sn_tgl_mus">音乐</span><button class="sn-tgl on" id="tMus" type="button" aria-label="音乐"></button></div>
+          <div class="sn-tglrow"><span data-i18n="sn_tgl_grid">网格线</span><button class="sn-tgl on" id="tGrid" type="button" aria-label="网格线"></button></div>
+          <div class="sn-tglrow"><span data-i18n="sn_tgl_wrap">穿墙模式</span><button class="sn-tgl off" id="tWrap" type="button" aria-label="穿墙模式"></button></div>
+          <div class="sn-tglrow"><span data-i18n="sn_tgl_stick">摇杆模式</span><button class="sn-tgl on" id="tStick" type="button" aria-label="摇杆模式"></button></div>
+        </div>
+      </div>
+
+      <!-- 中屏 -->
+      <div class="sn-screen-wrap" id="screenWrap">
+        <div class="sn-board-col">
+          <!-- 顶栏 HUD（手游形态常驻） -->
+          <div class="sn-hudbar">
+            <div class="sn-hb-item"><span class="sn-hb-k" data-i18n="sn_hb_score">得分</span><b class="sn-hb-v acc" data-hud="score">0</b></div>
+            <div class="sn-hb-item"><span class="sn-hb-k" data-i18n="sn_hb_lv">等级</span><b class="sn-hb-v" data-hud="lvl">1</b></div>
+            <div class="sn-hb-item"><span class="sn-hb-k" data-i18n="sn_hb_len">长度</span><b class="sn-hb-v" data-hud="len">3</b></div>
+            <div class="sn-hb-item"><span class="sn-hb-k" data-i18n="sn_hb_hi">最高</span><b class="sn-hb-v" data-hud="hi">0</b></div>
+            <button class="sn-hb-btn" id="btnGear" type="button" aria-label="设置">⚙</button>
+            <button class="sn-hb-btn" id="btnPauseM" type="button" aria-label="暂停或继续">⏸</button>
+          </div>
+
+          <div class="sn-board-box" id="boardBox">
+            <div class="sn-bezel" id="bezel">
+              <canvas id="cv"></canvas>
+              <div class="sn-scanlines"></div>
+              <div id="popLayer"></div>
+<div class="sn-overlay sn-hidden" id="ovStart">
+                <div class="sn-ov-kicker" data-i18n="sn_ov_kicker">贪吃蛇</div>
+                <div class="sn-ov-cn" data-i18n="sn_ov_cn">吃掉果实 · 越吃越快 · 别咬到自己</div>
+                <div class="sn-coin sn-blink"></div>
+                <div class="sn-ov-hint sn-blink" data-i18n="sn_ov_hint_start">点按此处 开始</div>
+                <div class="sn-ov-hint" data-i18n="sn_ov_hint_ops">摇杆 / 滑动 / 十字键 三种操作均可</div>
+                <div class="sn-keys"><span><kbd>↑↓←→</kbd>/<kbd>WASD</kbd> <span data-i18n="sn_k_move">移动</span></span><span><kbd>空格</kbd> <span data-i18n="sn_k_pause">暂停</span></span><span><kbd>R</kbd> <span data-i18n="sn_k_restart">重开</span></span></div>
+              </div>
+
+              <div class="sn-overlay sn-hidden" id="ovPause">
+                <div class="sn-ov-kicker" data-i18n="sn_ov_pause_kicker">已暂停</div>
+                <div class="sn-ov-title" data-i18n="sn_ov_pause_title">已暂停</div>
+                <div class="sn-ov-hint sn-blink" data-i18n="sn_ov_hint_resume">点按此处 继续</div>
+              </div>
+
+              <div class="sn-overlay sn-hidden" id="ovOver">
+                <div class="sn-ov-kicker" data-i18n="sn_ov_over_kicker">游戏结束</div>
+                <div class="sn-ov-title" data-i18n="sn_ov_over_title">游戏结束</div>
+                <div class="sn-badge sn-hidden" id="ovBadge" data-i18n="sn_badge_record">★ 新纪录 ★</div>
+                <div class="sn-ov-stats">
+                  <span data-i18n="sn_stat_score">本局得分</span><b id="fScore">0</b>
+                  <span data-i18n="sn_stat_hi">最高纪录</span><b id="fHi">0</b>
+                  <span data-i18n="sn_stat_len">蛇身长度</span><b id="fLen">3</b>
+                  <span data-i18n="sn_stat_food">吃下果实</span><b id="fFood">0</b>
+                  <span data-i18n="sn_stat_time">存活时间</span><b id="fTime">00:00</b>
+                </div>
+                <div class="sn-ov-hint sn-blink" data-i18n="sn_ov_hint_again">点按此处 再来一局</div>
+              </div></div>
+          </div>
+        </div>
+        <!-- 浮动摇杆层：覆盖整个游戏区，手指按任意处即在该点生成摇杆 -->
+        <div class="sn-stick-layer" id="stickLayer"></div>
+
+      
+        <div class="sn-touchpad" id="touchpad">
+          <button class="sn-tbtn up"    id="tpU" type="button" aria-label="上">▲</button>
+          <button class="sn-tbtn left"  id="tpL" type="button" aria-label="左">◀</button>
+          <button class="sn-tbtn center"id="tpC" type="button" aria-label="开始或暂停">⏸</button>
+          <button class="sn-tbtn right" id="tpR" type="button" aria-label="右">▶</button>
+          <button class="sn-tbtn down"  id="tpD" type="button" aria-label="下">▼</button>
+        </div>
+
+        <!-- 默认：虚拟摇杆 + 右拇指暂停键 -->
+        <div class="sn-ctlrow" id="ctlrow">
+          <div class="sn-stick" id="stick"><div class="sn-stick-knob" id="stickKnob"></div></div>
+          <div class="sn-ctl-right">
+            <button class="sn-ctl-btn" id="btnPauseR" type="button" aria-label="暂停或继续">⏸</button>
+            <div class="sn-ctl-hint" data-i18n="sn_ctl_hint">推杆转向<br>滑动棋盘同样有效</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右栏（仅桌面） -->
+      <div class="sn-side sn-side-right">
+        <div class="sn-panel">
+          <h3 data-i18n="sn_panel_keys">操作</h3>
+          <div class="sn-krow"><span data-i18n="sn_k_move">移动</span><span><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd><kbd>WASD</kbd></span></div>
+          <div class="sn-krow"><span data-i18n="sn_k_start_pause">开始 / 暂停</span><span><kbd>空格</kbd></span></div>
+          <div class="sn-krow"><span data-i18n="sn_k_pause">暂停</span><span><kbd>P</kbd><kbd>Esc</kbd></span></div>
+          <div class="sn-krow"><span data-i18n="sn_k_restart">重开</span><span><kbd>R</kbd></span></div>
+          <div class="sn-krow"><span data-i18n="sn_k_mobile">移动端</span><span data-i18n="sn_k_mobile_val">摇杆 / 滑动 / 十字键</span></div>
+        </div>
+        <div class="sn-panel">
+          <h3 data-i18n="sn_panel_rules">规则</h3>
+          <ul class="sn-list">
+            <li data-i18n="sn_rule1">吃果实 +10 起，身体 +1 节</li>
+            <li data-i18n="sn_rule2">每 5 果升 1 级，移动提速</li>
+            <li data-i18n="sn_rule3">每 5 果刷出限时 7 秒的 ★ 星果（+50 起，身体 +2）</li>
+            <li data-i18n="sn_rule4">分数随等级获得加成</li>
+            <li data-i18n="sn_rule5">撞墙或咬到自己即结束</li>
+            <li data-i18n="sn_rule6">「穿墙模式」可从边缘穿越</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- 设置抽屉遮罩（手游壳下打开左栏设置时显示；固定定位，位置无关） -->
+<div id="scrim" hidden></div>
+
+<!-- ===== 广告位预留：默认 hidden，不占位、不产生 CLS；将来要放广告在此处插入 ===== -->
+<div class="panel" id="adSlot" hidden data-i18n="annotate_ad_slot">广告位</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="rx_title_seo">正则表达式测试器 - 在线正则测试/高亮/捕获组 | Moteful</title>
+<meta name="description" content="免费在线正则表达式测试器，支持实时匹配高亮、捕获组拆解、匹配计数与耗时、命名组。全部在浏览器本地运行，数据不上传，保护隐私，无需注册。">
+<meta name="keywords" content="正则表达式,regex,正则测试,regex tester,正则高亮,正则在线,捕获组,JavaScript正则,开发者工具">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="正则表达式测试器 - 在线正则测试/高亮/捕获组">
+<meta property="og:description" content="免费在线正则测试器，实时高亮、捕获组拆解、计数耗时，错误定位。全部浏览器本地运行，数据不上传。">
+<meta property="og:url" content="https://moteful.app/dev/regex.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="正则表达式测试器 - 在线正则测试/高亮/捕获组">
+<meta name="twitter:description" content="免费在线正则测试器，实时高亮、捕获组拆解、计数耗时。全部浏览器本地运行，数据不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/dev/regex.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "正则表达式测试器",
+  "alternateName": "Moteful Regex Suite",
+  "description": "免费在线正则表达式测试器，支持实时匹配高亮、捕获组拆解、匹配计数与耗时、命名组。全部在浏览器本地运行，数据不上传，保护隐私。",
+  "url": "https://moteful.app/dev/regex.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "正则实时匹配与高亮",
+    "捕获组拆解（数字组 + 命名组）",
+    "匹配计数与耗时统计",
+    "实时语法校验与中文错误定位",
+    "flags 多选（g/i/m/s/u/y）",
+    "Web Worker 后台匹配，防卡死",
+    "100% 本地运行，数据不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+<style>
+/* 页面私有样式（仅限设计稿 v0.7 正则功能页 第 2.3 节白名单 4 个类；此处刻意不写文件后缀，避免被白名单扫描误判） */
+.rx-panes{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;background:var(--surface)}
+.rx-panes > *{min-width:0;padding:8px}
+.rx-panes > * + *{border-left:1px solid var(--border)}
+.rx-io{height:420px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.6}
+.rx-hl{background:var(--primary-soft);color:var(--text);border-radius:var(--r-sm);padding:0 2px}
+.rx-hl.alt{background:color-mix(in srgb,var(--success) 18%,transparent);color:var(--text)}
+.flag-chip{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:26px;padding:0 9px;border:1px solid var(--border);border-radius:var(--r-full);font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text-2);background:var(--surface-2);cursor:pointer;user-select:none;transition:background var(--dur) var(--ease),color var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.flag-chip:hover{border-color:var(--border-strong)}
+.flag-chip.on{background:var(--primary-soft);color:var(--primary);border-color:var(--primary)}
+@media (max-width:768px){
+  .rx-panes{grid-template-columns:1fr}
+  .rx-panes > * + *{border-left:none;border-top:1px solid var(--border)}
+  .rx-io{height:240px}
+}
+</style>
+<script src="../assets/js/moteful.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+<script src="../assets/js/regex.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+<body data-nav="dev">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item on" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a class="on" href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<main class="page">
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="rx_kicker">MOTEFUL · 开发者工具</div>
+    <h1 data-i18n="rx_title">正则表达式测试器</h1>
+    <p data-i18n="rx_sub">实时匹配、高亮、捕获组与计数，全程在浏览器本地完成，数据不上传。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="rx_tag_local">100% 本地处理</span>
+      <span class="tag t-gray" data-i18n="rx_tag_free">免费使用</span>
+      <span class="tag t-gray" data-i18n="rx_tag_account">无需注册</span>
+    </div>
+  </section>
+
+  <!-- ===== 正则输入 + flags ===== -->
+  <section class="panel">
+    <div class="field" style="width:100%">
+      <span class="field-label" data-i18n="rx_pattern_label">正则表达式</span>
+      <input id="rxPattern" class="input" type="text" spellcheck="false" autocomplete="off" placeholder="(\d{3})-(\d{4})" data-i18n-ph="rx_pattern_ph">
+      <div class="field-err" id="rxErr" hidden><i data-lucide="alert-circle"></i><span></span></div>
+    </div>
+    <div class="row" style="margin-top:10px;flex-wrap:wrap">
+      <span class="field-label" data-i18n="rx_flags">标志位</span>
+      <button type="button" class="flag-chip on" data-flag="g">g</button>
+      <button type="button" class="flag-chip" data-flag="i">i</button>
+      <button type="button" class="flag-chip" data-flag="m">m</button>
+      <button type="button" class="flag-chip" data-flag="s">s</button>
+      <button type="button" class="flag-chip" data-flag="u">u</button>
+      <button type="button" class="flag-chip" data-flag="y">y</button>
+    </div>
+  </section>
+
+  <!-- ===== 双栏：测试文本（左） + 高亮预览（右） ===== -->
+  <section class="panel">
+    <div class="alert a-warn" id="rxBigWarn" hidden style="margin-bottom:10px"><i data-lucide="loader"></i><p></p></div>
+    <div class="rx-panes">
+      <div class="rx-pane">
+        <div class="field" style="width:100%">
+          <span class="field-label" data-i18n="rx_test_label">测试文本</span>
+          <textarea id="rxText" class="input rx-io" spellcheck="false" placeholder="粘贴文本，或载入预置示例" data-i18n-ph="rx_test_ph"></textarea>
+        </div>
+      </div>
+      <div class="rx-pane" style="display:flex;flex-direction:column">
+        <div class="codebox" style="margin-top:0;flex:1;display:flex;flex-direction:column">
+          <div class="code-head">
+            <span class="fn" data-i18n="rx_hl_head">高亮预览</span>
+            <button type="button" class="copy-btn" id="rxCopyHL" hidden><i data-lucide="copy"></i><span data-i18n="rx_btn_copy_hl">复制</span></button>
+          </div>
+          <div class="code-body" id="rxHL" aria-readonly="true" style="flex:1;max-height:none;overflow:auto"></div>
+          <div class="empty" id="rxHLEmpty" style="flex:1;justify-content:center">
+            <div class="e-ico"><i data-lucide="search"></i></div>
+            <h4 data-i18n="rx_hl_empty_title">高亮区</h4>
+            <p data-i18n="rx_hl_empty_desc">在左侧粘贴文本，这里显示命中高亮</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 匹配结果 + 捕获组 + 计数 ===== -->
+  <section class="panel">
+    <div class="row" style="margin-bottom:10px">
+      <h3 class="sec-title" style="margin:0" data-i18n="rx_result_head">匹配结果</h3>
+      <span class="tag t-blue" id="rxCount" style="margin-left:8px" data-i18n="rx_zero">0 处</span>
+    </div>
+    <div id="rxResult" aria-live="polite"></div>
+  </section>
+
+  <!-- ===== 操作条 ===== -->
+  <section class="panel" style="padding:16px 20px">
+    <div class="row">
+      <button type="button" class="btn btn-ghost btn-sm" id="rxBtnSample"><i data-lucide="sparkles"></i><span data-i18n="rx_btn_sample">预置示例</span></button>
+      <button type="button" class="btn btn-ghost btn-sm" id="rxBtnClear"><i data-lucide="trash-2"></i><span data-i18n="rx_btn_clear">清空</span></button>
+      <span class="sp" style="flex:1"></span>
+      <span class="muted" data-i18n="rx_key_hint">Ctrl + Enter 立即匹配</span>
+      <button type="button" class="btn btn-primary btn-sm" id="rxBtnCopy"><i data-lucide="copy"></i><span data-i18n="rx_btn_copy">复制正则</span></button>
+    </div>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="rx_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>功能</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>实时匹配与高亮</td><td>输入正则后立刻在测试文本中高亮所有命中，不同匹配用不同颜色交替，一眼看清。</td></tr>
+          <tr><td>捕获组拆解</td><td>括号 <code>()</code> 捞出的子内容单独列出；支持命名组 <code>(?&lt;year&gt;\d{4})</code>，组名与内容同屏展示。</td></tr>
+          <tr><td>计数与耗时</td><td>顶部显示"N 处匹配 · 耗时 X.Xms"，既是性能信号也让页面更专业。</td></tr>
+          <tr><td>flags 多选</td><td>g/i/m/s/u/y 六个开关胶囊多选，不用手敲字母，实时重新匹配。</td></tr>
+          <tr><td>实时语法校验</td><td>正则非法（括号未闭合、非法量词等）立刻红字定位错误位置，给出中文说明。</td></tr>
+          <tr><td>Web Worker 后台匹配</td><td>匹配计算在后台线程进行，粘贴 1MB 大日志或写灾难正则也不卡主线程。</td></tr>
+          <tr><td>隐私保护</td><td>原生 RegExp 计算，零上传、零联网，关闭页面即清除，符合隐私闭环。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="rx_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb">日志提取</div><div class="nm seo-desc">从大段日志里用正则捞出订单号、IP、时间戳</div></div>
+      <div class="stat"><div class="lb">数据清洗</div><div class="nm seo-desc">校验邮箱/手机号/URL 格式是否合法</div></div>
+      <div class="stat"><div class="lb">字段拆分</div><div class="nm seo-desc">用捕获组把"区号-号码"拆成两段分别处理</div></div>
+      <div class="stat"><div class="lb">学习调试</div><div class="nm seo-desc">边写边看高亮，快速理解复杂正则的匹配行为</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="rx_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>问题</th><th>答案</th></tr></thead>
+        <tbody>
+          <tr><td>数据会上传到服务器吗？</td><td>不会。全部在浏览器本地用原生正则计算，可断网使用。</td></tr>
+          <tr><td>为什么只匹配到第一处？</td><td>需要"找全部"时请勾选 g 标志；去掉 g 默认只返回首个匹配。</td></tr>
+          <tr><td>支持命名捕获组吗？</td><td>支持，如 <code>(?&lt;year&gt;\d{4})</code>，结果里会以组名展示。</td></tr>
+          <tr><td>粘贴超大文本会卡吗？</td><td>不会。匹配在 Web Worker 后台线程执行，超时的灾难正则会被自动取消，页面不卡死。</td></tr>
+          <tr><td>需要注册登录吗？</td><td>不需要，打开网页即可使用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+</body>
+</html>

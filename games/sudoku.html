@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="title_sudoku_seo">数独 - 在线网页逻辑游戏 | Moteful</title>
+<meta name="description" content="数独（Sudoku）是一款纯前端网页逻辑游戏，支持简单/中等/困难三档难度、计时、提示、笔记与冲突高亮。全部在浏览器本地运行，不联网、不上传，免费畅玩。">
+<meta name="keywords" content="数独,数独游戏,网页游戏,在线数独,Sudoku,逻辑游戏,单机游戏,浏览器游戏">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="数独 - 在线网页逻辑游戏">
+<meta property="og:description" content="纯前端网页逻辑游戏，支持三档难度、计时、提示、笔记与冲突高亮。全部浏览器本地运行，不联网、不上传。">
+<meta property="og:url" content="https://moteful.app/games/sudoku.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="数独 - 在线网页逻辑游戏">
+<meta name="twitter:description" content="纯前端网页逻辑游戏，本地运行、不联网、不上传。三档难度、计时、提示、笔记一应俱全。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/games/sudoku.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（网页游戏应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "applicationCategory": "Game",
+  "name": "数独",
+  "alternateName": "Sudoku",
+  "description": "纯前端网页逻辑游戏，支持简单/中等/困难三档难度、计时、提示、笔记与冲突高亮。全部在浏览器本地运行，不联网、不上传。",
+  "url": "https://moteful.app/games/sudoku.html",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "简单 / 中等 / 困难 三档难度",
+    "逐关递进，共 10 关",
+    "计时、错误计数与每关 3 次提示",
+    "智能笔记自动清理相关候选",
+    "冲突高亮，输入即反馈",
+    "本地最佳纪录（localStorage）",
+    "100% 浏览器本地运行，不联网、不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+<!-- 游戏分区专用样式表（外部功能样式表，不进 lint 内联扫描；变量统一 su- 前缀隔离站点令牌） -->
+<link rel="stylesheet" href="../assets/css/sudoku.css">
+<script src="../assets/js/moteful.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+<script src="../assets/js/sudoku.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+<body data-nav="game">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item on" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a class="on" href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<!-- ═══════════ 游戏区：整体作用域 .su-shell，隔离于站点 chrome ═══════════ -->
+<main class="su-shell">
+  <div class="su-sky"></div>
+  <div class="su-scanlines"></div>
+
+  <div class="su-wrap">
+    <!-- ══ 游戏切换卡片 ══ -->
+    <nav class="su-game-switch" role="tablist" aria-label="游戏切换">
+      <a class="su-game-card" href="block-clear.html" role="tab" aria-selected="false">
+        <i data-lucide="gamepad-2"></i><span data-i18n="bc_game_blockclear">方块消除</span>
+      </a>
+      <a class="su-game-card" href="snake.html" role="tab" aria-selected="false">
+        <i data-lucide="worm"></i><span data-i18n="bc_game_snake">贪吃蛇</span>
+      </a>
+      <a class="su-game-card on" href="sudoku.html" aria-current="page" role="tab" aria-selected="true">
+        <i data-lucide="grid-3x3"></i><span data-i18n="su_game_sudoku">数独</span>
+      </a>
+      <a class="su-game-card soon" href="#" aria-disabled="true" role="tab" aria-selected="false">
+        <i data-lucide="loader-2"></i><span data-i18n="bc_game_soon">敬请期待</span>
+      </a>
+      <div class="su-game-meta">
+        <span class="chip" data-i18n="su_chip_local">100% 本地运行</span>
+      </div>
+    </nav>
+
+    <!-- ══ 机柜三栏 ══ -->
+    <div class="su-cabinet">
+      <!-- 左栏：当前对局 + 最佳纪录 -->
+      <div class="su-side su-side-left">
+        <div class="su-panel">
+          <h3 data-i18n="su_panel_status">当前对局</h3>
+          <div class="su-stat-row"><span data-i18n="su_lb_diff">难度</span><span class="su-val" id="hud-diff">-</span></div>
+          <div class="su-stat-row"><span data-i18n="su_lb_level">关卡</span><span class="su-val" id="hud-level">1</span></div>
+          <div class="su-stat-row"><span data-i18n="su_lb_time">时间</span><span class="su-val big" id="hud-time">00:00</span></div>
+          <div class="su-stat-row"><span data-i18n="su_lb_err">错误</span><span class="su-val" id="hud-err">0</span></div>
+          <div class="su-stat-row"><span data-i18n="su_lb_hint">提示</span><span class="su-val" id="hud-hint">3</span></div>
+        </div>
+        <div class="su-panel">
+          <h3 data-i18n="su_panel_best">最佳纪录</h3>
+          <div class="su-stat-row"><span data-i18n="su_best_easy">简单</span><span class="su-val" id="best-easy">--:--</span></div>
+          <div class="su-stat-row"><span data-i18n="su_best_med">中等</span><span class="su-val" id="best-med">--:--</span></div>
+          <div class="su-stat-row"><span data-i18n="su_best_hard">困难</span><span class="su-val" id="best-hard">--:--</span></div>
+        </div>
+      </div>
+
+      <!-- 中屏：棋盘 -->
+      <div class="su-board-col">
+        <!-- 移动端 HUD 条（常驻） -->
+        <div class="su-hudbar">
+          <button type="button" class="su-hb-item su-hb-diff" id="btn-diff-m">
+            <span class="su-hb-k" data-i18n="su_lb_diff">难度</span>
+            <span class="su-hb-v acc" id="hud-diff-m">简单</span>
+          </button>
+          <div class="su-hb-item"><span class="su-hb-k" data-i18n="su_hb_level">关卡</span><span class="su-hb-v acc" id="hud-level-m">1</span></div>
+          <div class="su-hb-item"><span class="su-hb-k" data-i18n="su_hb_time">时间</span><span class="su-hb-v" id="hud-time-m">00:00</span></div>
+          <div class="su-hb-item"><span class="su-hb-k" data-i18n="su_hb_err">错误</span><span class="su-hb-v" id="hud-err-m">0</span></div>
+          <button class="su-hb-btn" id="btn-pause-m" data-pause-btn data-pause-on="su_btn_resume_short" data-pause-off="su_btn_pause_m">暂停</button>
+        </div>
+
+        <div class="su-board-box" id="board-box">
+          <canvas id="board"></canvas>
+        </div>
+      </div>
+
+      <!-- 右栏：操作指南 + 游戏设置（仅桌面） -->
+      <div class="su-side su-side-right">
+        <div class="su-panel">
+          <h3 data-i18n="su_panel_keys">操作指南</h3>
+          <div class="su-keys">
+            <kbd>1-9</kbd> <kbd>↑↓←→</kbd> <kbd>Backspace</kbd>
+            <kbd>N <span data-i18n="su_ctl_note">笔记</span></kbd> <kbd>U <span data-i18n="su_ctl_undo">撤销</span></kbd> <kbd>H <span data-i18n="su_ctl_hint">提示</span></kbd> <kbd>P <span data-i18n="su_btn_pause_m">暂停</span></kbd>
+          </div>
+        </div>
+        <div class="su-panel">
+          <h3 data-i18n="su_panel_settings">游戏设置</h3>
+          <div class="su-diffrow">
+            <button type="button" class="su-btn ghost" data-diff="easy" data-i18n="su_diff_easy">简单</button>
+            <button type="button" class="su-btn ghost" data-diff="med" data-i18n="su_diff_med">中等</button>
+            <button type="button" class="su-btn ghost" data-diff="hard" data-i18n="su_diff_hard">困难</button>
+          </div>
+          <div class="su-tglrow"><span data-i18n="su_tgl_sfx">音效</span><div class="su-tgl on" data-cfg="sfx"></div></div>
+          <div class="su-tglrow"><span data-i18n="su_tgl_mus">音乐</span><div class="su-tgl on" data-cfg="mus"></div></div>
+          <div class="su-tglrow"><span data-i18n="su_tgl_notes">智能笔记</span><div class="su-tgl on" data-cfg="smartNotes"></div></div>
+          <button class="su-btn ghost" id="btn-reset" style="margin-top:12px;" data-i18n="su_btn_reset">重置本关</button>
+          <button class="su-btn ghost" id="btn-pause-d" style="margin-top:12px;" data-pause-btn data-pause-on="su_btn_resume" data-pause-off="su_btn_pause_m">暂停</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 移动端控制条：擦除 / 笔记 / 撤销 / 提示 + 数字键盘 ══ -->
+    <div class="su-ctlrow">
+      <div class="su-ctl-bar">
+        <button class="su-ctl-btn" data-act="erase" data-i18n="su_ctl_erase">擦除</button>
+        <button class="su-ctl-btn" data-act="note" data-i18n="su_ctl_note">笔记</button>
+        <button class="su-ctl-btn" data-act="undo" data-i18n="su_ctl_undo">撤销</button>
+        <button class="su-ctl-btn" data-act="hint" data-i18n="su_ctl_hint">提示</button>
+      </div>
+      <div class="su-numpad" id="numpad"></div>
+    </div>
+  </div>
+
+  <!-- ══ 覆盖层 ══ -->
+  <div class="su-overlay hidden" id="ov-over">
+    <div class="su-ov-title" data-i18n="su_ov_over_title">关卡完成！</div>
+    <div class="su-ov-cn" id="ov-over-msg" data-i18n="su_ov_over_msg">恭喜你完成挑战</div>
+    <div class="su-ov-stats">
+      <div class="su-stat-row"><span data-i18n="su_ov_lb_time">用时</span><span class="su-val" id="ov-time">00:00</span></div>
+      <div class="su-stat-row"><span data-i18n="su_ov_lb_err">错误</span><span class="su-val" id="ov-err">0</span></div>
+      <div class="su-stat-row"><span data-i18n="su_ov_lb_diff">难度</span><span class="su-val" id="ov-diff">-</span></div>
+      <div id="ov-badge-wrap"></div>
+    </div>
+    <div class="su-ov-btns">
+      <button class="su-btn ghost" id="btn-retry" data-i18n="su_btn_retry">重玩</button>
+      <button class="su-btn primary" id="btn-next" data-i18n="su_btn_next">下一关</button>
+    </div>
+  </div>
+  <div class="su-overlay hidden" id="ov-gen">
+    <div class="su-ov-title" style="font-size:24px;" data-i18n="su_ov_gen_title">生成中…</div>
+    <div class="su-ov-cn" data-i18n="su_ov_gen_msg">正在演算唯一解题面</div>
+  </div>
+</main>
+
+<!-- ===== 广告位预留：默认 hidden，不占位、不产生 CLS；将来要放广告在此处插入 ===== -->
+<div class="panel" id="adSlot" hidden data-i18n="annotate_ad_slot">广告位</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+</body>
+</html>

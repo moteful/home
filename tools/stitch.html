@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="title_stitch">图片拼接工具 - 在线长图拼接/九宫格拼图 | Moteful</title>
+<meta name="description" content="免费在线图片拼接工具，支持纵向/横向长图拼接、九宫格/四宫格/自定义网格拼图。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
+<meta name="keywords" content="图片拼接,长图拼接,九宫格拼图,四宫格,图片拼接工具,在线拼接,拼图工具,长图制作,图片合并">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="图片拼接工具 - 在线长图拼接/九宫格拼图">
+<meta property="og:description" content="免费在线图片拼接工具，支持长图拼接、九宫格拼图。全部在浏览器本地运行，图片不上传，保护隐私。">
+<meta property="og:url" content="https://moteful.app/tools/stitch.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="图片拼接工具 - 在线长图拼接/九宫格拼图">
+<meta name="twitter:description" content="免费在线图片拼接工具，支持长图拼接、九宫格拼图。全部在浏览器本地运行，图片不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/tools/stitch.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "图片拼接工具",
+  "alternateName": "Moteful Image Stitch",
+  "description": "免费在线图片拼接工具，支持纵向/横向长图拼接、九宫格/四宫格/自定义网格拼图。全部在浏览器本地运行，图片不上传，保护隐私。",
+  "url": "https://moteful.app/tools/stitch.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "纵向/横向长图拼接",
+    "九宫格/四宫格/自定义网格拼图",
+    "批量导入图片",
+    "拖拽排序",
+    "间距/背景色/圆角自定义",
+    "PNG/JPEG/WEBP 导出",
+    "100% 本地运行，图片不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/recommend.css">
+<link rel="stylesheet" href="../assets/css/stitch.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/recommend.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+<script src="../assets/js/image-import.js" defer></script>
+<script src="../assets/js/stitch-core.js" defer></script>
+<script src="../assets/js/stitch.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+<body data-nav="image">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item on" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a class="on" href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<main class="page">
+
+  <!-- ===== 隐藏文件输入（放在最前，不干扰 .hero+.panel 相邻选择器） ===== -->
+  <input type="file" id="stitchFileInput" accept="image/png,image/jpeg,image/webp" multiple hidden>
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="stitch_kicker">MOTEFUL · 图片工具</div>
+    <h1 data-i18n="stitch_title">图片拼接工具</h1>
+    <p data-i18n="stitch_sub">多张图片拼成长图或网格图，全程在浏览器本地完成，图片不上传。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="stitch_tag_local">100% 本地处理</span>
+      <span class="tag t-gray" data-i18n="stitch_tag_free">免费使用</span>
+    </div>
+  </section>
+
+  <!-- ===== 导入区（独立于模式面板，根据当前模式切换显示） ===== -->
+  <!-- 单向拼接导入区 -->
+  <div class="dropzone stitch-dropzone" id="stitchImport" tabindex="0" role="button" data-i18n-aria="v022_aria_import">
+    <div class="dz-empty" id="stitchDzEmpty">
+      <div class="dz-ico"><i data-lucide="upload-cloud"></i></div>
+      <div class="up-main">
+        <h4 data-i18n="stitch_empty_title">拖入图片，开始拼接</h4>
+        <p data-i18n="stitch_import_pick">或点击从设备选择</p>
+      </div>
+      <div class="dz-note"><i data-lucide="lock"></i><span data-i18n="stitch_import_support">支持 PNG / JPEG / WEBP · 图片不会离开你的设备</span></div>
+    </div>
+    <div class="dz-gallery" id="stitchGallery" hidden>
+      <div class="dz-g-head">
+        <span class="dz-count" id="stitchGalleryCount"></span>
+        <div class="dz-g-acts">
+          <button type="button" class="btn btn-ghost btn-sm" id="stitchAddMore"><i data-lucide="image"></i><span data-i18n="stitch_add_more">添加更多</span></button>
+          <button type="button" class="btn btn-secondary btn-sm" id="stitchClearThumbs"><i data-lucide="trash-2"></i><span data-i18n="stitch_clear">清空</span></button>
+        </div>
+      </div>
+      <div class="dz-g-list" id="stitchGalleryList"></div>
+    </div>
+  </div>
+  <!-- 网格拼接导入区 -->
+  <div class="dropzone stitch-dropzone" id="stitchImportG" tabindex="0" role="button" data-i18n-aria="v022_aria_import" hidden>
+    <div class="dz-empty" id="stitchDzEmptyG">
+      <div class="dz-ico"><i data-lucide="upload-cloud"></i></div>
+      <div class="up-main">
+        <h4 data-i18n="stitch_empty_title">拖入图片，开始拼接</h4>
+        <p data-i18n="stitch_import_pick">或点击从设备选择</p>
+      </div>
+      <div class="dz-note"><i data-lucide="lock"></i><span data-i18n="stitch_import_support">支持 PNG / JPEG / WEBP · 图片不会离开你的设备</span></div>
+    </div>
+    <div class="dz-gallery" id="stitchGalleryG" hidden>
+      <div class="dz-g-head">
+        <span class="dz-count" id="stitchGalleryCountG"></span>
+        <div class="dz-g-acts">
+          <button type="button" class="btn btn-ghost btn-sm" id="stitchAddMoreG"><i data-lucide="image"></i><span data-i18n="stitch_add_more">添加更多</span></button>
+          <button type="button" class="btn btn-secondary btn-sm" id="stitchClearThumbsG"><i data-lucide="trash-2"></i><span data-i18n="stitch_clear">清空</span></button>
+        </div>
+      </div>
+      <div class="dz-g-list" id="stitchGalleryListG"></div>
+    </div>
+  </div>
+
+  <!-- ===== 模式切换：胶囊按钮 ===== -->
+  <section class="panel">
+    <div class="stitch-mode-bar">
+      <div class="segment" role="tablist" data-i18n-aria="stitch_aria_mode">
+        <label class="seg"><input type="radio" name="stitchMode" value="vertical" data-stitch-mode="vertical" checked><span class="seg-t" role="tab" aria-selected="true" data-i18n="stitch_mode_vertical">单向拼接</span></label>
+        <label class="seg"><input type="radio" name="stitchMode" value="grid" data-stitch-mode="grid"><span class="seg-t" role="tab" aria-selected="false" data-i18n="stitch_mode_grid">网格拼接</span></label>
+      </div>
+    </div>
+
+    <!-- ===== 单向拼接面板 ===== -->
+    <div id="stitch-vertical" class="stitch-panel">
+      <!-- 参数工具栏 -->
+      <div class="stitch-toolbar">
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_dir_label">方向</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchDir" value="vertical" data-dir="vertical" checked><span class="seg-t" data-i18n="stitch_dir_vertical">纵向</span></label>
+            <label class="seg"><input type="radio" name="stitchDir" value="horizontal" data-dir="horizontal"><span class="seg-t" data-i18n="stitch_dir_horizontal">横向</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_gap">间距</span>
+          <input type="range" id="stitchGap" class="slider" data-out="mf-slider-none" min="0" max="100" value="0" style="--p:0%">
+          <span class="field-val" id="stitchGapVal">0px</span>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_bg">背景</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchBg" value="#ffffff" data-bg="#ffffff" checked><span class="seg-t" data-i18n="stitch_bg_white">白</span></label>
+            <label class="seg"><input type="radio" name="stitchBg" value="#000000" data-bg="#000000"><span class="seg-t" data-i18n="stitch_bg_black">黑</span></label>
+            <label class="seg"><input type="radio" name="stitchBg" value="transparent" data-bg="transparent"><span class="seg-t" data-i18n="stitch_bg_transparent">透明</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_radius">圆角</span>
+          <input type="range" id="stitchRadius" class="slider" data-out="mf-slider-none" min="0" max="50" value="0" style="--p:0%">
+          <span class="field-val" id="stitchRadiusVal">0px</span>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_align">对齐</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchAlign" value="start" data-align="start"><span class="seg-t" data-i18n="stitch_align_left">左</span></label>
+            <label class="seg"><input type="radio" name="stitchAlign" value="center" data-align="center" checked><span class="seg-t" data-i18n="stitch_align_center">中</span></label>
+            <label class="seg"><input type="radio" name="stitchAlign" value="end" data-align="end"><span class="seg-t" data-i18n="stitch_align_right">右</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_margin">边距</span>
+          <input type="range" id="stitchMargin" class="slider" data-out="mf-slider-none" min="0" max="100" value="0" style="--p:0%">
+          <span class="field-val" id="stitchMarginVal">0px</span>
+        </div>
+        <div class="field">
+          <label class="check">
+            <input type="checkbox" id="stitchUnified" checked>
+            <span class="box" aria-hidden="true"></span>
+            <span data-i18n="stitch_unified">统一尺寸</span>
+          </label>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_format">格式</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchFmt" value="png" data-fmt-stitch="png" checked><span class="seg-t">PNG</span></label>
+            <label class="seg"><input type="radio" name="stitchFmt" value="jpeg" data-fmt-stitch="jpeg"><span class="seg-t">JPEG</span></label>
+            <label class="seg"><input type="radio" name="stitchFmt" value="webp" data-fmt-stitch="webp"><span class="seg-t">WEBP</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="v01_quality">质量</span>
+          <input type="range" id="stitchQuality" class="slider" data-out="mf-slider-none" min="10" max="100" value="92" style="--p:92%">
+          <span class="field-val" id="stitchQualityVal">92%</span>
+        </div>
+      </div>
+
+      <!-- 预览区 -->
+      <div class="stitch-preview" id="stitchPreviewWrap">
+        <div class="preview-empty" id="stitchPreviewEmpty">
+          <i data-lucide="image"></i>
+          <span data-i18n="stitch_preview_hint">导入图片后显示预览</span>
+        </div>
+        <img id="stitchPreviewImg" alt="" hidden>
+      </div>
+
+      <!-- 信息条 -->
+      <div class="stitch-info-bar">
+        <div class="info-item"><span class="info-label" data-i18n="stitch_total_size">总尺寸</span><span class="info-val" id="stitchInfoSize">—</span></div>
+        <div class="info-item"><span class="info-label" data-i18n="stitch_est_size">预估</span><span class="info-val" id="stitchInfoEst">—</span></div>
+        <div class="info-item" id="stitchInfoStream"></div>
+      </div>
+
+      <!-- 流式进度条 -->
+      <div class="stitch-progress" id="stitchProgress">
+        <div class="progress-label"><span id="stitchProgressTxt"></span></div>
+        <div class="progress"><div class="progress-bar" id="stitchProgressFill"></div></div>
+      </div>
+
+      <!-- 操作区 -->
+      <div class="stitch-actions">
+        <button type="button" class="btn btn-primary export-btn" id="stitchExport" disabled>
+          <i data-lucide="download"></i>
+          <span data-i18n="stitch_export">导出长图</span>
+        </button>
+        <button type="button" class="btn btn-ghost clear-btn" id="stitchClear" disabled>
+          <i data-lucide="trash-2"></i>
+          <span data-i18n="v01_clear">清空全部</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== 网格拼接面板 ===== -->
+    <div id="stitch-grid" class="stitch-panel" hidden>
+      <!-- 模板选择栏 -->
+      <div class="grid-template-bar" id="stitchTplBar">
+        <button type="button" class="tpl-btn" data-tpl="2x2" data-i18n-aria="stitch_tpl_2x2"><div class="tpl-mini"><span></span><span></span><span></span><span></span></div></button>
+        <button type="button" class="tpl-btn on" data-tpl="3x3" data-i18n-aria="stitch_tpl_3x3"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
+        <button type="button" class="tpl-btn" data-tpl="4x4" data-i18n-aria="stitch_tpl_4x4"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
+        <button type="button" class="tpl-btn" data-tpl="2x3" data-i18n-aria="stitch_tpl_2x3"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
+        <button type="button" class="tpl-btn custom" data-tpl="custom" aria-label="自定义"><span data-i18n="stitch_tpl_custom">自定义</span></button>
+        <!-- 自定义行列控制（复用全站 .step 标准步进器组件） -->
+        <div class="tpl-custom-ctl" id="stitchCustomCtl">
+          <div class="row custom-step-row">
+            <label data-i18n="stitch_rows">行</label>
+            <span class="step" data-step-target="rows">
+              <button type="button" class="step-btn" data-step="-1" data-for="stitchRows" aria-label="减少行"><i data-lucide="minus"></i></button>
+              <input type="text" inputmode="numeric" size="3" id="stitchRows" class="step-val" min="1" max="6" value="3" aria-label="行数">
+              <button type="button" class="step-btn" data-step="1" data-for="stitchRows" aria-label="增加行"><i data-lucide="plus"></i></button>
+            </span>
+          </div>
+          <div class="row custom-step-row">
+            <label data-i18n="stitch_cols">列</label>
+            <span class="step" data-step-target="cols">
+              <button type="button" class="step-btn" data-step="-1" data-for="stitchCols" aria-label="减少列"><i data-lucide="minus"></i></button>
+              <input type="text" inputmode="numeric" size="3" id="stitchCols" class="step-val" min="1" max="6" value="3" aria-label="列数">
+              <button type="button" class="step-btn" data-step="1" data-for="stitchCols" aria-label="增加列"><i data-lucide="plus"></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 移动端移动模式提示 -->
+      <div class="move-mode-bar" id="stitchMoveModeBar">
+        <i data-lucide="move"></i>
+        <span data-i18n="stitch_move_hint">点击源格子，再点击目标格子交换</span>
+        <button type="button" class="btn btn-ghost btn-sm" id="stitchMoveModeExit" data-i18n="stitch_move_exit">退出</button>
+      </div>
+
+      <!-- 网格预览（交互层 + 渲染层） -->
+      <div class="grid-preview-wrap">
+        <div class="grid-canvas" id="stitchGridCanvas"></div>
+        <img id="stitchGridPreviewImg" class="grid-preview-img" alt="" hidden>
+      </div>
+
+      <!-- 信息条 -->
+      <div class="stitch-info-bar">
+        <div class="info-item"><span class="info-label" data-i18n="stitch_total_size">总尺寸</span><span class="info-val" id="stitchInfoSizeG">—</span></div>
+        <div class="info-item"><span class="info-label" data-i18n="stitch_filled_count">已填充</span><span class="info-val" id="stitchInfoFilled">—</span></div>
+        <div class="info-item" id="stitchInfoStreamG"></div>
+      </div>
+
+      <!-- 参数工具栏 -->
+      <div class="stitch-toolbar stitch-toolbar-grid">
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_gap">间距</span>
+          <input type="range" id="stitchGapG" class="slider" data-out="mf-slider-none" min="0" max="100" value="4" style="--p:4%">
+          <span class="field-val" id="stitchGapValG">4px</span>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_bg">背景</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchBgG" value="#ffffff" data-bg-g="#ffffff" checked><span class="seg-t" data-i18n="stitch_bg_white">白</span></label>
+            <label class="seg"><input type="radio" name="stitchBgG" value="#000000" data-bg-g="#000000"><span class="seg-t" data-i18n="stitch_bg_black">黑</span></label>
+            <label class="seg"><input type="radio" name="stitchBgG" value="transparent" data-bg-g="transparent"><span class="seg-t" data-i18n="stitch_bg_transparent">透明</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_radius">圆角</span>
+          <input type="range" id="stitchRadiusG" class="slider" data-out="mf-slider-none" min="0" max="50" value="0" style="--p:0%">
+          <span class="field-val" id="stitchRadiusValG">0px</span>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_fill">填充</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchFill" value="cover" data-fill="cover" checked><span class="seg-t" data-i18n="stitch_fill_cover">覆盖</span></label>
+            <label class="seg"><input type="radio" name="stitchFill" value="contain" data-fill="contain"><span class="seg-t" data-i18n="stitch_fill_contain">包含</span></label>
+            <label class="seg"><input type="radio" name="stitchFill" value="stretch" data-fill="stretch"><span class="seg-t" data-i18n="stitch_fill_stretch">拉伸</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_cell_ratio">比例</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchRatio" value="1:1" data-ratio="1:1" checked><span class="seg-t">1:1</span></label>
+            <label class="seg"><input type="radio" name="stitchRatio" value="4:3" data-ratio="4:3"><span class="seg-t">4:3</span></label>
+            <label class="seg"><input type="radio" name="stitchRatio" value="3:4" data-ratio="3:4"><span class="seg-t">3:4</span></label>
+            <label class="seg"><input type="radio" name="stitchRatio" value="16:9" data-ratio="16:9"><span class="seg-t">16:9</span></label>
+            <label class="seg"><input type="radio" name="stitchRatio" value="9:16" data-ratio="9:16"><span class="seg-t">9:16</span></label>
+            <label class="seg"><input type="radio" name="stitchRatio" value="free" data-ratio="free"><span class="seg-t" data-i18n="stitch_ratio_free">自由</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="stitch_format">格式</span>
+          <div class="segment">
+            <label class="seg"><input type="radio" name="stitchFmtG" value="png" data-fmt-grid="png" checked><span class="seg-t">PNG</span></label>
+            <label class="seg"><input type="radio" name="stitchFmtG" value="jpeg" data-fmt-grid="jpeg"><span class="seg-t">JPEG</span></label>
+            <label class="seg"><input type="radio" name="stitchFmtG" value="webp" data-fmt-grid="webp"><span class="seg-t">WEBP</span></label>
+          </div>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm ml-auto" id="stitchMoveModeBtn">
+          <i data-lucide="move"></i>
+          <span data-i18n="stitch_move_mode">移动模式</span>
+        </button>
+      </div>
+
+      <!-- 流式进度条 -->
+      <div class="stitch-progress" id="stitchProgressG">
+        <div class="progress-label"><span id="stitchProgressTxtG"></span></div>
+        <div class="progress"><div class="progress-bar" id="stitchProgressFillG"></div></div>
+      </div>
+
+      <!-- 操作区 -->
+      <div class="stitch-actions">
+        <button type="button" class="btn btn-primary export-btn" id="stitchExportG" disabled>
+          <i data-lucide="download"></i>
+          <span data-i18n="stitch_export_grid">导出拼图</span>
+        </button>
+        <button type="button" class="btn btn-ghost clear-btn" id="stitchClearG" disabled>
+          <i data-lucide="trash-2"></i>
+          <span data-i18n="v01_clear">清空全部</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="stitch_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="stitch_f_th1">功能</th><th data-i18n="stitch_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="stitch_f1_name">单向拼接</td><td data-i18n="stitch_f1_desc">支持纵向、横向两种方向，适合聊天记录、长截图、横幅。</td></tr>
+          <tr><td data-i18n="stitch_f2_name">网格拼图</td><td data-i18n="stitch_f2_desc">内置 8 种网格模板，支持自定义行列，最多 6×6。</td></tr>
+          <tr><td data-i18n="stitch_f3_name">批量导入</td><td data-i18n="stitch_f3_desc">点击或拖放导入，可添加、单张删除、一键清空。</td></tr>
+          <tr><td data-i18n="stitch_f4_name">拖拽排序</td><td data-i18n="stitch_f4_desc">拖拽调整顺序；网格模式可交换任意两格。</td></tr>
+          <tr><td data-i18n="stitch_f5_name">自定义样式</td><td data-i18n="stitch_f5_desc">可调间距、背景、圆角、对齐与格子比例。</td></tr>
+          <tr><td data-i18n="stitch_f6_name">隐私保护</td><td data-i18n="stitch_f6_desc">全程在浏览器本地处理，不上传、不注册，关闭页面即清除。</td></tr>
+          <tr><td data-i18n="stitch_f7_name">多格式导出</td><td data-i18n="stitch_f7_desc">支持导出 PNG、JPEG、WEBP。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="stitch_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="stitch_u1_t">聊天记录拼接</div><div class="nm seo-desc" data-i18n="stitch_u1_d">聊天记录长截图纵向拼成一张</div></div>
+      <div class="stat"><div class="lb" data-i18n="stitch_u2_t">朋友圈九宫格</div><div class="nm seo-desc" data-i18n="stitch_u2_d">9 张照片拼成九宫格</div></div>
+      <div class="stat"><div class="lb" data-i18n="stitch_u3_t">长截图拼接</div><div class="nm seo-desc" data-i18n="stitch_u3_d">分段截图拼成完整长图</div></div>
+      <div class="stat"><div class="lb" data-i18n="stitch_u4_t">照片墙/作品集</div><div class="nm seo-desc" data-i18n="stitch_u4_d">作品照片拼成网格展示</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="stitch_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="stitch_q_th1">问题</th><th data-i18n="stitch_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="stitch_q1">图片会上传到服务器吗？</td><td data-i18n="stitch_a1">不会。全程在浏览器本地处理，可断网使用。</td></tr>
+          <tr><td data-i18n="stitch_q2">支持哪些图片格式？</td><td data-i18n="stitch_a2">PNG、JPEG、WEBP，导入导出均支持。</td></tr>
+          <tr><td data-i18n="stitch_q3">最多可以拼接多少张图片？</td><td data-i18n="stitch_a3">无硬性上限，建议单次不超过 50 张；超大图自动流式处理。</td></tr>
+          <tr><td data-i18n="stitch_q4">拼接后的图片有水印吗？</td><td data-i18n="stitch_a4">没有。免费、无水印、无广告。</td></tr>
+          <tr><td data-i18n="stitch_q5">需要注册登录吗？</td><td data-i18n="stitch_a5">不需要，打开网页即可使用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 单格替换面板（模态，放在末尾不干扰 .panel+.panel 相邻选择器） ===== -->
+  <div class="cell-panel-mask" id="stitchCellPanelMask">
+    <div class="cell-panel">
+      <div class="cell-panel-head">
+        <h3 data-i18n="stitch_panel_title">选择图片</h3>
+        <button type="button" class="cell-panel-close" id="stitchCellPanelClose" data-i18n-aria="stitch_aria_close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="cell-panel-section">
+        <div class="section-label" data-i18n="stitch_panel_used">已导入图片</div>
+        <div class="cell-panel-thumbs" id="stitchCellPanelThumbs"></div>
+      </div>
+      <div class="cell-panel-actions">
+        <button type="button" class="btn btn-ghost" id="stitchCellPanelClear" data-i18n="stitch_cell_clear">清空此格</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+<div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
+  <div class="rec-mask" data-rec-close></div>
+  <div class="rec-box">
+    <button class="btn btn-icon btn-secondary btn-close rec-close-icon" type="button" data-rec-close aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="rec-check"><i data-lucide="check-circle"></i></div>
+    <p class="rec-msg" id="recMsg" data-i18n="rec_done">操作成功</p>
+    <p class="rec-sub" data-i18n="rec_sub">感谢使用 Moteful，下面这些功能你可能也用得上：</p>
+    <div class="rec-tip">
+      <span class="rec-tip-text" data-i18n="rec_tip_note">如果这个工具帮到了你，欢迎请作者喝杯咖啡 ☕</span>
+      <a class="btn btn-primary rec-tip-btn" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n="rec_tip_btn">赞助支持</a>
+    </div>
+    <div class="rec-cards" id="recCards">    <a class="rec-card" href="../tools/image-tool.html">
+      <i data-lucide="images"></i>
+      <span data-i18n="nav_m_batch">基础功能</span>
+    </a>
+    <a class="rec-card" href="../tools/annotate.html">
+      <i data-lucide="pencil"></i>
+      <span data-i18n="nav_m_annotate">标注</span>
+    </a></div>
+    <button class="btn btn-secondary rec-close-btn" type="button" data-rec-close data-i18n="rec_close">关闭</button>
+  </div>
+</div>
+</body>
+</html>

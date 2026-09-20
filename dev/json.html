@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="title_json">Json - 在线 JSON 格式化/压缩/校验工具 | Moteful</title>
+<meta name="description" content="免费在线 JSON 工具，支持 JSON 格式化美化、压缩精简、校验检查并定位错误行列号。全部在浏览器本地运行，数据不上传，保护隐私，无需注册。">
+<meta name="keywords" content="JSON格式化,JSON压缩,JSON校验,JSON美化,JSON工具,在线JSON,JSON解析,JSON错误定位,开发者工具">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="Json - 在线 JSON 格式化/压缩/校验工具">
+<meta property="og:description" content="免费在线 JSON 工具，格式化、压缩、校验一步到位，错误定位到行列。全部在浏览器本地运行，数据不上传，保护隐私。">
+<meta property="og:url" content="https://moteful.app/dev/json.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Json - 在线 JSON 格式化/压缩/校验工具">
+<meta name="twitter:description" content="免费在线 JSON 工具，格式化、压缩、校验一步到位，错误定位到行列。全部在浏览器本地运行，数据不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/dev/json.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Json",
+  "alternateName": "Moteful JSON Suite",
+  "description": "免费在线 JSON 工具，支持格式化美化、压缩精简、校验检查并定位错误行列号。全部在浏览器本地运行，数据不上传，保护隐私。",
+  "url": "https://moteful.app/dev/json.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "JSON 格式化（2/4 空格或 Tab 缩进）",
+    "JSON 压缩（去除全部空白）",
+    "JSON 校验（中文错误说明 + 行列号定位）",
+    "拖放导入 .json 文件",
+    "一键复制 / 下载 .json",
+    "100% 本地运行，数据不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+<style>
+/* 页面私有样式（严格限于设计文档 v0.7json三件套.html 第 2.3 节白名单） */
+.json-panes{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;background:var(--surface)}
+.json-panes > *{min-width:0;padding:8px}
+.json-panes > * + *{border-left:1px solid var(--border)}
+/* 用 textarea 前缀提到 (0,1,1)，压过全站 textarea.input{height:auto} 的同权重规则 */
+textarea.json-io{height:420px;resize:vertical;font-family:var(--mono);font-size:13px}
+@media (max-width:768px){
+  .json-panes{grid-template-columns:1fr}
+  .json-panes > * + *{border-left:none;border-top:1px solid var(--border)}
+  textarea.json-io{height:280px}
+}
+</style>
+<script src="../assets/js/moteful.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+</head>
+<body data-nav="dev">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item on" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a class="on" href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<main class="page">
+
+  <!-- ===== 隐藏文件输入（放在最前，不干扰 .panel+.panel 相邻选择器） ===== -->
+  <input type="file" id="jsonFileInput" accept=".json,.txt,application/json,text/plain" hidden>
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="json_kicker">MOTEFUL · 开发者工具</div>
+    <h1 data-i18n="json_title">Json</h1>
+    <p data-i18n="json_sub">格式化、压缩、校验一步到位，错误定位到行列，全程在浏览器本地完成，数据不上传。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="json_tag_local">100% 本地处理</span>
+      <span class="tag t-gray" data-i18n="json_tag_free">免费使用</span>
+      <span class="tag t-gray" data-i18n="json_tag_account">无需注册</span>
+    </div>
+  </section>
+
+  <!-- ===== 模式切换 + 缩进 ===== -->
+  <section class="panel">
+    <div class="row">
+      <div class="segment" role="tablist" data-i18n-aria="json_aria_mode">
+        <label class="seg"><input type="radio" name="jsonMode" value="format" data-json-mode="format" checked><span class="seg-t" role="tab" aria-selected="true" data-i18n="json_mode_format">格式化</span></label>
+        <label class="seg"><input type="radio" name="jsonMode" value="compress" data-json-mode="compress"><span class="seg-t" role="tab" aria-selected="false" data-i18n="json_mode_compress">压缩</span></label>
+        <label class="seg"><input type="radio" name="jsonMode" value="validate" data-json-mode="validate"><span class="seg-t" role="tab" aria-selected="false" data-i18n="json_mode_validate">校验</span></label>
+      </div>
+      <div class="field" id="jsonIndentField" style="flex-direction:row;align-items:center;gap:8px;min-width:0">
+        <span class="field-label" id="jsonIndentLabel" data-i18n="json_indent">缩进</span>
+        <div class="segment" role="group" aria-labelledby="jsonIndentLabel">
+          <label class="seg"><input type="radio" name="jsonIndent" value="2" data-json-indent="2" checked><span class="seg-t" data-i18n="json_indent_2">2 空格</span></label>
+          <label class="seg"><input type="radio" name="jsonIndent" value="4" data-json-indent="4"><span class="seg-t" data-i18n="json_indent_4">4 空格</span></label>
+          <label class="seg"><input type="radio" name="jsonIndent" value="tab" data-json-indent="tab"><span class="seg-t" data-i18n="json_indent_tab">Tab</span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 输入 / 输出 双栏 ===== -->
+  <section class="panel">
+    <div class="json-panes">
+      <!-- 输入（可编辑） -->
+      <div class="json-pane">
+        <div class="field" style="width:100%">
+          <span class="field-label" data-i18n="json_input_label">输入</span>
+          <textarea id="jsonInput" class="input json-io" spellcheck="false" placeholder="粘贴 JSON，或拖入 .json 文件" data-i18n-ph="json_input_ph"></textarea>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <span class="tag t-gray" id="jsonStats">0 字符 · 1 行</span>
+        </div>
+      </div>
+      <!-- 输出（只读，复用 codebox） -->
+      <div class="json-pane" id="jsonOutputPane" style="display:flex;flex-direction:column">
+        <div class="codebox" style="margin-top:0;flex:1;display:flex;flex-direction:column">
+          <div class="code-head">
+            <span class="fn">JSON</span>
+            <button type="button" class="copy-btn" id="jsonCopyInHead" hidden><i data-lucide="copy"></i><span data-i18n="json_btn_copy">复制</span></button>
+          </div>
+          <div class="code-body" id="jsonOutput" aria-readonly="true" hidden style="flex:1;max-height:none"></div>
+          <div class="empty" id="jsonEmpty" style="flex:1;justify-content:center">
+            <div class="e-ico"><i data-lucide="code"></i></div>
+            <h4 data-i18n="json_empty_title">输出区</h4>
+            <p data-i18n="json_empty_desc">在左侧粘贴 JSON，这里自动显示结果</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 操作条 + 状态区 ===== -->
+  <section class="panel" style="padding:16px 20px">
+    <div class="row">
+      <button type="button" class="btn btn-ghost btn-sm" id="jsonBtnSample"><i data-lucide="sparkles"></i><span data-i18n="json_btn_sample">示例</span></button>
+      <button type="button" class="btn btn-ghost btn-sm" id="jsonBtnSwap"><i data-lucide="refresh-cw"></i><span data-i18n="json_btn_swap">交换 →</span></button>
+      <button type="button" class="btn btn-ghost btn-sm" id="jsonBtnClear"><i data-lucide="trash-2"></i><span data-i18n="json_btn_clear">清空</span></button>
+      <span class="sp" style="flex:1"></span>
+      <button type="button" class="btn btn-secondary btn-sm" id="jsonBtnDownload"><i data-lucide="download"></i><span data-i18n="json_btn_download">下载 .json</span></button>
+      <button type="button" class="btn btn-primary btn-sm" id="jsonBtnCopy"><i data-lucide="copy"></i><span data-i18n="json_btn_copy_main">复制输出</span></button>
+    </div>
+    <div id="jsonResult" hidden style="margin-top:12px"></div>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="json_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="json_f_th1">功能</th><th data-i18n="json_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="json_f1_name">格式化</td><td data-i18n="json_f1_desc">按 2 空格、4 空格或 Tab 缩进重新排版，嵌套结构一目了然。</td></tr>
+          <tr><td data-i18n="json_f2_name">压缩</td><td data-i18n="json_f2_desc">去除全部空白得到紧凑单行，并显示压缩前后的体积对比。</td></tr>
+          <tr><td data-i18n="json_f3_name">校验</td><td data-i18n="json_f3_desc">检查 JSON 合法性，报错给出中文原因和行列号，点击可定位。</td></tr>
+          <tr><td data-i18n="json_f4_name">拖放导入</td><td data-i18n="json_f4_desc">拖入 .json / .txt 文件即可载入，单文件最大 10MB。</td></tr>
+          <tr><td data-i18n="json_f5_name">复制下载</td><td data-i18n="json_f5_desc">结果一键复制到剪贴板，或下载为 data.json。</td></tr>
+          <tr><td data-i18n="json_f6_name">隐私保护</td><td data-i18n="json_f6_desc">全程在浏览器本地处理，不上传、不注册，关闭页面即清除。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="json_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="json_u1_t">接口调试</div><div class="nm seo-desc" data-i18n="json_u1_d">把接口返回的 JSON 排版检查</div></div>
+      <div class="stat"><div class="lb" data-i18n="json_u2_t">配置文件整理</div><div class="nm seo-desc" data-i18n="json_u2_d">压缩配置文件减小体积</div></div>
+      <div class="stat"><div class="lb" data-i18n="json_u3_t">排错定位</div><div class="nm seo-desc" data-i18n="json_u3_d">中文提示 + 行列号快速找错</div></div>
+      <div class="stat"><div class="lb" data-i18n="json_u4_t">数据核对</div><div class="nm seo-desc" data-i18n="json_u4_d">统计键数与嵌套深度</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="json_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="json_q_th1">问题</th><th data-i18n="json_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="json_q1">数据会上传到服务器吗？</td><td data-i18n="json_a1">不会。全程在浏览器本地处理，可断网使用。</td></tr>
+          <tr><td data-i18n="json_q2">支持哪些输入方式？</td><td data-i18n="json_a2">直接粘贴、拖入 .json / .txt 文件，或点击示例体验。</td></tr>
+          <tr><td data-i18n="json_q3">文件大小有限制吗？</td><td data-i18n="json_a3">拖放文件上限 10MB；粘贴超大文本会有稍慢提示但仍可处理。</td></tr>
+          <tr><td data-i18n="json_q4">支持注释或单引号吗？</td><td data-i18n="json_a4">不支持。JSON 标准要求双引号且不允许注释，报错会说明原因。</td></tr>
+          <tr><td data-i18n="json_q5">需要注册登录吗？</td><td data-i18n="json_a5">不需要，打开网页即可使用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.1.1</span>
+  </div>
+</footer>
+
+<script>
+/* ===== Json · 页面逻辑（骨架版核心） =====
+   严格按设计文档 v0.7json三件套.html 第六章落地；样式零新增。 */
+(function(){
+  var $ = function(s){ return document.querySelector(s); };
+  var inputEl = $('#jsonInput'), outputEl = $('#jsonOutput'), emptyEl = $('#jsonEmpty'),
+      resultEl = $('#jsonResult'), statsEl = $('#jsonStats'),
+      indentField = $('#jsonIndentField'), outputPane = $('#jsonOutputPane'),
+      headCopyBtn = $('#jsonCopyInHead');
+  var lastOutput = '';
+
+  var INDENTS = { '2': 2, '4': 4, 'tab': '\t' };
+
+  /* ---- i18n 助手（字典未加载/缺键时退回中文兜底） ---- */
+  function tr(key, vars){
+    if (window.t) return window.t(key, vars);
+    return key;
+  }
+
+  /* ---- 错误映射表：浏览器原始报错 → i18n 键 ---- */
+  var QUOTES_RE = /[\u201c\u201d\u2018\u2019]/;
+  var ERROR_MAP = [
+    { re: /Unexpected (?:token|number|string|identifier|character)/i, key: 'json_err_unexpected_token' },
+    { re: /Unexpected end of JSON input/i, key: 'json_err_eof' },
+    { re: /No number after minus sign/i, key: 'json_err_minus' },
+    { re: /Bad escaped character/i, key: 'json_err_escape' },
+    { re: /Bad control character/i, key: 'json_err_control' },
+    { re: /Unterminated string/i, key: 'json_err_unterminated' }
+  ];
+
+  function stripBOM(s){ return s.charCodeAt(0) === 0xFEFF ? s.slice(1) : s; }
+
+  /* 常见全角标点（JSON 结构中非法，字符串值内合法——仅作最后兜底候选） */
+  var FULLWIDTH_RE = /[\uFF0C\uFF1A\uFF1B\uFF01\uFF1F\u3001\u3002\uFF08\uFF09]/;
+
+  /* 判断是否在字符串内部结束（未闭合字符串） */
+  function isUnterminatedString(s){
+    s = s || '';
+    var inString = false, escape = false, i, c;
+    for (i = 0; i < s.length; i++){
+      c = s[i];
+      if (escape){ escape = false; continue; }
+      if (c === '\\'){ escape = true; continue; }
+      if (c === '"'){ inString = !inString; continue; }
+    }
+    return inString;
+  }
+
+  /* 判断 JSON 是否在结尾处被截断（结构未闭合 / 末尾是开启符或分隔符），不含未闭合字符串 */
+  function isStructuralTruncation(s){
+    s = s || '';
+    var trimmed = s.replace(/\s+$/, '');
+    if (!trimmed) return false;
+    if (isUnterminatedString(s)) return false;
+    var inString = false, escape = false, depthBrace = 0, depthBracket = 0, i, c;
+    for (i = 0; i < s.length; i++){
+      c = s[i];
+      if (escape){ escape = false; continue; }
+      if (c === '\\'){ escape = true; continue; }
+      if (c === '"'){ inString = !inString; continue; }
+      if (inString) continue;
+      if (c === '{') depthBrace++;
+      else if (c === '}') depthBrace--;
+      else if (c === '[') depthBracket++;
+      else if (c === ']') depthBracket--;
+    }
+    var last = trimmed[trimmed.length - 1];
+    return depthBrace > 0 || depthBracket > 0 || /[{[:,(]/.test(last);
+  }
+
+  function locateError(text, err){
+    /* 定位兜底链：① position N ② line/column 换算 ③ 中文引号扫描 ④ 提取非法 token 字符 ⑤ 全角标点扫描 ⑥ 截断类定位到末尾 */
+    var msg = err.message || '';
+    var m, i, pos = null, key = null;
+    var truncated = isStructuralTruncation(text);
+    var unterm = isUnterminatedString(text);
+
+    m = msg.match(/position (\d+)/i);
+    if (m) pos = +m[1];
+
+    if (pos == null){
+      /* Firefox 风格：line N, column M → 换算字符偏移 */
+      m = msg.match(/line (\d+)[, ]\s*column (\d+)/i);
+      if (m){
+        var fl = +m[1], fc = +m[2], lines = text.split('\n');
+        pos = 0;
+        for (i = 0; i < fl - 1 && i < lines.length; i++) pos += lines[i].length + 1;
+        pos += Math.max(0, fc - 1);
+        if (pos > text.length) pos = text.length;
+      }
+    }
+
+    if (QUOTES_RE.test(text)){
+      if (!key) key = 'json_err_quotes';
+      if (pos == null) pos = text.search(QUOTES_RE);
+    }
+
+    if (pos == null){
+      /* Safari/新版 Chrome：Unexpected token 'x' / identifier "x" → 提取字符回搜 */
+      m = msg.match(/Unexpected (?:token|identifier|character) ['\u201c"]([^\s'\u201d"])/i);
+      if (m && m[1]){
+        var p = text.indexOf(m[1]);
+        if (p >= 0) pos = p;
+      }
+    }
+
+    if (pos == null){
+      var p2 = text.search(FULLWIDTH_RE);
+      if (p2 >= 0){ pos = p2; if (!key) key = 'json_err_unexpected_token'; }
+    }
+
+    /* 错误分类：中文引号 > 未闭合字符串 > 结构截断 > 浏览器原始报错映射 */
+    if (!key && unterm){ key = 'json_err_unterminated'; }
+    else if (!key && truncated){ key = 'json_err_eof'; }
+    else if (!key){
+      for (i = 0; i < ERROR_MAP.length; i++){
+        if (ERROR_MAP[i].re.test(msg)){ key = ERROR_MAP[i].key; break; }
+      }
+    }
+
+    /* 截断/未闭合兜底：没有更准位置时定位到末尾非空白字符 */
+    if ((truncated || unterm) && pos == null){
+      var trimmed = text.replace(/\s+$/, '');
+      pos = Math.max(0, trimmed.length - 1);
+    }
+
+    var line = null, col = null;
+    if (pos != null && pos >= 0){
+      var before = text.slice(0, pos);
+      line = (before.match(/\n/g) || []).length + 1;
+      col = pos - before.lastIndexOf('\n');
+    }
+    return { line: line, col: col, pos: (pos != null && pos >= 0) ? pos : null,
+             key: key || 'json_err_generic' };
+  }
+
+  /* 超长整数检测：16 位以上纯数字（2^53 = 9007199254740992，16 位起即超限） */
+  function hasBigNumber(s){ return /(^|[^\w.])\d{16,}([^\w.]|$)/.test(s); }
+
+  function collectStats(data){
+    var keys = 0, depth = 0;
+    (function walk(v, d){
+      if (d > depth) depth = d;
+      if (Array.isArray(v)) { v.forEach(function(x){ walk(x, d+1); }); }
+      else if (v && typeof v === 'object') { Object.keys(v).forEach(function(k){ keys++; walk(v[k], d+1); }); }
+    })(data, 1);
+    return { top: Array.isArray(data) ? data.length : 1, keys: keys, depth: depth };
+  }
+
+  function byteSize(s){ return new Blob([s]).size; }
+  function fmtBytes(n){ return n < 1024 ? n + ' B' : (n/1024).toFixed(1) + ' KB'; }
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ---- 状态渲染 ---- */
+  function clearResult(){ resultEl.innerHTML = ''; resultEl.hidden = true; }
+
+  function showAlert(type, html){
+    resultEl.hidden = false;
+    resultEl.innerHTML = '<div class="alert ' + type + '"><i data-lucide="' + (type==='a-success'?'check-circle':'x-circle') + '"></i><p>' + html + '</p></div>';
+    if (window.refreshIcons) refreshIcons();
+  }
+
+  function render(text){
+    var mode = document.querySelector('input[name="jsonMode"]:checked').value;
+    var raw = stripBOM(text);
+    /* 统计 */
+    var lines = raw ? raw.split('\n').length : 1;
+    function statsTxt(s, l){ return tr('json_stats_tpl', { n: s.length.toLocaleString(), l: l, b: fmtBytes(byteSize(s)) }); }
+    statsEl.textContent = statsTxt(raw, lines);
+    if (!raw.trim()){ clearResult(); setButtons(false); return; }
+    if (byteSize(raw) > 2 * 1024 * 1024) showAlert('a-warn', esc(tr('json_warn_big')));
+
+    var data;
+    try { data = JSON.parse(raw); }
+    catch (e) {
+      var err = locateError(raw, e);
+      inputEl.classList.add('is-error');
+      /* 输出区：保留上次成功结果；从未有结果时隐藏 code-body（防空黑条），显示空态 */
+      if (lastOutput){
+        outputEl.innerHTML = esc(lastOutput);
+        outputEl.hidden = false;
+        emptyEl.hidden = true;
+      } else {
+        outputEl.innerHTML = '';
+        outputEl.hidden = true;
+        emptyEl.hidden = false;
+      }
+      var posTxt = err.pos != null ? esc(tr('json_err_at', { l: err.line, c: err.col })) : '';
+      showAlert('a-danger', posTxt + esc(tr(err.key)) +
+        (err.pos != null ? ' <span class="tag t-gray" style="cursor:pointer" data-errpos="' + err.pos + '" data-errline="' + err.line + '">' + esc(tr('json_err_locate')) + '</span>' : ''));
+      setButtons(false);
+      return;
+    }
+    inputEl.classList.remove('is-error');
+    var bigWarn = hasBigNumber(raw);
+    if (mode === 'format'){
+      var indent = document.querySelector('input[name="jsonIndent"]:checked').value;
+      lastOutput = JSON.stringify(data, null, INDENTS[indent]);
+      outputEl.innerHTML = esc(lastOutput);
+      outputEl.hidden = false;
+      emptyEl.hidden = true;
+      if (bigWarn){ showAlert('a-warn', esc(tr('json_precision_warn'))); } else { clearResult(); }
+      setButtons(true);
+    } else if (mode === 'compress'){
+      lastOutput = JSON.stringify(data);
+      outputEl.innerHTML = esc(lastOutput);
+      outputEl.hidden = false;
+      emptyEl.hidden = true;
+      var a = byteSize(raw), b = byteSize(lastOutput);
+      var saved = a ? Math.round((1 - b/a) * 100) : 0;
+      var cmpTxt = fmtBytes(a) + ' → ' + fmtBytes(b) + '（' + (saved >= 0
+        ? tr('json_cmp_save', { s: saved })
+        : tr('json_cmp_grow', { s: -saved })) + '）';
+      if (bigWarn){ showAlert('a-warn', esc(cmpTxt) + '<br>' + esc(tr('json_precision_warn'))); }
+      else { showAlert('a-info', esc(cmpTxt)); }
+      setButtons(true);
+    } else {
+      var st = collectStats(data);
+      lastOutput = '';
+      outputEl.innerHTML = '';
+      emptyEl.hidden = false;
+      var okTxt = tr('json_val_ok', { t: st.top, k: st.keys, d: st.depth });
+      if (bigWarn){ showAlert('a-warn', esc(okTxt) + '<br>' + esc(tr('json_precision_warn'))); }
+      else { showAlert('a-success', esc(okTxt)); }
+      setButtons(false);
+    }
+  }
+
+  function setButtons(io){
+    $('#jsonBtnCopy').disabled = !io;
+    $('#jsonBtnDownload').disabled = !io;
+    $('#jsonBtnSwap').disabled = !io;
+    headCopyBtn.hidden = !io;
+    /* 校验模式：隐藏输出相关按钮 */
+    var mode = document.querySelector('input[name="jsonMode"]:checked').value;
+    var isValidate = mode === 'validate';
+    $('#jsonBtnSwap').hidden = isValidate;
+    $('#jsonBtnCopy').hidden = isValidate;
+    $('#jsonBtnDownload').hidden = isValidate;
+    outputPane.style.display = isValidate ? 'none' : 'flex';
+    indentField.style.visibility = mode === 'format' ? 'visible' : 'hidden';
+  }
+
+  /* ---- 事件 ---- */
+  var timer = null;
+  function scheduleRender(){
+    clearTimeout(timer);
+    timer = setTimeout(function(){ render(inputEl.value); }, 300);
+  }
+  inputEl.addEventListener('input', scheduleRender);
+
+  /* 语言切换后立即重渲染动态提示（错误说明/统计/校验结果），保持文案语言一致 */
+  document.addEventListener('moteful:langchange', function(){
+    clearTimeout(timer);
+    render(inputEl.value);
+  });
+
+  /* Tab 键：输入框内插入缩进（不抢焦点），并触发实时处理 */
+  inputEl.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab' || e.ctrlKey || e.metaKey || e.altKey) return;
+    e.preventDefault();
+    var s = inputEl.selectionStart, epos = inputEl.selectionEnd;
+    var indent = INDENTS[document.querySelector('input[name="jsonIndent"]:checked').value];
+    var ins = typeof indent === 'string' ? indent : new Array(indent + 1).join(' ');
+    inputEl.value = inputEl.value.slice(0, s) + ins + inputEl.value.slice(epos);
+    inputEl.selectionStart = inputEl.selectionEnd = s + ins.length;
+    scheduleRender();
+  });
+  document.querySelectorAll('input[name="jsonMode"]').forEach(function(r){
+    r.addEventListener('change', function(){
+      document.querySelectorAll('.seg-t[role="tab"]').forEach(function(t){ t.setAttribute('aria-selected', 'false'); });
+      r.nextElementSibling.setAttribute('aria-selected', 'true');
+      render(inputEl.value);
+      savePrefs();
+    });
+  });
+  document.querySelectorAll('input[name="jsonIndent"]').forEach(function(r){
+    r.addEventListener('change', function(){ render(inputEl.value); savePrefs(); });
+  });
+
+  /* 复制 */
+  function copyOutput(){
+    if (!lastOutput) return;
+    function done(){ if (window.toast) toast(tr('json_toast_copied'), 'success'); }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(lastOutput).then(done, function(){ fallbackCopy(); done(); });
+    } else { fallbackCopy(); done(); }
+  }
+  function fallbackCopy(){
+    var ta = document.createElement('textarea');
+    ta.value = lastOutput; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e){}
+    document.body.removeChild(ta);
+  }
+  $('#jsonBtnCopy').addEventListener('click', copyOutput);
+  headCopyBtn.addEventListener('click', copyOutput);
+
+  /* 下载 */
+  $('#jsonBtnDownload').addEventListener('click', function(){
+    if (!lastOutput) return;
+    var blob = new Blob([lastOutput], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'data.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  /* 交换 / 清空 / 示例 */
+  $('#jsonBtnSwap').addEventListener('click', function(){
+    if (!lastOutput) return;
+    inputEl.value = lastOutput;
+    render(inputEl.value);
+  });
+  $('#jsonBtnClear').addEventListener('click', function(){
+    inputEl.value = ''; lastOutput = '';
+    outputEl.innerHTML = ''; outputEl.hidden = true; emptyEl.hidden = false;
+    inputEl.classList.remove('is-error');
+    clearResult(); setButtons(false);
+    statsEl.textContent = tr('json_stats_tpl', { n: 0, l: 1, b: '0 B' });
+  });
+  $('#jsonBtnSample').addEventListener('click', function(){
+    inputEl.value = '{"name":"Moteful","version":"0.7.0","tools":["json"],"meta":{"local":true,"count":3,"tags":null}}';
+    render(inputEl.value);
+  });
+
+  /* 错误定位（事件委托） */
+  resultEl.addEventListener('click', function(e){
+    var t = e.target.closest('[data-errpos]');
+    if (!t) return;
+    var pos = +t.getAttribute('data-errpos'), line = +t.getAttribute('data-errline');
+    inputEl.focus();
+    inputEl.setSelectionRange(pos, Math.min(pos + 1, inputEl.value.length));
+    inputEl.scrollTop = Math.max(0, (line - 4) * 21.6);
+  });
+
+  /* 拖放导入：拖入态用"输入"标签文案切换反馈（不新建样式，遵守白名单铁律） */
+  var inputLabelEl = inputEl.closest('.field').querySelector('.field-label');
+  function setDropHint(on){ if (inputLabelEl) inputLabelEl.textContent = on ? tr('json_drop_hint') : tr('json_input_label'); }
+  ['dragover','dragenter'].forEach(function(ev){
+    inputEl.addEventListener(ev, function(e){ e.preventDefault(); setDropHint(true); });
+  });
+  inputEl.addEventListener('drop', function(e){
+    e.preventDefault();
+    setDropHint(false);
+    loadFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]);
+  });
+  inputEl.addEventListener('dragleave', function(){ setDropHint(false); });
+
+  function loadFile(file){
+    if (!file) return;
+    if (!/\.(json|txt)$/i.test(file.name)){ if (window.toast) toast(tr('json_toast_badtype'), 'danger'); return; }
+    if (file.size > 10 * 1024 * 1024){ if (window.toast) toast(tr('json_toast_toobig'), 'danger'); return; }
+    var r = new FileReader();
+    r.onload = function(){ inputEl.value = r.result; render(inputEl.value); };
+    r.readAsText(file, 'utf-8');
+  }
+
+  /* 配置记忆：模式 + 缩进（localStorage 不可用时静默跳过） */
+  function savePrefs(){
+    try { localStorage.setItem('mf-json-prefs', JSON.stringify({
+      mode: document.querySelector('input[name="jsonMode"]:checked').value,
+      indent: document.querySelector('input[name="jsonIndent"]:checked').value
+    })); } catch(e){}
+  }
+  (function loadPrefs(){
+    try {
+      var p = JSON.parse(localStorage.getItem('mf-json-prefs') || 'null');
+      if (!p) return;
+      var m = document.querySelector('input[name="jsonMode"][value="' + p.mode + '"]');
+      if (m){ m.checked = true; }
+      var i = document.querySelector('input[name="jsonIndent"][value="' + p.indent + '"]');
+      if (i){ i.checked = true; }
+    } catch(e){}
+  })();
+
+  setButtons(false);
+})();
+</script>
+
+</body>
+</html>

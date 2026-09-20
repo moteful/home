@@ -1,0 +1,150 @@
+/*
+ * Moteful 标注工具页面私有样式（V0.6）
+ * 仅包含 annotate.html 页面特有的样式，不修改 moteful.css（只读铁律）。
+ * 所有颜色走 CSS 变量，字号/圆角/间距遵守设计规范（间距一律 4 的倍数）。
+ */
+
+/* ---------- 1. 参数行之间的纵向间距 ----------
+   .row 是 flex-wrap 容器，其 gap 同时充当列间距与行间距（均为 12px）。
+   参数卡有两行字段，若行间距与列间距相同，分组层次不清、两行贴在一起。
+   此处把行间距拉到 20px（4 的倍数），与列间距 12px 拉开层级。 */
+.page .row { row-gap: 20px; }
+
+/* ---------- 2. 卡内纵向块间距（V0.6 修订） ----------
+   .row / .stack 的 gap 只作用于「容器内部」；而同一张卡里多个 .row 是
+   兄弟节点，彼此之间没有任何外边距 —— 导出卡的「输出格式 / 质量」与
+   「导出图片 / 打包下载 ZIP」两行因此贴死在一起。
+   .panel + .panel 的 16px 只解决「卡片之间」，管不到卡片内部，故在此补齐：
+   同一张卡内相邻块给 20px，与参数行间距一致、与行内 12px 拉开层级。
+   注 1：[hidden] 元素 display:none 不参与布局，隐藏的进度条不会产生空隙。
+   注 2：与 .demo-label 自带的 margin 会按 CSS 规则折叠（取较大值），
+         故「标注参数」等小标题下方恒为 20px，无需单独声明。 */
+.page .panel > * + * { margin-top: 20px; }
+
+/* ---------- 3. 预览画布 ----------
+   .float-canvas 是全站演示用容器（固定 250px 高 + overflow:hidden），
+   真实预览需要按图片比例自适应高度，故本页私有覆盖其高度与内边距。 */
+.annotate-stage {
+  height: auto;
+  min-height: 240px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 画布：按 JS 计算的显示尺寸呈现，触摸交互不触发页面滚动 */
+.annotate-stage canvas {
+  display: block;
+  max-width: 100%;
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow);
+  touch-action: none;
+}
+
+/* ---------- 3.1 全部图片预览（水印模式） ----------
+   水印模式一次性显示全部已导入图片，每张叠加当前水印参数；
+   横向胶片条：nowrap + overflow-x 横向滚动，点击任意张放大预览。 */
+.annotate-stage #annotateGrid {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 2px 10px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.annotate-stage.grid { justify-content: flex-start; align-items: flex-start; }
+.annotate-stage.grid #annotateCanvas { display: none; }
+
+.annotate-preview-item {
+  flex: 0 0 auto;
+  width: 168px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast), background var(--dur-fast);
+}
+.annotate-preview-item:hover {
+  border-color: var(--primary);
+  background: var(--surface-2);
+  box-shadow: var(--shadow);
+}
+.annotate-preview-item:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-color: var(--primary);
+}
+.annotate-preview-item:active { transform: scale(0.98); }
+
+.annotate-preview-item canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- 5. 导入区缩略图（组件定义在共享层） ----------
+   .dz-empty / .dz-gallery / .dz-g-head / .dz-count / .dz-g-acts /
+   .dz-g-list / .dz-thumb / .dz-idx / .dz-rm 的定义在
+   _governance/missing_styles_proposal.css，由 image-tool / stitch /
+   annotate 三页复用同一份（与 .dropzone 同属「导入区双态」标准组件）。
+   本页只补三处交互语义：
+     ① 本页缩略图的动作是「点击切换到该张」，光标用 pointer
+        （共享层有意不写 cursor，交给各页按交互语义声明）；
+     ② 当前正在编辑的那张要可辨识，用标准属性 aria-current 表达，
+        不新增视觉 class；
+     ③ 触摸设备没有 hover，删除按钮常驻可见。
+   已导入态的 dropzone 收缩由共享样式 .dropzone.mini 提供：
+   JS 在 .dz-gallery 显示时给 #annotateImport 加 .mini（与 image-tool 一致）。 */
+.dz-g-list .dz-thumb { cursor: pointer; }
+
+.dz-g-list .dz-thumb[aria-current="true"] {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+@media (hover: none) {
+  .dz-g-list .dz-thumb .dz-rm { opacity: 1; }
+}
+
+/* ---------- 6. 导出进度 ---------- */
+.annotate-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 步进器手动编辑：contenteditable 的 .step-val 聚焦态（页面私有，带 .page 祖先限定，非裸重定义白名单 .step-val） */
+.page .step-val[contenteditable]{ cursor:text; outline:none; border-radius:var(--r-sm); }
+.page .step-val[contenteditable]:focus{ box-shadow:0 0 0 2px var(--ring); background:var(--surface-2); }
+
+/* ---------- 4. 打码画笔光标（半透明圆，直径=笔刷显示直径） ---------- */
+.annotate-stage #annotateCanvas { cursor: crosshair; }
+.annotate-stage.brush-mode #annotateCanvas { cursor: none; }
+/* 关闭态（打码方式再点一次取消）：工具已停用，指针还原普通箭头 */
+.annotate-stage.tool-off #annotateCanvas { cursor: default; }
+#annotateBrushCursor {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 5;
+}

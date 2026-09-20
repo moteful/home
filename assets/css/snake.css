@@ -1,0 +1,200 @@
+/* 贪吃蛇 / Snake —— 游戏分区专用样式表（V0.8.1）
+   作用域限定 .sn-shell，配色变量统一加 sn- 前缀，隔离于站点设计令牌（--text/--accent 等）。
+   不进 lint 内联样式扫描；手机端对齐 blockclear.css 的 body flex 占满模式。
+   保留源码手游壳精华：虚拟摇杆（默认）/ 十字键（备选）/ 设置抽屉。 */
+
+:root{
+  --sn-panel:#2b1c40; --sn-panel2:#221434; --sn-line:#45336a;
+  --sn-accent:#c9f24b; --sn-accent-deep:#86a81e;
+  --sn-text:#f3eefb; --sn-dim:#a99ac6;
+  --sn-c-O:#ffd670; --sn-c-S:#ff6f91; --sn-c-T:#57cc99; --sn-c-I:#48cae4; --sn-c-Z:#9d7bff; --sn-c-L:#e9e9f2;
+  --sn-font-display:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+  --sn-font-body:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;
+}
+.sn-shell *{box-sizing:border-box;margin:0;padding:0}
+.sn-shell{
+  font-family:var(--sn-font-body); color:var(--sn-text);
+  background:linear-gradient(160deg,#1c1229 0%,#170f22 55%,#221537 100%);
+  min-height:100vh; position:relative; overflow-x:hidden;
+  display:flex; flex-direction:column; align-items:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.sn-shell #sky{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.sn-shell .sn-fp{position:absolute;top:-30px;border-radius:2px;animation:sn-drift linear infinite}
+.sn-shell .sn-hidden{display:none}
+@keyframes sn-drift{0%{transform:translateY(-6vh) rotate(0)}100%{transform:translateY(106vh) rotate(320deg)}}
+
+.sn-shell .wrap{position:relative;z-index:1;max-width:1180px;width:100%;padding:16px 18px 30px}
+
+/* ══ 游戏切换卡片条 ══ */
+.sn-shell .sn-game-switch{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;width:100%;max-width:980px}
+.sn-shell .sn-game-card{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--sn-panel);border:1.5px solid var(--sn-line);color:var(--sn-text);text-decoration:none;font-weight:700;font-size:13px;letter-spacing:.02em;transition:transform .15s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;cursor:pointer}
+.sn-shell .sn-game-card i{width:16px;height:16px;stroke-width:2}
+.sn-shell .sn-game-card:hover:not(.soon):not(.on){border-color:var(--sn-accent);color:var(--sn-accent);transform:translateY(-1px)}
+.sn-shell .sn-game-card.on{background:var(--sn-accent);border-color:var(--sn-accent);color:#202a06;box-shadow:0 0 16px rgba(197,255,0,.35),0 4px 0 var(--sn-accent-deep)}
+.sn-shell .sn-game-card.on:hover{transform:translateY(-1px)}
+.sn-shell .sn-game-card.soon{opacity:.55;cursor:not-allowed}
+.sn-shell .sn-game-meta{display:flex;align-items:center;gap:6px;margin-left:auto;font-weight:900;color:var(--sn-accent);font-size:14px}
+
+/* ══ 招牌（已按用户要求移除 DOM，保留 .sn-chip 供游戏切换卡片使用） ══ */
+.sn-shell .sn-chip{font-size:12px;padding:4px 10px;border-radius:999px;background:#1c1029;border:1px solid var(--sn-line);color:var(--sn-dim)}
+
+/* ══ 机柜三栏 ══ */
+.sn-shell .sn-cabinet{display:grid;grid-template-columns:190px minmax(0,1fr) 212px;gap:14px;align-items:start}
+.sn-shell .sn-side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.sn-shell .sn-panel{background:linear-gradient(180deg,var(--sn-panel),var(--sn-panel2));border:1px solid var(--sn-line);border-radius:12px;padding:12px}
+.sn-shell .sn-panel h3{font-family:var(--sn-font-display);font-size:12px;letter-spacing:.22em;color:var(--sn-dim);text-transform:uppercase;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.sn-shell .sn-panel h3::before{content:'';width:8px;height:8px;border-radius:2px;background:var(--sn-accent);box-shadow:0 0 8px var(--sn-accent)}
+.sn-shell .sn-stat{margin:6px 0}
+.sn-shell .sn-stat .k{display:block;font-family:var(--sn-font-display);font-size:10px;letter-spacing:.18em;color:var(--sn-dim)}
+.sn-shell .sn-val{font-family:var(--sn-font-display);font-size:18px;font-weight:700;display:inline-block}
+.sn-shell .sn-val.big{font-size:34px;color:var(--sn-accent);text-shadow:0 0 16px rgba(201,242,75,.35)}
+.sn-shell .sn-val.bump{animation:sn-bump .3s}
+@keyframes sn-bump{0%{transform:scale(1)}35%{transform:scale(1.28)}100%{transform:scale(1)}}
+.sn-shell .sn-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.sn-shell .sn-btn{width:100%;margin-top:8px;cursor:pointer;border:none;border-radius:9px;padding:10px 12px;font-family:var(--sn-font-display);font-weight:700;font-size:14px;letter-spacing:.12em;color:#1c1608;background:linear-gradient(180deg,#d8fa6d,#aede37);box-shadow:0 4px 0 #55701a,0 8px 16px rgba(201,242,75,.22);transition:transform .05s}
+.sn-shell .sn-btn:hover{filter:brightness(1.06)}
+.sn-shell .sn-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #55701a}
+.sn-shell .sn-btn.ghost{background:#33254d;color:var(--sn-text);box-shadow:0 4px 0 #191026}
+.sn-shell .sn-btn.ghost:active{box-shadow:0 1px 0 #191026}
+
+.sn-shell .sn-tglrow{display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-size:13px;color:var(--sn-dim)}
+.sn-shell .sn-tgl{position:relative;width:46px;height:24px;border-radius:999px;border:1px solid;cursor:pointer;flex:none;transition:.15s}
+.sn-shell .sn-tgl::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;transition:.15s}
+.sn-shell .sn-tgl.on{background:#2c3d16;border-color:#5d7a2a}
+.sn-shell .sn-tgl.on::after{left:24px;background:#d3f77a;box-shadow:0 0 8px rgba(211,247,122,.8)}
+.sn-shell .sn-tgl.off{background:#3a1626;border-color:#6b2a44}
+.sn-shell .sn-tgl.off::after{background:#ff9db8}
+
+/* ══ 屏幕 ══ */
+.sn-shell .sn-screen-wrap{display:flex;flex-direction:column;align-items:center;min-width:0;position:relative}
+.sn-shell .sn-board-col{display:flex;flex-direction:column;align-items:center;width:100%;min-width:0}
+.sn-shell .sn-board-box{display:flex;align-items:center;justify-content:center;width:100%;min-height:0}
+.sn-shell .sn-hudbar{display:none}
+.sn-shell .sn-bezel{--bp:10px;position:relative;width:min(100%,720px);padding:var(--bp);border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#342453,#1c102c);border:1px solid var(--sn-line);box-shadow:0 18px 44px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06)}
+.sn-shell .sn-bezel.glow{animation:sn-gl .7s ease-out}
+@keyframes sn-gl{0%{box-shadow:0 18px 44px rgba(0,0,0,.5)}40%{box-shadow:0 0 36px rgba(201,242,75,.55),0 18px 44px rgba(0,0,0,.5),inset 0 0 20px rgba(201,242,75,.18)}100%{box-shadow:0 18px 44px rgba(0,0,0,.5)}}
+.sn-shell .sn-bezel.shake{animation:sn-shk .38s}
+@keyframes sn-shk{0%,100%{transform:translate(0)}20%{transform:translate(-6px,2px)}40%{transform:translate(5px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(3px,2px)}}
+.sn-shell canvas{display:block;width:100%;height:auto;border-radius:8px;background:#170e24;touch-action:none}
+.sn-shell .sn-scanlines{position:absolute;inset:var(--bp);z-index:2;pointer-events:none;border-radius:8px;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+.sn-shell #popLayer{position:absolute;inset:var(--bp);z-index:4;pointer-events:none}
+.sn-shell .sn-stick-layer{position:absolute;inset:0;z-index:5;touch-action:none;pointer-events:none}
+@media (max-width:860px),(pointer:coarse){body.sn-playing:not(.sn-ctl-pad) .sn-stick-layer{pointer-events:auto}}
+.sn-shell .sn-pop{position:absolute;transform:translate(-50%,0);font-family:var(--sn-font-display);font-weight:700;font-size:15px;color:var(--sn-accent);text-shadow:0 0 8px rgba(201,242,75,.6);white-space:nowrap;animation:sn-rise .85s ease-out forwards}
+.sn-shell .sn-pop.big{font-size:20px;color:var(--sn-c-O);text-shadow:0 0 10px rgba(255,214,112,.7)}
+.sn-shell .sn-pop.combo{color:var(--sn-c-I);text-shadow:0 0 8px rgba(72,202,228,.6)}
+@keyframes sn-rise{0%{transform:translate(-50%,0);opacity:0}12%{opacity:1}100%{transform:translate(-50%,-46px);opacity:0}}
+
+/* ══ 覆盖层 ══ */
+.sn-shell .sn-overlay{position:absolute;inset:var(--bp);z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:20px;border-radius:8px;background:rgba(20,10,34,.86);cursor:pointer}
+.sn-shell .sn-overlay.sn-hidden{display:none}
+.sn-shell .sn-ov-kicker{font-family:var(--sn-font-display);font-size:11px;letter-spacing:.5em;color:var(--sn-accent)}
+.sn-shell .sn-ov-title{font-family:var(--sn-font-display);font-size:42px;font-weight:800;letter-spacing:.06em;text-shadow:0 0 22px rgba(201,242,75,.35)}
+.sn-shell .sn-ov-cn{font-size:14px;color:var(--sn-text)}
+.sn-shell .sn-ov-hint{font-size:13px;color:var(--sn-dim)}
+.sn-shell .sn-ov-hint b{color:var(--sn-accent);font-family:var(--sn-font-display)}
+.sn-shell .sn-blink{animation:sn-blink 1.3s infinite}
+.sn-shell .sn-coin{width:34px;height:34px;border-radius:50%;margin:8px 0;background:radial-gradient(circle at 35% 30%,#ffe9a8,#ffd670 55%,#c99b2f);box-shadow:0 0 18px rgba(255,214,112,.5);animation:sn-blink 1.2s infinite}
+.sn-shell .sn-ov-stats{display:grid;grid-template-columns:1fr auto;gap:2px 20px;font-size:12px;min-width:220px}
+.sn-shell .sn-ov-stats span{color:var(--sn-dim);text-align:left}
+.sn-shell .sn-ov-stats b{font-family:var(--sn-font-display);color:var(--sn-accent);text-align:right}
+.sn-shell .sn-badge{font-family:var(--sn-font-display);font-size:12px;letter-spacing:.15em;color:#3a2a05;background:linear-gradient(180deg,#ffe9a8,#ffd670);padding:4px 14px;border-radius:999px;box-shadow:0 0 14px rgba(255,214,112,.6)}
+.sn-shell .sn-badge.sn-hidden{display:none}
+.sn-shell .sn-keys{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;font-size:12px;color:var(--sn-dim)}
+.sn-shell kbd{font-family:var(--sn-font-display);font-size:10px;color:var(--sn-text);background:#1c1029;border:1px solid var(--sn-line);border-bottom-width:2px;border-radius:5px;padding:2px 6px;margin:0 1px}
+.sn-shell .sn-krow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;font-size:12px;color:var(--sn-dim);border-bottom:1px dashed rgba(69,51,106,.5)}
+.sn-shell .sn-krow:last-child{border-bottom:none}
+.sn-shell .sn-list{list-style:none}
+.sn-shell .sn-list li{position:relative;font-size:12px;color:var(--sn-dim);line-height:1.75;padding-left:14px}
+.sn-shell .sn-list li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:1px;background:var(--sn-accent-deep)}
+
+/* ══ 触屏十字键（备选操作） ══ */
+.sn-shell .sn-touchpad{display:none;grid-template-columns:repeat(3,72px);grid-auto-rows:62px;gap:8px;justify-content:center;margin:14px auto 0;user-select:none;grid-template-areas:". u ." "l c r" ". d ."}
+.sn-shell .sn-tbtn{display:flex;align-items:center;justify-content:center;border-radius:12px;border:1px solid var(--sn-line);background:#2b1c40;color:var(--sn-text);font-size:22px;box-shadow:0 4px 0 #150c20;touch-action:none;cursor:pointer;transition:transform .05s}
+.sn-shell .sn-tbtn:active{background:#3b2a58;transform:translateY(2px);box-shadow:0 2px 0 #150c20}
+.sn-shell .sn-tbtn.up{grid-area:u}.sn-shell .sn-tbtn.left{grid-area:l}.sn-shell .sn-tbtn.center{grid-area:c}.sn-shell .sn-tbtn.right{grid-area:r}.sn-shell .sn-tbtn.down{grid-area:d}
+
+/* ══ 虚拟摇杆（手游默认操作） ══ */
+.sn-shell .sn-ctlrow{display:none}
+  .sn-shell .sn-ctlrow{position:relative;z-index:7}
+.sn-shell .sn-stick{position:fixed;left:0;top:0;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;flex:none;touch-action:none;background:radial-gradient(circle at 50% 38%,#2b1c40,#1c1029 72%);border:1px solid var(--sn-line);box-shadow:inset 0 2px 12px rgba(0,0,0,.55);opacity:0;visibility:hidden;pointer-events:none;z-index:50;transition:opacity .12s ease}
+.sn-shell .sn-stick.on{opacity:1;visibility:visible}
+.sn-shell .sn-stick::before{content:'';position:absolute;inset:14px;border-radius:50%;border:1px dashed rgba(169,154,198,.28)}
+.sn-shell .sn-stick-knob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d8fa6d,#aede37 60%,#86a81e);box-shadow:0 4px 10px rgba(0,0,0,.45),0 0 14px rgba(201,242,75,.35);pointer-events:none;transition:transform .06s}
+.sn-shell .sn-ctl-right{display:flex;flex-direction:column;align-items:center;gap:8px}
+.sn-shell .sn-ctl-btn{width:70px;height:70px;border-radius:50%;border:1px solid var(--sn-line);background:#2b1c40;color:var(--sn-text);font-size:24px;box-shadow:0 4px 0 #150c20;touch-action:none;cursor:pointer;flex:none}
+.sn-shell .sn-ctl-btn:active{background:#3b2a58;transform:translateY(2px);box-shadow:0 2px 0 #150c20}
+.sn-shell .sn-ctl-hint{font-size:11px;color:var(--sn-dim);text-align:center;line-height:1.6}
+
+#scrim{position:fixed;inset:0;background:rgba(10,5,18,.55);z-index:55}
+#scrim[hidden]{display:none}
+
+/* ══ 响应式：平板/窄窗 ══ */
+@media (max-width:940px){
+  .sn-shell .wrap{padding:12px 10px 18px}
+  .sn-shell .sn-cabinet{grid-template-columns:1fr}
+  .sn-shell .sn-screen-wrap{order:-1}
+  .sn-shell .sn-board-col{width:100%}
+  .sn-shell .sn-hudbar{width:100%;display:flex;align-items:center;gap:12px;padding:7px 12px;margin-bottom:8px;background:linear-gradient(180deg,var(--sn-panel),var(--sn-panel2));border:1px solid var(--sn-line);border-radius:10px}
+  .sn-shell .sn-hb-item{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:34px}
+  .sn-shell .sn-hb-k{font-family:var(--sn-font-display);font-size:9px;letter-spacing:.14em;color:var(--sn-dim)}
+  .sn-shell .sn-hb-v{font-family:var(--sn-font-display);font-size:17px;font-weight:700}
+  .sn-shell .sn-hb-v.bump{animation:sn-bump .3s}
+  .sn-shell .sn-hb-v.acc{color:var(--sn-accent);font-size:20px;text-shadow:0 0 10px rgba(201,242,75,.35)}
+  .sn-shell .sn-hb-btn{margin-left:auto;width:42px;height:42px;flex:none;display:flex;align-items:center;justify-content:center;padding:0;border-radius:10px;border:1px solid var(--sn-line);background:#1c1029;color:var(--sn-text);font-size:16px;touch-action:none;cursor:pointer}
+  .sn-shell .sn-hb-btn + .sn-hb-btn{margin-left:6px}
+  .sn-shell .sn-hb-btn svg{width:22px;height:22px;color:var(--sn-text);pointer-events:none;display:block}
+  .sn-shell .sn-ctl-btn{display:flex;align-items:center;justify-content:center;padding:0}
+  .sn-shell .sn-ctl-btn svg{width:32px;height:32px;color:var(--sn-text);pointer-events:none;display:block}
+  .sn-shell .sn-tbtn{display:flex;align-items:center;justify-content:center;padding:0}
+  .sn-shell .sn-tbtn svg{width:26px;height:26px;color:var(--sn-text);pointer-events:none;display:block}
+.sn-shell .sn-side{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+}
+@media (max-width:560px){.sn-shell .sn-side{grid-template-columns:1fr}}
+@media (max-width:860px),(pointer:coarse){.sn-shell .sn-touchpad{display:grid}}
+
+/* ══ 手游壳：手机/触屏 = 固定全屏游戏形态 ══ */
+@media (max-width:860px),(pointer:coarse){
+  body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;overscroll-behavior:none}
+  .topbar{flex:0 0 auto}
+  .footer{display:none}
+  .sn-shell{flex:1 1 auto;min-height:0;overflow:hidden}
+  .sn-shell .wrap{flex:1;min-height:0;display:flex;flex-direction:column;padding:8px}
+  .sn-shell .sn-side-right{display:none}
+  .sn-shell .sn-cabinet{display:contents}
+  .sn-shell .sn-screen-wrap{position:relative;flex:1 1 auto;min-height:0}
+  .sn-shell .sn-board-col{flex:0 0 auto;aspect-ratio:1/1;width:100%;max-height:100%;align-items:stretch}
+  .sn-shell .sn-board-box{flex:1 1 auto;min-height:0;align-items:center;justify-content:center}
+  .sn-shell .sn-hudbar{position:relative;z-index:7;width:100%;margin-bottom:8px}
+  .sn-shell .sn-game-switch{order:-2;margin-top:0;margin-bottom:8px}
+  .sn-shell .sn-touchpad{position:static;margin:8px auto 0;padding:8px;border-radius:16px;background:rgba(23,14,34,.35)}
+  .sn-shell .sn-ctlrow{position:relative;z-index:7;display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 2px 0}
+  body.sn-ctl-pad .sn-ctlrow{display:none}
+  body:not(.sn-ctl-pad) .sn-touchpad{display:none}
+  /* 左栏变设置抽屉 */
+  .sn-shell .sn-side-left{display:flex;flex-direction:column;gap:14px;position:fixed;top:0;bottom:0;left:0;width:min(80vw,320px);z-index:60;border-radius:0;margin:0;background:linear-gradient(180deg,#241636,#170f22);border-right:1px solid var(--sn-line);padding:calc(16px + env(safe-area-inset-top,0px)) 14px 16px;overflow-y:auto;transform:translateX(-103%);transition:transform .25s ease}
+  body.sn-sheet-open .sn-side-left{transform:none}
+  .sn-shell .sn-side-left .sn-panel{border:none;background:transparent;padding:0 2px}
+}
+/* 横屏手机：棋盘居左、操作区居右 */
+@media (max-height:560px) and (orientation:landscape){
+  .sn-shell .sn-screen-wrap{flex-direction:row;align-items:stretch;gap:10px}
+  .sn-shell .sn-board-col{flex:1 1 auto;min-width:0;aspect-ratio:auto}
+  .sn-shell .sn-touchpad{margin:0;align-self:center;grid-template-columns:repeat(3,54px);grid-auto-rows:46px;gap:6px;padding:6px}
+  .sn-shell .sn-ctlrow{flex-direction:column;justify-content:center;padding:0}
+  .sn-shell .sn-ctl-hint{display:none}
+  .sn-shell .sn-stick{width:104px;height:104px}
+  .sn-shell .sn-ctl-btn{width:58px;height:58px;font-size:20px}
+}
+
+/* ══ 手机端：卡片条单行横向滚动，游戏名称按钮不折行 ══ */
+@media (max-width:560px){
+  .sn-shell .sn-game-switch{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:8px;max-width:100%;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+  .sn-shell .sn-game-switch::-webkit-scrollbar{display:none}
+  .sn-shell .sn-game-card{flex:0 0 auto;justify-content:center;padding:7px 12px;font-size:12px;white-space:nowrap}
+  .sn-shell .sn-game-card i{width:14px;height:14px;flex:0 0 auto}
+  .sn-shell .sn-game-card span{white-space:nowrap}
+  .sn-shell .sn-game-meta{display:none}
+}

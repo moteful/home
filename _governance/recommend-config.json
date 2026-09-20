@@ -1,0 +1,48 @@
+{
+  "_说明": "内联推荐（V1.1）可编辑配置：决定哪些页面在「下载/导出」成功后弹出推荐窗，并推荐哪些功能（站内内链）。修改后跑 node _governance/inject_site.mjs 重新下发即可生效。recs 只写目标页路径；pageMeta 提供图标与标签键（复用导航键）。\n注意：成功提示的动词（下载/导出）是「按操作」决定的，由工具页脚本调用 Moteful.recommend.show({actionKey:'rec_download'|'rec_export'}) 控制，并经 i18n 的 rec_download/rec_export 渲染——一个页面同时有「单张下载」和「批量/拼接/标注导出」，故不能按页面配置，pages[page].actionKey 字段已移除（原为死配置，改了不生效）。successKey/titleKey/closeKey 仅为备注，真实文案由 popup 模板的 data-i18n 属性绑定对应键。\npageMeta[页面].label = 卡片文字的兜底默认（未注入 i18n / JS 未就绪时显示），运行时文案仍由 labelKey 对应的翻译键决定；缺 label 时回退为页面路径。",
+  "tip": {
+    "url": "https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C",
+    "tipKey": "rec_tip_note",
+    "btnKey": "rec_tip_btn"
+  },
+  "successKey": "rec_done",
+  "titleKey": "rec_title",
+  "closeKey": "rec_close",
+  "pageMeta": {
+    "tools/image-tool.html": {
+      "icon": "images",
+      "labelKey": "nav_m_batch",
+      "label": "基础功能"
+    },
+    "tools/stitch.html": {
+      "icon": "layout-grid",
+      "labelKey": "nav_m_compress",
+      "label": "拼接"
+    },
+    "tools/annotate.html": {
+      "icon": "pencil",
+      "labelKey": "nav_m_annotate",
+      "label": "标注"
+    }
+  },
+  "pages": {
+    "tools/image-tool.html": {
+      "recs": [
+        "tools/stitch.html",
+        "tools/annotate.html"
+      ]
+    },
+    "tools/stitch.html": {
+      "recs": [
+        "tools/image-tool.html",
+        "tools/annotate.html"
+      ]
+    },
+    "tools/annotate.html": {
+      "recs": [
+        "tools/image-tool.html",
+        "tools/stitch.html"
+      ]
+    }
+  }
+}
