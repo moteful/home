@@ -26,6 +26,7 @@
     "tools/image-tool.html",
     "tools/stitch.html",
     "tools/annotate.html",
+    "tools/qrcode.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",

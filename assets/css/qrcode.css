@@ -1,0 +1,7 @@
+/* ============================================================
+   Moteful · tools/qrcode.html 私有样式
+   白名单（设计文档 4.3）：仅 .qrcode-canvas / .qrcode-color
+   颜色/圆角/字号全部继承设计令牌，零硬编码；缺组件走缺失清单流程。
+   ============================================================ */
+.qrcode-canvas{max-width:100%;height:auto;display:block}
+.qrcode-color{display:flex;align-items:center;gap:8px;flex-wrap:wrap}

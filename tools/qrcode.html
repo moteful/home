@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="title_qrcode">二维码生成器 - 在线免费生成 | Moteful</title>
+<meta name="description" content="免费在线二维码生成器，支持文本、网址、WiFi、名片一键生成二维码。全部在浏览器本地生成，内容不上传，保护隐私，无需注册。">
+<meta name="keywords" content="二维码生成器,二维码生成,免费二维码,在线二维码,二维码工具,WiFi二维码,名片二维码,QR码">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="二维码生成器 - 在线免费生成">
+<meta property="og:description" content="免费在线二维码生成器，文本/网址/WiFi/名片一键生成。全部在浏览器本地生成，内容不上传。">
+<meta property="og:url" content="https://moteful.app/tools/qrcode.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="二维码生成器 - 在线免费生成">
+<meta name="twitter:description" content="免费在线二维码生成器，文本/网址/WiFi/名片一键生成。全部在浏览器本地生成，内容不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/tools/qrcode.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "二维码生成器",
+  "alternateName": "Moteful QR Code Generator",
+  "description": "免费在线二维码生成器，支持文本、网址、WiFi、名片一键生成二维码。全部在浏览器本地生成，内容不上传，保护隐私。",
+  "url": "https://moteful.app/tools/qrcode.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "文本 / 网址 / WiFi / 名片四种内容一键生成",
+    "纠错等级 L/M/Q/H 可调",
+    "256 / 512 / 1024 三档尺寸",
+    "经典黑白 / 品牌蓝 / 跟随主题 / 自定义四档配色",
+    "PNG / SVG 两种格式导出",
+    "100% 本地生成，内容不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+<link rel="stylesheet" href="../assets/css/qrcode.css">
+<link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+<script src="../assets/js/moteful.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+</head>
+<body data-nav="image">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <hr class="menu-sep">
+        <a class="menu-item on" href="../tools/qrcode.html"><i data-lucide="link"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head"><h3>Moteful</h3>
+      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <nav class="mnav">
+      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
+           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
+           未接通的入口留空串——不要在此手写 on -->
+      <a class="on" href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+    </nav>
+  </aside>
+</div>
+
+<main class="page">
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="qr_kicker">MOTEFUL · 二维码</div>
+    <h1 data-i18n="qr_title">二维码生成器</h1>
+    <p data-i18n="qr_sub">把文字、网址、WiFi、名片变成二维码，全部在本地生成。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="qr_tag_local">100% 本地生成</span>
+      <span class="tag t-gray" data-i18n="qr_tag_free">免费使用</span>
+    </div>
+  </section>
+
+  <!-- ===== 内容卡 ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="qr_sec_input">二维码内容</h2>
+    <div class="segment" role="radiogroup" aria-label="内容类型">
+      <label class="seg"><input type="radio" name="qrType" value="text" checked><span class="seg-t" data-i18n="qr_type_text">文本</span></label>
+      <label class="seg"><input type="radio" name="qrType" value="url"><span class="seg-t" data-i18n="qr_type_url">网址</span></label>
+      <label class="seg"><input type="radio" name="qrType" value="wifi"><span class="seg-t" data-i18n="qr_type_wifi">WiFi</span></label>
+      <label class="seg"><input type="radio" name="qrType" value="vcard"><span class="seg-t" data-i18n="qr_type_vcard">名片</span></label>
+    </div>
+
+    <!-- 文本模式 -->
+    <div class="row" data-qr-pane="text">
+      <div class="field">
+        <label class="field-label" for="qrText" data-i18n="qr_label_text">内容</label>
+        <textarea id="qrText" class="input" rows="4" data-i18n-aria="qr_ph_text" aria-label="输入要编码的文字…"></textarea>
+      </div>
+    </div>
+
+    <!-- 网址模式 -->
+    <div class="row" data-qr-pane="url" hidden>
+      <div class="field">
+        <label class="field-label" for="qrUrl" data-i18n="qr_label_url">网址</label>
+        <input id="qrUrl" class="input" type="url" inputmode="url" placeholder="https://example.com" data-i18n-ph="qr_ph_url">
+      </div>
+    </div>
+
+    <!-- WiFi 模式 -->
+    <div class="row" data-qr-pane="wifi" hidden>
+      <div class="field">
+        <label class="field-label" for="qrSsid" data-i18n="qr_label_ssid">网络名称(SSID)</label>
+        <input id="qrSsid" class="input" placeholder="例如：Cafe-Guest" data-i18n-ph="qr_ph_ssid">
+      </div>
+      <div class="field">
+        <label class="field-label" for="qrPass" data-i18n="qr_label_pass">密码</label>
+        <input id="qrPass" class="input" type="password" placeholder="WiFi 密码" data-i18n-ph="qr_ph_pass">
+      </div>
+      <div class="field">
+        <span class="field-label" data-i18n="qr_label_enc">加密方式</span>
+        <div class="segment" role="radiogroup" aria-label="加密方式">
+          <label class="seg"><input type="radio" name="qrEnc" value="WPA" checked><span class="seg-t" data-i18n="qr_enc_wpa">WPA/WPA2</span></label>
+          <label class="seg"><input type="radio" name="qrEnc" value="WEP"><span class="seg-t" data-i18n="qr_enc_wep">WEP</span></label>
+          <label class="seg"><input type="radio" name="qrEnc" value="nopass"><span class="seg-t" data-i18n="qr_enc_none">无</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 名片模式 -->
+    <div class="row" data-qr-pane="vcard" hidden>
+      <div class="field">
+        <label class="field-label" for="qrName" data-i18n="qr_label_name">姓名</label>
+        <input id="qrName" class="input" placeholder="张三" data-i18n-ph="qr_ph_name">
+      </div>
+      <div class="field">
+        <label class="field-label" for="qrTel" data-i18n="qr_label_tel">电话</label>
+        <input id="qrTel" class="input" type="tel" inputmode="tel">
+      </div>
+      <div class="field">
+        <label class="field-label" for="qrEmail" data-i18n="qr_label_email">邮箱</label>
+        <input id="qrEmail" class="input" type="email" inputmode="email">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 参数卡 ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="qr_sec_params">输出参数</h2>
+    <div class="row">
+      <div class="field">
+        <span class="field-label" data-i18n="qr_label_ecc">纠错等级</span>
+        <div class="segment" role="radiogroup" aria-label="纠错等级">
+          <label class="seg"><input type="radio" name="qrEcc" value="L"><span class="seg-t" data-i18n="qr_ecc_l">低(7%)</span></label>
+          <label class="seg"><input type="radio" name="qrEcc" value="M" checked><span class="seg-t" data-i18n="qr_ecc_m">中(15%)</span></label>
+          <label class="seg"><input type="radio" name="qrEcc" value="Q"><span class="seg-t" data-i18n="qr_ecc_q">高(25%)</span></label>
+          <label class="seg"><input type="radio" name="qrEcc" value="H"><span class="seg-t" data-i18n="qr_ecc_h">最高(30%)</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label" data-i18n="qr_label_size">尺寸</span>
+        <div class="segment" role="radiogroup" aria-label="尺寸">
+          <label class="seg"><input type="radio" name="qrSize" value="256"><span class="seg-t" data-i18n="qr_size_256">256px(屏幕)</span></label>
+          <label class="seg"><input type="radio" name="qrSize" value="512" checked><span class="seg-t" data-i18n="qr_size_512">512px(推荐)</span></label>
+          <label class="seg"><input type="radio" name="qrSize" value="1024"><span class="seg-t" data-i18n="qr_size_1024">1024px(打印)</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label" data-i18n="qr_label_color">配色</span>
+        <div class="segment" role="radiogroup" aria-label="配色">
+          <label class="seg"><input type="radio" name="qrColor" value="classic" checked><span class="seg-t" data-i18n="qr_color_classic">经典黑白</span></label>
+          <label class="seg"><input type="radio" name="qrColor" value="brand"><span class="seg-t" data-i18n="qr_color_brand">品牌蓝</span></label>
+          <label class="seg"><input type="radio" name="qrColor" value="auto"><span class="seg-t" data-i18n="qr_color_auto">跟随主题</span></label>
+          <label class="seg"><input type="radio" name="qrColor" value="custom"><span class="seg-t" data-i18n="qr_color_custom">自定义</span></label>
+        </div>
+      </div>
+    </div>
+    <!-- 自定义配色（F-15）：选中"自定义"档时显示 -->
+    <div class="row qrcode-color" data-qr-custom hidden>
+      <label class="field-label" for="qrFg" data-i18n="qr_label_fg">前景色</label>
+      <input type="color" id="qrFg" data-qr-fg value="#0F172A">
+      <label class="field-label" for="qrBg" data-i18n="qr_label_bg">背景色</label>
+      <input type="color" id="qrBg" data-qr-bg value="#FFFFFF">
+    </div>
+  </section>
+
+  <!-- ===== 结果卡 ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="qr_sec_result">结果</h2>
+    <div class="row"><div class="result">
+      <canvas id="qrCanvas" class="qrcode-canvas" width="512" height="512" aria-label="生成的二维码" hidden></canvas>
+      <div class="empty" id="qrEmpty">
+        <i data-lucide="grid-3x3"></i>
+        <p data-i18n="qr_empty_title">输入内容后自动生成</p>
+        <p class="muted" data-i18n="qr_empty_desc">内容不会离开你的设备</p>
+      </div>
+    </div></div>
+    <div class="row"><span class="tag t-info" id="qrMeta" hidden data-i18n="qr_meta">版本 {v} · {n}×{n} 模块 · 纠错 {ecc} · {bytes} 字节</span></div>
+    <div class="row">
+      <button type="button" class="btn btn-primary btn-sm" id="qrPng" disabled data-i18n="qr_btn_png">下载 PNG</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="qrSvg" disabled data-i18n="qr_btn_svg">下载 SVG</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.2</span>
+  </div>
+</footer>
+
+</body>
+</html>
