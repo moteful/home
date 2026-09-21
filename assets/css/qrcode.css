@@ -4,11 +4,11 @@
    颜色/圆角/字号全部继承设计令牌，零硬编码；缺组件走缺失清单流程。
    ============================================================ */
 .qrcode-canvas{max-width:100%;height:auto;display:block}
-.qrcode-color{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.qrcode-color .qr-swatch-group{display:flex;align-items:center;gap:8px}
+.qrcode-color{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.qrcode-color .qr-swatch-group{display:flex;align-items:center;gap:32px}
 .qrcode-color .qr-swatches{display:flex;gap:6px}
-.qrcode-color .qr-swatch{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
-.qrcode-color .qr-swatch.is-on{border-color:var(--brand,#0878B4);box-shadow:0 0 0 2px rgba(8,120,180,.18)}
+.qrcode-color .qr-swatch{width:24px;height:24px;border-radius:50%;border:none;cursor:pointer;padding:0}
+.qrcode-color .qr-swatch.is-on{outline:2px solid var(--brand,#0878B4);outline-offset:2px}
 .panel .seg-t{white-space:nowrap;justify-content:center;text-align:center}
 .qrcode-params-row .field{flex:0 0 auto;min-width:0}
 .qrcode-params-row{gap:100px}
