@@ -5,7 +5,7 @@
 一个**零依赖、隐私优先的图片工具站**，完全运行在你的浏览器里。
 图片在本地处理，**永远不会离开你的设备**——不上传、无服务器、无跟踪。
 
-> 状态：**v1.1.1** · 16 个页面 · 双语（中文 / English）
+> 状态：**v1.2.5** · 17 个页面 · 双语（中文 / English）
 
 ---
 
@@ -33,12 +33,13 @@
 | `tools/image-tool.html` | 图片工具（压缩 / 调整尺寸 / 格式转换） |
 | `tools/stitch.html` | 图片拼接（长图合并） |
 | `tools/annotate.html` | 图片标注 |
+| `tools/qrcode.html` | 二维码生成器 |
+| `dev/json.html` | JSON 格式化 / 压缩 / 校验 |
+| `dev/regex.html` | 正则测试（Worker 驱动） |
 | `games/block-clear.html` | 方块消除（休闲解谜） |
 | `games/snake.html` | 贪吃蛇 |
 | `games/sudoku.html` | 数独 |
 | `404.html` | 未找到页面 |
-
-> `dev/` 下的页面是本地调试辅助页，**不发布**（已通过 `.gitignore` 排除）。
 
 ---
 
@@ -75,12 +76,13 @@ node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # 图片工具（image-tool、stitch、annotate）
+├── tools/            # 图片工具（image-tool、stitch、annotate、qrcode）
+├── dev/              # 开发者工具（json、regex）
 ├── games/            # 小游戏（block-clear、snake、sudoku）
 ├── legal/            # about / contact / credits / privacy / terms
 ├── assets/
 │   ├── css/          # moteful.css（只读）+ 模块 css（rec- 命名空间）
-│   ├── js/           # moteful.js（只读）+ 模块（recommend.js …）
+│   ├── js/           # moteful.js（只读）+ 模块（recommend.js、qrcode-core.js …）
 │   └── i18n/         # zh.js / en.js
 ├── _governance/      # inject_site.mjs、lint.mjs、assert_spec.mjs、配置
 └── template.html     # 只读页面骨架

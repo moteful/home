@@ -5,7 +5,7 @@
 A **zero-dependency, privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.1.1** · 16 pages · bilingual (中文 / English)
+> Status: **v1.2.5** · 17 pages · bilingual (中文 / English)
 
 ---
 
@@ -33,12 +33,13 @@ Your images are processed locally and **never leave your device** — no upload,
 | `tools/image-tool.html` | Image tool (compress / resize / convert) |
 | `tools/stitch.html` | Image stitching (long-image merge) |
 | `tools/annotate.html` | Image annotation |
+| `tools/qrcode.html` | QR code generator |
+| `dev/json.html` | JSON formatter / minifier / validator |
+| `dev/regex.html` | Regex tester (Worker-driven) |
 | `games/block-clear.html` | Block Clear (relaxing puzzle) |
 | `games/snake.html` | Snake |
 | `games/sudoku.html` | Sudoku |
 | `404.html` | Not-found page |
-
-> The `dev/` pages are local debugging helpers and are **not published** (excluded via `.gitignore`).
 
 ---
 
@@ -75,12 +76,13 @@ node _governance/assert_spec.mjs           # spec assertions (requires Playwrigh
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # image tools (image-tool, stitch, annotate)
+├── tools/            # image tools (image-tool, stitch, annotate, qrcode)
+├── dev/              # developer tools (json, regex)
 ├── games/            # mini-games (block-clear, snake, sudoku)
 ├── legal/            # about / contact / credits / privacy / terms
 ├── assets/
 │   ├── css/          # moteful.css (read-only) + module css (rec- namespace)
-│   ├── js/           # moteful.js (read-only) + modules (recommend.js …)
+│   ├── js/           # moteful.js (read-only) + modules (recommend.js, qrcode-core.js …)
 │   └── i18n/         # zh.js / en.js
 ├── _governance/      # inject_site.mjs, lint.mjs, assert_spec.mjs, configs
 └── template.html     # read-only page skeleton
