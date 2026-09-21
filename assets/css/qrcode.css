@@ -4,7 +4,7 @@
    颜色/圆角/字号全部继承设计令牌，零硬编码；缺组件走缺失清单流程。
    ============================================================ */
 .qrcode-canvas{max-width:100%;height:auto;display:block}
-.qrcode-color{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.qrcode-color{display:flex;flex-direction:column;gap:16px;margin-top:8px}
 .qrcode-color .qr-swatch-group{display:flex;align-items:center;gap:32px}
 .qrcode-color .qr-swatches{display:flex;gap:6px}
 .qrcode-color .qr-swatch{width:24px;height:24px;border-radius:50%;border:none;cursor:pointer;padding:0}
