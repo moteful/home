@@ -11,5 +11,5 @@
 .qrcode-color .qr-swatch.is-on{outline:2px solid var(--brand,#0878B4);outline-offset:2px}
 .panel .seg-t{white-space:nowrap;justify-content:center;text-align:center}
 .qrcode-params-row .field{flex:0 0 auto;min-width:0}
-.qrcode-params-row{gap:100px}
+.qrcode-params-row{gap:100px;align-items:flex-start}
 .panel .seg input:checked + .seg-t{font-weight:400}
