@@ -427,6 +427,7 @@ window.MOTEFUL_I18N.zh = {
   "nav_m_qrcode": "二维码",
   "nav_m_idphoto": "证件照",
   "nav_m_rename": "重命名",
+  "nav_m_icon": "图标工具",
 
   /* ===== V0.5 拼接工具 stitch ===== */
   "title_stitch": "图片拼接工具 - 在线长图拼接/九宫格拼图 | Moteful",

@@ -427,6 +427,7 @@ window.MOTEFUL_I18N.en = {
   "nav_m_qrcode": "QR Code",
   "nav_m_idphoto": "ID Photo",
   "nav_m_rename": "Rename",
+  "nav_m_icon": "Icon Tool",
 
   /* ===== V0.5 Stitch Tool ===== */
   "title_stitch": "Image Stitch Tool — Online Long Image / Grid Collage | Moteful",
