@@ -10,3 +10,4 @@
 .qrcode-color .qr-swatch{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
 .qrcode-color .qr-swatch.is-on{border-color:var(--brand,#0878B4);box-shadow:0 0 0 2px rgba(8,120,180,.18)}
 .panel .seg-t{white-space:nowrap;justify-content:center;text-align:center}
+.panel .seg input:checked + .seg-t{font-weight:400}
