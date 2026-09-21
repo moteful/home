@@ -1,5 +1,5 @@
 # Moteful — https://moteful.app
-# V1.2.1: 加强恶意扫描路径拦截
+# V1.2.2: P0-2 隐藏文件与目录扫描阻断
 
 User-agent: *
 Allow: /
@@ -11,19 +11,45 @@ Disallow: /publish/
 
 # 敏感文件（防扫描）
 Disallow: /.env
+Disallow: /.env.local
+Disallow: /.env.production
 Disallow: /.git/
 Disallow: /.git
 Disallow: /.gitignore
 Disallow: /.gitattributes
+Disallow: /.gitconfig
 Disallow: /.well-known/
 Disallow: /phpinfo.php
+Disallow: /info.php
+Disallow: /test.php
 Disallow: /wp-admin/
 Disallow: /wp-login.php
+Disallow: /wp-config.php
 Disallow: /administrator/
+Disallow: /admin/
 Disallow: /config.php
+Disallow: /config.yml
 Disallow: /database.yml
+Disallow: /db.php
 Disallow: /.DS_Store
 Disallow: /Thumbs.db
+Disallow: /backup.sql
+Disallow: /backup.zip
+Disallow: /dump.sql
+Disallow: /.htaccess
+Disallow: /.htpasswd
+
+# 目录爆破常见路径
+Disallow: /cgi-bin/
+Disallow: /cgi-sys/
+Disallow: /old/
+Disallow: /tmp/
+Disallow: /temp/
+Disallow: /log/
+Disallow: /logs/
+Disallow: /debug/
+Disallow: /test/
+Disallow: /old-site/
 
 # 隐藏文件通配（Cloudflare WAF 额外拦截）
 Disallow: /.*
