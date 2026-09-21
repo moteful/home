@@ -156,11 +156,90 @@
     download(new Blob([svg], { type: 'image/svg+xml' }), 'moteful-qrcode.svg'); if (window.Moteful && Moteful.recommend) Moteful.recommend.show({ actionKey: 'rec_download' });
   }
 
+  /* ---------- 配置记忆（localStorage） ----------
+     记住用户上次的参数设置，下次打开自动恢复。
+     存储键名：moteful.qrcode.config
+     存储内容：编码类型、纠错等级、尺寸、配色、自定义前景/背景色
+     保存策略：参数变化后防抖300ms保存 */
+  var CONFIG_KEY = 'moteful.qrcode.config';
+  var CONFIG_VERSION = 1;
+  var saveTimer = 0;
+
+  function loadConfig() {
+    try {
+      var raw = localStorage.getItem(CONFIG_KEY);
+      if (!raw) return false;
+      var cfg = JSON.parse(raw);
+      if (!cfg || cfg.__version !== CONFIG_VERSION) return false;
+      // 恢复编码类型
+      if (cfg.qrType) {
+        var el = document.querySelector('input[name="qrType"][value="' + cfg.qrType + '"]');
+        if (el) el.checked = true;
+      }
+      // 恢复纠错等级
+      if (cfg.qrEcc) {
+        var el = document.querySelector('input[name="qrEcc"][value="' + cfg.qrEcc + '"]');
+        if (el) el.checked = true;
+      }
+      // 恢复尺寸
+      if (cfg.qrSize) {
+        var el = document.querySelector('input[name="qrSize"][value="' + cfg.qrSize + '"]');
+        if (el) el.checked = true;
+      }
+      // 恢复配色
+      if (cfg.qrColor) {
+        var el = document.querySelector('input[name="qrColor"][value="' + cfg.qrColor + '"]');
+        if (el) el.checked = true;
+      }
+      // 恢复自定义色
+      if (cfg.fg) {
+        var sw = document.querySelector('.qr-swatch[data-fg="' + cfg.fg + '"]');
+        if (sw) {
+          document.querySelectorAll('.qr-swatch[data-fg]').forEach(function(s){s.classList.remove('is-on')});
+          sw.classList.add('is-on');
+        }
+      }
+      if (cfg.bg) {
+        var sw = document.querySelector('.qr-swatch[data-bg="' + cfg.bg + '"]');
+        if (sw) {
+          document.querySelectorAll('.qr-swatch[data-bg]').forEach(function(s){s.classList.remove('is-on')});
+          sw.classList.add('is-on');
+        }
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function saveConfigNow() {
+    try {
+      var fgEl = document.querySelector('.qr-swatch[data-fg].is-on');
+      var bgEl = document.querySelector('.qr-swatch[data-bg].is-on');
+      var cfg = {
+        __version: CONFIG_VERSION,
+        qrType: getChecked('qrType'),
+        qrEcc: getChecked('qrEcc'),
+        qrSize: getChecked('qrSize'),
+        qrColor: getChecked('qrColor'),
+        fg: fgEl ? fgEl.getAttribute('data-fg') : null,
+        bg: bgEl ? bgEl.getAttribute('data-bg') : null
+      };
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
+    } catch (e) {}
+  }
+
+  function scheduleSaveConfig() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveConfigNow, 300);
+  }
+
   function bind() {
+    loadConfig(); // 页面加载时恢复上次配置
     document.querySelectorAll('input[name], #qrText, #qrUrl, #qrSsid, #qrPass, #qrName, #qrTel, #qrEmail')
       .forEach(function (el) {
-        el.addEventListener('input', update);
-        el.addEventListener('change', update);
+        el.addEventListener('input', function(){ update(); scheduleSaveConfig(); });
+        el.addEventListener('change', function(){ update(); scheduleSaveConfig(); });
       });
     document.querySelectorAll('.qr-swatch').forEach(function (sw) {
       sw.addEventListener('click', function () {
@@ -168,6 +247,7 @@
         grp.forEach(function (s) { s.classList.remove('is-on'); });
         sw.classList.add('is-on');
         update();
+        scheduleSaveConfig();
       });
     });
     $('qrPng').addEventListener('click', exportPng);
