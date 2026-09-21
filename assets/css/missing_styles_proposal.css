@@ -29,6 +29,12 @@
 /* ---- 6. .row 内进度条伸缩（规范 demo 以内联 max-width 示范，工作区需 flex:1） ---- */
 #progressWrap .progress{flex:1;min-width:120px}
 
+/* ---- 6.1 seg 按钮激活时不改字重，避免文字宽度变化导致按钮跳动 ----
+   根因：moteful.css .seg input:checked + .seg-t 设 font-weight:600，
+   激活时文字变粗变宽，按钮宽度跟着变，视觉上跳动。
+   修复：激活时保持 400 字重，只靠背景色区分选中态。 */
+.seg input:checked + .seg-t{font-weight:400}
+
 /* ---- 7. 窄屏微调（规范 24 章已覆盖 field 纵排等主体，以下为工作区特有） ---- */
 @media (max-width:768px){
   .dropzone{min-height:160px;padding:24px 16px}
