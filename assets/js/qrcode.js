@@ -58,7 +58,11 @@
     var mode = getChecked('qrColor') || 'classic';
     if (mode === 'classic') return PALETTES.classic;
     if (mode === 'brand') return PALETTES.brand;
-    if (mode === 'custom') return { fg: $('qrFg').value, bg: $('qrBg').value };
+    if (mode === 'custom') {
+      var fg = document.querySelector('.qr-swatch[data-fg].is-on');
+      var bg = document.querySelector('.qr-swatch[data-bg].is-on');
+      return { fg: fg ? fg.getAttribute('data-fg') : '#0F172A', bg: bg ? bg.getAttribute('data-bg') : '#FFFFFF' };
+    }
     return themeColors(); // auto
   }
 
@@ -120,6 +124,7 @@
 
   function download(blob, name) {
     var a = document.createElement('a');
+    a.style.display = 'none';
     a.href = URL.createObjectURL(blob);
     a.download = name;
     document.body.appendChild(a);
@@ -152,11 +157,19 @@
   }
 
   function bind() {
-    document.querySelectorAll('input[name], #qrText, #qrUrl, #qrSsid, #qrPass, #qrName, #qrTel, #qrEmail, #qrFg, #qrBg')
+    document.querySelectorAll('input[name], #qrText, #qrUrl, #qrSsid, #qrPass, #qrName, #qrTel, #qrEmail')
       .forEach(function (el) {
         el.addEventListener('input', update);
         el.addEventListener('change', update);
       });
+    document.querySelectorAll('.qr-swatch').forEach(function (sw) {
+      sw.addEventListener('click', function () {
+        var grp = sw.parentNode.querySelectorAll('.qr-swatch');
+        grp.forEach(function (s) { s.classList.remove('is-on'); });
+        sw.classList.add('is-on');
+        update();
+      });
+    });
     $('qrPng').addEventListener('click', exportPng);
     $('qrSvg').addEventListener('click', exportSvg);
     update();

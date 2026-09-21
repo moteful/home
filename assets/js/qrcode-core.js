@@ -204,6 +204,17 @@
         set(row + r, col + c, dark);
       }
     }
+    // 预留格式信息位置（占位，placeData 跳过，否则数据错位）
+    var fiL = [ [8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],
+                [7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8] ];
+    for (var k = 0; k < fiL.length; k++) {
+      var fr = fiL[k][0], fc = fiL[k][1];
+      if (m[fr][fc] === null) m[fr][fc] = false;
+    }
+    for (var k2 = 0; k2 < 7; k2++) {
+      if (m[8][size-1-k2] === null) m[8][size-1-k2] = false;
+      if (m[size-1-k2][8] === null) m[size-1-k2][8] = false;
+    }
     return m;
   }
 
