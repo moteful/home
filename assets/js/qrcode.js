@@ -9,14 +9,8 @@
 
   // 配色档
   var PALETTES = {
-    classic: { fg: '#0F172A', bg: '#FFFFFF' },
-    brand: { fg: '#0878B4', bg: '#FFFFFF' }
+    classic: { fg: '#0F172A', bg: '#FFFFFF' }
   };
-
-  function themeColors() {
-    var dark = document.documentElement.dataset.theme === 'dark';
-    return dark ? { fg: '#F2FAFF', bg: '#0F172A' } : { fg: '#0F172A', bg: '#FFFFFF' };
-  }
 
   function getChecked(name) {
     var el = document.querySelector('input[name="' + name + '"]:checked');
@@ -57,13 +51,12 @@
   function palette() {
     var mode = getChecked('qrColor') || 'classic';
     if (mode === 'classic') return PALETTES.classic;
-    if (mode === 'brand') return PALETTES.brand;
     if (mode === 'custom') {
       var fg = document.querySelector('.qr-swatch[data-fg].is-on');
       var bg = document.querySelector('.qr-swatch[data-bg].is-on');
       return { fg: fg ? fg.getAttribute('data-fg') : '#0F172A', bg: bg ? bg.getAttribute('data-bg') : '#FFFFFF' };
     }
-    return themeColors(); // auto
+    return PALETTES.classic;
   }
 
   // 类型切换：显示对应 pane
