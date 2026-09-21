@@ -23,6 +23,11 @@
       "icon": "pencil",
       "labelKey": "nav_m_annotate",
       "label": "标注"
+    },
+    "tools/qrcode.html": {
+      "icon": "scan",
+      "labelKey": "nav_m_qrcode",
+      "label": "二维码"
     }
   },
   "pages": {
@@ -42,6 +47,13 @@
       "recs": [
         "tools/image-tool.html",
         "tools/stitch.html"
+      ]
+    },
+    "tools/qrcode.html": {
+      "recs": [
+        "tools/image-tool.html",
+        "tools/stitch.html",
+        "tools/annotate.html"
       ]
     }
   }

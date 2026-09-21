@@ -317,6 +317,22 @@
     var dataCw = buildCodewords(v, ec, bytes.length, bytes);
     var cw = interleave(v, ec, dataCw);
     var size = 17 + 4 * v;
+    // 预计算对齐图案中心（掩码时需排除其 5x5 区域）
+    var apList = [];
+    var apAll = ALIGN[v - 1];
+    for (var ai = 0; ai < apAll.length; ai++) for (var aj = 0; aj < apAll.length; aj++) {
+      var ar = apAll[ai], ac = apAll[aj];
+      if ((ar <= 8 && ac <= 8) || (ar <= 8 && ac >= size - 8) || (ar >= size - 8 && ac <= 8)) continue;
+      apList.push([ar, ac]);
+    }
+    function isReserved(r, c, size) {
+      if ((r < 9 && c < 9) || (r < 9 && c >= size - 8) || (r >= size - 8 && c < 9)) return true;
+      if (r === 6 || c === 6) return true;
+      for (var k = 0; k < apList.length; k++) {
+        if (Math.abs(r - apList[k][0]) <= 2 && Math.abs(c - apList[k][1]) <= 2) return true;
+      }
+      return false;
+    }
     var best = null;
     for (var mask = 0; mask < 8; mask++) {
       var m = makeMatrix(v);
@@ -324,8 +340,7 @@
       // 应用掩码
       for (var r = 0; r < size; r++) for (var c = 0; c < size; c++) {
         if (m[r][c] === null) continue;
-        var reserved = (r < 9 && c < 9) || (r < 9 && c >= size - 8) || (r >= size - 8 && c < 9) || r === 6 || c === 6;
-        if (!reserved) {
+        if (!isReserved(r, c, size)) {
           var flip;
           switch (mask) {
             case 0: flip = (r + c) % 2 === 0; break;

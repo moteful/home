@@ -135,7 +135,7 @@
 
   function exportPng() {
     if (!lastResult) return;
-    $('qrCanvas').toBlob(function (b) { download(b, 'moteful-qrcode.png'); });
+    $('qrCanvas').toBlob(function (b) { download(b, 'moteful-qrcode.png'); if (window.Moteful && Moteful.recommend) Moteful.recommend.show({ actionKey: 'rec_download' }); });
   }
 
   function exportSvg() {
@@ -153,7 +153,7 @@
     });
     // 前景色统一设上（合并 fill）
     svg = parts.join('').replace(/<rect x=/g, '<rect fill="' + pal.fg + '" x=');
-    download(new Blob([svg], { type: 'image/svg+xml' }), 'moteful-qrcode.svg');
+    download(new Blob([svg], { type: 'image/svg+xml' }), 'moteful-qrcode.svg'); if (window.Moteful && Moteful.recommend) Moteful.recommend.show({ actionKey: 'rec_download' });
   }
 
   function bind() {
