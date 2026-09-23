@@ -1,8 +1,17 @@
 <div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
   <div class="drawer-mask" data-dclose></div>
   <aside class="drawer-panel">
-    <div class="drawer-head"><h3>{{BRAND}}</h3>
-      <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
+    <div class="drawer-head">
+      <h3>{{BRAND}}</h3>
+      <div class="drawer-head-actions">
+        <button class="btn btn-icon btn-sm" id="drawerLangBtn" aria-label="Switch Language">
+          <i data-lucide="globe"></i>
+        </button>
+        <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
 
     <!-- 一级分类胶囊（横向滚动） -->
     <div class="drawer-tabs">
@@ -109,7 +118,8 @@
     if(path.indexOf('/tools/') >= 0) return 'image';
     if(path.indexOf('/dev/') >= 0) return 'dev';
     if(path.indexOf('/games/') >= 0) return 'games';
-    return 'home';
+    // 首页默认显示图片工具分类（主要功能）
+    return 'image';
   }
 
   // 页面加载时，默认给对应分类胶囊加上 on 类
@@ -161,5 +171,15 @@
     var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
     if(tab) tab.click();
   };
+
+  // 抽屉内语言切换按钮
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('#drawerLangBtn');
+    if(!btn) return;
+    // 切换语言：zh ↔ en
+    var current = (typeof readLang === 'function') ? readLang() : 'zh';
+    var next = (current === 'en') ? 'zh' : 'en';
+    if(typeof setLang === 'function') setLang(next);
+  });
 })();
 </script>

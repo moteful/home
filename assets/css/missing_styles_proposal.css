@@ -595,3 +595,10 @@ body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
 .grid-card.soon i{
   color:var(--text-3);
 }
+
+/* 抽屉头部按钮组 */
+.drawer-head-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
