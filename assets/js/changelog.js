@@ -14,7 +14,9 @@
    * 获取当前站点语言（与全站 i18n 保持一致）
    */
   function getCurrentLang() {
-    // 从 localStorage 读取用户选择的语言
+    // 优先用 i18n.js 设置的全局变量
+    if (window.currentLang === 'zh' || window.currentLang === 'en') return window.currentLang;
+    // 其次从 localStorage 读取
     var saved = localStorage.getItem('moteful-lang');
     if (saved === 'zh' || saved === 'en') return saved;
     // 默认跟随浏览器语言
@@ -97,4 +99,11 @@
   } else {
     init();
   }
+
+  // 监听站点语言切换事件，切换时重新渲染更新日志
+  document.addEventListener('moteful:langchange', function (e) {
+    var lang = (e.detail && e.detail.lang) || getCurrentLang();
+    var changelog = getChangelogData(lang);
+    renderChangelog(changelog);
+  });
 })();
