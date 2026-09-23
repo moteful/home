@@ -4,9 +4,15 @@
     <div class="drawer-head">
       <h3>{{BRAND}}</h3>
       <div class="drawer-head-actions">
-        <button class="btn btn-icon btn-sm" id="drawerLangBtn" aria-label="Switch Language">
-          <i data-lucide="globe"></i>
-        </button>
+        <div class="pop">
+          <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+            <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+          </button>
+          <div class="pop-menu">
+            <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+            <button class="menu-item lang-item" data-lang="en">English</button>
+          </div>
+        </div>
         <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
           <i data-lucide="x"></i>
         </button>
@@ -122,12 +128,17 @@
     return 'image';
   }
 
-  // 页面加载时，默认给对应分类胶囊加上 on 类
+  // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
   function setDefaultTab(){
     var tabName = getDefaultTab();
     var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
     tabs.forEach(function(t){
       t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+    // 同时显示对应 pane
+    var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
     });
   }
 
@@ -171,15 +182,5 @@
     var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
     if(tab) tab.click();
   };
-
-  // 抽屉内语言切换按钮
-  document.addEventListener('click', function(e){
-    var btn = e.target.closest('#drawerLangBtn');
-    if(!btn) return;
-    // 切换语言：zh ↔ en
-    var current = (typeof readLang === 'function') ? readLang() : 'zh';
-    var next = (current === 'en') ? 'zh' : 'en';
-    if(typeof setLang === 'function') setLang(next);
-  });
 })();
 </script>
