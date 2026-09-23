@@ -493,3 +493,105 @@ body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
 .mnav-soon .tag{
   margin-left:auto;
 }
+
+/* ============================================================
+  [抽屉菜单宫格式] 手机端抽屉菜单重构
+  一级分类横向胶囊 + 二级工具宫格平铺
+  ============================================================ */
+
+/* 横向分类胶囊 */
+.drawer-tabs{
+  display:flex;
+  gap:8px;
+  padding:0 16px 12px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-bottom:1px solid var(--border);
+}
+.drawer-tab{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 14px;
+  border-radius:var(--r-full);
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text-2);
+  font-size:13px;
+  font-weight:500;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:all .15s ease;
+  flex:none;
+}
+.drawer-tab:hover{
+  border-color:var(--primary);
+  color:var(--primary);
+}
+.drawer-tab.on{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:#fff;
+}
+.drawer-tab i{
+  width:16px;
+  height:16px;
+}
+
+/* 宫格布局 */
+.drawer-grid{
+  padding:16px;
+  overflow-y:auto;
+  flex:1;
+}
+.drawer-pane{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:12px;
+  display:none;
+}
+.drawer-pane.active{
+  display:grid;
+}
+
+/* 宫格卡片 */
+.grid-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  padding:16px 8px;
+  border-radius:var(--r-md);
+  border:1px solid var(--border);
+  background:var(--surface);
+  text-decoration:none;
+  color:var(--text);
+  font-size:12px;
+  text-align:center;
+  transition:all .15s ease;
+}
+.grid-card:hover{
+  border-color:var(--primary);
+  background:var(--primary-soft);
+}
+.grid-card i{
+  width:24px;
+  height:24px;
+  color:var(--primary);
+}
+.grid-card span{
+  line-height:1.3;
+}
+
+/* 即将推出卡片：虚线边框 + 半透明 */
+.grid-card.soon{
+  border-style:dashed;
+  opacity:.5;
+}
+.grid-card.soon:hover{
+  border-color:var(--border);
+  background:var(--surface);
+}
+.grid-card.soon i{
+  color:var(--text-3);
+}

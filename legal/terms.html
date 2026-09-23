@@ -204,46 +204,210 @@ document.documentElement.dataset.theme=v;})();</script>
   <aside class="drawer-panel">
     <div class="drawer-head"><h3>Moteful</h3>
       <button class="btn btn-icon btn-sm" data-dclose aria-label="Close"><i data-lucide="x"></i></button></div>
-    <nav class="mnav">
-      <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
-           如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
-           未接通的入口留空串——不要在此手写 on -->
 
+    <!-- 一级分类胶囊（横向滚动） -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab on" data-dtab="home"><i data-lucide="layout-grid"></i><span data-i18n="nav_home">首页</span></button>
+      <button class="drawer-tab" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
+      <button class="drawer-tab" data-dtab="dev"><i data-lucide="code"></i><span data-i18n="nav_dev_group">开发者工具</span></button>
+      <button class="drawer-tab" data-dtab="games"><i data-lucide="gamepad-2"></i><span data-i18n="nav_games_group">小游戏</span></button>
+    </div>
+
+    <!-- 二级工具宫格 -->
+    <nav class="drawer-grid" id="drawerGrid">
       <!-- 首页 -->
-      <a href="../index.html" data-nav-page="index.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_home">首页</span></a>
+      <div class="drawer-pane" data-pane="home">
+        <a href="../index.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_home">首页</span>
+        </a>
+        <a href="../support.html" class="grid-card">
+          <i data-lucide="heart"></i>
+          <span data-i18n="foot_support">Support</span>
+        </a>
+      </div>
 
-      <!-- 图片工具分组 -->
-      <div class="mnav-group-label" data-i18n="nav_image_group">图片工具</div>
-      <a href="../tools/image-tool.html" data-nav-page="tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">批量处理</span></a>
-      <a href="../tools/stitch.html" data-nav-page="tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">长图拼接</span></a>
-      <a href="../tools/annotate.html" data-nav-page="tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">打码标注</span></a>
-      <a href="../tools/qrcode.html" data-nav-page="tools/qrcode.html"><i data-lucide="scan-qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
-      <div class="mnav-sep"></div>
-      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
-      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
-      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="vector-square"></i><span data-i18n="nav_m_icon">图标工具</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      <!-- 图片工具 -->
+      <div class="drawer-pane" data-pane="image">
+        <a href="../tools/image-tool.html" class="grid-card">
+          <i data-lucide="images"></i>
+          <span data-i18n="nav_m_batch">批量处理</span>
+        </a>
+        <a href="../tools/stitch.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_m_compress">长图拼接</span>
+        </a>
+        <a href="../tools/annotate.html" class="grid-card">
+          <i data-lucide="pencil"></i>
+          <span data-i18n="nav_m_annotate">打码标注</span>
+        </a>
+        <a href="../tools/qrcode.html" class="grid-card">
+          <i data-lucide="qr-code"></i>
+          <span data-i18n="nav_m_qrcode">二维码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="user"></i>
+          <span data-i18n="nav_m_idphoto">证件照</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="list"></i>
+          <span data-i18n="nav_m_rename">重命名</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="vector-square"></i>
+          <span data-i18n="nav_m_icon">图标工具</span>
+        </a>
+      </div>
 
-      <!-- 开发者工具分组 -->
-      <div class="mnav-group-label" data-i18n="nav_dev_group">开发者工具</div>
-      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">JSON 格式化</span></a>
-      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">正则测试</span></a>
-      <div class="mnav-sep"></div>
-      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
-      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
-      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      <!-- 开发者工具 -->
+      <div class="drawer-pane" data-pane="dev">
+        <a href="../dev/json.html" class="grid-card">
+          <i data-lucide="code"></i>
+          <span data-i18n="nav_dev_json">JSON 格式化</span>
+        </a>
+        <a href="../dev/regex.html" class="grid-card">
+          <i data-lucide="regex"></i>
+          <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="clock"></i>
+          <span data-i18n="nav_dev_timestamp">时间戳转换</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="binary"></i>
+          <span data-i18n="nav_dev_base64">Base64 编解码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="palette"></i>
+          <span data-i18n="nav_dev_color">颜色代码转换</span>
+        </a>
+      </div>
 
-      <!-- 游戏分组 -->
-      <div class="mnav-group-label" data-i18n="nav_games_group">小游戏</div>
-      <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
-      <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
-      <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
-
-      <!-- 支持 -->
-      <div class="mnav-sep"></div>
-      <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
+      <!-- 小游戏 -->
+      <div class="drawer-pane" data-pane="games">
+        <a href="../games/block-clear.html" class="grid-card">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="nav_g_blockclear">方块消除</span>
+        </a>
+        <a href="../games/snake.html" class="grid-card">
+          <i data-lucide="worm"></i>
+          <span data-i18n="nav_g_snake">贪吃蛇</span>
+        </a>
+        <a href="../games/sudoku.html" class="grid-card">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_g_sudoku">数独</span>
+        </a>
+      </div>
     </nav>
   </aside>
 </div>
+
+<script>
+(function(){
+  // 根据当前路径，判断应该显示哪个分类
+  function getDefaultTab(){
+    var path = location.pathname;
+    if(path.indexOf('/tools/') >= 0) return 'image';
+    if(path.indexOf('/dev/') >= 0) return 'dev';
+    if(path.indexOf('/games/') >= 0) return 'games';
+    return 'home';
+  }
+
+  // 页面加载时，默认给对应分类胶囊加上 on 类
+  function setDefaultTab(){
+    var tabName = getDefaultTab();
+    var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+    tabs.forEach(function(t){
+      t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+  }
+
+  // DOM 加载完成后立即设置默认高亮
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setDefaultTab);
+  } else {
+    setDefaultTab();
+  }
+
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 触发对应 tab（会自动切换 pane）
+    var tabName = getDefaultTab();
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
+
+<script>
+(function(){
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 根据当前路径判断应该显示哪个分类
+    var path = location.pathname;
+    var tabName = 'home';
+    if(path.indexOf('/tools/') >= 0) tabName = 'image';
+    else if(path.indexOf('/dev/') >= 0) tabName = 'dev';
+    else if(path.indexOf('/games/') >= 0) tabName = 'games';
+
+    // 触发对应 tab
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
 
 <button class="to-top" id="toTop" aria-label="Back to top"><i data-lucide="arrow-up"></i></button>
 <div id="toasts" aria-live="polite"></div>
