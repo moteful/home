@@ -12,6 +12,25 @@
 
 const CHANGELOG_ZH = [
   {
+    "version": "v1.3.1",
+    "date": "2026-09-25",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "首页更新日志卡片"
+        ]
+      },
+      {
+        "title": "优化",
+        "points": [
+          "移动端触控体验优化",
+          "修复手机端抽屉菜单功能缺失问题"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.2.5",
     "date": "2026-09-23",
     "sections": [

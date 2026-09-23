@@ -7,6 +7,25 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v1.3.1",
+    "date": "2026-09-25",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Homepage changelog card"
+        ]
+      },
+      {
+        "title": "Improved",
+        "points": [
+          "Mobile touch experience optimization",
+          "Fixed missing mobile drawer menu options"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.2.5",
     "date": "2026-09-23",
     "sections": [
