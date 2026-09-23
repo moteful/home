@@ -453,3 +453,14 @@ body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
 .logo-mark{background:none;box-shadow:none;border-radius:0}
 .logo-mark img{display:block;width:34px;height:34px}
 .logo:hover .logo-mark{transform:scale(1.06)}
+
+/* ============================================================
+  [首页展示卡片] 纯展示卡片无 hover 效果
+  背景：首页「Why Moteful」三个卡片只是纯展示，没有跳转链接，
+        但继承了 .tool-card 的 hover 效果（浮起 + 边框变色 + 发光），
+        用户会误以为可以点击。
+  方案：给这类卡片加 .tool-card-static 类，覆盖 hover 效果。
+  ============================================================ */
+.tool-card-static{cursor:default}
+.tool-card-static:hover{transform:none;border-color:var(--border);box-shadow:var(--shadow)}
+.tool-card-static:hover .tool-ico{transform:none}
