@@ -602,3 +602,40 @@ body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
   align-items:center;
   gap:8px;
 }
+
+/* ============================================================
+  [移动端触控优化] P1 性能 & 用户体验优化
+  ============================================================ */
+
+/* 触摸滚动惯性（iOS Safari 顺滑滚动） */
+.drawer-grid,
+.mnav,
+body{
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 去掉移动端点击时的灰色高亮框 */
+a, button, .btn, .grid-card, .drawer-tab{
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 移动端按钮最小触控尺寸（Apple HIG 标准 44×44px） */
+@media (max-width: 768px){
+  .btn,
+  .drawer-tab,
+  .grid-card{
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* 宫格卡片触控区域扩大 */
+  .grid-card{
+    padding: 20px 8px;
+  }
+}
+
+/* iOS Safari 100vh 修复（地址栏问题） */
+@supports (-webkit-touch-callout: none){
+  .drawer-panel{
+    height: -webkit-fill-available;
+  }
+}

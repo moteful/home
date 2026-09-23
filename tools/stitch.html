@@ -419,6 +419,75 @@ document.documentElement.dataset.theme=v;})();</script>
     return 'image';
   }
 
+  // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+  function setDefaultTab(){
+    var tabName = getDefaultTab();
+    var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+    tabs.forEach(function(t){
+      t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+    // 同时显示对应 pane
+    var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+    });
+  }
+
+  // DOM 加载完成后立即设置默认高亮
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setDefaultTab);
+  } else {
+    setDefaultTab();
+  }
+
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 触发对应 tab（会自动切换 pane）
+    var tabName = getDefaultTab();
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
+
+<script>
+(function(){
+  // 根据当前路径，判断应该显示哪个分类
+  function getDefaultTab(){
+    var path = location.pathname;
+    if(path.indexOf('/tools/') >= 0) return 'image';
+    if(path.indexOf('/dev/') >= 0) return 'dev';
+    if(path.indexOf('/games/') >= 0) return 'games';
+    // 首页默认显示图片工具分类（主要功能）
+    return 'image';
+  }
+
   // 页面加载时，默认给对应分类胶囊加上 on 类
   function setDefaultTab(){
     var tabName = getDefaultTab();
@@ -981,7 +1050,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v1.3.0</span>
+    <span data-i18n="foot_version">v1.3.1</span>
   </div>
 </footer>
 
