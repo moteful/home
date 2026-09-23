@@ -3,8 +3,8 @@
  *
  * 编辑说明：
  * - 按时间倒序排列，新版本放在数组最前面
- * - 每个版本包含 4 个字段：version / date / title / points
- * - points 是更新要点列表，每条一行
+ * - 每个版本包含：version / date / sections
+ * - sections 是分类列表，每个分类有 title 和 points
  * - 改完中文后告诉 AI，AI 会自动翻译生成 en.js
  *
  * 注意：只展示用户能感知到的功能，技术细节、内部实现、服务器配置不要写
@@ -13,26 +13,44 @@
 const CHANGELOG_ZH = [
   {
     "version": "v1.2.5",
-    "date": "2026-09-22",
-    "title": "二维码生成器上线",
-    "points": [
-      "新增二维码生成器工具，纯本地生成不上传"
+    "date": "2026-09-23",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "二维码生成器（图片工具 - 二维码）"
+        ]
+      },
+      {
+        "title": "优化",
+        "points": [
+          "加强安全防护"
+        ]
+      }
     ]
   },
   {
     "version": "v1.1.0",
     "date": "2026-09-17",
-    "title": "下载后推荐功能",
-    "points": [
-      "导出成功后弹出推荐功能卡片"
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "下载后推荐功能"
+        ]
+      }
     ]
   },
   {
     "version": "v1.0.0",
     "date": "2026-09-15",
-    "title": "站点正式上线",
-    "points": [
-      "新增 404 兜底页"
+    "sections": [
+      {
+        "title": "站点搭建",
+        "points": [
+          "创建基础功能页面"
+        ]
+      }
     ]
   }
 ];

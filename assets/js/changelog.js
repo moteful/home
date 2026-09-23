@@ -59,21 +59,31 @@
 
     var html = '';
     recent.forEach(function (item, idx) {
-      // 每个版本最多显示 3 条要点
-      var points = item.points.slice(0, 3);
-      var pointsHtml = points.map(function (p) {
-        return '<li>' + p + '</li>';
-      }).join('');
-
+      // 渲染版本头：版本标签 + 日期
       html += '' +
         '<div class="version-item">' +
         '  <span class="tag t-blue mono">' + item.version + '</span>' +
-        '  <span class="muted" style="margin-left:8px">' + item.date + '</span>' +
-        '  <div style="margin-top:4px;font-weight:500">' + item.title + '</div>' +
-        '  <ul class="version-points" style="margin-top:6px;padding-left:20px">' +
-             pointsHtml +
-        '  </ul>' +
-        '</div>';
+        '  <span class="muted" style="margin-left:8px">' + item.date + '</span>';
+
+      // 渲染各个分类（新增 / 优化 / 站点搭建 等）
+      if (item.sections && item.sections.length > 0) {
+        item.sections.forEach(function (section, sIdx) {
+          var points = section.points || [];
+          var pointsHtml = points.map(function (p) {
+            return '<li>' + p + '</li>';
+          }).join('');
+
+          var marginTop = sIdx === 0 ? 'margin-top:6px' : 'margin-top:12px';
+
+          html += '' +
+            '  <div style="' + marginTop + ';font-weight:500">' + section.title + '</div>' +
+            '  <ul class="version-points" style="margin-top:4px;padding-left:20px">' +
+                 pointsHtml +
+            '  </ul>';
+        });
+      }
+
+      html += '</div>';
 
       // 不是最后一个就加分隔线
       if (idx < recent.length - 1) {
