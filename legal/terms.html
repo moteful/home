@@ -208,12 +208,38 @@ document.documentElement.dataset.theme=v;})();</script>
       <!-- 当前页高亮：各项用 data-nav-page 声明匹配串（空格分隔多个；以 / 结尾视为目录前缀，
            如 tools/ 覆盖该目录全部页面）。inject_site.mjs 下发时按当前页命中项写 class="on"，
            未接通的入口留空串——不要在此手写 on -->
-      <a href="../index.html" data-nav-page="index.html tools/"><i data-lucide="layout-grid"></i><span data-i18n="nav_image">Image Tools</span></a>
-      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev">Developer</span></a>
-      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+
+      <!-- 首页 -->
+      <a href="../index.html" data-nav-page="index.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_home">首页</span></a>
+
+      <!-- 图片工具分组 -->
+      <div class="mnav-group-label" data-i18n="nav_image_group">图片工具</div>
+      <a href="../tools/image-tool.html" data-nav-page="tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">批量处理</span></a>
+      <a href="../tools/stitch.html" data-nav-page="tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">长图拼接</span></a>
+      <a href="../tools/annotate.html" data-nav-page="tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">打码标注</span></a>
+      <a href="../tools/qrcode.html" data-nav-page="tools/qrcode.html"><i data-lucide="scan-qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+      <div class="mnav-sep"></div>
+      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="vector-square"></i><span data-i18n="nav_m_icon">图标工具</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+
+      <!-- 开发者工具分组 -->
+      <div class="mnav-group-label" data-i18n="nav_dev_group">开发者工具</div>
+      <a href="../dev/json.html" data-nav-page="dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">JSON 格式化</span></a>
+      <a href="../dev/regex.html" data-nav-page="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">正则测试</span></a>
+      <div class="mnav-sep"></div>
+      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      <a href="#" aria-disabled="true" class="mnav-soon"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+
+      <!-- 游戏分组 -->
+      <div class="mnav-group-label" data-i18n="nav_games_group">小游戏</div>
       <a href="../games/block-clear.html" data-nav-page="games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
       <a href="../games/snake.html" data-nav-page="games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
       <a href="../games/sudoku.html" data-nav-page="games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+
+      <!-- 支持 -->
+      <div class="mnav-sep"></div>
       <a href="../support.html" data-nav-page="support.html"><i data-lucide="heart"></i><span data-i18n="foot_support">Support</span></a>
     </nav>
   </aside>

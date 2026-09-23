@@ -464,3 +464,32 @@ body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
 .tool-card-static{cursor:default}
 .tool-card-static:hover{transform:none;border-color:var(--border);box-shadow:var(--shadow)}
 .tool-card-static:hover .tool-ico{transform:none}
+
+/* ============================================================
+  [抽屉菜单分组] 手机端抽屉菜单分组样式
+  背景：抽屉菜单从扁平列表改成分组形式，需要分组标题、分隔线、即将推出样式
+  ============================================================ */
+.mnav-group-label{
+  font-size:11px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--text-3);
+  padding:16px 16px 8px;
+  margin-top:8px;
+}
+.mnav-group-label:first-child{
+  margin-top:0;
+  padding-top:0;
+}
+.mnav-sep{
+  height:1px;
+  background:var(--border);
+  margin:8px 16px;
+}
+.mnav-soon{
+  opacity:.6;
+}
+.mnav-soon .tag{
+  margin-left:auto;
+}
