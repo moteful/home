@@ -156,18 +156,17 @@ document.documentElement.dataset.theme=v;})();
     </div>
   </section>
 
-  <!-- 更新动态区块：2026-09-17 按需求隐藏（正式上线后再根据实际情况开放并修改内容）。
-       恢复方法：删掉本区块上方的注释开标记行，以及区块末尾的注释闭标记行，即可恢复显示。
-  <section class="panel">
+  <section class="panel" id="changelog-section">
     <h2 class="sec-title" data-i18n="news_head">What's new</h2>
     <p class="muted" style="margin-bottom:16px" data-i18n="news_sub">Changelog of the Moteful toolbox.</p>
-    <div class="stack">
-      <div class="row"><span class="tag t-blue mono">V0.0</span><span class="muted" data-i18n="log_v00">Site framework, navigation and theme system online. Image Toolkit framework in place.</span></div>
-      <hr class="divider">
-      <div class="row"><span class="tag t-blue mono">V0.1</span><span class="muted" data-i18n="log_v01">Batch compress, format convert and resize — coming next.</span></div>
+    <div class="stack" id="changelog-list">
+      <!-- 由 assets/js/changelog.js 动态渲染 -->
+    </div>
+    <div style="margin-top:12px">
+      <a href="#changelog" id="changelog-view-all" data-i18n="news_view_all" style="font-size:13px;color:var(--primary);font-weight:500">查看全部 →</a>
     </div>
   </section>
-  -->
+
 
 </main>
 
@@ -199,7 +198,7 @@ document.documentElement.dataset.theme=v;})();
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v1.2.5</span>
+    <span data-i18n="foot_version">v1.3.0</span>
   </div>
 </footer>
 
@@ -231,6 +230,9 @@ document.documentElement.dataset.theme=v;})();
 <script src="assets/i18n/en.js"></script>
 <script src="assets/i18n/zh.js"></script>
 <script src="assets/i18n/i18n.js"></script>
+<script src="assets/i18n/update/zh.js"></script>
+<script src="assets/i18n/update/en.js"></script>
+<script src="assets/js/changelog.js" defer></script>
 <script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
 </body>
 </html>
