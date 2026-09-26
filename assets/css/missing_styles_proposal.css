@@ -687,3 +687,6 @@ a, button, .btn, .grid-card, .drawer-tab{
     height:44px;
   }
 }
+
+/* V1.4.3：全 PNG 时质量滑块锁定态（PNG 无损→质量无效果） */
+.moteful-quality-locked{opacity:.5;cursor:not-allowed}

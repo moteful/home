@@ -7,6 +7,26 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v1.4.3",
+    "date": "2026-09-27",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Page sharing feature (copy the page with its parameter settings)",
+          "Footer: GitHub repo link, email link, and share button"
+        ]
+      },
+      {
+        "title": "Improved",
+        "points": [
+          "Inline recommendation layout adjustments",
+          "Fixed the bug that prevented the image tool from being used"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.3.1",
     "date": "2026-09-25",
     "sections": [

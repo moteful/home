@@ -206,7 +206,13 @@
             tf.keepRatio, tf.rotate, tf.flipH, tf.flipV, tf.cropMode, tf.cropRatio,
             tf.mTop, tf.mBottom, tf.mLeft, tf.mRight].join('|');
   }
-  var DEFAULT_SIG = '';   // V1.4.3：默认参数签名（init 时在配置恢复前捕获），pristine 判定基线
+  /* V1.4.3.1：不含质量的参数签名——质量对 PNG 无效（无损重编码），不计入「已调整参数」判定 */
+  function paramSigNoQuality() {
+    return [fmt, tf.sizeMode, tf.percent, tf.longest, tf.width, tf.height,
+            tf.keepRatio, tf.rotate, tf.flipH, tf.flipV, tf.cropMode, tf.cropRatio,
+            tf.mTop, tf.mBottom, tf.mLeft, tf.mRight].join('|');
+  }
+  var DEFAULT_SIG_NOQ = '';   // V1.4.3：默认参数签名（不含质量；init 时在配置恢复前捕获），pristine 判定基线——质量对 PNG 无效不计入调整
   function markStale() {
     var dirty = !(lastSig === '' || lastSig === paramSig());
     if (dirty) {
@@ -218,7 +224,7 @@
       });
       if (n) { usedNames = {}; lastSig = ''; }  // 结果作废：清空名字池
     }
-    refreshDynamic();   // V0.3.3：参数变更统一刷新「开始处理」禁用态（pristine 判定依赖 lastSig/DEFAULT_SIG）
+    refreshDynamic();   // V0.3.3：参数变更统一刷新「开始处理」禁用态（pristine 判定依赖 lastSig/DEFAULT_SIG_NOQ）
     scheduleSaveConfig();  // V0.4：配置记忆 - 参数变化后防抖保存到 localStorage
   }
 
@@ -263,12 +269,14 @@
 
     if (!dropzone) return;
 
-    // V1.4.3：配置恢复前捕获默认签名——恢复的配置 / URL 预设只要 ≠ 默认即视为已调整参数
-    DEFAULT_SIG = paramSig();
     // V0.4：配置记忆 - 从 localStorage 恢复上次的参数设置
+    // V1.4.3：配置恢复前捕获出厂默认（不含质量）——恢复的配置 / URL 预设只要 ≠ 默认即视为已调整参数；
+    // 质量对 PNG 无效（无损），不计入判定
+    DEFAULT_SIG_NOQ = paramSigNoQuality();
     var hasSavedConfig = loadConfig();
     // V1.4：URL 参数预设（优先级高于 localStorage 配置；非法参数静默回退）
     applyUrlParams();
+
     // 同步格式按钮选中状态
     if (segBtns) segBtns.forEach(function (b) {
       b.classList.toggle('on', b.getAttribute('data-fmt') === fmt);
@@ -280,6 +288,8 @@
     // 同步变换参数和子控件显示
     syncUIFromTf();
     syncSubCtl();
+    // V1.4.3：加载即按当前（含恢复出的配置）刷新「开始处理」禁用态
+    refreshDynamic();
 
     // 导入：点击 / 键盘；V0.3 画廊态下点击缩略图不重复触发文件选择
     dropzone.addEventListener('click', function (e) {
@@ -891,7 +901,16 @@
       // 队列中出现 PNG 以外的格式（JPG/WebP 等）→ 未改参数也启用（默认压缩有收益）。
       var pendingN = 0;
       queue.forEach(function (it) { if (it.status === 'ready' || it.status === 'error') pendingN++; });
-      var pristine = (lastSig === '') && (paramSig() === DEFAULT_SIG) && allPng();
+      // V1.4.3 修复：PNG 无损→质量无效果；allPng 时把质量回退默认并锁定控件，避免「记住的质量」误导
+      if (allPng()) {
+        quality = 80;
+        if (qualityEl) { qualityEl.value = '80'; qualityEl.disabled = true; qualityEl.classList.add('moteful-quality-locked'); }
+        if (qualityVal) qualityVal.textContent = '80%';
+        if (pngNote) setHidden(pngNote, false);
+      } else {
+        if (qualityEl) { qualityEl.disabled = false; qualityEl.classList.remove('moteful-quality-locked'); }
+      }
+      var pristine = (lastSig === '') && (paramSigNoQuality() === DEFAULT_SIG_NOQ) && allPng();
       processBtn.disabled = processing || !queue.length || !pendingN || pristine;
     }
     // ZIP 按钮：有可下载结果才可用（打包中不抢控制权）
@@ -1391,5 +1410,4 @@
   else initHiddenGuard();
 
   /* V0.3：关页面兜底清除（静默，不弹提示） */  // TEMP-DEBUG-V143
-  window.__dbg143 = { sig: paramSig, def: function () { return DEFAULT_SIG; }, q: function () { return quality; } };
 })();
