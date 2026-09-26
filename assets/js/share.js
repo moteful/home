@@ -231,10 +231,8 @@
     if (canNativeShare()) {
       $('[data-share-native]', panel).hidden = false;
     }
-    // 二维码：仅在 qrcode-core.js 已加载时可用
-    if (window.MotefulQREncoder) {
-      $('[data-share-qr]', panel).hidden = false;
-    }
+    // 二维码：始终可用（V1.4.2：qrcode-core.js 点击时懒加载，未加载页首次点击动态注入）
+    $('[data-share-qr]', panel).hidden = false;
     // 面板动作
     $('[data-share-native]', panel).addEventListener('click', nativeShare);
     $('[data-share-copy]', panel).addEventListener('click', function () { copyUrl(false); });
@@ -307,33 +305,45 @@
     navigator.share({ title: tr('share_title'), text: text, url: url })['catch'](function () {});
   }
 
+  /* ---------- qrcode-core 懒加载（V1.4.2：仅工具页直接引用；全站页脚分享面板首次点击时动态注入） ---------- */
+  function loadQrCore(cb) {
+    if (window.MotefulQREncoder) { cb(); return; }
+    var s = document.createElement('script');
+    s.src = (pagePath().indexOf('/') >= 0 ? '../' : '') + 'assets/js/qrcode-core.js';
+    s.async = true;
+    s.onload = function () { if (window.MotefulQREncoder) cb(); else toast(tr('share_copy_fallback'), 'warning'); };
+    s.onerror = function () { toast(tr('share_copy_fallback'), 'warning'); };
+    document.head.appendChild(s);
+  }
+
   /* ---------- 二维码（F-05：编码 = 含参完整 URL，与 F-08 同源） ---------- */
   function generateQr() {
-    if (!window.MotefulQREncoder) return;
-    var url = buildShareUrl(currentPage(), 90);  // 二维码专用限长：超 90 字符降级 core 参数，保证版本低、模块大可扫
-    var res = window.MotefulQREncoder.encode(url, 'M');
-    if (!res || res.error) { toast(tr('share_copy_fallback'), 'warning'); return; }
-    var wrap = $('[data-share-qr-wrap]', panel);
-    var canvas = $('[data-share-qr-canvas]', panel);
-    if (!wrap || !canvas) return;
-    var quiet = 4;
-    var n = res.size + quiet * 2;
-    var outPx = 512;  // 高像素输出：截图/保存场景清晰，屏幕显示由 CSS 控制
-    var cell = outPx / n;
-    canvas.width = outPx; canvas.height = outPx;
-    canvas.setAttribute('aria-label', tr('share_qrcode'));
-    canvas.setAttribute('alt', tr('share_qrcode'));
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, outPx, outPx);
-    ctx.fillStyle = '#0F172A';
-    for (var r = 0; r < res.size; r++) for (var c = 0; c < res.size; c++) {
-      if (res.modules[r][c]) {
-        ctx.fillRect((c + quiet) * cell, (r + quiet) * cell, Math.ceil(cell), Math.ceil(cell));
+    loadQrCore(function () {
+      var url = buildShareUrl(currentPage(), 90);  // 二维码专用限长：超 90 字符降级 core 参数，保证版本低、模块大可扫
+      var res = window.MotefulQREncoder.encode(url, 'M');
+      if (!res || res.error) { toast(tr('share_copy_fallback'), 'warning'); return; }
+      var wrap = $('[data-share-qr-wrap]', panel);
+      var canvas = $('[data-share-qr-canvas]', panel);
+      if (!wrap || !canvas) return;
+      var quiet = 4;
+      var n = res.size + quiet * 2;
+      var outPx = 512;  // 高像素输出：截图/保存场景清晰，屏幕显示由 CSS 控制
+      var cell = outPx / n;
+      canvas.width = outPx; canvas.height = outPx;
+      canvas.setAttribute('aria-label', tr('share_qrcode'));
+      canvas.setAttribute('alt', tr('share_qrcode'));
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, outPx, outPx);
+      ctx.fillStyle = '#0F172A';
+      for (var r = 0; r < res.size; r++) for (var c = 0; c < res.size; c++) {
+        if (res.modules[r][c]) {
+          ctx.fillRect((c + quiet) * cell, (r + quiet) * cell, Math.ceil(cell), Math.ceil(cell));
+        }
       }
-    }
-    wrap.hidden = false;
-    toast(tr('share_generate_qrcode'), 'success');
+      wrap.hidden = false;
+      toast(tr('share_generate_qrcode'), 'success');
+    });
   }
 
   /* ---------- URL 参数套用（F-07 / F-13，DOM 事件驱动，无需侵入页面状态） ----------
@@ -428,6 +438,10 @@
     });
     // 结果区主入口
     $$('[data-share-open]').forEach(function (b) {
+      b.addEventListener('click', open);
+    });
+    // 页脚分享图标（V1.4.2）：全站页脚全局入口，无条件显示，点击打开分享面板
+    $$('[data-footer-share]').forEach(function (b) {
       b.addEventListener('click', open);
     });
     setShareable(shareable);

@@ -93,6 +93,9 @@ const REC_CFG = JSON.parse(fs.readFileSync(path.join(GOV, 'recommend-config.json
 const recTpl = fs.readFileSync(path.join(GOV, 'site-blocks', 'recommend-popup.html'), 'utf8').replace(/\n$/, '');
 const REC_CSS = 'assets/css/recommend.css';
 const REC_JS = 'assets/js/recommend.js';
+// 分享体系（V1.4 / V1.4.2）：全站加载 share.css / share.js（页脚分享图标为全局入口；qrcode-core 仅工具页直接引用，其余页由 share.js 点击懒加载）
+const SHARE_CSS = 'assets/css/share.css';
+const SHARE_JS = 'assets/js/share.js';
 function renderRecBlock(page) {
   const cfg = (REC_CFG.pages || {})[page];
   if (!cfg) return null;
@@ -213,6 +216,29 @@ for (const page of cfg.pages) {
     drifted.push(page);
     if (!CHECK) { html = html.replace(recRe, '</body>'); changed.push('rec-remove'); }
     else changed.push('rec-block(应移除)');
+  }
+  // 分享体系（V1.4.2）：share.css / share.js 全站下发（页脚分享图标全局入口；4 工具页已手写引用 → 幂等跳过）
+  // 幂等判断用宽松正则（匹配 href/src 的任意属性写法，如 defer / async / 无属性），避免注入双份
+  const sharePre = path.dirname(page) === '.' ? '' : '../';
+  const shareCssTag = '<link rel="stylesheet" href="' + sharePre + SHARE_CSS + '">';
+  const shareJsTag = '<script src="' + sharePre + SHARE_JS + '" defer></script>';
+  const hasShareCss = new RegExp('<link[^>]+href=["\']' + sharePre + SHARE_CSS + '["\']').test(html);
+  const hasShareJs = new RegExp('<script[^>]+src=["\']' + sharePre + SHARE_JS + '["\']').test(html);
+  if (!hasShareCss) {
+    const cssAnchorRe2 = /<link[^>]+rel="stylesheet"[^>]+href="[^"]+"[^>]*>/i;
+    const m = html.match(cssAnchorRe2);
+    if (!m) { console.error('✗ ' + page + ': 找不到 rel=stylesheet 链接锚点（share-css）'); process.exit(1); }
+    drifted.push(page);
+    if (!CHECK) { html = html.replace(cssAnchorRe2, m[0] + '\n  ' + shareCssTag); changed.push('share-css'); }
+    else changed.push('share-css(缺失)');
+  }
+  if (!hasShareJs) {
+    const jsAnchorRe2 = /<script[^>]+src="[^"]+"[^>]*>\s*<\/script>/i;
+    const m = html.match(jsAnchorRe2);
+    if (!m) { console.error('✗ ' + page + ': 找不到 script 锚点（share-js）'); process.exit(1); }
+    drifted.push(page);
+    if (!CHECK) { html = html.replace(jsAnchorRe2, m[0] + '\n  ' + shareJsTag); changed.push('share-js'); }
+    else changed.push('share-js(缺失)');
   }
   if (!CHECK && changed.length) fs.writeFileSync(file, html);
   console.log(`${changed.length ? (CHECK ? '△' : '✓') : '·'} ${page}${changed.length ? ' → ' + changed.join(', ') : ''}`);
