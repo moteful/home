@@ -1,0 +1,101 @@
+/*!
+ * Moteful 分享体系私有样式（V1.4）
+ * 命名一律 share- 前缀；不裸重定义白名单组件（.drawer/.btn/.input 覆盖均带 .share- 作用域）。
+ * 规范：间距 4 的倍数 / 字号阶梯（12-13-14-15-22-32）/ 圆角四档（6-10-16-999）/ 颜色走 CSS 变量。
+ */
+
+/* ---------- 顶栏次入口（≤480px 收进抽屉） ---------- */
+.share-topbar-btn { margin-right: 4px; }
+.share-topbar-btn.share-on { color: var(--primary, #0284C7); }
+@media (max-width: 480px) {
+  .share-topbar-btn { display: none !important; }
+}
+
+/* ---------- 抽屉入口（移动端菜单内） ---------- */
+.share-drawer-entry {
+  display: block;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+/* ---------- 分享面板：≤768px 底部抽屉；≥768px 居中 modal（复用 drawer 组件覆写） ---------- */
+.share-drawer.bottom .drawer-panel {
+  max-width: 520px;
+  border-radius: 16px 16px 0 0;
+}
+.share-body { display: grid; gap: 12px; padding-bottom: 12px; }
+.share-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; }
+.share-qr-btn { justify-content: center; width: 100%; }
+.share-qr-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border, #DCE5F0);
+  border-radius: 10px;
+}
+.share-qr-canvas {
+  width: 240px;
+  height: 240px;
+  border-radius: 8px;
+  background: #FFFFFF;
+}
+.share-qr-tip { margin: 0; color: var(--muted, #64748B); font-size: 13px; }
+.share-link-input { width: 100%; font-size: 13px; }
+
+@media (min-width: 768px) {
+  .share-drawer.bottom { pointer-events: none; }
+  .share-drawer.bottom .drawer-mask { opacity: 0; }
+  .share-drawer.bottom.open .drawer-mask { opacity: 1; }
+  .share-drawer.bottom .drawer-panel {
+    pointer-events: auto;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    width: 400px;
+    max-width: 400px;
+    max-height: 80dvh;
+    transform: translate(-50%, -50%) scale(0.96);
+    border: 1px solid var(--border, #DCE5F0);
+    border-radius: 16px;
+    opacity: 0;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+  .share-drawer.bottom.open .drawer-panel {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---------- 结果区主入口行 ---------- */
+.share-entry-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border, #DCE5F0);
+}
+
+/* ---------- 对比卡片预览弹窗 ---------- */
+.share-preview-card { max-width: 420px; }
+.share-preview-img-wrap {
+  display: grid;
+  justify-items: center;
+  padding: 12px 0;
+}
+.share-preview-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border, #DCE5F0);
+}
+
+/* ---------- 触控友好：≤390px 面板主按钮加高 ---------- */
+@media (max-width: 390px) {
+  .share-body .btn { min-height: 48px; }
+  .share-2col .btn { min-height: 48px; }
+}

@@ -12,7 +12,10 @@
     "assets/i18n/i18n.js",
     "assets/js/blockclear.js",
     "assets/js/snake.js",
-    "assets/js/sudoku.js"
+    "assets/js/sudoku.js",
+    "assets/js/qrcode-core.js",
+    "assets/js/share.js",
+    "assets/js/compare-card.js"
   ],
   "newArchPages": [
     "index.html",

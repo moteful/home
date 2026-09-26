@@ -78,6 +78,8 @@
     var result = empty ? null : window.MotefulQREncoder.encode(text, getChecked('qrEcc') || 'M');
 
     var hasQr = result && !result.error;
+    // V1.4：二维码生成状态 → 顶栏次入口高亮
+    if (window.MotefulShare) window.MotefulShare.setShareable(!!hasQr);
     $('qrCanvas').hidden = !hasQr;
     $('qrEmpty').hidden = !!hasQr;
     $('qrPng').disabled = !hasQr;

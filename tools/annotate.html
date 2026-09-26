@@ -69,6 +69,7 @@ document.documentElement.dataset.theme=v;})();</script>
 <link rel="stylesheet" href="../assets/css/moteful.css">
   <link rel="stylesheet" href="../assets/css/recommend.css">
 <link rel="stylesheet" href="../assets/css/annotate.css">
+  <link rel="stylesheet" href="../assets/css/share.css">
 <script src="../assets/js/moteful.js" defer></script>
   <script src="../assets/js/recommend.js" defer></script>
 <script src="../assets/i18n/en.js" defer></script>
@@ -78,10 +79,14 @@ document.documentElement.dataset.theme=v;})();</script>
 <script src="../assets/js/zip.js" defer></script>
 <script src="../assets/js/annotate-core.js" defer></script>
 <script src="../assets/js/compare.js" defer></script>
+<script src="../assets/js/qrcode-core.js" defer></script>
+<script src="../assets/js/share.js" defer></script>
 <script src="../assets/js/annotate.js" defer></script>
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+  <meta name="moteful-siteurl" content="https://moteful.app">
+  <meta name="moteful-pagepath" content="tools/annotate">
 </head>
 
 <body data-nav="image">
@@ -133,6 +138,8 @@ document.documentElement.dataset.theme=v;})();</script>
     </span>
   </nav>
   <div class="nav-acts">
+    <!-- V1.4：分享次入口（share.js 加载页显示；≤480px 收进抽屉） -->
+    <button type="button" class="btn btn-ghost btn-sm share-topbar-btn" data-share-topbar hidden data-i18n-aria="share_nav" aria-label="Share"><i data-lucide="share-2"></i><span data-i18n="share_nav">Share</span></button>
     <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
     <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
     <!-- 主题：胶囊双钮 -->
@@ -177,6 +184,8 @@ document.documentElement.dataset.theme=v;})();</script>
       </div>
     </div>
 
+    <!-- V1.4：分享当前页入口（share.js 加载页显示） -->
+    <button type="button" class="btn btn-secondary btn-sm share-drawer-entry" data-share-entry hidden><i data-lucide="share-2"></i><span data-i18n="share_drawer_entry">分享当前页</span></button>
     <!-- 一级分类胶囊（横向滚动） -->
     <div class="drawer-tabs">
       <button class="drawer-tab on" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
@@ -1073,7 +1082,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v1.3.1</span>
+    <span data-i18n="foot_version">v1.4.0</span>
   </div>
 </footer>
 

@@ -265,6 +265,8 @@
 
     // V0.4：配置记忆 - 从 localStorage 恢复上次的参数设置
     var hasSavedConfig = loadConfig();
+    // V1.4：URL 参数预设（优先级高于 localStorage 配置；非法参数静默回退）
+    applyUrlParams();
     // 同步格式按钮选中状态
     if (segBtns) segBtns.forEach(function (b) {
       b.classList.toggle('on', b.getAttribute('data-fmt') === fmt);
@@ -548,6 +550,9 @@
     });
 
     syncUIFromTf(); syncSubCtl(); updateOutSize(); refreshDynamic();
+
+    // V1.4：分享体系接入（hooks 注册 / 对比卡片按钮绑定 / 顶栏状态）
+    shareSetup();
   }
 
   /* ---------- V0.2：UI 与参数同步 ---------- */
@@ -903,8 +908,120 @@
     }
     renderQueue(); updateOutSize();
     renderDropzone();   // V0.3.2：语言切换后同步画廊计数等动态文案（dzCount 不走 data-i18n 属性系统）
+    // V1.4：成果可分享状态（有完成项 → 顶栏次入口高亮）
+    if (window.MotefulShare) {
+      var anyDone = false;
+      queue.forEach(function (it) { if (it.status === 'done') anyDone = true; });
+      window.MotefulShare.setShareable(anyDone);
+    }
   }
 
+  /* ---------- V1.4：分享体系接入 ---------- */
+  // URL 参数预设：数值范围已在 share.js 校验，此处只做映射与 UI 同步
+  function applyUrlParams() {
+    if (!window.MotefulShare) return;
+    var sp = window.MotefulShare.parseUrlParams('image-tool');
+    if (!sp || !sp.had) return;
+    var p = sp.params;
+    if (p.q != null) quality = p.q;
+    if (p.f != null) fmt = p.f === 'jpeg' ? 'image/jpeg' : p.f === 'png' ? 'image/png' : p.f === 'webp' ? 'image/webp' : 'keep';
+    if (p.s != null) tf.sizeMode = p.s;
+    if (p.p != null) tf.percent = p.p;
+    if (p.l != null) tf.longest = p.l;
+    if (p.w != null) tf.width = p.w;
+    if (p.h != null) tf.height = p.h;
+    if (p.r != null) tf.rotate = p.r;
+    if (p.fh != null) tf.flipH = !!p.fh;
+    if (p.fv != null) tf.flipV = !!p.fv;
+    if (p.c != null) tf.cropMode = p.c;
+    if (p.cr != null) tf.cropRatio = p.cr;
+    if (p.mt != null) tf.mTop = p.mt;
+    if (p.mb != null) tf.mBottom = p.mb;
+    if (p.ml != null) tf.mLeft = p.ml;
+    if (p.mr != null) tf.mRight = p.mr;
+    // 同步 UI：格式分段 / 质量滑块 / 变换控件
+    if (segBtns) segBtns.forEach(function (b) {
+      var on = b.getAttribute('data-fmt') === fmt;
+      b.classList.toggle('on', on);
+      var ci = b.querySelector('input[type=radio]');
+      if (ci) ci.checked = !!on;
+    });
+    if (qualityEl) qualityEl.value = String(quality);
+    if (qualityEl) qualityEl.style.setProperty('--p', Math.max(0, Math.min(100, quality)) + '%');
+    if (qualityVal) qualityVal.textContent = quality + '%';
+    syncUIFromTf(); syncSubCtl(); updateOutSize();
+    if (window.MotefulShare) window.MotefulShare.notifyApplied();
+  }
+
+  // 格式 → URL 短码（keep / jpeg / png / webp）
+  function fmtShort() {
+    if (fmt === 'image/jpeg') return 'jpeg';
+    if (fmt === 'image/png') return 'png';
+    if (fmt === 'image/webp') return 'webp';
+    return 'keep';
+  }
+
+  var _ccUrls = [];
+  function openCompareCard() {
+    if (!window.MotefulCompareCard) return;
+    var it = null;
+    for (var i = queue.length - 1; i >= 0; i--) {
+      if (queue[i].status === 'done' && queue[i].blob && queue[i].file) { it = queue[i]; break; }
+    }
+    if (!it) { flashNote(tr('share_no_result'), 'warning'); return; }
+    var pct = Math.max(0, Math.round(calcRate(it)));
+    var savedText = tr('compare_card_saved') + ' ' + pct + '%';
+    _ccUrls.forEach(function (u) { URL.revokeObjectURL(u); }); _ccUrls = [];
+    var beforeUrl = URL.createObjectURL(it.file);
+    var afterUrl = URL.createObjectURL(it.blob);
+    _ccUrls.push(beforeUrl, afterUrl);
+    window.MotefulCompareCard.create({
+      beforeUrl: beforeUrl,
+      afterUrl: afterUrl,
+      beforeLabel: tr('compare_before'),
+      afterLabel: tr('compare_after'),
+      savedText: savedText
+    }).then(function (canvas) {
+      window.MotefulCompareCard.preview(canvas, {
+        filename: baseName(it.name) + '-对比.png',
+        onClose: function () {
+          _ccUrls.forEach(function (u) { URL.revokeObjectURL(u); }); _ccUrls = [];
+        }
+      });
+    }, function () {
+      flashNote(tr('compare_copy_fallback'), 'warning');
+    });
+  }
+
+  function shareSetup() {
+    if (!window.MotefulShare) return;
+    window.MotefulShare.setShareable(hasAnyDone());
+    window.MotefulShare.register('image-tool', {
+      getParams: function () {
+        return {
+          q: quality, f: fmtShort(), s: tf.sizeMode, p: tf.percent, l: tf.longest,
+          w: tf.width, h: tf.height, r: tf.rotate, fh: tf.flipH ? 1 : 0, fv: tf.flipV ? 1 : 0,
+          c: tf.cropMode, cr: tf.cropRatio, mt: tf.mTop, mb: tf.mBottom, ml: tf.mLeft, mr: tf.mRight
+        };
+      },
+      shareText: function () {
+        var it = null;
+        for (var i = queue.length - 1; i >= 0; i--) {
+          if (queue[i].status === 'done' && queue[i].blob) { it = queue[i]; break; }
+        }
+        if (!it) return '';
+        var pct = Math.max(0, Math.round(calcRate(it)));
+        return String(tr('share_text_template')).replace('{size}', formatBytes(it.newSize)).replace('{pct}', pct + '%');
+      }
+    });
+    var ccBtn = $('compareCardBtn');
+    if (ccBtn) ccBtn.addEventListener('click', openCompareCard);
+  }
+  function hasAnyDone() {
+    var any = false;
+    queue.forEach(function (it) { if (it.status === 'done') any = true; });
+    return any;
+  }
   /* ---------- 预估耗时（V0.2） ---------- */
   var etaStart = 0;
   function etaReset() { etaStart = Date.now(); }

@@ -159,6 +159,15 @@ for (const page of cfg.pages) {
       changed.push('gap-css');
     } else changed.push('gap-css(缺失)');
   }
+  // 站点分享 URL 事实源（V1.4.1）：siteUrl + 页面路径注入 head，share.js 读取构造正式分享链接（https://moteful.app/tools/image-tool）
+  const siteMeta = '  <meta name="moteful-siteurl" content="' + (cfg.siteUrl || 'https://moteful.app') + '">\n  <meta name="moteful-pagepath" content="' + (path.dirname(page) === '.' ? '' : page.replace(/\.html$/, '')) + '">\n';
+  if (!html.includes('name="moteful-siteurl"')) {
+    drifted.push(page);
+    if (!CHECK) {
+      html = html.replace('</head>', siteMeta + '</head>');
+      changed.push('share-meta');
+    } else changed.push('share-meta(缺失)');
+  }
   // 内联推荐（V1.1）：注入 rec.css / rec.js / 弹窗块（受 recommend-config.json 驱动）
   const recPre = path.dirname(page) === '.' ? '' : '../';
   const recCssHref = recPre + REC_CSS;
