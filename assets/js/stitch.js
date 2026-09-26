@@ -1594,6 +1594,15 @@
     window.addEventListener('pagehide', function () {
       try { saveConfigNow(); } catch (e) {}
     });
+
+    // share params register (V1.4.1 P1A)
+    if (window.MotefulShare) {
+      window.MotefulShare.register('stitch', {
+        getParams: function () {
+          return { d: state.vParams.direction, g: state.vParams.gap, bg: state.vParams.bgColor };
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

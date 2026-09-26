@@ -1348,6 +1348,17 @@
     renderQueue();
     render();
     writeConfig();
+
+    // 鍒嗕韩鍙傛暟娉ㄥ唽锛圴1.4.1 P1A锛氬甫閰嶇疆閾炬帴 / 浜岀淮鐮侊級
+    if (window.MotefulShare) {
+      window.MotefulShare.register('annotate', {
+        getParams: function () {
+          var p = { b: state.block };
+          if (state.mode === 'wm' && el.wmContent && el.wmContent.value) p.wm = el.wmContent.value;
+          return p;
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

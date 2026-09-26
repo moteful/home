@@ -248,6 +248,15 @@
     $('qrPng').addEventListener('click', exportPng);
     $('qrSvg').addEventListener('click', exportSvg);
     update();
+
+    // 分享参数注册（V1.4.1 P1A：带配置链接 / 二维码）
+    if (window.MotefulShare) {
+      window.MotefulShare.register('qrcode', {
+        getParams: function () {
+          return { ec: getChecked('qrEcc') || 'M', s: getChecked('qrSize') || '512', c: getChecked('qrColor') || 'classic' };
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);

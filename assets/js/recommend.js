@@ -39,6 +39,12 @@
     if (!popup) return null;
     msg = document.getElementById('recMsg');
     popup.querySelectorAll('[data-rec-close]').forEach(function (b) { b.addEventListener('click', hide); });
+    popup.querySelectorAll('[data-rec-share]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        hide(); /* 先关推荐弹窗（rec-modal z-index 1000 > 分享面板 210，避免遮挡） */
+        if (window.MotefulShare && window.MotefulShare.open) window.MotefulShare.open();
+      });
+    });
     var mask = popup.querySelector('.rec-mask'); if (mask) mask.addEventListener('click', hide);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && popup.getAttribute('aria-hidden') === 'false') hide();
