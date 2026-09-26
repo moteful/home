@@ -191,7 +191,6 @@
      处理开始时记录一次参数快照；之后任何参数变动，若与快照不一致，
      就把已完成项标回待处理，让"开始处理"按钮能按新参数重算整批。 */
   var lastSig = '';
-  var baseSig = '';   // V0.3.3：导入基线参数签名（队列从空变非空时捕获），用于「未改参数禁用开始处理」
   /* V0.3.4：队列是否全部为 PNG（MIME 优先，扩展名兜底——部分系统拖放 file.type 为空）。
      默认参数下只有 PNG 处理无意义（无损重编码还可能变大）；JPG/WebP 有质量压缩收益，始终允许处理 */
   function allPng() {
@@ -207,6 +206,7 @@
             tf.keepRatio, tf.rotate, tf.flipH, tf.flipV, tf.cropMode, tf.cropRatio,
             tf.mTop, tf.mBottom, tf.mLeft, tf.mRight].join('|');
   }
+  var DEFAULT_SIG = '';   // V1.4.3：默认参数签名（init 时在配置恢复前捕获），pristine 判定基线
   function markStale() {
     var dirty = !(lastSig === '' || lastSig === paramSig());
     if (dirty) {
@@ -218,7 +218,7 @@
       });
       if (n) { usedNames = {}; lastSig = ''; }  // 结果作废：清空名字池
     }
-    refreshDynamic();   // V0.3.3：参数变更统一刷新「开始处理」禁用态（pristine 判定依赖 lastSig/baseSig）
+    refreshDynamic();   // V0.3.3：参数变更统一刷新「开始处理」禁用态（pristine 判定依赖 lastSig/DEFAULT_SIG）
     scheduleSaveConfig();  // V0.4：配置记忆 - 参数变化后防抖保存到 localStorage
   }
 
@@ -263,6 +263,8 @@
 
     if (!dropzone) return;
 
+    // V1.4.3：配置恢复前捕获默认签名——恢复的配置 / URL 预设只要 ≠ 默认即视为已调整参数
+    DEFAULT_SIG = paramSig();
     // V0.4：配置记忆 - 从 localStorage 恢复上次的参数设置
     var hasSavedConfig = loadConfig();
     // V1.4：URL 参数预设（优先级高于 localStorage 配置；非法参数静默回退）
@@ -668,9 +670,6 @@
     if (heic) parts.push(tr('v01_heic_note'));
     if (parts.length) flashNote(parts.join(' · '), 'info');
 
-    // V0.3.3：队列从空变非空时，把当前参数签名记为导入基线——
-    // 参数与基线一致且从未处理过 → 「开始处理」禁用（点了也只是原样重编码）
-    if (wasEmpty && added) baseSig = paramSig();
 
     syncEmptyState();
     renderQueue(); updateOutSize(); refreshDynamic();
@@ -892,7 +891,7 @@
       // 队列中出现 PNG 以外的格式（JPG/WebP 等）→ 未改参数也启用（默认压缩有收益）。
       var pendingN = 0;
       queue.forEach(function (it) { if (it.status === 'ready' || it.status === 'error') pendingN++; });
-      var pristine = (lastSig === '') && (paramSig() === baseSig) && allPng();
+      var pristine = (lastSig === '') && (paramSig() === DEFAULT_SIG) && allPng();
       processBtn.disabled = processing || !queue.length || !pendingN || pristine;
     }
     // ZIP 按钮：有可下载结果才可用（打包中不抢控制权）
@@ -1299,7 +1298,6 @@
   }
   function doClear() {
     queue = []; usedNames = {}; uid = 0; lastSig = ''; rowMap = {};
-    baseSig = '';   // V0.3.3：清空后重置导入基线
     if (resultList) resultList.innerHTML = '';
     showProgress(false);
     resetTf(); syncUIFromTf(); syncSubCtl();
@@ -1368,7 +1366,7 @@
     var it = queue[idx];
     queue.splice(idx, 1);
     if (it.outName && usedNames[it.outName]) delete usedNames[it.outName];  // 释放重名占位
-    if (!queue.length) { baseSig = ''; lastSig = ''; }   // V0.3.3：删空后重置基线，下次导入重新捕获
+    if (!queue.length) { lastSig = ''; }   // V0.3.3：删空后重置处理快照
     syncEmptyState(); renderQueue(); updateOutSize(); refreshDynamic();
   }
 
@@ -1392,12 +1390,6 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initHiddenGuard);
   else initHiddenGuard();
 
-  /* V0.3：关页面兜底清除（静默，不弹提示） */
-  window.addEventListener('pagehide', function () {
-    try {
-      saveConfigNow();  // V0.4：配置记忆 - 关页面前强制保存配置
-      queue.forEach(function (it) { if (it.blob) it.blob = null; });
-      queue = [];
-    } catch (e) {}
-  });
+  /* V0.3：关页面兜底清除（静默，不弹提示） */  // TEMP-DEBUG-V143
+  window.__dbg143 = { sig: paramSig, def: function () { return DEFAULT_SIG; }, q: function () { return quality; } };
 })();

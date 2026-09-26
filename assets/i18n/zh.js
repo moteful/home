@@ -39,7 +39,7 @@ window.MOTEFUL_I18N.zh = {
   "foot_support": "支持",
   "foot_legal": "法律",
   "foot_operator_title": "运营主体",
-  "foot_version": "v1.4.2",
+  "foot_version": "v1.4.3",
   "rec_done": "{action}成功",
   "rec_sub": "感谢使用 Moteful，下面这些功能你可能也用得上：",
   "rec_tip_note": "如果这个工具帮到了你，欢迎请作者喝杯咖啡",
