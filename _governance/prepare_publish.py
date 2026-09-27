@@ -25,7 +25,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # moteful �
 cfg = json.load(open(os.path.join(ROOT, '_governance', 'site-config.json'), encoding='utf-8'))
 pages = cfg['pages']
 BASE = 'https://moteful.app'
-TODAY = '2026-09-20'
+TODAY = '2026-09-27'  # 发版日（v1.4.4），与 sitemap lastmod 保持一致
 
 # ---------- 1) sitemap.xml ----------
 sm = [p for p in pages if p != '404.html']
