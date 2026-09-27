@@ -5,7 +5,7 @@
 A **zero-dependency, privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.2.5** · 17 pages · bilingual (中文 / English)
+> Status: **v1.4.4** · 17 pages · bilingual (中文 / English)
 
 ---
 
@@ -15,6 +15,7 @@ Your images are processed locally and **never leave your device** — no upload,
 - **Zero build step** — vanilla HTML/CSS/JS, no `node_modules`, no bundler.
 - **Bilingual UI** — 中文 / English, switchable at runtime.
 - **Consistent design** — enforced by a built-in governance suite (lint + spec assertions + template injection).
+- **Share & SEO ready** — share panel with config-preset links / QR codes (v1.4), compare-result cards, social footer row, OG/Twitter/canonical/hreflang/JSON-LD tags (v1.4.4).
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -45,7 +46,7 @@ Your images are processed locally and **never leave your device** — no upload,
 
 ## 🛠 Tech stack
 
-- **Frontend:** vanilla HTML + CSS + JavaScript (ES modules), no framework.
+- **Frontend:** vanilla HTML + CSS + JavaScript, no framework, no build step.
 - **i18n:** `assets/i18n/{zh,en}.js` (dictionary-driven, strict 1:1 key parity).
 - **Core styles/scripts** (`moteful.css` / `moteful.js` / `template.html`) are **read-only contracts** — see `CONTRACT.md`.
 - **Governance** (`_governance/`): keeps all pages UI-consistent and self-checking.
@@ -64,7 +65,7 @@ python3 -m http.server 8000
 ### Quality gates (run before committing)
 
 ```bash
-node _governance/inject_site.mjs --check   # drift check across 16 pages (must be 0)
+node _governance/inject_site.mjs --check   # drift check across 17 pages (must be 0)
 node _governance/lint.mjs                  # style/lint (must have 0 errors)
 node _governance/assert_spec.mjs           # spec assertions (requires Playwright)
 ```

@@ -5,7 +5,7 @@
 一个**零依赖、隐私优先的图片工具站**，完全运行在你的浏览器里。
 图片在本地处理，**永远不会离开你的设备**——不上传、无服务器、无跟踪。
 
-> 状态：**v1.2.5** · 17 个页面 · 双语（中文 / English）
+> 状态：**v1.4.4** · 17 个页面 · 双语（中文 / English）
 
 ---
 
@@ -15,6 +15,7 @@
 - **零构建步骤**——原生 HTML/CSS/JS，无 `node_modules`、无打包器。
 - **双语界面**——中文 / English，运行时可切换。
 - **一致的设计**——由内置治理套件强制保障（lint + 规范断言 + 模板注入）。
+- **分享与 SEO 就绪**——分享面板（带配置链接 / 二维码，v1.4）、成果对比卡片、页脚社交行、OG/Twitter/canonical/hreflang/JSON-LD 标签（v1.4.4）。
 - **设计即开放**——对隐私工具而言，代码本身就是信任信号。
 
 ---
@@ -45,7 +46,7 @@
 
 ## 🛠 技术栈
 
-- **前端**：原生 HTML + CSS + JavaScript（ES 模块），无框架。
+- **前端**：原生 HTML + CSS + JavaScript，无框架、无构建步骤。
 - **国际化**：`assets/i18n/{zh,en}.js`（字典驱动，中英文键严格 1:1 对齐）。
 - **核心样式/脚本**（`moteful.css` / `moteful.js` / `template.html`）是**只读契约**——详见 `CONTRACT.md`。
 - **治理套件**（`_governance/`）：保证所有页面 UI 一致且可自检。
@@ -64,7 +65,7 @@ python3 -m http.server 8000
 ### 质量门禁（提交前运行）
 
 ```bash
-node _governance/inject_site.mjs --check   # 16 页漂移检查（必须为 0）
+node _governance/inject_site.mjs --check   # 17 页漂移检查（必须为 0）
 node _governance/lint.mjs                  # 样式/lint（错误数必须为 0）
 node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
