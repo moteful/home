@@ -12,6 +12,26 @@
 
 const CHANGELOG_ZH = [
   {
+    "version": "v1.6.0",
+    "date": "2026-10-02",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "图片工具 新增目标大小压缩（JPG/WebP 有效）",
+          "图片工具 支持 HEIC 导入转出（导出为 PNG/JPG/WebP）"
+        ]
+      },
+      {
+        "title": "优化",
+        "points": [
+          "图片工具 未导入图片也可查看编辑区",
+          "图片工具 支持剪贴板粘贴导入图片"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.5.2",
     "date": "2026-10-01",
     "sections": [

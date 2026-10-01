@@ -5,7 +5,7 @@
 A **zero-dependency, privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.5.1** · 18 pages · bilingual (中文 / English)
+> Status: **v1.6.0** · 18 pages · bilingual (中文 / English)
 
 ---
 
@@ -17,6 +17,7 @@ Your images are processed locally and **never leave your device** — no upload,
 - **Consistent design** — enforced by a built-in governance suite (lint + spec assertions + template injection).
 - **Share & SEO ready** — share panel with config-preset links / QR codes (v1.4), compare-result cards, social footer row, OG/Twitter/canonical/hreflang/JSON-LD tags (v1.4.4).
 - **Icon toolbox (v1.5)** — SVG icon editor: recolor, stroke, scale, rotate/flip, custom color picker, multi-size export & one-click ZIP; tool pages cross-recommend each other.
+- **Image tool upgrades (v1.6)** — target-size compression (50KB–1MB, JPG/WebP), clipboard paste import, HEIC import (export as PNG/JPG/WebP), edit panel always visible.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---

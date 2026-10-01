@@ -7,6 +7,26 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v1.6.0",
+    "date": "2026-10-02",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Image Tool: compress to a target size (JPG/WebP)",
+          "Image Tool: HEIC import and conversion (export as PNG/JPG/WebP)"
+        ]
+      },
+      {
+        "title": "Improved",
+        "points": [
+          "Image Tool: edit panel now visible even without an imported image",
+          "Image Tool: paste images from the clipboard"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.5.2",
     "date": "2026-10-01",
     "sections": [
