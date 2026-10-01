@@ -28,6 +28,11 @@
       "icon": "scan",
       "labelKey": "nav_m_qrcode",
       "label": "二维码"
+    },
+    "tools/icon-tool.html": {
+      "icon": "radius",
+      "labelKey": "nav_m_icon",
+      "label": "图标工具"
     }
   },
   "pages": {
@@ -54,6 +59,14 @@
         "tools/image-tool.html",
         "tools/stitch.html",
         "tools/annotate.html"
+      ]
+    },
+    "tools/icon-tool.html": {
+      "recs": [
+        "tools/image-tool.html",
+        "tools/stitch.html",
+        "tools/annotate.html",
+        "tools/qrcode.html"
       ]
     }
   }

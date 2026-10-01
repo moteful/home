@@ -690,3 +690,72 @@ a, button, .btn, .grid-card, .drawer-tab{
 
 /* V1.4.3：全 PNG 时质量滑块锁定态（PNG 无损→质量无效果） */
 .moteful-quality-locked{opacity:.5;cursor:not-allowed}
+
+/* ============================================================
+   V1.5 图标工具 · 页面私有样式（icon-tool.css 同源登记）
+   零新组件；仅工作区特有排版（编辑左列+预览右列）、透明网格底、
+   导出尺寸多选 chips、双列参数网格、复制按钮组。
+   ============================================================ */
+.icon-workspace{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:14px}
+/* 同行 field 高度不同时，外层行改为顶部对齐，保证同级标题在同一水平线（共享 .row 为 center） */
+.icon-edit-col > .row{align-items:flex-start}
+#iconExportPanel > .row{align-items:flex-start}
+#iconExportPanel > #iconExportActs{align-items:flex-end}
+#iconExportActs > .row{flex:1;min-width:0}
+.icon-edit-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+.icon-preview-col{flex:1.25;min-width:0;display:flex;flex-direction:column;gap:12px}
+.icon-preview-box{position:relative;display:flex;min-height:480px;
+  border:1px solid var(--border);border-radius:var(--r-md);
+  background:var(--surface);padding:16px;overflow:hidden}
+.icon-preview-box > *{margin:auto}
+.icon-grid-bg{background-image:
+  linear-gradient(var(--border) 1px,transparent 1px),
+  linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:16px 16px}
+.icon-canvas{display:block;max-width:100%;height:auto;border-radius:var(--r-sm);
+  box-shadow:var(--shadow);background:var(--surface);cursor:grab;touch-action:none;
+  transform-origin:center center;will-change:transform}
+.icon-preview-box.drag-active .icon-canvas{cursor:grabbing}
+.icon-preview-box.drag-active{user-select:none}
+.icon-preview-hint{position:absolute;right:8px;bottom:6px;z-index:1;
+  font-size:11px;color:var(--text-muted);opacity:.75;pointer-events:none}
+
+.icon-hex-input{width:96px}
+.icon-custom-input{max-width:120px}
+.icon-custom-input:hover,
+.icon-custom-input:not(:placeholder-shown){border-color:var(--primary)}
+.icon-custom-input:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 2px var(--ring)}
+/* 步进器数值框（input 型 .step-val）：清理原生外观，与 image-tool 同款（background:none 透出 .step 容器） */
+input.step-val{
+  color:inherit;
+  background:none;
+  border-top:none;
+  border-bottom:none;
+  outline:none;
+  width:72px;
+  min-width:72px;
+  font-variant-numeric:tabular-nums;
+}
+input.step-val:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px var(--ring);
+}
+/* 滑杆定宽：等比缩放/描边粗细/内边距（field 占满行宽时防滑杆被拉长；用户反馈过长，统一 100px） */
+#iconScale, #iconStrokeWidth, #iconPadding{flex:none;width:100px}
+/* 编辑列内双 field 行（颜色|背景、描边|粗细、旋转|翻转）：field 按内容自适应而非固定 240px，保证同排不换行 */
+.icon-edit-col .field{min-width:0}
+/* 行3 描边|粗细 同排：描边 field 按内容收缩，粗细 field 占剩余宽度（防 flex-wrap 换行下推） */
+.icon-field-stroke{flex:0 1 auto;min-width:0}
+#iconStrokeWidthField{flex:1 1 auto;min-width:0}
+/* 行3 同排细节：步进器压缩（val 48 / btn 24）、hex 输入可缩（内容总宽 ≤ 容器，保证两 field 同行） */
+#iconStrokeWidthField .step-val{width:48px;min-width:48px}
+#iconStrokeWidthField .step-btn{width:24px;height:24px}
+#iconStrokeColorHex{min-width:0;width:90px}
+/* 竖排 body（背景色）内 segment 防拉伸：按钮不被拉宽 */
+#iconBgBody .segment{align-self:flex-start}
+@media (max-width:640px){
+  .icon-workspace{grid-template-columns:1fr}
+  .icon-preview-box{min-height:180px}
+}
+
+/* icon-tool 色板组件（V1.5 图标工具）：.icon-cp-trig/.icon-cp-chip/.icon-cp-hex/.icon-cp-arrow/.icon-cp-pop/.icon-cp-hue/.icon-cp-huecursor/.icon-cp-sv/.icon-cp-cursor/.icon-cp-foot/.icon-cp-prev/.icon-cp-hexinput/.icon-cp-eyed/.icon-cp-pal —— 替换原生 input[type=color]，全站首个自定义取色面板 */

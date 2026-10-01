@@ -1,0 +1,111 @@
+/* 已导入态 dropzone 收缩（对齐 image-tool.css .dropzone.mini 同值；.dz-gallery/.dz-thumb 等由共享层提供） */
+.dropzone.mini{padding:16px;min-height:0;background:var(--surface);align-items:stretch;text-align:left;gap:0}
+/* =====================================================================
+   Moteful 图标工具 · 页面私有样式（icon-tool.css）
+   铁律：零新组件，仅工作区特有排版；全部 .icon-* 前缀；
+   本文件已同步登记进 missing_styles_proposal.css 提案清单。
+   ===================================================================== */
+
+/* 工作区：桌面编辑区左列 + 预览区右列（grid auto-fit 保证每列 ≥180px，编辑列宽度足以容纳 .field 双列）；
+   移动端单列堆叠（编辑在上、预览在下） */
+.icon-workspace{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:14px}
+
+/* 同行 field 高度不同时，外层行改为顶部对齐，保证同级标题在同一水平线（共享 .row 为 center） */
+.icon-edit-col > .row{align-items:flex-start}
+#iconExportPanel > .row{align-items:flex-start}
+/* 导出卡第二行（导出按钮 | 复制区）：底部对齐，让两行按钮处于同一水平线 */
+#iconExportPanel > #iconExportActs{align-items:flex-end}
+/* 第二行左列（导出按钮）与 field 同分配 flex:1，使复制区左边缘与尺寸区左边缘对齐 */
+#iconExportActs > .row{flex:1;min-width:0}
+.icon-edit-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+.icon-preview-col{flex:1.25;min-width:0;display:flex;flex-direction:column;gap:12px}
+
+/* 预览容器：画布窗口固定（网格底），内容层 transform 缩放/平移时裁剪显示 */
+.icon-preview-box{
+  position:relative;display:flex;min-height:480px;
+  border:1px solid var(--border);border-radius:var(--r-md);
+  background:var(--surface);padding:16px;overflow:hidden}
+.icon-preview-box > *{margin:auto}
+.icon-grid-bg{
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:16px 16px}
+/* 画布（内容层）显示固定 256px；缩放/平移由 JS 设置 transform，围绕中心缩放 */
+.icon-canvas{display:block;max-width:100%;height:auto;border-radius:var(--r-sm);
+  box-shadow:var(--shadow);background:var(--surface);cursor:grab;touch-action:none;
+  transform-origin:center center;will-change:transform}
+.icon-preview-box.drag-active .icon-canvas{cursor:grabbing}
+.icon-preview-box.drag-active{user-select:none}
+/* 预览交互提示角标（拖拽/滚轮/双击复位） */
+.icon-preview-hint{position:absolute;right:8px;bottom:6px;z-index:1;
+  font-size:11px;color:var(--text-muted);opacity:.75;pointer-events:none}
+
+
+/* 自定义尺寸输入框：hover 高亮；只要赋值（非占位符态）也按 hover 显示 */
+.icon-custom-input:hover,
+.icon-custom-input:not(:placeholder-shown){border-color:var(--primary)}
+.icon-custom-input:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 2px var(--ring)}
+
+/* 步进器数值框（input 型 .step-val）：清理浏览器原生外观，与 image-tool 同款规则（背景透出 .step 容器） */
+input.step-val{
+  color:inherit;
+  background:none;
+  border-top:none;
+  border-bottom:none;
+  outline:none;
+  width:72px;
+  min-width:72px;
+  font-variant-numeric:tabular-nums;
+}
+input.step-val:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px var(--ring);
+}
+
+/* 滑杆定宽：等比缩放/描边粗细/内边距（field 占满行宽时防滑杆被拉长；用户反馈过长，统一 100px） */
+#iconScale, #iconStrokeWidth, #iconPadding{flex:none;width:100px}
+/* 编辑列内双 field 行（颜色|背景、描边|粗细、旋转|翻转）：field 按内容自适应而非固定 240px，保证同排不换行 */
+.icon-edit-col .field{min-width:0}
+/* 行3 描边|粗细 同排：描边 field 按内容收缩，粗细 field 占剩余宽度（防 flex-wrap 换行下推） */
+.icon-field-stroke{flex:0 1 auto;min-width:0}
+#iconStrokeWidthField{flex:1 1 auto;min-width:0}
+/* 行3 同排细节：步进器压缩（val 48 / btn 24）、hex 输入可缩（内容总宽 ≤ 容器，保证两 field 同行） */
+#iconStrokeWidthField .step-val{width:48px;min-width:48px}
+#iconStrokeWidthField .step-btn{width:24px;height:24px}
+#iconStrokeColorHex{min-width:0;width:90px}
+/* 竖排 body（背景色）内 segment 防拉伸：按钮不被拉宽 */
+#iconBgBody .segment{align-self:flex-start}
+
+@media (max-width:640px){
+  .icon-workspace{grid-template-columns:1fr}
+  .icon-preview-box{min-height:180px}
+}
+
+
+/* ===== 色板组件（icon-cp-*，替换原生 input[type=color]；HSV 色域 + 色相条 + hex + 取色器 + 预设） ===== */
+.icon-cp-trig{display:flex;align-items:center;gap:8px;width:100%;height:38px;padding:0 10px;border:1px solid var(--border-strong);border-radius:var(--r-md);background:var(--surface);color:var(--text);font:inherit;cursor:pointer;transition:border-color .15s}
+.icon-cp-trig:hover{border-color:var(--primary)}
+.icon-cp-trig:disabled{opacity:.5;cursor:not-allowed}
+.icon-cp-trig:disabled:hover{border-color:var(--border-strong)}
+.icon-cp-chip{width:22px;height:22px;border-radius:var(--r-sm);flex:none;border:1px solid rgba(255,255,255,.14);background:repeating-conic-gradient(var(--border) 0 25%, var(--code-bg) 0 50%) 0 0/10px 10px}
+.icon-cp-hex{font-family:var(--mono,ui-monospace,monospace);font-size:12.5px;color:var(--text-2,#8AA0C0);letter-spacing:.2px}
+.icon-cp-arrow{width:16px;height:16px;margin-left:auto;color:var(--text-2,#8AA0C0);flex:none}
+.icon-cp-pop{position:fixed;width:264px;padding:12px;background:var(--code-bg,#0B1220);border:1px solid var(--border-strong);border-radius:var(--r-md);box-shadow:0 10px 30px rgba(0,0,0,.45);z-index:70}
+.icon-cp-hue{position:relative;height:24px;border-radius:var(--r-sm);cursor:crosshair;touch-action:none;background:linear-gradient(to right,#f00 0%,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,#f00 100%)}
+.icon-cp-huecursor{position:absolute;top:-4px;bottom:-4px;width:4px;border-radius:2px;background:#fff;pointer-events:none;box-shadow:0 0 4px rgba(0,0,0,.6)}
+.icon-cp-sv{position:relative;height:160px;margin-top:8px;border-radius:var(--r-sm);border:1px solid var(--border);cursor:crosshair;touch-action:none;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,transparent),#f00}
+.icon-cp-cursor{position:absolute;width:14px;height:14px;border:2px solid var(--primary-strong,#A8D9F2);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 5px rgba(0,0,0,.6);box-sizing:border-box}
+.icon-cp-foot{display:flex;align-items:center;gap:8px;margin-top:10px}
+.icon-cp-prev{width:28px;height:28px;border-radius:var(--r-sm);flex:none;border:1px solid rgba(255,255,255,.16);background:repeating-conic-gradient(var(--border) 0 25%, var(--code-bg) 0 50%) 0 0/10px 10px}
+.icon-cp-hexinput{flex:1;min-width:0;height:32px;padding:0 10px;font-family:var(--mono,ui-monospace,monospace);font-size:13px;text-transform:uppercase}
+.icon-cp-eyed{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex:none;border:1px solid var(--border-strong);border-radius:var(--r-sm);background:var(--surface);color:var(--text-2,#8AA0C0);cursor:pointer;transition:border-color .15s,color .15s}
+.icon-cp-eyed:hover{border-color:var(--primary);color:var(--primary)}
+.icon-cp-eyed i{width:16px;height:16px}
+.icon-cp-pal{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:10px}
+.icon-cp-pal button{aspect-ratio:1;border-radius:var(--r-sm);border:1px solid rgba(255,255,255,.12);cursor:pointer;padding:0;box-sizing:border-box;transition:transform .1s}
+.icon-cp-pal button:hover{transform:scale(1.12)}
+.icon-cp-pal button.on{outline:2px solid var(--primary);outline-offset:1px}
+
+/* 颜色字段行：窄触发（色块+箭头）+ hex 输入框并排（V1.5 修复：背景色缺输入框，统一三字段形态） */
+.icon-cp-trig-sm{flex:none;width:auto;padding:0 8px}

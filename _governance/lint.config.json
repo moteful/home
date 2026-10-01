@@ -30,6 +30,7 @@
     "tools/stitch.html",
     "tools/annotate.html",
     "tools/qrcode.html",
+    "tools/icon-tool.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",

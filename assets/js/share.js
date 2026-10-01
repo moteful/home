@@ -85,6 +85,18 @@
       s: { type: 'enum', values: ['256', '512', '1024'] },
       c: { type: 'enum', values: ['classic', 'custom'] },
       core: ['ec', 's', 'c']
+    },
+    'icon-tool': {
+      c: { type: 'hex' },
+      sc: { type: 'hex' },
+      sw: { type: 'int', min: 1, max: 20 },
+      bg: { type: 'hex', allowT: true },
+      pd: { type: 'int', min: 0, max: 50 },
+      sz: { type: 'enum', values: ['16', '24', '32', '48', '64', '128', '256', '512'] },
+      fmt: { type: 'enum', values: ['svg', 'png', 'jpg', 'webp'] },
+      rt: { type: 'int', min: 0, max: 270 },
+      fl: { type: 'int', min: 0, max: 3 },
+      core: ['c', 'bg', 'sz', 'fmt']
     }
   };
 
@@ -98,6 +110,7 @@
     if (/stitch\.html/i.test(p)) return 'stitch';
     if (/annotate\.html/i.test(p)) return 'annotate';
     if (/qrcode\.html/i.test(p)) return 'qrcode';
+    if (/icon-tool\.html/i.test(p)) return 'icon-tool';
     return '';
   }
 
@@ -124,6 +137,9 @@
         if (isFinite(n) && n >= def.min && n <= def.max) val = n;
       } else if (def.type === 'enum') {
         if (def.values.indexOf(v) >= 0) val = v;
+      } else if (def.type === 'hex') {
+        if (def.allowT && v === 't') val = 't';
+        else if (/^[0-9A-Fa-f]{6}$/.test(v)) val = v;
       } else if (def.type === 'str') {
         var s = b64UrlDecode(v);
         if (s !== null && s.length <= STR_LIMIT) val = s;
@@ -402,6 +418,11 @@
       if (p.c) {
         var c = $('input[name="qrColor"][value="' + p.c + '"]');
         if (c && !c.checked) c.click();
+      }
+    },
+    'icon-tool': function (p) {
+      if (window.MotefulIconTool && window.MotefulIconTool.applyShareParams) {
+        window.MotefulIconTool.applyShareParams(p);
       }
     }
   };
