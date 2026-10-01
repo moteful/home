@@ -67,6 +67,7 @@
       mb: { type: 'int', min: 0, max: 20000 },
       ml: { type: 'int', min: 0, max: 20000 },
       mr: { type: 'int', min: 0, max: 20000 },
+      t: { type: 'int', min: 1, max: 100000 },   // V1.6 F-03：目标大小（KB）
       core: ['q', 'f', 'w', 'h']
     },
     'stitch': {

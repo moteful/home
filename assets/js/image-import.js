@@ -178,4 +178,108 @@
 
   /* ---------- 暴露全局 ---------- */
   window.MFImageImport = ImageImport;
+
+  /* V1.6 F-02：剪贴板粘贴导入（共享单一实现——粘贴监听只在此处，其他页面经回调启用，严禁重复实现）
+     enablePaste(handler)：document paste 只收 image/* 文件；非图片静默忽略；
+     位图无文件名 → 生成占位名（paste-N.ext，按 mime 定扩展名）；
+     去重 / HEIC 识别 / 处理中锁由页面回调（addFiles）的既有判定链负责，本模块不重复。 */
+  var pasteSeq = 0;
+  var pasteBound = false;
+  function enablePaste(handler) {
+    if (pasteBound) return;   // 全局只挂一次监听
+    pasteBound = true;
+    document.addEventListener('paste', function (e) {
+      var cd = e.clipboardData;
+      if (!cd) return;
+      var items = cd.items;
+      var files = cd.files;
+      var out = [];
+      if (files && files.length) {
+        for (var i = 0; i < files.length; i++) {
+          if (/^image\//i.test(files[i].type)) out.push(files[i]);
+        }
+      }
+      if (items && !out.length) {
+        for (var j = 0; j < items.length; j++) {
+          var it = items[j];
+          if (it.kind === 'file' && /^image\//i.test(it.type)) {
+            var f = it.getAsFile && it.getAsFile();
+            if (f) out.push(f);
+          }
+        }
+      }
+      if (!out.length) return;   // 非图片静默忽略
+      out = out.map(function (f) {
+        if (!f.name) {
+          pasteSeq++;
+          var ext = f.type === 'image/png' ? '.png'
+            : f.type === 'image/webp' ? '.webp'
+            : f.type === 'image/jpeg' ? '.jpg' : '';
+          try { f = new File([f], 'paste-' + pasteSeq + ext, { type: f.type, lastModified: Date.now() }); } catch (e) {}
+        }
+        return f;
+      });
+      handler(out);
+    });
+  }
+  window.MFImageImport.enablePaste = enablePaste;
+
+  /* ---------- V1.6.1：HEIC 解码（共享单一实现，其他页面经回调启用，严禁重复实现） ----------
+     懒加载：首次检测到 HEIC 才注入本地 vendor 脚本（assets/vendor/heic/heic2any.min.js，
+     工具页统一位于 tools/ 一层，相对路径 '../assets/vendor/heic/' 契约成立）；
+     解码并发上限 2 排队；成功 → PNG Blob → File(name.png) 回调 onOk(File)；
+     解码失败 → onFail(name)；库加载失败 → onUnsupported()（页面回退"暂不支持"提示）。 */
+  var heicLibPath = '../assets/vendor/heic/heic2any.min.js';
+  var heicPromise = null;      // 库加载 Promise（只加载一次）
+  var heicQueue = [];          // 待解码任务
+  var heicActive = 0;          // 当前并发数
+  var heicLibFailed = false;   // 库加载失败标记（后续任务直接 onUnsupported）
+  var HEIC_CONCURRENCY = 2;
+
+  function loadHeicLib() {
+    if (heicPromise) return heicPromise;
+    heicPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = heicLibPath;
+      s.onload = function () { (window.heic2any ? resolve(true) : reject(new Error('missing'))); };
+      s.onerror = function () { reject(new Error('load fail')); };
+      document.head.appendChild(s);
+    }).catch(function (err) {
+      heicLibFailed = true;
+      throw err;
+    });
+    return heicPromise;
+  }
+
+  function decodeHeicFile(file, onOk, onFail, onUnsupported) {
+    heicQueue.push({ file: file, onOk: onOk, onFail: onFail, onUnsupported: onUnsupported });
+    pumpHeic();
+  }
+
+  function pumpHeic() {
+    while (heicActive < HEIC_CONCURRENCY && heicQueue.length) {
+      var job = heicQueue.shift();
+      heicActive++;
+      (function (job) {
+        if (heicLibFailed) { heicActive--; job.onUnsupported && job.onUnsupported(); pumpHeic(); return; }
+        loadHeicLib().then(function () {
+          return window.heic2any({ blob: job.file, toType: 'image/png', quality: 1 });
+        }).then(function (out) {
+          var blob = Array.isArray(out) ? (out[0] || null) : out;
+          if (!blob) throw new Error('empty');
+          var base = (job.file.name || 'image').replace(/\.heic$/i, '');
+          var f = new File([blob], base + '.png', { type: 'image/png', lastModified: job.file.lastModified || Date.now() });
+          job.onOk(f);
+        }).catch(function () {
+          job.onFail(job.file.name);
+        }).then(function () {
+          heicActive--;
+          pumpHeic();
+        });
+      })(job);
+    }
+  }
+
+  window.MFImageImport.decodeHeic = decodeHeicFile;
+  window.MFImageImport.loadHeicLib = loadHeicLib;
 })();

@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Moteful">
 <meta property="og:title" id="ogTitle" content="图片工具集 - 批量压缩/格式转换/尺寸调整 | Moteful">
-<meta property="og:description" id="ogDesc" content="免费在线图片批量处理工具，支持批量压缩、格式转换、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私。">
+<meta property="og:description" id="ogDesc" content="免费在线图片批量处理工具，支持批量压缩、压缩到指定大小（50KB~1MB）、格式转换、尺寸调整、旋转翻转裁剪，支持剪贴板粘贴导入。全部在浏览器本地运行，图片不上传，保护隐私。">
 <meta property="og:url" content="https://moteful.app/tools/image-tool.html">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
@@ -32,7 +32,7 @@
   "@type": "WebApplication",
   "name": "图片工具集",
   "alternateName": "Moteful Image Toolkit",
-  "description": "免费在线图片批量处理工具，支持批量压缩、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。",
+  "description": "免费在线图片批量处理工具，支持批量压缩、压缩到指定大小（50KB~1MB）、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪，支持剪贴板粘贴导入。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。",
   "url": "https://moteful.app/tools/image-tool.html",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Web (任何现代浏览器)",
@@ -43,6 +43,8 @@
   },
   "featureList": [
     "批量压缩图片",
+    "压缩到指定大小（50KB/100KB/200KB/500KB/1MB/自定义）",
+    "剪贴板粘贴导入图片",
     "格式转换（PNG/JPEG/WEBP互转）",
     "尺寸调整（百分比/最长边/精确宽高）",
     "图片旋转（90°/180°/270°）",
@@ -61,7 +63,7 @@
   }
 }
 </script>
-<meta name="description" id="metaDesc" content="免费在线图片批量处理工具，支持批量压缩、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
+<meta name="description" id="metaDesc" content="免费在线图片批量处理工具，支持批量压缩、压缩到指定大小（50KB~1MB）、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪，支持剪贴板粘贴导入。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
 <!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
 <script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
 if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
@@ -204,7 +206,8 @@ document.documentElement.dataset.theme=v;})();</script>
           <h4 data-i18n="v022_up_drop">Drop images to get started</h4>
           <p data-i18n="v022_up_pick">or click to browse your device</p>
         </div>
-        <div class="dz-note"><i data-lucide="lock"></i><span data-i18n="v022_up_support">Supports JPG, PNG and WebP — files never leave your device</span></div>
+        <div class="dz-note"><i data-lucide="lock"></i><span data-i18n="v022_up_support">Supports JPG, PNG, WebP and HEIC — files never leave your device</span></div>
+        <div class="dz-note"><span data-i18n="v16_paste_hint">也可直接粘贴图片（Ctrl+V）</span></div>
       </div>
       <div class="dz-gallery" id="dzGallery" hidden style="display:none">
         <div class="dz-g-head">
@@ -222,8 +225,9 @@ document.documentElement.dataset.theme=v;})();</script>
     <!-- 隐私声明（V0.2.2 上移）：规范 16 章 .alert.a-success -->
     <p class="alert a-success"><i data-lucide="lock"></i><span data-i18n="v01_privacy">Everything runs inside your browser. Files never leave this device.</span></p>
 
-    <!-- 控制条（V0.1 输出设置 + V0.2 变换设置）：布局 = .panel.stack + .row/.field（规范 07/22 章） -->
-    <div class="panel stack" id="controls" hidden style="display:none">
+    <!-- 控制条（V0.1 输出设置 + V0.2 变换设置 + V1.6 常显）：布局 = .panel.stack + .row/.field（规范 07/22 章）
+         V1.6 F-01：未导入图片时也显示编辑区（参数可调、记忆预热），"开始处理"空队列禁用可见 -->
+    <div class="panel stack" id="controls">
       <!-- 行1：输出格式 + 质量（V0.3.6：加顶对齐，两列标题与行2一致） -->
       <div class="row" id="rowFormat">
         <div class="field">
@@ -305,6 +309,22 @@ document.documentElement.dataset.theme=v;})();</script>
             <label class="seg" data-rot="90"><input type="radio" name="rot"><span class="seg-t" data-i18n="v02_rot_90">90°</span></label>
             <label class="seg" data-rot="180"><input type="radio" name="rot"><span class="seg-t" data-i18n="v02_rot_180">180°</span></label>
             <label class="seg" data-rot="270"><input type="radio" name="rot"><span class="seg-t" data-i18n="v02_rot_270">270°</span></label></div></div>
+          <!-- V1.6 F-03：目标大小与改尺寸同行（右列 = 旋转 + 目标大小，与旋转同列对齐） -->
+          <span class="field-label"><span data-i18n="v16_target_label">目标大小 Kb</span></span>
+          <div class="row">
+            <div class="segment" role="group" id="targetSegs" data-i18n-aria="v16_target_label">
+              <label class="seg" data-target="0"><input type="radio" name="tgt" checked><span class="seg-t" data-i18n="v16_target_off">不启用</span></label>
+              <label class="seg" data-target="50"><input type="radio" name="tgt"><span class="seg-t">50</span></label>
+              <label class="seg" data-target="100"><input type="radio" name="tgt"><span class="seg-t">100</span></label>
+              <label class="seg" data-target="200"><input type="radio" name="tgt"><span class="seg-t">200</span></label>
+              <label class="seg" data-target="500"><input type="radio" name="tgt"><span class="seg-t">500</span></label>
+              <label class="seg" data-target="1024"><input type="radio" name="tgt"><span class="seg-t" data-i18n="v16_target_1m">1MB</span></label>
+            </div>
+          </div>
+          <div class="row">
+            <input type="text" inputmode="numeric" size="6" id="targetCustom" class="input icon-custom-input" value="" data-i18n-ph="v16_target_custom_ph">
+          </div>
+          <span class="muted" id="targetPngNote" data-i18n="v16_target_png_note">目标大小仅对 JPG/WebP 有效</span>
         </div>
       </div>
 
@@ -376,9 +396,9 @@ document.documentElement.dataset.theme=v;})();</script>
       </div>
     </div>
 
-    <!-- 操作条（F4 / V0.2.2：处理中锁定参数并显示取消）：布局 = 规范 .row -->
-    <!-- 播放图标：moteful.js ICONS 无 play（只读不改），用内联 SVG（currentColor 继承按钮配色） -->
-    <div class="row" id="actions" hidden style="display:none">
+    <!-- 操作条（F4 / V0.2.2：处理中锁定参数并显示取消 + V1.6 常显）：布局 = 规范 .row
+         空队列态：开始处理禁用可见，zip 禁用，清空可用 -->
+    <div class="row" id="actions">
       <button type="button" class="btn btn-primary" id="processBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span data-i18n="v01_process">Start processing</span></button>
       <button type="button" class="btn btn-ghost" id="cancelBtn" hidden style="display:none"><i data-lucide="x"></i><span data-i18n="v022_cancel">Cancel</span></button>
       <button type="button" class="btn btn-secondary" id="zipBtn" disabled><i data-lucide="download"></i><span data-i18n="v01_zip">Download ZIP</span></button>
@@ -560,7 +580,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v1.5.2</span>
+    <span data-i18n="foot_version">v1.6.0</span>
   </div>
 </footer>
 
@@ -760,7 +780,8 @@ document.documentElement.dataset.theme=v;})();</script>
 <script src="../assets/js/compare-card.js"></script>
 <script src="../assets/js/zip.js"></script>
 <script src="../assets/js/transform.js"></script>
-<script src="../assets/js/tool.js?v=1.5.2"></script>
+<script src="../assets/js/image-import.js" defer></script>
+<script src="../assets/js/tool.js?v=1.6.0"></script>
 <script src="../assets/js/compare.js"></script>
 
 <!-- ============ 缺失清单（四文件只读铁律：moteful.css/moteful.js/template.html/设计规范 严禁 AI 修改；以下仅为登记，处置方式待用户指令） ============

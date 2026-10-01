@@ -113,7 +113,8 @@
     flipV: false,
     cropMode: 'none',    // none | ratio | free
     cropRatio: '1:1',
-    mTop: 0, mBottom: 0, mLeft: 0, mRight: 0
+    mTop: 0, mBottom: 0, mLeft: 0, mRight: 0,
+    targetKb: 0          // V1.6 F-03 目标大小：0=不启用；>0=目标 KB（仅 JPG/WebP 输出有效）
   };
   var tf = {};
   function resetTf() { tf = JSON.parse(JSON.stringify(DEFAULTS)); }
@@ -151,6 +152,7 @@
       if (cfg.mBottom != null) tf.mBottom = parseInt(cfg.mBottom, 10) || 0;
       if (cfg.mLeft != null) tf.mLeft = parseInt(cfg.mLeft, 10) || 0;
       if (cfg.mRight != null) tf.mRight = parseInt(cfg.mRight, 10) || 0;
+      if (cfg.targetKb != null) tf.targetKb = parseInt(cfg.targetKb, 10) || 0;   // V1.6 F-03：目标大小（KB）
       return true;
     } catch (e) {
       return false;
@@ -174,7 +176,8 @@
         mTop: tf.mTop,
         mBottom: tf.mBottom,
         mLeft: tf.mLeft,
-        mRight: tf.mRight
+        mRight: tf.mRight,
+        targetKb: tf.targetKb
       };
       localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
     } catch (e) {
@@ -204,13 +207,14 @@
   function paramSig() {
     return [fmt, quality, tf.sizeMode, tf.percent, tf.longest, tf.width, tf.height,
             tf.keepRatio, tf.rotate, tf.flipH, tf.flipV, tf.cropMode, tf.cropRatio,
-            tf.mTop, tf.mBottom, tf.mLeft, tf.mRight].join('|');
+            tf.mTop, tf.mBottom, tf.mLeft, tf.mRight, tf.targetKb].join('|');
   }
-  /* V1.4.3.1：不含质量的参数签名——质量对 PNG 无效（无损重编码），不计入「已调整参数」判定 */
+  /* V1.4.3.1：不含质量的参数签名——质量对 PNG 无效（无损重编码），不计入「已调整参数」判定
+     V1.6 F-03：目标大小计入本签名（启用目标大小 = 已调整参数，即使全 PNG 也需作废旧结果判定） */
   function paramSigNoQuality() {
     return [fmt, tf.sizeMode, tf.percent, tf.longest, tf.width, tf.height,
             tf.keepRatio, tf.rotate, tf.flipH, tf.flipV, tf.cropMode, tf.cropRatio,
-            tf.mTop, tf.mBottom, tf.mLeft, tf.mRight].join('|');
+            tf.mTop, tf.mBottom, tf.mLeft, tf.mRight, tf.targetKb].join('|');
   }
   var DEFAULT_SIG_NOQ = '';   // V1.4.3：默认参数签名（不含质量；init 时在配置恢复前捕获），pristine 判定基线——质量对 PNG 无效不计入调整
   function markStale() {
@@ -239,6 +243,8 @@
       sizeExactCtl, sizeW, sizeH, keepRatio,
       rotSegs, flipHBtn, flipVBtn,
       cropSegs, cropRatioCtl, cropRatioBtns, cropFreeCtl, mTop, mBottom, mLeft, mRight;
+  /* V1.6 F-03：目标大小控件引用 */
+  var targetSegs, targetCustom, targetPngNote;
 
   /* ---------- 初始化 ---------- */
   function init() {
@@ -266,6 +272,11 @@
     cropRatioCtl = $('cropRatioCtl'); cropRatioBtns = document.querySelectorAll('[data-ratio]');
     cropFreeCtl = $('cropFreeCtl');
     mTop = $('mTop'); mBottom = $('mBottom'); mLeft = $('mLeft'); mRight = $('mRight');
+
+    // V1.6 F-03：目标大小控件
+    targetSegs = document.querySelectorAll('#targetSegs [data-target]');
+    targetCustom = $('targetCustom');
+    targetPngNote = $('targetPngNote');
 
     if (!dropzone) return;
 
@@ -378,6 +389,42 @@
         syncSubCtl(); updateOutSize(); markStale();
       });
     });
+    // ---- V1.6 F-03：目标大小（分段单选 → 写回 tf.targetKb；0=不启用） ----
+    if (targetSegs) targetSegs.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var kb = parseInt(b.getAttribute('data-target'), 10) || 0;
+        targetSegs.forEach(function (x) { x.classList.toggle('on', x === b); });
+        if (targetCustom) targetCustom.value = '';
+        tf.targetKb = kb;
+        updateOutSize(); markStale();
+      });
+    });
+    // 自定义 KB 文本框：非空且合法（1~100000）时覆盖分段选择（同 sizeExact 语义）；非法/空回退分段或 Off
+    if (targetCustom) {
+      targetCustom.addEventListener('input', function () {
+        var n = parseInt(targetCustom.value, 10);
+        if (!isFinite(n) || n < 1 || n > 100000) return;   // 输入中或非法：暂不回写，blur 兜底
+        if (targetSegs) targetSegs.forEach(function (x) { x.classList.remove('on'); });
+        tf.targetKb = n;
+        updateOutSize(); markStale();
+      });
+      targetCustom.addEventListener('blur', function () {
+        var raw = String(targetCustom.value || '').replace(/[^0-9]/g, '');
+        var n = raw === '' ? 0 : parseInt(raw, 10);
+        if (isFinite(n) && n >= 1 && n <= 100000) {
+          if (targetSegs) targetSegs.forEach(function (x) { x.classList.remove('on'); });
+          targetCustom.value = String(n);
+          tf.targetKb = n;
+        } else {
+          targetCustom.value = '';
+          tf.targetKb = 0;
+          if (targetSegs) targetSegs.forEach(function (x) {
+            x.classList.toggle('on', x.getAttribute('data-target') === '0');
+          });
+        }
+        updateOutSize(); markStale();
+      });
+    }
     if (sizePercent) {
       sizePercent.addEventListener('input', function () {
         normalizeIntInput(sizePercent, 50, 1, 400, false);
@@ -563,6 +610,12 @@
 
     syncUIFromTf(); syncSubCtl(); updateOutSize(); refreshDynamic();
 
+    // V1.6 F-02：图片粘贴导入——共享模块单一实现（image-import.js enablePaste），
+    // 本页只传回调；处理中锁 / 去重 / HEIC 识别均复用 addFiles 既有判定链
+    if (window.MFImageImport && window.MFImageImport.enablePaste) {
+      window.MFImageImport.enablePaste(function (files) { addFiles(files); });
+    }
+
     // V1.4：分享体系接入（hooks 注册 / 对比卡片按钮绑定 / 顶栏状态）
     shareSetup();
   }
@@ -610,6 +663,16 @@
     if (mLeft) mLeft.value = tf.mLeft;
     if (mRight) mRight.value = tf.mRight;
     if (advSwitch) advSwitch.checked = !!tf.advEnabled;
+    /* V1.6 F-03：目标大小 UI 同步——分段选中 + 自定义文本框（仅当与分段档不一致时回填） */
+    if (targetSegs) {
+      var segHit = false;
+      targetSegs.forEach(function (x) {
+        var on = parseInt(x.getAttribute('data-target'), 10) === tf.targetKb;
+        syncSegChecked(x, on);
+        if (on) segHit = true;
+      });
+      if (targetCustom) targetCustom.value = segHit ? '' : (tf.targetKb > 0 ? String(tf.targetKb) : '');
+    }
   }
 
   /* 收集变换参数，交给 transform.js */
@@ -647,7 +710,7 @@
     });
   }
 
-  /* ---------- 导入（F1 / V0.2.2：细分计数 + mini 态） ---------- */
+  /* ---------- 导入（F1 / V0.2.2：细分计数 + mini 态；V1.6.1：HEIC 解码入队） ---------- */
   function addFiles(fileList) {
     if (processing) { flashNote(tr('v01_processing'), 'warning'); return; }   // 处理中锁定导入
     cancelWipe();   // V0.3：导入新图片时取消自动清除
@@ -658,9 +721,10 @@
     var wasEmpty = !queue.length;   // V0.3.3：记录本次导入是否让队列从空变非空
     queue.forEach(function (it) { seen[it.file.name + '|' + it.file.size + '|' + it.file.lastModified] = true; });
 
+    var heicJobs = [];   // V1.6.1：HEIC 文件先收集，统一走共享解码入口
     files.forEach(function (f) {
       var key = f.name + '|' + f.size + '|' + f.lastModified;
-      if (/image\/heic/i.test(f.type) || /\.heic$/i.test(f.name)) { heic++; return; }   // HEIC 暂不支持
+      if (/image\/heic/i.test(f.type) || /\.heic$/i.test(f.name)) { heic++; heicJobs.push(f); return; }   // V1.6.1：HEIC 转解码分支
       if (!/^image\//i.test(f.type)) { bad++; return; }                                 // 非图片过滤
       if (seen[key]) { dup++; return; }                                                 // 重复去重
       seen[key] = true;
@@ -677,23 +741,64 @@
     if (added) parts.push(trn('v022_import_added', added));
     if (dup) parts.push(trn('v022_import_dup', dup));
     if (bad) parts.push(trn('v022_import_bad', bad));
-    if (heic) parts.push(tr('v01_heic_note'));
+    if (heic) parts.push(tr('v161_heic_no_export'));   // V1.6.1：导入即提示"不支持导出 HEIC"
     if (parts.length) flashNote(parts.join(' · '), 'info');
-
 
     syncEmptyState();
     renderQueue(); updateOutSize(); refreshDynamic();
+
+    // V1.6.1：HEIC 异步解码（共享单一实现 image-import.js decodeHeic；成功 → PNG 中间态 File 入队，
+    // 后续按用户选择的 JPG/PNG/WebP 正常处理；解码失败标提示、库加载失败回退"暂不支持"）
+    if (heicJobs.length) {
+      if (!window.MFImageImport || !window.MFImageImport.decodeHeic) {
+        flashNote(tr('v01_heic_note'), 'warning');
+        return;
+      }
+      flashNote(tr('v161_heic_loading'), 'info');
+      var total = heicJobs.length, finished = 0, okN = 0, failN = 0;
+      var heicTick = function () {
+        finished++;
+        if (finished >= total) {
+          if (okN && failN === 0) flashNote(tr('v161_heic_ok'), 'success');
+          else if (okN && failN > 0) flashNote(String(tr('v161_heic_ok')) + ' · ' + failN + ' ' + tr('v161_heic_fail'), 'warning');
+        }
+      };
+      heicJobs.forEach(function (hf) {
+        var hk = hf.name + '|' + hf.size + '|' + hf.lastModified;
+        window.MFImageImport.decodeHeic(hf,
+          function (pngFile) {   // 解码成功 → PNG 中间态入队（原 HEIC 文件 key 去重）
+            if (seen[hk]) { heicTick(); return; }
+            seen[hk] = true; okN++;
+            queue.push({
+              id: ++uid, file: pngFile, name: pngFile.name, size: pngFile.size, iw: 0, ih: 0,
+              status: 'ready', blob: null, newSize: 0, thumb: '', outName: '', err: ''
+            });
+            makeThumb(queue[queue.length - 1]);
+            syncEmptyState(); renderQueue(); updateOutSize(); refreshDynamic();
+            heicTick();
+          },
+          function (name) {   // 解码失败：不影响队列其余文件
+            failN++;
+            flashNote(String(tr('v161_heic_fail')) + ' · ' + name, 'danger');
+            heicTick();
+          },
+          function () {       // 库加载失败 → 回退"暂不支持"
+            flashNote(tr('v01_heic_note'), 'warning');
+            heicTick();
+          }
+        );
+      });
+    }
   }
 
-  /* V0.3：空态/非空态切换——拖入区在空态提示与缩略图画廊之间切换，
-     控制区/操作条/结果区随显隐 */
+  /* V0.3：空态/非空态切换——拖入区在空态提示与缩略图画廊之间切换。
+     V1.6 F-01：编辑区（#controls）与操作条（#actions）改为常显，不再随空态隐藏；
+     空队列时"开始处理"由 refreshDynamic 禁用可见，参数仍可调（记忆预热）。 */
   function syncEmptyState() {
     var empty = !queue.length;
     if (dropzone) dropzone.classList.toggle('mini', !empty);
     if (dzEmpty) setHidden(dzEmpty, !empty);
     if (dzGallery) setHidden(dzGallery, empty);
-    if (controls) setHidden(controls, empty);
-    if (actions) setHidden(actions, empty);
     if (results) setHidden(results, empty);
     renderDropzone();
   }
@@ -784,6 +889,7 @@
       '</td>' +
       '<td class="mono">' +
         '<span class="r-orig"></span> <span class="r-arrow">→</span> <span class="r-new"></span> <span class="r-rate"></span>' +
+        '<span class="r-tgt tag"></span>' +
       '</td>' +
       '<td><span class="r-status"></span></td>' +
       '<td class="mono"><span class="r-dim">—</span></td>' +
@@ -801,6 +907,7 @@
       orig: row.querySelector('.r-orig'),
       newEl: row.querySelector('.r-new'),
       rate: row.querySelector('.r-rate'),
+      tgt: row.querySelector('.r-tgt'),
       status: row.querySelector('.r-status'),
       errBox: row.querySelector('.r-err'),
       errWhy: row.querySelector('.err-why'),
@@ -845,6 +952,16 @@
       rec.rate.className = 'r-rate';
     }
     if (rec.dim) rec.dim.textContent = dimText(it);
+    // V1.6 F-03：目标大小状态（达标 t-success / 接近目标 t-warn）
+    if (rec.tgt) {
+      if (isDone && it.targetNote) {
+        rec.tgt.textContent = it.targetNote;
+        rec.tgt.className = 'r-tgt tag ' + (it.targetNote === tr('v16_target_ok') ? 't-success' : 't-warn');
+      } else {
+        rec.tgt.textContent = '';
+        rec.tgt.className = 'r-tgt tag';
+      }
+    }
     rec.status.textContent = statusText(it.status);
     rec.status.className = 'tag ' + (isDone ? 't-success'
       : it.status === 'error' ? 't-danger'
@@ -902,13 +1019,33 @@
       var pendingN = 0;
       queue.forEach(function (it) { if (it.status === 'ready' || it.status === 'error') pendingN++; });
       // V1.4.3 修复：PNG 无损→质量无效果；allPng 时把质量回退默认并锁定控件，避免「记住的质量」误导
-      if (allPng()) {
+      // V1.6 F-03：目标大小与质量同构——全部输出为 PNG（fmt=PNG 或 keep+全 PNG）时目标大小无效，强制 Off 并禁用控件
+      var outPng = queue.length > 0 && ((fmt === 'image/png') || (fmt === 'keep' && allPng()));   // V1.6 F-01：空队列可预热参数，不锁定
+      if (queue.length && allPng()) {
         quality = 80;
         if (qualityEl) { qualityEl.value = '80'; qualityEl.disabled = true; qualityEl.classList.add('moteful-quality-locked'); }
         if (qualityVal) qualityVal.textContent = '80%';
         if (pngNote) setHidden(pngNote, false);
       } else {
         if (qualityEl) { qualityEl.disabled = false; qualityEl.classList.remove('moteful-quality-locked'); }
+      }
+      if (outPng) {
+        if (tf.targetKb) { tf.targetKb = 0; syncUIFromTf(); }   // 强制 Off（与 quality 同构，不纳入 pristine 判定）
+        if (targetSegs) targetSegs.forEach(function (x) {
+          x.classList.add('moteful-quality-locked');
+          var ci = x.querySelector('input');
+          if (ci) ci.disabled = true;
+        });
+        if (targetCustom) { targetCustom.disabled = true; targetCustom.classList.add('moteful-quality-locked'); }
+        if (targetPngNote) setHidden(targetPngNote, false);
+      } else {
+        if (targetSegs) targetSegs.forEach(function (x) {
+          x.classList.remove('moteful-quality-locked');
+          var ci = x.querySelector('input');
+          if (ci) ci.disabled = false;
+        });
+        if (targetCustom) { targetCustom.disabled = false; targetCustom.classList.remove('moteful-quality-locked'); }
+        if (targetPngNote) setHidden(targetPngNote, true);
       }
       var pristine = (lastSig === '') && (paramSigNoQuality() === DEFAULT_SIG_NOQ) && allPng();
       processBtn.disabled = processing || !queue.length || !pendingN || pristine;
@@ -957,6 +1094,7 @@
     if (p.mb != null) tf.mBottom = p.mb;
     if (p.ml != null) tf.mLeft = p.ml;
     if (p.mr != null) tf.mRight = p.mr;
+    if (p.t != null) tf.targetKb = p.t;   // V1.6 F-03：目标大小（KB）
     // 同步 UI：格式分段 / 质量滑块 / 变换控件
     if (segBtns) segBtns.forEach(function (b) {
       var on = b.getAttribute('data-fmt') === fmt;
@@ -1019,7 +1157,8 @@
         return {
           q: quality, f: fmtShort(), s: tf.sizeMode, p: tf.percent, l: tf.longest,
           w: tf.width, h: tf.height, r: tf.rotate, fh: tf.flipH ? 1 : 0, fv: tf.flipV ? 1 : 0,
-          c: tf.cropMode, cr: tf.cropRatio, mt: tf.mTop, mb: tf.mBottom, ml: tf.mLeft, mr: tf.mRight
+          c: tf.cropMode, cr: tf.cropRatio, mt: tf.mTop, mb: tf.mBottom, ml: tf.mLeft, mr: tf.mRight,
+          t: tf.targetKb > 0 ? tf.targetKb : 0   // V1.6 F-03：目标大小（0=不导出）
         };
       },
       shareText: function () {
@@ -1069,6 +1208,8 @@
   function process() {
     if (processing) return;
     cancelWipe();   // V0.3：开始处理时取消自动清除
+    // V1.6 F-01：空队列点「开始处理」→ 不执行并提示（按钮已禁用，此为键盘/程序触发的防御）
+    if (!queue.length) { flashNote(tr('v16_empty_queue'), 'warning'); return; }
     var pending = queue.filter(function (it) { return it.status === 'ready' || it.status === 'error'; });
     if (!pending.length) return;
     processing = true; cancelFlag = false;
@@ -1110,8 +1251,8 @@
     }
   }
 
-  /* 单张图片处理核心：加载图片 → 应用变换（缩放/旋转/翻转/裁剪/边距）→ JPG铺白底 → 导出Blob
-     处理流程：loadImage → MotefulTransform.apply → toBlob，全程在浏览器本地完成 */
+  /* ---------- 单张图片处理核心：加载图片 → 应用变换（缩放/旋转/翻转/裁剪/边距）→ JPG铺白底 → 导出Blob
+     流程：loadImage → MotefulTransform.apply → toBlob（V1.6 F-03：启用目标大小时改走质量二分逼近），全程本地 */
   function processOne(it) {
     it.status = 'processing';
     renderQueue();
@@ -1148,16 +1289,76 @@
         }
         releaseImg(img);
 
-        out.toBlob(function (blob) {
-          if (!blob) { fail(tr('v022_err_unknown')); return; }
+        // V1.6 F-03：目标大小——输出为 JPG/WebP 且启用目标时走质量二分逼近（最多 7 次编码含首次）
+        var targetBytes = (tf.targetKb > 0 && /^image\/(jpeg|webp)$/i.test(mime)) ? (tf.targetKb * 1024) : 0;
+        function settle(blob, note) {
           it.blob = blob; it.newSize = blob.size;
+          it.targetNote = note || '';
           it.outName = uniqueName(baseName(it.name) + extFor(mime, it.name));
           it.status = 'done'; it.err = '';
           renderQueue();
           resolve();
+        }
+        if (targetBytes > 0) {
+          encodeToTargetSize(out, mime, q, targetBytes).then(function (res) {
+            if (!res) { fail(tr('v022_err_unknown')); return; }
+            settle(res.blob, res.ok ? tr('v16_target_ok') : tr('v16_target_near'));
+          });
+          return;
+        }
+        out.toBlob(function (blob) {
+          if (!blob) { fail(tr('v022_err_unknown')); return; }
+          settle(blob, '');
         }, mime, q);
       }).catch(function () {
         fail(tr('v022_err_decode'));
+      });
+    });
+  }
+
+  /* V1.6 F-03：目标大小压缩核心（高复用模块，未来压缩类工具直接复用）
+     canvas 已含全部变换与 JPG 铺白；本函数只换编码质量 q（0.01~1）做二分逼近。
+     语义：q 越高体积越大；目标 = 找到「体积 ≤ 目标×1.05 的最高质量」；
+     全部不达标（q=1 仍超）→ 取最小体积结果并标记未达标。迭代上限 7 次（含首次）。 */
+  function encodeToTargetSize(canvas, mime, q0, targetBytes) {
+    var limit = Math.ceil(targetBytes * 1.05);
+    function encode(qv) {
+      return new Promise(function (res) {
+        canvas.toBlob(function (blob) { res(blob); }, mime, qv);
+      });
+    }
+    return new Promise(function (resolve) {
+      var bestOk = null;      // 达标档中最高质量（体积 ≤ limit 且 q 最大）
+      var bestSmall = null;   // 最小体积（无达标档时兜底）
+      function consider(b, qv) {
+        if (!b) return;
+        if (b.size <= limit) {
+          if (!bestOk || qv > bestOk.q) bestOk = { blob: b, size: b.size, q: qv };
+        } else if (!bestSmall || b.size < bestSmall.size) {
+          bestSmall = { blob: b, size: b.size, q: qv };
+        }
+      }
+      function done() {
+        resolve(bestOk ? { blob: bestOk.blob, ok: true } : (bestSmall ? { blob: bestSmall.blob, ok: false } : null));
+      }
+      encode(q0).then(function (b0) {
+        if (!b0) { resolve(null); return; }
+        consider(b0, q0);
+        if (bestOk) { done(); return; }   // 首次编码即达标（1 次）
+        var lo = 1, hi = Math.max(1, Math.round(q0 * 100) - 1), iters = 6;   // 二分预算 6 次
+        function step() {
+          if (iters <= 0 || lo > hi) { done(); return; }
+          iters--;
+          var mid = Math.round((lo + hi) / 2);
+          encode(mid / 100).then(function (b) {
+            if (!b) { done(); return; }
+            consider(b, mid / 100);
+            if (b.size <= limit) lo = mid + 1;   // 达标 → 尝试更高质量（画质更好）
+            else hi = mid - 1;                    // 未达标 → 降低质量
+            step();
+          });
+        }
+        step();
       });
     });
   }
