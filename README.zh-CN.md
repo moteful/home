@@ -5,7 +5,7 @@
 一个**零依赖、隐私优先的图片工具站**，完全运行在你的浏览器里。
 图片在本地处理，**永远不会离开你的设备**——不上传、无服务器、无跟踪。
 
-> 状态：**v1.4.4** · 17 个页面 · 双语（中文 / English）
+> 状态：**v1.5.1** · 18 个页面 · 双语（中文 / English）
 
 ---
 
@@ -16,6 +16,7 @@
 - **双语界面**——中文 / English，运行时可切换。
 - **一致的设计**——由内置治理套件强制保障（lint + 规范断言 + 模板注入）。
 - **分享与 SEO 就绪**——分享面板（带配置链接 / 二维码，v1.4）、成果对比卡片、页脚社交行、OG/Twitter/canonical/hreflang/JSON-LD 标签（v1.4.4）。
+- **图标工具箱（v1.5）**——SVG 图标编辑：改色、描边、缩放、旋转翻转、自定义色板，多尺寸导出与一键 ZIP；工具页之间互相推荐。
 - **设计即开放**——对隐私工具而言，代码本身就是信任信号。
 
 ---
@@ -35,6 +36,7 @@
 | `tools/stitch.html` | 图片拼接（长图合并） |
 | `tools/annotate.html` | 图片标注 |
 | `tools/qrcode.html` | 二维码生成器 |
+| `tools/icon-tool.html` | 图标工具（SVG 改色 / 缩放 / 导出） |
 | `dev/json.html` | JSON 格式化 / 压缩 / 校验 |
 | `dev/regex.html` | 正则测试（Worker 驱动） |
 | `games/block-clear.html` | 方块消除（休闲解谜） |
@@ -65,7 +67,7 @@ python3 -m http.server 8000
 ### 质量门禁（提交前运行）
 
 ```bash
-node _governance/inject_site.mjs --check   # 17 页漂移检查（必须为 0）
+node _governance/inject_site.mjs --check   # 18 页漂移检查（必须为 0）
 node _governance/lint.mjs                  # 样式/lint（错误数必须为 0）
 node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
@@ -77,7 +79,7 @@ node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # 图片工具（image-tool、stitch、annotate、qrcode）
+├── tools/            # 图片工具（image-tool、stitch、annotate、qrcode、icon-tool）
 ├── dev/              # 开发者工具（json、regex）
 ├── games/            # 小游戏（block-clear、snake、sudoku）
 ├── legal/            # about / contact / credits / privacy / terms

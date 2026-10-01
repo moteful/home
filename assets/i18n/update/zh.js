@@ -12,6 +12,18 @@
 
 const CHANGELOG_ZH = [
   {
+    "version": "v1.5.2",
+    "date": "2026-10-01",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "图片工具-图标工具（SVG 图标编辑工具）"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.4.4",
     "date": "2026-09-27",
     "sections": [

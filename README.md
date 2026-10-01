@@ -5,7 +5,7 @@
 A **zero-dependency, privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.4.4** · 17 pages · bilingual (中文 / English)
+> Status: **v1.5.1** · 18 pages · bilingual (中文 / English)
 
 ---
 
@@ -16,6 +16,7 @@ Your images are processed locally and **never leave your device** — no upload,
 - **Bilingual UI** — 中文 / English, switchable at runtime.
 - **Consistent design** — enforced by a built-in governance suite (lint + spec assertions + template injection).
 - **Share & SEO ready** — share panel with config-preset links / QR codes (v1.4), compare-result cards, social footer row, OG/Twitter/canonical/hreflang/JSON-LD tags (v1.4.4).
+- **Icon toolbox (v1.5)** — SVG icon editor: recolor, stroke, scale, rotate/flip, custom color picker, multi-size export & one-click ZIP; tool pages cross-recommend each other.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -35,6 +36,7 @@ Your images are processed locally and **never leave your device** — no upload,
 | `tools/stitch.html` | Image stitching (long-image merge) |
 | `tools/annotate.html` | Image annotation |
 | `tools/qrcode.html` | QR code generator |
+| `tools/icon-tool.html` | SVG icon tool (recolor / scale / export) |
 | `dev/json.html` | JSON formatter / minifier / validator |
 | `dev/regex.html` | Regex tester (Worker-driven) |
 | `games/block-clear.html` | Block Clear (relaxing puzzle) |
@@ -65,7 +67,7 @@ python3 -m http.server 8000
 ### Quality gates (run before committing)
 
 ```bash
-node _governance/inject_site.mjs --check   # drift check across 17 pages (must be 0)
+node _governance/inject_site.mjs --check   # drift check across 18 pages (must be 0)
 node _governance/lint.mjs                  # style/lint (must have 0 errors)
 node _governance/assert_spec.mjs           # spec assertions (requires Playwright)
 ```
@@ -77,7 +79,7 @@ node _governance/assert_spec.mjs           # spec assertions (requires Playwrigh
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # image tools (image-tool, stitch, annotate, qrcode)
+├── tools/            # image tools (image-tool, stitch, annotate, qrcode, icon-tool)
 ├── dev/              # developer tools (json, regex)
 ├── games/            # mini-games (block-clear, snake, sudoku)
 ├── legal/            # about / contact / credits / privacy / terms

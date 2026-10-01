@@ -39,7 +39,7 @@ window.MOTEFUL_I18N.en = {
   "foot_support": "Support",
   "foot_legal": "Legal",
   "foot_operator_title": "Operated by",
-  "foot_version": "v1.5.1",
+  "foot_version": "v1.5.2",
   "rec_done": "{action} done",
   "rec_sub": "Thanks for using Moteful — you might also like:",
   "rec_tip_note": "If this tool helped you, buy the author a coffee",

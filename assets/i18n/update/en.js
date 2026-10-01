@@ -7,6 +7,18 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v1.5.2",
+    "date": "2026-10-01",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Image Tools - Icon Tool (SVG icon editor)"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.4.4",
     "date": "2026-09-27",
     "sections": [
