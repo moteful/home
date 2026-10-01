@@ -35,6 +35,22 @@
    修复：激活时保持 400 字重，只靠背景色区分选中态。 */
 .seg input:checked + .seg-t{font-weight:400}
 
+/* ---- 6.2 seg 窄屏防拆行（V1.5.1 根因修复） ----
+   根因：moteful.css .seg-t 未设 white-space、.seg 可被父级 flex 压缩，
+   手机端导出尺寸按钮 512 被拆成 "51/2" 两行显示。
+   修复：.seg 不收缩、.seg-t 强制单行、.segment 超宽时整体换行而非拆字。 */
+.segment{flex-wrap:wrap}
+.seg{flex:none}
+.seg-t{white-space:nowrap}
+
+/* ---- 6.3 icon-tool 导出尺寸手机端上4下4（V1.5.1） ----
+   现状：窄屏 8 个尺寸按钮按内容宽度自然换行，呈 7+1 观感差。
+   需求：预设尺寸整齐两排，每排 4 个。仅限定 icon-tool 导出区。 */
+@media (max-width:768px){
+  #iconExportPanel .segment[aria-label="导出尺寸"] .seg{flex:0 0 calc(25% - 2px)}
+  #iconExportPanel .segment[aria-label="导出尺寸"] .seg-t{justify-content:center}
+}
+
 /* ---- 7. 窄屏微调（规范 24 章已覆盖 field 纵排等主体，以下为工作区特有） ---- */
 @media (max-width:768px){
   .dropzone{min-height:160px;padding:24px 16px}

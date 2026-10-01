@@ -15,7 +15,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Moteful">
 <meta property="og:title" content="图标工具 - 在线 SVG 图标编辑器">
-<meta property="og:description" content="免费在线 SVG 图标工具：改色、描边、背景、缩放、旋转、翻转，一键导出任意尺寸。100% 本地处理，内容不上传。">
+<meta property="og:description" content="免费在线 SVG 图标工具：改色、描边、背景、色板取色、缩放旋转，多尺寸导出/一键 ZIP/代码复制。100% 本地处理，内容不上传。">
 <meta property="og:url" content="https://moteful.app/tools/icon-tool.html">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
@@ -23,7 +23,7 @@
 <!-- ===== SEO：Twitter Card ===== -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="图标工具 - 在线 SVG 图标编辑器">
-<meta name="twitter:description" content="免费在线 SVG 图标工具：改色、描边、背景、缩放、旋转、翻转，一键导出任意尺寸。100% 本地处理，内容不上传。">
+<meta name="twitter:description" content="免费在线 SVG 图标工具：改色、描边、背景、色板取色、缩放旋转，多尺寸导出/一键 ZIP/代码复制。100% 本地处理，内容不上传。">
 
 <!-- ===== SEO：canonical（防重复内容） ===== -->
 <link rel="canonical" href="https://moteful.app/tools/icon-tool.html">
@@ -35,7 +35,7 @@
   "@type": "WebApplication",
   "name": "图标工具",
   "alternateName": "Moteful Icon Tool",
-  "description": "免费在线 SVG 图标工具：改色、描边、背景、缩放、旋转、翻转，一键导出 SVG/PNG/JPG/WebP 任意尺寸。全部在浏览器本地处理，内容不上传。",
+  "description": "免费在线 SVG 图标工具：改色、描边、背景、色板取色、缩放旋转翻转，导出 SVG/PNG/JPG/WebP 任意尺寸或一键打包 ZIP，可复制 SVG 代码/DataURI/图像。全部在浏览器本地处理，内容不上传。",
   "url": "https://moteful.app/tools/icon-tool.html",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Web (任何现代浏览器)",
@@ -47,9 +47,12 @@
   "featureList": [
     "SVG 文件上传 / 拖入 / 代码粘贴三种导入方式",
     "图标颜色、描边颜色与粗细、背景色、内边距可调",
-    "等比例缩放与 16~512 预设画布尺寸",
-    "旋转 90/180/270 度，水平/垂直翻转",
-    "SVG / PNG / JPG / WebP 四种格式导出",
+    "自定义色板：HSV 自由取色 + 屏幕取色",
+    "等比例缩放与 16~512 预设导出尺寸",
+    "旋转 90/180/270 度，水平/垂直翻转，撤销/重做/一键还原",
+    "复制 SVG 代码 / DataURI / 渲染图像",
+    "SVG / PNG / JPG / WebP 四种格式导出，多尺寸一键打包 ZIP",
+    "配置记忆与带参分享链接",
     "100% 本地处理，内容不上传"
   ],
   "publisher": {
@@ -69,7 +72,7 @@ document.documentElement.dataset.theme=v;})();</script>
 <link rel="stylesheet" href="../assets/css/moteful.css">
   <link rel="stylesheet" href="../assets/css/share.css">
   <link rel="stylesheet" href="../assets/css/recommend.css">
-<link rel="stylesheet" href="../assets/css/icon-tool.css?v=1.5.0">
+<link rel="stylesheet" href="../assets/css/icon-tool.css?v=1.5.1">
 <script src="../assets/js/moteful.js" defer></script>
   <script src="../assets/js/share.js" defer></script>
   <script src="../assets/js/recommend.js" defer></script>
@@ -651,6 +654,9 @@ document.documentElement.dataset.theme=v;})();</script>
           <tr><td data-i18n="icon_f5_name">旋转与翻转</td><td data-i18n="icon_f5_desc">一键旋转 90/180/270 度，水平、垂直翻转，支持撤销与重做。</td></tr>
           <tr><td data-i18n="icon_f6_name">多格式导出</td><td data-i18n="icon_f6_desc">SVG 矢量与 PNG/JPG/WebP 位图，导出前可放大预览，无水印。</td></tr>
           <tr><td data-i18n="icon_f7_name">隐私保护</td><td data-i18n="icon_f7_desc">100% 本地处理，文件与代码不上传、不注册，关闭页面即清除。</td></tr>
+          <tr><td data-i18n="icon_f8_name">自定义色板</td><td data-i18n="icon_f8_desc">HSV 色相、饱和度、明度自由取色，支持屏幕取色，精准还原品牌色。</td></tr>
+          <tr><td data-i18n="icon_f9_name">一键复制</td><td data-i18n="icon_f9_desc">复制 SVG 代码、DataURI 或渲染后的图像，直接粘贴进项目与设计稿。</td></tr>
+          <tr><td data-i18n="icon_f10_name">配置记忆与分享</td><td data-i18n="icon_f10_desc">参数自动记忆，可生成带配置的分享链接，打开即恢复同款设置。</td></tr>
         </tbody>
       </table>
     </div>
@@ -724,7 +730,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v1.5.0</span>
+    <span data-i18n="foot_version">v1.5.1</span>
   </div>
 </footer>
 
@@ -735,7 +741,7 @@ document.documentElement.dataset.theme=v;})();</script>
 <script src="../assets/js/icon-render.js" defer></script>
 <script src="../assets/js/compare-card.js" defer></script>
 <script src="../assets/js/zip.js" defer></script>
-<script src="../assets/js/icon-tool.js?v=1.5.0" defer></script>
+<script src="../assets/js/icon-tool.js?v=1.5.1" defer></script>
 
 <div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
   <div class="rec-mask" data-rec-close></div>
@@ -755,10 +761,6 @@ document.documentElement.dataset.theme=v;})();</script>
     <a class="rec-card" href="../tools/annotate.html">
       <i data-lucide="pencil"></i>
       <span data-i18n="nav_m_annotate">标注</span>
-    </a>
-    <a class="rec-card" href="../tools/qrcode.html">
-      <i data-lucide="scan"></i>
-      <span data-i18n="nav_m_qrcode">二维码</span>
     </a></div>
     <div class="rec-tip">
       <div class="rec-tip-line">

@@ -39,34 +39,36 @@
     "tools/image-tool.html": {
       "recs": [
         "tools/stitch.html",
-        "tools/annotate.html"
+        "tools/annotate.html",
+        "tools/icon-tool.html"
       ]
     },
     "tools/stitch.html": {
       "recs": [
         "tools/image-tool.html",
-        "tools/annotate.html"
+        "tools/annotate.html",
+        "tools/icon-tool.html"
       ]
     },
     "tools/annotate.html": {
       "recs": [
         "tools/image-tool.html",
-        "tools/stitch.html"
+        "tools/stitch.html",
+        "tools/icon-tool.html"
       ]
     },
     "tools/qrcode.html": {
       "recs": [
         "tools/image-tool.html",
         "tools/stitch.html",
-        "tools/annotate.html"
+        "tools/icon-tool.html"
       ]
     },
     "tools/icon-tool.html": {
       "recs": [
         "tools/image-tool.html",
         "tools/stitch.html",
-        "tools/annotate.html",
-        "tools/qrcode.html"
+        "tools/annotate.html"
       ]
     }
   }
