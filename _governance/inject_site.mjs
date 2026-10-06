@@ -102,7 +102,10 @@ function renderRecBlock(page) {
   const meta = REC_CFG.pageMeta || {};
   const cards = (cfg.recs || []).map(function (t) {
     const m = meta[t] || { icon: 'star', labelKey: t, label: t };
-    return '    <a class="rec-card" href="' + t + '">\n      <i data-lucide="' + m.icon + '"></i>\n      <span data-i18n="' + m.labelKey + '">' + (m.label || t) + '</span>\n    </a>';
+    const label = m.new
+      ? '<span class="rec-label"><span data-i18n="' + m.labelKey + '">' + (m.label || t) + '</span><span class="tag tag-new tag-sm" data-i18n="tag_new">NEW</span></span>'
+      : '<span data-i18n="' + m.labelKey + '">' + (m.label || t) + '</span>';
+    return '    <a class="rec-card" href="' + t + '">\n      <i data-lucide="' + m.icon + '"></i>\n      ' + label + '\n    </a>';
   }).join('\n');
   let block = recTpl.replace('{{RECS}}', cards);
   if (path.dirname(page) !== '.') block = block.replace(linkRe, function (_, attr, target) { return attr + '="../' + target + '"'; });

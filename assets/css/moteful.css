@@ -9,6 +9,8 @@
   --primary-soft:rgba(2,132,199,.10);
   --danger:#DC2626; --danger-fill:#DC2626; --on-danger:#FFFFFF;
   --warning:#D97706; --success:#16A34A; --info:#0284C7;
+  --success-fill:#16A34A; --warning-fill:#D97706;
+  --success-fill-deep:#15803D; --warning-fill-deep:#B45309;
   --border:#DCE5F0; --border-strong:#B9C7DA;
   --ring:rgba(2,132,199,.25);
   --scrim:rgba(8,13,26,.55); --tip-bg:#0F172A; --tip-fg:#E2E8F0; --code-bg:#0B1220; --code-fg:#D7E2F0;
@@ -29,6 +31,7 @@
   --primary-soft:rgba(111,185,227,.13);
   --danger:#F87171; --danger-fill:#B91C1C; --on-danger:#FFF5F5;
   --warning:#FBBF24; --success:#4ADE80; --info:#6FB9E3;
+  --success-fill:var(--success-fill-deep); --warning-fill:var(--warning-fill-deep);
   --border:#1E2A44; --border-strong:#2C3D5E;
   --ring:rgba(111,185,227,.28);
   --scrim:rgba(8,13,26,.6); --tip-bg:#1E2A44; --tip-fg:#E2E8F0; --code-bg:#0B1220; --code-fg:#D7E2F0;
@@ -336,6 +339,19 @@ textarea.input{height:auto;padding:10px 12px;resize:vertical;line-height:1.6}
 .tag-x [data-lucide]{width:11px;height:11px}
 .badge{min-width:18px;height:18px;border-radius:var(--r-full);background:var(--danger-fill);color:var(--on-danger);
   font:600 11px/18px var(--mono);text-align:center;padding:0 5px;display:inline-block}
+
+/* ============ NEW / HOT 标签（v1.7.1）============
+   实心填充+白字 → 无描边；线稿 → 描边+对应色文字 */
+.tag-new{background:var(--success-fill);color:#FFF}
+.tag-hot{background:var(--warning-fill);color:#FFF}
+.tag-new-o{background:transparent;color:var(--success);border:1px solid var(--success)}
+.tag-hot-o{background:transparent;color:var(--warning);border:1px solid var(--warning)}
+.tag-sm{height:18px;padding:0 7px;font-size:10px;font-weight:400;letter-spacing:.5px;font-family:var(--font)}
+/* 导航按钮右上角角标（absolute 盖角，不撑宽按钮） */
+.nav-corner{position:absolute;top:-6px;right:-8px;height:15px;padding:0 6px;border-radius:var(--r-full);
+  font:400 9px/15px var(--font);letter-spacing:.4px;white-space:nowrap;pointer-events:none}
+.nav-corner-new{background:var(--success-fill);color:#FFF}
+.nav-corner-hot{background:var(--warning-fill);color:#FFF}
 
 /* ============ 导航 ============ */
 .navbar{display:flex;align-items:center;gap:26px;padding:12px 20px;background:var(--surface);

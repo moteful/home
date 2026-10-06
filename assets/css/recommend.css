@@ -22,6 +22,7 @@
   background:#fff;color:#0f172a;text-decoration:none;font-size:13px;font-weight:600;transition:border-color .15s,transform .15s,box-shadow .15s;}
 .rec-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 6px 18px rgba(2,132,199,.18);}
 .rec-card svg{width:24px;height:24px;color:var(--primary);}
+.rec-label{display:inline-flex;align-items:center;gap:5px;justify-content:center;}
 .rec-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .rec-actions .btn{width:100%;}
 .rec-tip-line{display:inline-flex;align-items:center;gap:6px;}

@@ -756,6 +756,7 @@
         a.click();
         a.remove();
         setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+        if (window.Moteful && window.Moteful.recommend) window.Moteful.recommend.show({ actionKey: 'rec_export' });
       };
       if (S.target > 0) {
         encodeToTargetSize(c, mime, q, S.target * 1024).then(function (res) { if (res) done(res.blob); });
@@ -781,6 +782,7 @@
           a.click();
           a.remove();
           setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+          if (window.Moteful && window.Moteful.recommend) window.Moteful.recommend.show({ actionKey: 'rec_export' });
         });
       });
     });

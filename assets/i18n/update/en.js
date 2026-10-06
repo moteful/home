@@ -7,6 +7,19 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v1.7.1",
+    "date": "2026-10-07",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Image Tools - ID Photo",
+          "NEW / HOT badges (navigation, menus, tool cards)"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.6.0",
     "date": "2026-10-02",
     "sections": [

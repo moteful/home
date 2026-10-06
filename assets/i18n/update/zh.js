@@ -12,6 +12,19 @@
 
 const CHANGELOG_ZH = [
   {
+    "version": "v1.7.1",
+    "date": "2026-10-07",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "图片工具-证件照",
+          "NEW / HOT 标签（导航、菜单、工具卡片）"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.6.0",
     "date": "2026-10-02",
     "sections": [

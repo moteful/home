@@ -124,7 +124,15 @@ input.step-val:focus-visible{
 .id-guide-head{position:absolute;left:8%;right:8%;top:20%;height:34%;border:1.5px dashed var(--primary);opacity:.55;box-sizing:border-box}
 .id-guide-eye{position:absolute;left:0;right:0;top:33.33%;height:1px;background:var(--primary);opacity:.65}
 .id-guide-third-v{position:absolute;top:0;bottom:0;width:1px;background:var(--text-3,#667);opacity:.3}
+.id-gv-1{left:33.33%}
+.id-gv-2{left:66.66%}
 .id-guide-third-h{position:absolute;left:0;right:0;height:1px;background:var(--text-3,#667);opacity:.3}
+.id-gh-1{top:33.33%}
+.id-gh-2{top:66.66%}
+
+/* 内联 style 治理（2026-10-06 补登记 lint）：range 布局与数值显示宽度迁移至私有 CSS */
+.id-range{flex:1;min-width:120px}
+.id-step-val{width:48px;text-align:right}
 
 /* ===== 画廊缩略图选中态（当前处理图） ===== */
 .dz-thumb.id-active{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}

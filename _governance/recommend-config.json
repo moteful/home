@@ -33,11 +33,18 @@
       "icon": "radius",
       "labelKey": "nav_m_icon",
       "label": "图标工具"
+    },
+    "tools/id-photo-tool.html": {
+      "icon": "user",
+      "labelKey": "nav_m_idphoto",
+      "label": "证件照",
+      "new": true
     }
   },
   "pages": {
     "tools/image-tool.html": {
       "recs": [
+        "tools/id-photo-tool.html",
         "tools/stitch.html",
         "tools/annotate.html",
         "tools/icon-tool.html"
@@ -45,6 +52,7 @@
     },
     "tools/stitch.html": {
       "recs": [
+        "tools/id-photo-tool.html",
         "tools/image-tool.html",
         "tools/annotate.html",
         "tools/icon-tool.html"
@@ -54,6 +62,7 @@
       "recs": [
         "tools/image-tool.html",
         "tools/stitch.html",
+        "tools/id-photo-tool.html",
         "tools/icon-tool.html"
       ]
     },
@@ -61,14 +70,24 @@
       "recs": [
         "tools/image-tool.html",
         "tools/stitch.html",
-        "tools/icon-tool.html"
+        "tools/icon-tool.html",
+        "tools/id-photo-tool.html"
       ]
     },
     "tools/icon-tool.html": {
       "recs": [
         "tools/image-tool.html",
         "tools/stitch.html",
+        "tools/id-photo-tool.html",
         "tools/annotate.html"
+      ]
+    },
+    "tools/id-photo-tool.html": {
+      "recs": [
+        "tools/image-tool.html",
+        "tools/stitch.html",
+        "tools/annotate.html",
+        "tools/icon-tool.html"
       ]
     }
   }
