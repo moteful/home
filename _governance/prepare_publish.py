@@ -103,10 +103,14 @@ for dp, _, fn in os.walk(pub):
                    [r'''['"]((?:\.\./)?[^'"]+?\.(?:png|jpg|jpeg|gif|svg|webp|ico|mp3|ogg|wav|json))['"]''']
             for pat in pats:
                 for ref in re.findall(pat, ln):
+                    ref = ref.split('?')[0]  # 剥离 ?v= 版本化查询串（cache-busting）
                     if ref.startswith(('http', 'data:', '#', 'mailto:', 'javascript:')):
                         continue
                     if not os.path.splitext(ref)[1] or ' ' in ref:
                         continue  # 目录引用（如 href="/"）或含空格的界面文案，不查
+                    # JS 裸文件名（不含 / ）视为导出/下载文件名（a.download / filename 拼接），非资源引用，跳过
+                    if f.endswith('.js') and '/' not in ref:
+                        continue
                     cand = os.path.normpath(os.path.join(dp, *ref.split('/')))
                     if f.endswith('.js'):
                         ok = any(os.path.isfile(os.path.join(pd, *ref.split('/'))) for pd in page_dirs) \
