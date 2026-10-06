@@ -104,6 +104,7 @@ if (fs.existsSync(cssPath)) {
 
 /* ---------- 2) 页面扫描 ---------- */
 const pageInlineStyles = new Map(); // file -> {selector: declarations} 供 R5 漂移
+const sliderIds = new Map(); // sliderId -> htmlFile 供 R11 滑杆 --p 契约
 function scanPage(file, level) {
   const fp = path.join(root, file);
   if (!fs.existsSync(fp)) { add('CFG', 'error', file, '-', '配置中的页面不存在'); return; }
@@ -139,10 +140,40 @@ function scanPage(file, level) {
     pageInlineStyles.set(label, decls);
   });
 
-  // 2c 内联 style= 属性：一律 warn（外壳小布局属性来自用户定稿的 index.html 范例，属债务记账，只许变少）
+  // 2c 内联 style= 属性：一律 warn（外壳小布局属性来自用户定稿的 index.html 范例，属债务记账，只许变少；滑杆 --p 契约初始值豁免）
   lines.forEach((line, i) => {
     const sm = line.match(/style\s*=\s*["']([^"']+)["']/g);
-    if (sm) sm.forEach((s) => add('R8', 'warn', file, `L${i + 1}`, `内联 style 属性: ${s.slice(0, 60)}`));
+    if (sm) sm.forEach((s) => {
+      if (/^--p\s*:/.test(s.replace(/^style\s*=\s*["']/, '').replace(/["']$/, '').trim())) return;
+      add('R8', 'warn', file, `L${i + 1}`, `内联 style 属性: ${s.slice(0, 60)}`);
+    });
+  });
+
+  // 2d R11 滑杆 --p 契约：每个 .slider 必须内联 --p 初始值，且数值 = (value-min)/(max-min) 归一化
+  //    （原生 range 滑块位置按范围归一化；写线性 value% 会在 min≠0 滑杆上滑块与填充错位）
+  lines.forEach((line, i) => {
+    const slm = line.match(/\bid="([^"]+)"[^>]*class="slider"/) || line.match(/class="slider"[^>]*\bid="([^"]+)"/);
+    if (!slm) return;
+    const id = slm[1];
+    sliderIds.set(id, file);
+    const attrs = {};
+    let am;
+    const attrRe = /([a-zA-Z-]+)\s*=\s*"([^"]*)"/g;
+    while ((am = attrRe.exec(line))) attrs[am[1]] = am[2];
+    const styleAttr = attrs.style || '';
+    const pm = styleAttr.match(/--p\s*:\s*([\d.]+)%/);
+    if (!pm) {
+      add('R11', level, file, `L${i + 1}`, `滑杆 ${id} 缺少内联 --p 初始值（契约：style="--p:N%"）`);
+      return;
+    }
+    const actual = parseFloat(pm[1]);
+    const mn = parseFloat(attrs.min), mx = parseFloat(attrs.max), v = parseFloat(attrs.value);
+    if (isFinite(mn) && isFinite(mx) && isFinite(v) && mx !== mn) {
+      const expected = (v - mn) / (mx - mn) * 100;
+      if (Math.abs(actual - expected) > 1) {
+        add('R11', level, file, `L${i + 1}`, `滑杆 ${id} 内联 --p=${actual.toFixed(2)}% 与归一化期望 ${expected.toFixed(2)}% 不符（须 (value-min)/(max-min)）`);
+      }
+    }
   });
 }
 cfg.newArchPages.forEach((f) => scanPage(f, 'error'));
@@ -183,6 +214,26 @@ if (cfg.jsFiles && cfg.jsFiles.length) {
       add('R9', 'error', f, '-', `JS 语法错误: ${firstLine.slice(0, 120)}`);
     }
   });
+}
+
+/* ---------- 4b) R11b 滑杆 --p 契约（JS 层）：含滑杆页面的 JS 必须存在 --p 同步机制 ----------
+   根治「代码设值漏 --p → 滑块与填充错位」反复踩坑：页面只要有 .slider，
+   其配套 JS 必须出现 setProperty('--p') 或 MF.sliderSet 至少一次（文件级弱检查，
+   防「完全没有同步逻辑」的最坏情况；具体设值路径由 MF.sliderSet 强制收敛）。 */
+for (const [sid, htmlFile] of sliderIds) {
+  const js = cfg.jsFiles || [];
+  for (const f of js) {
+    const p = path.join(root, f);
+    if (!fs.existsSync(p)) continue;
+    const src = fs.readFileSync(p, 'utf8');
+    if (src.includes("setProperty('--p'") || src.includes('setProperty("--p"') || src.includes('sliderSet')) {
+      continue; // 该 JS 已有 --p 同步机制
+    }
+    // 该 JS 若引用了此滑杆 id（页面脚本场景），则必须带 --p 同步
+    if (src.includes("'" + sid + "'") || src.includes('"' + sid + '"') || src.includes('#' + sid)) {
+      add('R11', 'warn', f, '-', `滑杆 ${sid}（来自 ${htmlFile}）的 JS 无 --p 同步（须 setProperty('--p') 或 MF.sliderSet）`);
+    }
+  }
 }
 
 /* ---------- 5) R10 页面私有 CSS 不得裸重定义白名单完整组件 ----------

@@ -180,9 +180,23 @@ $$('.step').forEach(function(s){var out=$('.step-val',s),min=+(s.dataset.min||0)
   $$('.step-btn',s).forEach(function(b){on(b,'click',function(){
     out.textContent=Math.max(min,Math.min(max,+out.textContent+(+b.dataset.step)));})})});
 $$('.slider').forEach(function(sl){on(sl,'input',function(){
-  sl.style.setProperty('--p',sl.value+'%');
-  var out=$('#'+(sl.dataset.out||''))||sl.parentElement.querySelector('.slider-out');
+  sl.style.setProperty('--p',sliderPct(sl)+'%');
+  var out=(sl.dataset.out&&$('#'+sl.dataset.out))||sl.parentElement.querySelector('.slider-out');
   if(out)out.textContent=(sl.dataset.label||'value')+': '+sl.value;})});
+/* 滑杆统一设值（滑杆 --p 契约）：所有"代码设置滑杆 value"的路径必须走本函数，
+   禁止直接改 el.value —— 否则填充进度（--p）与滑块位置错位（反复踩坑 bug 的根治） */
+/* 滑杆填充口径（全站唯一事实源）：原生 range 滑块位置 = (value-min)/(max-min) 归一化，
+   填充 --p 必须同步为归一化百分比，否则 min≠0 滑杆滑块与填充错位（反复踩坑的根治） */
+function sliderPct(el){
+  var mn=parseFloat(el.min),mx=parseFloat(el.max),v=parseFloat(el.value);
+  if(!isFinite(mn)||!isFinite(mx)||mx===mn)return 50;
+  return (v-mn)/(mx-mn)*100;
+}
+function sliderSet(el,v){
+  if(!el)return;
+  el.value=v;
+  el.style.setProperty('--p',sliderPct(el)+'%'); // 归一化填充，与滑块位置对齐
+}
 $$('.dropzone').forEach(function(dz){
   ['dragenter','dragover'].forEach(function(ev){on(dz,ev,function(e){e.preventDefault();dz.classList.add('drag')})});
   ['dragleave','drop'].forEach(function(ev){on(dz,ev,function(e){e.preventDefault();dz.classList.remove('drag')})});
@@ -222,7 +236,7 @@ $$('[data-stagger]').forEach(function(el){sio.observe(el)});
 $$('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()});
 
 window.MF={toast:toast,openModal:openModal,closeModal:closeModal,openDrawer:openDrawer,
-  closeDrawer:closeDrawer,setTheme:setTheme,setLang:setLang,setP:setP,refreshIcons:refreshIcons,copyText:copyText,ICONS:ICONS};
+  closeDrawer:closeDrawer,setTheme:setTheme,setLang:setLang,setP:setP,sliderSet:sliderSet,sliderPct:sliderPct,refreshIcons:refreshIcons,copyText:copyText,ICONS:ICONS};
 window.toast=toast;window.openModal=openModal;window.openDrawer=openDrawer;
 window.closeDrawer=closeDrawer;window.setP=setP;window.setTheme=setTheme;window.setLang=setLang;
 

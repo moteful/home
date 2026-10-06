@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="title_idphoto">证件照工具 - 一寸二寸在线制作 换底色排版 | Moteful</title>
+<meta name="description" content="免费在线证件照工具：内置一寸、二寸、美签、日签等 12 种规格（DPI 300/350/150 可调），按规格比例裁剪构图、多张排版、按规格命名导出 JPG/PNG/WebP 或打包 ZIP。全部在浏览器本地处理，照片绝不上传。">
+<meta name="keywords" content="证件照工具,一寸照片,二寸照片,证件照排版,在线证件照制作,证件照裁剪,签证照片,白底照片,蓝底照片,红底照片,证件照规格,证件照DPI">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="证件照工具 - 一寸二寸在线制作">
+<meta property="og:description" content="免费在线证件照工具：12 种规格（DPI 可调）比例裁剪、多张排版、按规格命名导出 JPG/PNG/WebP/ZIP。100% 本地处理，照片绝不上传。">
+<meta property="og:url" content="https://moteful.app/tools/id-photo-tool.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="证件照工具 - 一寸二寸在线制作">
+<meta name="twitter:description" content="免费在线证件照工具：12 种规格（DPI 可调）比例裁剪、多张排版、按规格命名导出 JPG/PNG/WebP/ZIP。100% 本地处理，照片绝不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/tools/id-photo-tool.html">
+<link rel="alternate" hreflang="x-default" href="https://moteful.app/tools/id-photo-tool.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "证件照工具",
+  "alternateName": "Moteful ID Photo Tool",
+  "description": "免费在线证件照工具：内置一寸、小一寸、大一寸、二寸、小二寸、大二寸、五寸、中国证件、结婚照、美签、日签、申根 12 种规格（DPI 300/350/150 可调），按规格比例裁剪构图、多张排版、按规格命名导出 JPG/PNG/WebP 或打包 ZIP。全部在浏览器本地处理，照片绝不上传。",
+  "url": "https://moteful.app/tools/id-photo-tool.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "图片文件 / 拖入 / 粘贴三种导入方式",
+    "内置证件照规格库（一寸/小一寸/大一寸/二寸/小二寸/大二寸/五寸/中国证件/结婚照/美签/日签/申根），DPI 300/350/150 可调",
+    "按规格比例取景窗裁剪：窗内拖动定位取景窗，窗外拖动/缩放只操作图片（取景窗大小位置固定）；头部/眼位/三分参考线辅助构图",
+    "多张排版（几行几列、间距、裁切线；排版预览可独立缩放平移）",
+    "JPG / PNG / WebP 导出，按规格命名，一键打包 ZIP，指定文件大小导出",
+    "带参分享链接（规格/底色/DPI 入 URL，打开即恢复同款设置）",
+    "100% 本地处理，内容不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+<link rel="stylesheet" href="../assets/css/id-photo-tool.css?v=1.7.0">
+  <link rel="stylesheet" href="../assets/css/share.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/share.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+  <meta name="moteful-siteurl" content="https://moteful.app">
+  <meta name="moteful-pagepath" content="tools/id-photo-tool">
+</head>
+<body data-nav="image">
+
+<!-- topbar / drawer / footer 由 inject_site.mjs 统一下发（v1.7 骨架占位） -->
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <!-- <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="maximize-2"></i><span data-i18n="nav_m_resize">Resize</span></a> -->
+        <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="scan"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+        <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
+        <a class="menu-item on" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="grid-3x3"></i><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- V1.4：分享次入口（share.js 加载页显示；≤480px 收进抽屉） -->
+    <button type="button" class="btn btn-ghost btn-sm share-topbar-btn" data-share-topbar hidden data-i18n-aria="share_nav" aria-label="Share"><i data-lucide="share-2"></i><span data-i18n="share_nav">Share</span></button>
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head">
+      <h3>Moteful</h3>
+      <div class="drawer-head-actions">
+        <a href="../support.html" class="btn btn-ghost btn-sm" data-i18n-title="foot_support" aria-label="Support">
+          <i data-lucide="heart"></i><span data-i18n="foot_support">Support</span>
+        </a>
+        <div class="pop">
+          <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+            <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+          </button>
+          <div class="menu pop-panel">
+            <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+            <button class="menu-item lang-item" data-lang="en">English</button>
+          </div>
+        </div>
+        <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- V1.4：分享当前页入口（share.js 加载页显示） -->
+    <button type="button" class="btn btn-secondary btn-sm share-drawer-entry" data-share-entry hidden><i data-lucide="share-2"></i><span data-i18n="share_drawer_entry">分享当前页</span></button>
+    <!-- 一级分类胶囊（横向滚动） -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab on" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
+      <button class="drawer-tab" data-dtab="dev"><i data-lucide="code"></i><span data-i18n="nav_dev_group">开发者工具</span></button>
+      <button class="drawer-tab" data-dtab="games"><i data-lucide="gamepad-2"></i><span data-i18n="nav_games_group">小游戏</span></button>
+    </div>
+
+    <!-- 二级工具宫格 -->
+    <nav class="drawer-grid" id="drawerGrid">
+      <!-- 图片工具 -->
+      <div class="drawer-pane active" data-pane="image">
+        <a href="../tools/image-tool.html" class="grid-card">
+          <i data-lucide="images"></i>
+          <span data-i18n="nav_m_batch">批量处理</span>
+        </a>
+        <a href="../tools/stitch.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_m_compress">长图拼接</span>
+        </a>
+        <a href="../tools/annotate.html" class="grid-card">
+          <i data-lucide="pencil"></i>
+          <span data-i18n="nav_m_annotate">打码标注</span>
+        </a>
+        <a href="../tools/qrcode.html" class="grid-card">
+          <i data-lucide="qr-code"></i>
+          <span data-i18n="nav_m_qrcode">二维码</span>
+        </a>
+        <a href="../tools/icon-tool.html" class="grid-card">
+          <i data-lucide="radius"></i>
+          <span data-i18n="nav_m_icon">图标工具</span>
+        </a>
+        <a href="../tools/id-photo-tool.html" class="grid-card">
+          <i data-lucide="user"></i>
+          <span data-i18n="nav_m_idphoto">证件照</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="list"></i>
+          <span data-i18n="nav_m_rename">重命名</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_m_cutter">裁切工具</span>
+        </a>
+      </div>
+
+      <!-- 开发者工具 -->
+      <div class="drawer-pane" data-pane="dev">
+        <a href="../dev/json.html" class="grid-card">
+          <i data-lucide="code"></i>
+          <span data-i18n="nav_dev_json">JSON 格式化</span>
+        </a>
+        <a href="../dev/regex.html" class="grid-card">
+          <i data-lucide="regex"></i>
+          <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="clock"></i>
+          <span data-i18n="nav_dev_timestamp">时间戳转换</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="binary"></i>
+          <span data-i18n="nav_dev_base64">Base64 编解码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="palette"></i>
+          <span data-i18n="nav_dev_color">颜色代码转换</span>
+        </a>
+      </div>
+
+      <!-- 小游戏 -->
+      <div class="drawer-pane" data-pane="games">
+        <a href="../games/block-clear.html" class="grid-card">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="nav_g_blockclear">方块消除</span>
+        </a>
+        <a href="../games/snake.html" class="grid-card">
+          <i data-lucide="worm"></i>
+          <span data-i18n="nav_g_snake">贪吃蛇</span>
+        </a>
+        <a href="../games/sudoku.html" class="grid-card">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_g_sudoku">数独</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+    (function(){
+      // 根据当前路径，判断应该显示哪个分类
+      function getDefaultTab(){
+        var path = location.pathname;
+        if(path.indexOf('/tools/') >= 0) return 'image';
+        if(path.indexOf('/dev/') >= 0) return 'dev';
+        if(path.indexOf('/games/') >= 0) return 'games';
+        // 首页和 support 默认显示图片工具分类（主要功能）
+        return 'image';
+      }
+
+      // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+      function setDefaultTab(){
+        var tabName = getDefaultTab();
+        var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+        tabs.forEach(function(t){
+          t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+        });
+        // 同时显示对应 pane
+        var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+        });
+      }
+
+      // DOM 加载完成后立即设置默认高亮
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', setDefaultTab);
+      } else {
+        setDefaultTab();
+      }
+
+      // 抽屉分类切换逻辑
+      document.addEventListener('click', function(e){
+        var tab = e.target.closest('.drawer-tab');
+        if(!tab) return;
+
+        var container = document.getElementById('drawerGrid');
+        if(!container) return;
+
+        // 切换 tab 高亮
+        var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+        tabs.forEach(function(t){ t.classList.remove('on'); });
+        tab.classList.add('on');
+
+        // 切换 pane
+        var target = tab.getAttribute('data-dtab');
+        var panes = container.querySelectorAll('.drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === target);
+        });
+      });
+
+      // 抽屉打开时，根据当前页自动选中对应分类
+      window.openDrawer = window.openDrawer || function(id){
+        var drawer = document.getElementById(id);
+        if(!drawer) return;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // 触发对应 tab（会自动切换 pane）
+        var tabName = getDefaultTab();
+        var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+        if(tab) tab.click();
+      };
+    })();
+    </script>
+  </aside>
+</div>
+
+<main class="page">
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="id_kicker">MOTEFUL · 证件照工具</div>
+    <h1 data-i18n="id_title">证件照工具</h1>
+    <p data-i18n="id_hero_desc">一寸/二寸等规格裁剪构图、红白蓝换底色、多张排版、按规格命名导出。全部在浏览器本地处理，内容不上传。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="icon_tag_local">100% 本地处理</span>
+      <span class="tag t-gray" data-i18n="icon_tag_free">免费使用</span>
+    </div>
+  </section>
+
+  <!-- ===== ① 导入区（F-01：复用共享层双态画廊 dz-empty ↔ dz-gallery） ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="id_section_import">导入</h2>
+    <div class="dropzone" id="idDropzone" tabindex="0" data-i18n-aria="id_dz_aria" aria-label="上传证件照">
+      <div class="dz-empty" id="idDzEmpty">
+        <div class="dz-ico"><i data-lucide="upload"></i></div>
+        <div class="up-main">
+          <h4 data-i18n="id_dz_title">点击选择或拖入证件照</h4>
+          <p data-i18n="id_dz_sub">支持 JPG / PNG / WebP · 支持粘贴导入 · 内容不会离开设备</p>
+        </div>
+      </div>
+      <div class="dz-gallery" id="idDzGallery" hidden>
+        <div class="dz-g-head">
+          <span class="dz-count" id="idDzCount"></span>
+          <div class="dz-g-acts">
+            <button type="button" class="btn btn-secondary btn-sm" id="idDzReset"><i data-lucide="trash-2"></i><span data-i18n="id_dz_reset">重置</span></button>
+          </div>
+        </div>
+        <div class="dz-g-list" id="idDzList"></div>
+      </div>
+    </div>
+    <input type="file" id="idFile" accept="image/jpeg,image/png,image/webp" hidden>
+  </section>
+
+  <!-- ===== ② 工作区：编辑区（左）+ 预览区（右），布局对齐 icon-tool .icon-workspace ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="id_section_edit">编辑</h2>
+    <div class="id-workspace">
+      <!-- 编辑区 -->
+      <div class="id-edit-col">
+        <!-- 行1：规格库（标准/证件两组分段按钮自动换行）+ DPI -->
+        <div class="row">
+          <div class="field" id="idSpecField">
+            <span class="field-label" data-i18n="id_label_spec">规格</span>
+            <span class="stack" id="idSpecGroups">
+              <div class="row">
+                <span class="field-label" data-i18n="id_spec_group_std">标准</span>
+                <div class="segment id-spec-seg" role="radiogroup" aria-label="标准规格">
+                  <label class="seg"><input type="radio" name="idSpec" value="cun1" checked><span class="seg-t" data-i18n="id_spec_cun1">一寸</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="cun1s"><span class="seg-t" data-i18n="id_spec_cun1s">小一寸</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="cun1b"><span class="seg-t" data-i18n="id_spec_cun1b">大一寸</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="cun2"><span class="seg-t" data-i18n="id_spec_cun2">二寸</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="cun2s"><span class="seg-t" data-i18n="id_spec_cun2s">小二寸</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="cun2b"><span class="seg-t" data-i18n="id_spec_cun2b">大二寸</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="w5"><span class="seg-t" data-i18n="id_spec_w5">五寸</span></label>
+                </div>
+              </div>
+              <div class="row">
+                <span class="field-label" data-i18n="id_spec_group_doc">证件</span>
+                <div class="segment id-spec-seg" role="radiogroup" aria-label="证件规格">
+                  <label class="seg"><input type="radio" name="idSpec" value="cnid"><span class="seg-t" data-i18n="id_spec_cnid">中国证件</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="marriage"><span class="seg-t" data-i18n="id_spec_marriage">结婚照</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="us"><span class="seg-t" data-i18n="id_spec_us">美签</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="jp"><span class="seg-t" data-i18n="id_spec_jp">日签</span></label>
+                  <label class="seg"><input type="radio" name="idSpec" value="sc"><span class="seg-t" data-i18n="id_spec_sc">申根</span></label>
+                </div>
+              </div>
+            </span>
+            <span class="row" id="idSpecMetaRow">
+              <span class="field-label" data-i18n="id_label_dpi">DPI</span>
+              <div class="segment" role="radiogroup" aria-label="DPI">
+                <label class="seg"><input type="radio" name="idDpi" value="300" checked><span class="seg-t">300</span></label>
+                <label class="seg"><input type="radio" name="idDpi" value="350"><span class="seg-t">350</span></label>
+                <label class="seg"><input type="radio" name="idDpi" value="150"><span class="seg-t">150</span></label>
+              </div>
+              <span class="mono" id="idSpecPx"></span>
+            </span>
+            <span class="muted" data-i18n="id_spec_note">规格 mm 与像素按 DPI 换算；数据来源与更新日期见说明，实际办理以官方最新要求为准</span>
+          </div>
+        </div>
+
+        <!-- 行2：辅助参考线（独立组件，位于裁剪开关上一行；与裁剪开关解耦） -->
+        <div class="row">
+          <div class="field">
+            <div class="row">
+              <span class="field-label" data-i18n="id_label_guides">辅助参考线</span>
+              <label class="check"><input type="checkbox" id="idGuideHead" checked><span class="box" aria-hidden="true"></span><span data-i18n="id_guide_head">头部参考区</span></label>
+              <label class="check"><input type="checkbox" id="idGuideEye" checked><span class="box" aria-hidden="true"></span><span data-i18n="id_guide_eye">眼位线</span></label>
+              <label class="check"><input type="checkbox" id="idGuideThird" checked><span class="box" aria-hidden="true"></span><span data-i18n="id_guide_third">三分线</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 行3：裁剪 + 排版预览（排版预览内嵌裁剪开关内：裁剪开→显示排版预览开关；排版预览开→显示行列参数） -->
+        <div class="row">
+          <div class="field">
+            <span class="row">
+              <span class="field-label" data-i18n="id_label_crop">裁剪</span>
+              <label class="switch"><input type="checkbox" id="idCropSw"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+            </span>
+            <span class="stack" id="idCropBody" hidden>
+              <div class="row">
+                <span class="field-label" data-i18n="id_label_layout">排版预览</span>
+                <label class="switch"><input type="checkbox" id="idLayoutSw"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+              </div>
+              <span class="stack" id="idLayoutBody" hidden>
+                <div class="row">
+                  <span class="field-label" data-i18n="id_layout_rows">行数</span>
+                  <span class="step" data-min="1" data-max="9">
+                    <button type="button" class="step-btn" data-step="-1" data-for="idLayoutRows" aria-label="decrease"><i data-lucide="minus"></i></button>
+                    <input type="text" inputmode="numeric" size="6" id="idLayoutRows" class="step-val" min="1" max="9" value="2">
+                    <button type="button" class="step-btn" data-step="1" data-for="idLayoutRows" aria-label="increase"><i data-lucide="plus"></i></button>
+                  </span>
+                  <span class="field-label" data-i18n="id_layout_cols">列数</span>
+                  <span class="step" data-min="1" data-max="9">
+                    <button type="button" class="step-btn" data-step="-1" data-for="idLayoutCols" aria-label="decrease"><i data-lucide="minus"></i></button>
+                    <input type="text" inputmode="numeric" size="6" id="idLayoutCols" class="step-val" min="1" max="9" value="2">
+                    <button type="button" class="step-btn" data-step="1" data-for="idLayoutCols" aria-label="increase"><i data-lucide="plus"></i></button>
+                  </span>
+                  <span class="field-label" data-i18n="id_layout_gap">间距</span>
+                  <span class="step" data-min="0" data-max="20">
+                    <button type="button" class="step-btn" data-step="-1" data-for="idLayoutGap" aria-label="decrease"><i data-lucide="minus"></i></button>
+                    <input type="text" inputmode="numeric" size="6" id="idLayoutGap" class="step-val" min="0" max="20" value="3">
+                    <button type="button" class="step-btn" data-step="1" data-for="idLayoutGap" aria-label="increase"><i data-lucide="plus"></i></button>
+                  </span>
+                </div>
+                <div class="row">
+                  <label class="check"><input type="checkbox" id="idLayoutCut" checked><span class="box" aria-hidden="true"></span><span data-i18n="id_layout_cut">裁切线</span></label>
+                </div>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <!-- 行3：背景颜色（暂时屏蔽，后续优化后再开放；JS 引用均有空值保护） -->
+        <div class="row" hidden>
+          <div class="field">
+            <span class="row">
+              <span class="field-label" data-i18n="id_label_bg">背景颜色</span>
+              <label class="switch"><input type="checkbox" id="idBgSw"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+            </span>
+            <span class="stack" id="idBgBody" hidden>
+              <div class="row">
+                <span class="field-label" data-i18n="id_label_target_color">目标色</span>
+                <div class="segment" role="radiogroup" aria-label="目标色">
+                  <label class="seg"><input type="radio" name="idBgColor" value="red" checked><span class="seg-t" data-i18n="id_bg_red">红</span></label>
+                  <label class="seg"><input type="radio" name="idBgColor" value="white"><span class="seg-t" data-i18n="id_bg_white">白</span></label>
+                  <label class="seg"><input type="radio" name="idBgColor" value="blue"><span class="seg-t" data-i18n="id_bg_blue">蓝</span></label>
+                  <label class="seg"><input type="radio" name="idBgColor" value="transparent"><span class="seg-t" data-i18n="id_bg_transparent">透明</span></label>
+                  <label class="seg"><input type="radio" name="idBgColor" value="custom"><span class="seg-t" data-i18n="id_bg_custom">自定义</span></label>
+                </div>
+              </div>
+              <div class="row" id="idBgCustomWrap" hidden>
+                <span class="field-label" aria-hidden="true"></span>
+                <button type="button" class="id-cp-trig id-cp-trig-sm" data-cp-for="idBgCustom" id="idBgCpTrig">
+                  <span class="id-cp-chip" id="idBgChip"></span>
+                  <i data-lucide="chevron-down" class="id-cp-arrow"></i>
+                </button>
+                <input type="text" id="idBgHex" class="input id-custom-input" value="#FF6B6B" maxlength="7" aria-label="HEX">
+              </div>
+              <span class="row">
+                <span class="field-label" data-i18n="id_label_tool">工具</span>
+                <label class="switch"><input type="checkbox" id="idToolSw"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+              </span>
+              <span class="stack" id="idToolBody" hidden>
+                <div class="row">
+                  <span class="field-label" aria-hidden="true"></span>
+                  <div class="segment" role="radiogroup" aria-label="工具">
+                    <label class="seg"><input type="radio" name="idBgTool" value="wand" checked><span class="seg-t" data-i18n="id_tool_wand">魔棒</span></label>
+                    <label class="seg"><input type="radio" name="idBgTool" value="brush"><span class="seg-t" data-i18n="id_tool_brush">画笔</span></label>
+                    <label class="seg"><input type="radio" name="idBgTool" value="eraser"><span class="seg-t" data-i18n="id_tool_eraser">橡皮</span></label>
+                  </div>
+                </div>
+                <div class="row">
+                  <span class="field-label" data-i18n="id_tool_size">大小</span>
+                  <input type="range" id="idToolSize" min="1" max="200" value="40" class="id-range" style="flex:1;min-width:120px">
+                  <span class="step-val" id="idToolSizeOut" style="width:48px;text-align:right">40</span>
+                </div>
+                <div class="row">
+                  <span class="field-label" data-i18n="id_label_tolerance">容差</span>
+                  <input type="range" id="idTol" min="1" max="100" value="32" class="id-range" style="flex:1;min-width:120px">
+                  <span class="step-val" id="idTolOut" style="width:48px;text-align:right">32</span>
+                </div>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <!-- 排版已并入裁剪开关内（见上方 idCropBody），此独立 row 已删除 -->
+
+        <!-- 行5：操作（撤销 / 重做 / 还原，复用 icon-tool 同款内联 SVG 图标） -->
+        <div class="row">
+          <div class="field">
+            <span class="field-label" data-i18n="id_label_ops">操作</span>
+            <div class="row">
+              <button type="button" class="btn btn-secondary btn-sm" id="idUndo" disabled title="撤销 (Ctrl+Z)" data-i18n-title="icon_undo_title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg><span data-i18n="icon_undo">撤销</span>
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="idRedo" disabled title="重做" data-i18n-title="icon_redo">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg><span data-i18n="icon_redo">重做</span>
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="idReset" disabled title="还原" data-i18n-title="icon_reset">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span data-i18n="icon_reset">还原</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 预览区 -->
+      <div class="id-preview-col">
+        <div class="id-preview-box id-grid-bg" id="idPreviewBox">
+          <canvas id="idPreview" class="id-canvas" hidden></canvas>
+          <!-- 画笔/橡皮光标预览（跟随鼠标的虚线圆圈，纯展示不参与导出） -->
+          <div class="id-brush-cursor" id="idBrushCursor"></div>
+          <!-- 裁剪框覆盖层（固定规格比例，可拖动定位；不参与导出） -->
+          <div class="id-crop-overlay" id="idCropOverlay" hidden></div>
+          <!-- 辅助参考线覆盖层（头部参考区 / 眼位线 / 三分线；不参与导出） -->
+          <div class="id-guide-overlay" id="idGuideOverlay" hidden>
+            <div class="id-guide-head"></div>
+            <div class="id-guide-eye"></div>
+            <div class="id-guide-third-v" style="left:33.33%"></div>
+            <div class="id-guide-third-v" style="left:66.66%"></div>
+            <div class="id-guide-third-h" style="top:33.33%"></div>
+            <div class="id-guide-third-h" style="top:66.66%"></div>
+          </div>
+          <span class="id-preview-hint" data-i18n="id_preview_hint">拖拽 平移 · 滚轮 缩放 · 双击 复位</span>
+          <div class="empty" id="idEmpty">
+            <i data-lucide="user"></i>
+            <p data-i18n="id_empty_title">导入照片后显示预览</p>
+            <p class="muted" data-i18n="id_empty_desc">所有编辑都在本地完成</p>
+          </div>
+        </div>
+        <div class="row">
+          <span class="field-label" for="idZoomRange" data-i18n="icon_label_zoom">预览放大</span>
+          <input type="range" id="idZoomRange" class="slider" min="50" max="800" step="10" value="100" style="--p:6.67%" autocomplete="off">
+          <span class="step"><span class="step-val" id="idZoomOut">100%</span></span>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-secondary btn-sm" data-share-open><i data-lucide="share-2"></i><span data-i18n="share_title">分享此工具</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 共享色板弹出面板（HSV 色域 + 色相条 + hex 直输 + 取色器 + 预设；复用 icon-tool 色板结构） -->
+    <div class="id-cp-pop" id="idCpPop" hidden>
+      <div class="id-cp-hue" id="idCpHue"><div class="id-cp-huecursor" id="idCpHueCursor"></div></div>
+      <div class="id-cp-sv" id="idCpSv"><div class="id-cp-cursor" id="idCpCursor"></div></div>
+      <div class="id-cp-foot">
+        <span class="id-cp-prev" id="idCpPrev"></span>
+        <input type="text" class="input id-cp-hexinput" id="idCpHex" maxlength="7" placeholder="#RRGGBB" data-i18n-ph="icon_cp_hex_ph" aria-label="HEX">
+        <button type="button" class="id-cp-eyed" id="idCpEye" title="屏幕取色" data-i18n-title="icon_cp_eyed" aria-label="屏幕取色"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg></button>
+        <input type="color" id="idCpNative" hidden>
+      </div>
+      <div class="id-cp-pal" id="idCpPal"></div>
+    </div>
+  </section>
+
+  <!-- ===== ③ 导出区（F-08~F-11：格式 + 质量 + 目标大小 + 导出按钮，组件全复用 image-tool） ===== -->
+  <section class="panel" id="idExportPanel">
+    <h2 class="sec-title" data-i18n="id_section_export">导出</h2>
+    <div class="row">
+      <div class="field">
+        <span class="field-label" data-i18n="icon_label_fmt">格式</span>
+        <div class="segment" role="radiogroup" aria-label="导出格式">
+          <label class="seg"><input type="radio" name="idFmt" value="jpg" checked><span class="seg-t">JPG</span></label>
+          <label class="seg"><input type="radio" name="idFmt" value="png"><span class="seg-t">PNG</span></label>
+          <label class="seg"><input type="radio" name="idFmt" value="webp"><span class="seg-t">WebP</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label" data-i18n="id_label_quality">质量</span>
+        <span class="row">
+          <input type="range" id="idQuality" class="slider" min="1" max="100" value="92" style="--p:91.9%">
+          <span class="step" data-min="1" data-max="100">
+            <button type="button" class="step-btn" data-step="-1" data-for="idQuality" aria-label="decrease"><i data-lucide="minus"></i></button>
+            <input type="text" inputmode="numeric" size="6" id="idQualityOut" class="step-val" min="1" max="100" value="92">
+            <button type="button" class="step-btn" data-step="1" data-for="idQuality" aria-label="increase"><i data-lucide="plus"></i></button>
+          </span>
+        </span>
+        <span class="muted" id="idPngNote" hidden data-i18n="id_png_note">PNG 无损，质量参数无效</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <span class="field-label"><span data-i18n="v16_target_label">目标大小 Kb</span></span>
+        <div class="row">
+          <div class="segment" role="group" id="idTargetSegs" data-i18n-aria="v16_target_label">
+            <label class="seg" data-target="0"><input type="radio" name="idTgt" checked><span class="seg-t" data-i18n="v16_target_off">不启用</span></label>
+            <label class="seg" data-target="50"><input type="radio" name="idTgt"><span class="seg-t">50</span></label>
+            <label class="seg" data-target="100"><input type="radio" name="idTgt"><span class="seg-t">100</span></label>
+            <label class="seg" data-target="200"><input type="radio" name="idTgt"><span class="seg-t">200</span></label>
+            <label class="seg" data-target="500"><input type="radio" name="idTgt"><span class="seg-t">500</span></label>
+            <label class="seg" data-target="1024"><input type="radio" name="idTgt"><span class="seg-t" data-i18n="v16_target_1m">1MB</span></label>
+          </div>
+        </div>
+        <div class="row">
+          <input type="text" inputmode="numeric" size="6" id="idTargetCustom" class="input id-custom-input" value="" data-i18n-ph="v16_target_custom_ph">
+        </div>
+        <span class="muted" id="idTargetPngNote" data-i18n="v16_target_png_note">目标大小仅对 JPG/WebP 有效</span>
+      </div>
+    </div>
+    <div class="row" id="idExportActs">
+      <button type="button" class="btn btn-primary" id="idExport" disabled data-i18n="icon_btn_export">导出文件</button>
+      <button type="button" class="btn btn-secondary" id="idZip" disabled><i data-lucide="download"></i><span data-i18n="id_btn_zip">打包 ZIP</span></button>
+    </div>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="id_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="id_f_th1">功能</th><th data-i18n="id_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="id_f1_name">规格库排版</td><td data-i18n="id_f1_desc">内置一寸、小一寸、大一寸、二寸、小二寸、大二寸、五寸、中国证件、结婚照、美签、日签、申根 12 种常用规格（@300DPI），DPI 300/350/150 可调。</td></tr>
+          <tr><td data-i18n="id_f2_name">固定比例裁剪</td><td data-i18n="id_f2_desc">按规格比例锁定裁剪框，人像缩放拖动定位，头部、眼位、三分参考线辅助构图。</td></tr>
+          <tr><td data-i18n="id_f4_name">多张排版</td><td data-i18n="id_f4_desc">几行几列、间距、裁切线自由设置，一版输出多张证件照，方便打印。</td></tr>
+          <tr><td data-i18n="id_f5_name">多格式导出</td><td data-i18n="id_f5_desc">导出 JPG、PNG、WebP，按规格自动命名，一键打包 ZIP 批量下载。</td></tr>
+          <tr><td data-i18n="id_f6_name">指定大小导出</td><td data-i18n="id_f6_desc">按目标文件大小（KB/MB）压缩导出，满足报名系统与上传要求。</td></tr>
+          <tr><td data-i18n="id_f9_name">带参分享</td><td data-i18n="id_f9_desc">可生成带规格、DPI 的分享链接，打开即恢复同款设置。</td></tr>
+          <tr><td data-i18n="id_f10_name">隐私保护</td><td data-i18n="id_f10_desc">100% 本地处理，照片与参数不上传、不注册，关闭页面即清除。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="id_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="id_u1_t">求职入职</div><div class="nm seo-desc" data-i18n="id_u1_d">简历、工牌、入职登记照片按公司要求规格制作，红白蓝底色一键替换。</div></div>
+      <div class="stat"><div class="lb" data-i18n="id_u2_t">考试报名</div><div class="nm seo-desc" data-i18n="id_u2_d">按报名系统要求的像素与尺寸规格裁剪导出，一次通过上传校验。</div></div>
+      <div class="stat"><div class="lb" data-i18n="id_u3_t">签证证件</div><div class="nm seo-desc" data-i18n="id_u3_d">美签、日签、申根等签证规格库，按受理机构最新要求排版。</div></div>
+      <div class="stat"><div class="lb" data-i18n="id_u4_t">排版打印</div><div class="nm seo-desc" data-i18n="id_u4_d">多张证件照排版一版输出，带裁切线，一张相纸打印多张规格。</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="id_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="id_q_th1">问题</th><th data-i18n="id_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="id_q1">照片会上传到服务器吗？</td><td data-i18n="id_a1">不会。所有处理都在浏览器本地完成，可断网使用。</td></tr>
+          <tr><td data-i18n="id_q2">支持哪些导入方式？</td><td data-i18n="id_a2">文件选择、拖入、剪贴板粘贴。</td></tr>
+          <tr><td data-i18n="id_q3">规格数据准确吗？</td><td data-i18n="id_a3">规格库标注数据来源与更新日期，仅供排版参考，实际办理以受理机构官方最新要求为准。</td></tr>
+          <tr><td data-i18n="id_q4">导出结果可以商用吗？</td><td data-i18n="id_a4">可以。免费、无水印，导出结果无任何使用限制。</td></tr>
+          <tr><td data-i18n="id_q5">需要注册登录吗？</td><td data-i18n="id_a5">不需要，打开网页即可使用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+      <p class="footer-social">
+        <a class="footer-social-link" href="https://github.com/moteful/home" target="_blank" rel="noopener noreferrer" data-i18n-aria="foot_github" aria-label="GitHub repository" title="GitHub repository"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></a>
+        <a class="footer-social-link" href="mailto:moteful@outlook.com" data-i18n-aria="foot_email" aria-label="Email us" title="Email us"><i data-lucide="mail"></i></a>
+        <button type="button" class="footer-social-link" data-footer-share data-i18n-aria="foot_share" aria-label="Share this page" title="Share this page"><i data-lucide="share-2"></i></button>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.7.0</span>
+  </div>
+</footer>
+
+<script src="../assets/i18n/en.js"></script>
+<script src="../assets/i18n/zh.js"></script>
+<script src="../assets/i18n/i18n.js"></script>
+<script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
+<script src="../assets/js/zip.js"></script>
+<script src="../assets/js/image-import.js" defer></script>
+<script src="../assets/js/id-photo-specs.js" defer></script>
+<script src="../assets/js/id-photo-tool.js?v=1.7.0" defer></script>
+</body>
+</html>

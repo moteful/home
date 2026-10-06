@@ -1,0 +1,135 @@
+/* =====================================================================
+   Moteful 证件照工具 · 页面私有样式（id-photo-tool.css）
+   铁律：零新组件，仅工作区特有排版与色板复用；全部 .id-* 前缀；
+   布局/预览/色板视觉参数复制自 icon-tool.css（同名同值），仅类名前缀改为 .id-；
+   本文件同步登记进 missing_styles_proposal.css 提案清单（随功能开发提交）。
+   ===================================================================== */
+
+/* 工作区：编辑区左列 + 预览区右列（grid 双列；移动端单列堆叠，编辑在上、预览在下） */
+.id-workspace{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:14px}
+
+/* 同行 field 高度不同时，外层行顶部对齐，保证同级标题在同一水平线（共享 .row 为 center） */
+.id-edit-col > .row{align-items:flex-start}
+.id-edit-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+.id-preview-col{flex:1.25;min-width:0;display:flex;flex-direction:column;gap:12px}
+.id-edit-col .field{min-width:0}
+
+/* 预览容器：画布窗口固定（网格底），内容层 transform 缩放/平移时裁剪显示 */
+.id-preview-box{
+  position:relative;display:flex;min-height:480px;
+  border:1px solid var(--border);border-radius:var(--r-md);
+  background:var(--surface);padding:16px;overflow:hidden;
+  user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
+.id-preview-box > *{margin:auto}
+.id-grid-bg{
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size:16px 16px}
+/* 画布（内容层）显示固定；缩放/平移由 JS 设置 transform，围绕中心缩放 */
+.id-canvas{display:block;max-width:100%;height:auto;border-radius:var(--r-sm);
+  box-shadow:var(--shadow);background:var(--surface);cursor:grab;touch-action:none;
+  transform-origin:center center;will-change:transform;
+  -webkit-user-drag:none;user-select:none}
+.id-preview-box.drag-active .id-canvas{cursor:grabbing}
+.id-preview-box.drag-active{user-select:none}
+/* 预览交互提示角标（拖拽/滚轮/双击复位） */
+.id-preview-hint{position:absolute;right:8px;bottom:6px;z-index:1;
+  font-size:11px;color:var(--text-muted);opacity:.75;pointer-events:none}
+
+/* 规格库分段：10 预设自动换行（.segment 为 inline-flex 不换行，私有类补 wrap） */
+.id-spec-seg{display:flex;flex-wrap:wrap}
+
+/* 规格区行距统一为 4 的倍数（12px）：覆盖共享 .field 默认 gap 6px，使 规格→标准→证件→DPI 行距一致 */
+#idSpecField{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+
+/* 自定义输入框：定宽 96px 对齐 icon-tool .icon-hex-input（否则 flex-wrap 容器中被挤到第二行、且占满整行） */
+.id-custom-input{width:96px;flex:none}
+/* 自定义输入框：hover 高亮；只要赋值（非占位符态）也按 hover 显示（与 icon-tool 同款） */
+.id-custom-input:hover,
+.id-custom-input:not(:placeholder-shown){border-color:var(--primary)}
+.id-custom-input:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 2px var(--ring)}
+
+/* 步进器数值框（input 型 .step-val）：清理浏览器原生外观，数值框定宽 72px（与 image-tool.css 同款规则，站点控件范式） */
+input.step-val{
+  color:inherit;
+  background:none;
+  border-top:none;
+  border-bottom:none;
+  outline:none;
+  width:72px;
+  min-width:72px;
+  font-variant-numeric:tabular-nums;
+}
+input.step-val:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px var(--ring);
+}
+
+/* ===== 色板组件（.id-cp-*，复用 icon-tool 色板：HSV 色域 + 色相条 + hex + 取色器 + 预设；替换原生 input[type=color]） ===== */
+.id-cp-trig{display:flex;align-items:center;gap:8px;width:100%;height:38px;padding:0 10px;border:1px solid var(--border-strong);border-radius:var(--r-md);background:var(--surface);color:var(--text);font:inherit;cursor:pointer;transition:border-color .15s}
+.id-cp-trig:hover{border-color:var(--primary)}
+.id-cp-trig:disabled{opacity:.5;cursor:not-allowed}
+.id-cp-trig:disabled:hover{border-color:var(--border-strong)}
+.id-cp-chip{width:22px;height:22px;border-radius:var(--r-sm);flex:none;border:1px solid rgba(255,255,255,.14);background:repeating-conic-gradient(var(--border) 0 25%, var(--code-bg) 0 50%) 0 0/10px 10px}
+.id-cp-hex{font-family:var(--mono,ui-monospace,monospace);font-size:12.5px;color:var(--text-2,#8AA0C0);letter-spacing:.2px}
+.id-cp-arrow{width:16px;height:16px;margin-left:auto;color:var(--text-2,#8AA0C0);flex:none}
+.id-cp-pop{position:fixed;width:264px;padding:12px;background:var(--code-bg,#0B1220);border:1px solid var(--border-strong);border-radius:var(--r-md);box-shadow:0 10px 30px rgba(0,0,0,.45);z-index:70}
+.id-cp-hue{position:relative;height:24px;border-radius:var(--r-sm);cursor:crosshair;touch-action:none;background:linear-gradient(to right,#f00 0%,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,#f00 100%)}
+.id-cp-huecursor{position:absolute;top:-4px;bottom:-4px;width:4px;border-radius:2px;background:#fff;pointer-events:none;box-shadow:0 0 4px rgba(0,0,0,.6)}
+.id-cp-sv{position:relative;height:160px;margin-top:8px;border-radius:var(--r-sm);border:1px solid var(--border);cursor:crosshair;touch-action:none;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,transparent),#f00}
+.id-cp-cursor{position:absolute;width:14px;height:14px;border:2px solid var(--primary-strong,#A8D9F2);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 5px rgba(0,0,0,.6);box-sizing:border-box}
+.id-cp-foot{display:flex;align-items:center;gap:8px;margin-top:10px}
+.id-cp-prev{width:28px;height:28px;border-radius:var(--r-sm);flex:none;border:1px solid rgba(255,255,255,.16);background:repeating-conic-gradient(var(--border) 0 25%, var(--code-bg) 0 50%) 0 0/10px 10px}
+.id-cp-hexinput{flex:1;min-width:0;height:32px;padding:0 10px;font-family:var(--mono,ui-monospace,monospace);font-size:13px;text-transform:uppercase}
+.id-cp-eyed{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex:none;border:1px solid var(--border-strong);border-radius:var(--r-sm);background:var(--surface);color:var(--text-2,#8AA0C0);cursor:pointer;transition:border-color .15s,color .15s}
+.id-cp-eyed:hover{border-color:var(--primary);color:var(--primary)}
+.id-cp-eyed i{width:16px;height:16px}
+.id-cp-pal{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:10px}
+.id-cp-pal button{aspect-ratio:1;border-radius:var(--r-sm);border:1px solid rgba(255,255,255,.12);cursor:pointer;padding:0;box-sizing:border-box;transition:transform .1s}
+.id-cp-pal button:hover{transform:scale(1.12)}
+.id-cp-pal button.on{outline:2px solid var(--primary);outline-offset:1px}
+
+/* 颜色字段行：窄触发（色块+箭头）+ hex 输入框并排 */
+.id-cp-trig-sm{flex:none;width:auto;padding:0 8px}
+/* 色块行占位 field-label：与"目标色"等宽，让色块+hex 与 segment 左对齐 */
+#idBgCustomWrap > .field-label{width:40px;flex:none}
+
+/* 画笔大小/容差滑杆（复用站点 .slider 样式：--p 归一化填充 + 圆形滑块） */
+.id-range{appearance:none;-webkit-appearance:none;flex:1;min-width:120px;height:6px;border-radius:var(--r-full);
+  background:linear-gradient(to right,var(--primary) var(--p,50%),var(--surface-2) var(--p,50%));
+  border:1px solid var(--border);outline-offset:4px;cursor:pointer}
+.id-range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--surface);border:2px solid var(--primary);box-shadow:0 1px 4px color-mix(in srgb,var(--text) 25%,transparent);transition:transform var(--dur-fast)}
+.id-range::-webkit-slider-thumb:hover{transform:scale(1.18)}
+.id-range::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--surface);border:2px solid var(--primary);cursor:pointer}
+
+/* 画笔/橡皮光标预览：跟随鼠标的虚线圆圈，直径=笔刷大小×预览缩放（纯展示不参与导出） */
+.id-brush-cursor{
+  position:absolute;z-index:6;pointer-events:none;border:1.5px dashed var(--primary-strong,#A8D9F2);
+  border-radius:50%;transform:translate(-50%,-50%);display:none;box-sizing:border-box
+}
+
+/* ===== 裁剪框覆盖层（F-04：固定规格比例，可拖动定位；暗角遮罩；不参与导出） ===== */
+.id-crop-overlay{
+  position:absolute;z-index:5;box-sizing:border-box;
+  border:1.5px solid var(--primary);
+  box-shadow:0 0 0 9999px rgba(0,0,0,.28);
+  cursor:move;touch-action:none}
+.id-crop-overlay::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(255,255,255,.06) 6px 7px)}
+
+/* ===== 辅助参考线覆盖层（F-05：头部参考区/眼位线/三分线；半透明；不参与导出） ===== */
+.id-guide-overlay{position:absolute;inset:0;z-index:4;pointer-events:none}
+.id-guide-head{position:absolute;left:8%;right:8%;top:20%;height:34%;border:1.5px dashed var(--primary);opacity:.55;box-sizing:border-box}
+.id-guide-eye{position:absolute;left:0;right:0;top:33.33%;height:1px;background:var(--primary);opacity:.65}
+.id-guide-third-v{position:absolute;top:0;bottom:0;width:1px;background:var(--text-3,#667);opacity:.3}
+.id-guide-third-h{position:absolute;left:0;right:0;height:1px;background:var(--text-3,#667);opacity:.3}
+
+/* ===== 画廊缩略图选中态（当前处理图） ===== */
+.dz-thumb.id-active{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+
+@media (max-width:640px){
+  .id-workspace{grid-template-columns:1fr}
+  .id-preview-box{min-height:180px}
+}

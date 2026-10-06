@@ -98,6 +98,16 @@
       rt: { type: 'int', min: 0, max: 270 },
       fl: { type: 'int', min: 0, max: 3 },
       core: ['c', 'bg', 'sz', 'fmt']
+    },
+    'id-photo-tool': {
+      sp: { type: 'enum', values: ['cun1', 'cun1s', 'cun1b', 'cun2', 'cun2s', 'cun2b', 'w5', 'cnid', 'marriage', 'us', 'jp', 'sc'] },
+      dpi: { type: 'enum', values: ['300', '350', '150'] },
+      f: { type: 'enum', values: ['jpg', 'png', 'webp'] },
+      q: { type: 'int', min: 1, max: 100 },
+      t: { type: 'int', min: 0, max: 100000 },
+      bg: { type: 'enum', values: ['red', 'white', 'blue', 'transparent', 'custom'] },
+      c: { type: 'hex' },
+      core: ['sp', 'dpi', 'f', 'bg']
     }
   };
 
@@ -112,6 +122,7 @@
     if (/annotate\.html/i.test(p)) return 'annotate';
     if (/qrcode\.html/i.test(p)) return 'qrcode';
     if (/icon-tool\.html/i.test(p)) return 'icon-tool';
+    if (/id-photo-tool\.html/i.test(p)) return 'id-photo-tool';
     return '';
   }
 
