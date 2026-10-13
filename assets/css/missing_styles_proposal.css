@@ -612,6 +612,24 @@ body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
   color:var(--text-3);
 }
 
+/* 首页工具箱「即将推出」卡片：与 .grid-card.soon 同款（虚线边框 + 半透明 + 图标灰） */
+.tool-card.soon{
+  border-style:dashed;
+  opacity:.55;
+}
+.tool-card.soon:hover{
+  transform:none;
+  border-color:var(--border);
+  background:var(--surface);
+}
+.tool-card.soon .tool-ico i{
+  color:var(--text-3);
+}
+.tool-card.soon .tool-meta .btn{
+  opacity:.6;
+  pointer-events:none;
+}
+
 /* 抽屉头部按钮组 */
 .drawer-head-actions{
   display:flex;

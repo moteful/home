@@ -1,0 +1,80 @@
+/* Moteful · png-compress.css · v1.8.0（PNG 压缩工具私有样式）
+ * 依赖全局 moteful.css 令牌与共享组件：
+ *   - 画廊：全局 .dropzone/.dz-*（missing_styles_proposal.css）
+ *   - 参数：.row/.field/.field-label/.segment/.seg/.switch/.slider/.step-val/.muted
+ *   - 对比：.compare-area/.compare-before/.compare-after/.compare-divider/.compare-handle/.compare-label
+ *   - 状态：.spinner
+ * 本文件仅保留页面专属组件：对比容器、结果列表、体积统计条与手机端适配。 */
+
+/* ========== 画廊选中态（画廊主体样式由共享层提供） ========== */
+.dz-thumb{cursor:pointer}
+.dz-thumb.id-active{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+
+/* ========== 已导入态 dropzone 收缩（对齐 image-tool.css .dropzone.mini 同值） ========== */
+.dropzone.mini{padding:16px;min-height:0;background:var(--surface);align-items:stretch;text-align:left;gap:0}
+
+/* ========== 内嵌对比容器（.compare-* 结构与样式复用共享组件，此处仅提供定位容器） ========== */
+.png-cmp-frame{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:var(--r-lg);
+  background:var(--surface-2);min-height:200px;user-select:none}
+.png-cmp-frame .compare-area{inset:0}
+
+/* 批量缩略图条：复用共享 .dz-thumb，横向自动溢出滚动（滚动条样式走全局 moteful.css 规范） */
+.png-cmp-strip{display:flex;gap:10px;overflow-x:auto;padding-top:14px;align-items:center}
+.png-cmp-strip .dz-thumb{width:64px;flex:none;cursor:pointer;opacity:.72;transition:opacity var(--dur-fast)}
+.png-cmp-strip .dz-thumb:hover{opacity:1}
+.png-cmp-strip .dz-thumb.id-active{opacity:1;border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+
+/* ========== 导出提示间距 ========== */
+.png-export-note{margin-top:12px}
+
+/* ========== 压缩参数两列布局：左列=压缩预设/压缩级别，右列=颜色数/抖动
+ * 朴素 flex 两列（不用 grid/display:contents，避免列序错乱）。
+ * 预设按钮按内容宽紧凑排列、左对齐；不采用均分拉宽（3 档 2-4 字会过宽）。 */
+#pngConfig .png-cfg-cols{display:flex;gap:24px;align-items:flex-start}
+#pngConfig .png-cfg-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+#pngConfig .segment[role="radiogroup"]{display:flex;flex-wrap:wrap}
+#pngConfig .segment[role="radiogroup"] .seg{flex:none}
+
+/* ========== 参数行自适应（滑块 + 步进器同行）
+ * 滑块 flex:1 收缩占余量、步进器 flex:none 固定不缩；
+ * 步进器按钮 .step-btn 走全局 34px 固定宽，不随内容变化；
+ * 数值位 .step-val 弹性：数字 44px 起，raw 档「原画质/Original」按文本撑开（≤100px），不挤压两侧按钮 */
+#pngConfig .field .row{flex-wrap:nowrap;gap:10px}
+#pngConfig .field .row .slider{flex:1 1 auto;min-width:0;max-width:none}
+#pngConfig .field .row .step{flex:0 0 auto}
+#pngConfig .step-val{min-width:44px;max-width:100px;white-space:nowrap}
+
+/* ========== 处理进度条（对齐 image-tool：.progress 在 .row 内 flex:1 伸缩） ========== */
+#pngProgress{flex:1;min-width:120px}
+
+/* ========== 体积统计条（单张结果行内） ========== */
+.png-size-bar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2);flex-wrap:wrap}
+.png-size-bar b{font-weight:600;color:var(--text)}
+.png-size-bar .ok{color:var(--success)}
+.png-size-bar .bad{color:var(--danger)}
+.png-bar-track{flex:1;min-width:80px;height:6px;border-radius:999px;background:var(--surface-2);
+  border:1px solid var(--border);overflow:hidden;display:flex}
+.png-bar-track i{display:block;height:100%;background:var(--primary-fill)}
+.png-bar-track i.bad{background:var(--danger-fill)}
+
+/* ========== 结果列表 ========== */
+.png-res-list{display:flex;flex-direction:column;gap:12px}
+.png-res-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);
+  border-radius:var(--r-lg);background:var(--surface);flex-wrap:wrap}
+.png-res-row .thumb{width:52px;height:52px;border-radius:var(--r-sm);object-fit:cover;background:var(--surface-2);flex:none}
+.png-res-main{flex:1;min-width:200px}
+.png-res-name{font-size:13px;font-weight:600;word-break:break-all;margin-bottom:4px}
+.png-res-state{font-size:12px;color:var(--text-3)}
+.png-res-acts{display:flex;gap:8px;align-items:center;flex:none}
+.png-res-warn{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--warning);
+  background:color-mix(in srgb,var(--warning) 10%,transparent);border-radius:var(--r-sm);padding:6px 10px}
+.png-res-warn [data-lucide]{width:13px;height:13px;flex:none}
+
+/* ========== 手机端（390px） ========== */
+@media (max-width:640px){
+  #pngConfig .png-cfg-cols{flex-direction:column}
+  .png-res-row .thumb{width:44px;height:44px}
+  .png-res-main{min-width:150px}
+  .png-cmp-frame{min-height:160px}
+  .png-cmp-strip .dz-thumb{width:52px}
+}

@@ -12,6 +12,25 @@
 
 const CHANGELOG_ZH = [
   {
+    "version": "v1.8.0",
+    "date": "2026-10-14",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "图片工具 - PNG 压缩"
+        ]
+      },
+      {
+        "title": "优化",
+        "points": [
+          "首页工具箱内容调整",
+          "图片工具菜单顺序调整"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.7.1",
     "date": "2026-10-07",
     "sections": [

@@ -586,6 +586,11 @@ textarea.input{height:auto;padding:10px 12px;resize:vertical;line-height:1.6}
   .lang-label{display:none}
   .logo-text{font-size:16px}
   .sw-btn{padding:5px 10px}
+  /* 窄屏顶栏自适应：nav-acts 收紧（按钮 icon-only、语言收进抽屉），防横向溢出（全站） */
+  .nav-acts{gap:6px}
+  .topbar .nav-acts .btn{padding:0 8px}
+  .topbar .nav-acts .btn span{display:none}
+  .topbar .nav-acts .pop{display:none}
 }
 @media (pointer:coarse){
   .btn{height:44px}.btn-sm{height:36px}

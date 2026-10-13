@@ -5,7 +5,7 @@
 一个**零依赖、隐私优先的图片工具站**，完全运行在你的浏览器里。
 图片在本地处理，**永远不会离开你的设备**——不上传、无服务器、无跟踪。
 
-> 状态：**v1.7.1** · 19 个页面 · 双语（中文 / English）
+> 状态：**v1.8.0** · 20 个页面 · 双语（中文 / English）
 
 ---
 
@@ -20,6 +20,7 @@
 - **图片工具升级（v1.6）**——目标大小压缩（50KB–1MB，JPG/WebP）、剪贴板粘贴导入、HEIC 导入（导出为 PNG/JPG/WebP）、编辑区常显。
 - **证件照工具（v1.7）**——内置 12 种规格（DPI 可调）、裁剪构图、多张排版、按规格命名导出（单张 / ZIP），全部本地处理。
 - **NEW / HOT 标签（v1.7.1）**——导航角标、菜单标签、工具卡片的实心迷你标签；证件照加入站内互推网络并带 NEW 标识。
+- **PNG 压缩（v1.8）**——浏览器内 PNG 压缩：感知加权调色板量化 + 位深自适应，均衡 / 高质量 / 极限三档预设，照片类无损直通，批量导入与 ZIP 导出，下载/导出后弹站内推荐。
 - **设计即开放**——对隐私工具而言，代码本身就是信任信号。
 
 ---
@@ -37,6 +38,7 @@
 | `legal/terms.html` | 服务条款 |
 | `tools/image-tool.html` | 图片工具（压缩 / 调整尺寸 / 格式转换） |
 | `tools/stitch.html` | 图片拼接（长图合并） |
+| `tools/png-compressor.html` | PNG 压缩（调色板量化 / 三档预设 / 批量导出） |
 | `tools/annotate.html` | 图片标注 |
 | `tools/qrcode.html` | 二维码生成器 |
 | `tools/icon-tool.html` | 图标工具（SVG 改色 / 缩放 / 导出） |
@@ -71,7 +73,7 @@ python3 -m http.server 8000
 ### 质量门禁（提交前运行）
 
 ```bash
-node _governance/inject_site.mjs --check   # 19 页漂移检查（必须为 0）
+node _governance/inject_site.mjs --check   # 20 页漂移检查（必须为 0）
 node _governance/lint.mjs                  # 样式/lint（错误数必须为 0）
 node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
@@ -83,7 +85,7 @@ node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # 图片工具（image-tool、stitch、annotate、qrcode、icon-tool、id-photo-tool）
+├── tools/            # 图片工具（image-tool、stitch、png-compressor、annotate、qrcode、icon-tool、id-photo-tool）
 ├── dev/              # 开发者工具（json、regex）
 ├── games/            # 小游戏（block-clear、snake、sudoku）
 ├── legal/            # about / contact / credits / privacy / terms

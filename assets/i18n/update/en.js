@@ -7,6 +7,25 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v1.8.0",
+    "date": "2026-10-14",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Image Tools - PNG Compression"
+        ]
+      },
+      {
+        "title": "Improved",
+        "points": [
+          "Home toolbox content adjustments",
+          "Image Tools menu reorder"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.7.1",
     "date": "2026-10-07",
     "sections": [

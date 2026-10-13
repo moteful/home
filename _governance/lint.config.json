@@ -29,7 +29,10 @@
     "assets/js/regex-worker.js",
     "assets/js/share.js",
     "assets/js/compare-card.js",
-    "assets/js/moteful.js"
+    "assets/js/moteful.js",
+    "assets/js/png-quantize.js",
+    "assets/js/png-encode.js",
+    "assets/js/png-compressor.js"
   ],
   "newArchPages": [
     "index.html",
@@ -46,6 +49,7 @@
     "tools/qrcode.html",
     "tools/icon-tool.html",
     "tools/id-photo-tool.html",
+    "tools/png-compressor.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",

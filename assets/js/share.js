@@ -108,6 +108,13 @@
       bg: { type: 'enum', values: ['red', 'white', 'blue', 'transparent', 'custom'] },
       c: { type: 'hex' },
       core: ['sp', 'dpi', 'f', 'bg']
+    },
+    'png-compressor': {
+      p: { type: 'enum', values: ['balanced', 'high', 'extreme'] },
+      c: { type: 'int', min: 8, max: 256 },
+      d: { type: 'enum', values: ['0', '1'] },
+      l: { type: 'int', min: 0, max: 9 },
+      core: ['p', 'c']
     }
   };
 
@@ -123,6 +130,7 @@
     if (/qrcode\.html/i.test(p)) return 'qrcode';
     if (/icon-tool\.html/i.test(p)) return 'icon-tool';
     if (/id-photo-tool\.html/i.test(p)) return 'id-photo-tool';
+    if (/png-compressor\.html/i.test(p)) return 'png-compressor';
     return '';
   }
 

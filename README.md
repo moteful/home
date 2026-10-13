@@ -5,7 +5,7 @@
 A **zero-dependency, privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.7.1** · 19 pages · bilingual (中文 / English)
+> Status: **v1.8.0** · 20 pages · bilingual (中文 / English)
 
 ---
 
@@ -20,6 +20,7 @@ Your images are processed locally and **never leave your device** — no upload,
 - **Image tool upgrades (v1.6)** — target-size compression (50KB–1MB, JPG/WebP), clipboard paste import, HEIC import (export as PNG/JPG/WebP), edit panel always visible.
 - **ID photo tool (v1.7)** — 12 built-in photo specs (DPI adjustable), crop-composition guide, multi-photo layout, spec-named export (single / ZIP), all local.
 - **NEW / HOT tags (v1.7.1)** — solid mini tags across navigation corner badges, menu labels and tool cards; ID photo joins the cross-recommend network with a NEW badge.
+- **PNG compression (v1.8)** — in-browser PNG compressor: palette quantization (perceptual weighted + adaptive bit-depth), three presets (Balanced / High / Extreme), lossless pass-through for photos, batch import & ZIP export, download/export triggers in-page recommendations.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -37,6 +38,7 @@ Your images are processed locally and **never leave your device** — no upload,
 | `legal/terms.html` | Terms of Service |
 | `tools/image-tool.html` | Image tool (compress / resize / convert) |
 | `tools/stitch.html` | Image stitching (long-image merge) |
+| `tools/png-compressor.html` | PNG compressor (palette quantization / presets / batch export) |
 | `tools/annotate.html` | Image annotation |
 | `tools/qrcode.html` | QR code generator |
 | `tools/icon-tool.html` | SVG icon tool (recolor / scale / export) |
@@ -71,7 +73,7 @@ python3 -m http.server 8000
 ### Quality gates (run before committing)
 
 ```bash
-node _governance/inject_site.mjs --check   # drift check across 19 pages (must be 0)
+node _governance/inject_site.mjs --check   # drift check across 20 pages (must be 0)
 node _governance/lint.mjs                  # style/lint (must have 0 errors)
 node _governance/assert_spec.mjs           # spec assertions (requires Playwright)
 ```
@@ -83,7 +85,7 @@ node _governance/assert_spec.mjs           # spec assertions (requires Playwrigh
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # image tools (image-tool, stitch, annotate, qrcode, icon-tool, id-photo-tool)
+├── tools/            # image tools (image-tool, stitch, png-compressor, annotate, qrcode, icon-tool, id-photo-tool)
 ├── dev/              # developer tools (json, regex)
 ├── games/            # mini-games (block-clear, snake, sudoku)
 ├── legal/            # about / contact / credits / privacy / terms

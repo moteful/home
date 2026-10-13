@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础（v1.8.0 定稿，见设计文档 8.3 关键词矩阵） ===== -->
+<title data-i18n="title_png">PNG 压缩 - 在线免费 PNG 图片压缩减色工具 | Moteful</title>
+<meta name="description" content="免费在线 PNG 压缩：浏览器本地处理，插画/截图/图标减色瘦身、照片无损直通；不限张数大小、绝不上传，对比预览后一键导出。">
+<meta name="keywords" content="png压缩,png压缩器,png瘦身,在线压缩png,图片压缩,PNG compressor,compress png,picture compressor">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="PNG 压缩 - 在线免费 PNG 图片压缩减色工具">
+<meta property="og:description" content="免费在线 PNG 压缩：插画/图标智能减色、照片无损直通；不限张数大小、全程本地处理、绝不上传。">
+<meta property="og:url" content="https://moteful.app/tools/png-compressor.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PNG 压缩 - 在线免费 PNG 图片压缩减色工具">
+<meta name="twitter:description" content="免费在线 PNG 压缩：插画/图标智能减色、照片无损直通；不限张数大小、全程本地处理、绝不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/tools/png-compressor.html">
+<link rel="alternate" hreflang="x-default" href="https://moteful.app/tools/png-compressor.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PNG 压缩器",
+  "alternateName": "Moteful PNG Compressor",
+  "description": "免费在线 PNG 压缩工具：插画/截图/图标智能减色压缩、照片无损直通，对比预览、批量导出、打包 ZIP、带参分享。全部在浏览器本地处理，图片绝不上传。",
+  "url": "https://moteful.app/tools/png-compressor.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "PNG 压缩 / 减色（感知加权量化 + 位深自适应打包）",
+    "预设三档：均衡（自动判档）/ 高质量 / 极限；颜色数 / 抖动 / 压缩级别可调",
+    "原图 ⇄ 压缩后对比滑块预览，实时体积统计",
+    "批量导入、结果列表、一键打包 ZIP",
+    "配置本地记忆 + 带参分享链接",
+    "100% 本地处理，内容不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/png-compress.css?v=1.8.1">
+  <link rel="stylesheet" href="../assets/css/share.css">
+  <link rel="stylesheet" href="../assets/css/recommend.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/share.js" defer></script>
+  <script src="../assets/js/recommend.js" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAXhJREFUOE+lk8FqE1EUhr9zZyK4akEDgiCIBBGCCO5cWBChiIKQlVJKF1EQ8QF060bwAewiMVCiUFxkK7YgKL5CF64slumqm4LExjv3HBkmEMeZRGnu6sI95zv//1+OMOeROfuZCVhNgvb7Bk9jN23QbAU9rwwFnhwDsJaobmyn4GPwCo+rIZUK7iephSD27osiQ8SCWGROwiNXqq8ErOwGfbsT4PaJifeOVx7WSllUAlrfgw7OReXguqnyoGilEhB/+qnp0kl3b091c8ugHbnTg0QPWmf/oeB10Kx42pfd+Or148WijaKCPwGFuypt5+h7vXXN8f7CZMgEkDVkJ1PwJtXzTZFvVyLhRap4gR8ivHTC+i9dvun40MizyAE9M4IZovwdUsnOq1QZOa7fUfnciCUHdFQ5UlhQWBTO1OFIHIs1Y/fqOPVMyUhgBJwy8MCz2AndoOzDpbuGGYgITkx2Lsc5/HnQ8QOogA9ZEaRQbx7OXqb/2dTfOWiTtfg3f9AAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+  <meta name="moteful-siteurl" content="https://moteful.app">
+  <meta name="moteful-pagepath" content="tools/png-compressor">
+</head>
+<body data-nav="image">
+
+<!-- topbar / drawer / footer 由 inject_site.mjs 统一下发（v1.8.0 骨架占位） -->
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">NEW</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item on" href="../tools/png-compressor.html"><i data-lucide="image-down"></i><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">NEW</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="scan"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">NEW</span></a>
+        <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="grid-3x3"></i><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="pipette"></i><span data-i18n="nav_m_cutout">纯色抠图</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- V1.4：分享次入口（share.js 加载页显示；≤480px 收进抽屉） -->
+    <button type="button" class="btn btn-ghost btn-sm share-topbar-btn" data-share-topbar hidden data-i18n-aria="share_nav" aria-label="Share"><i data-lucide="share-2"></i><span data-i18n="share_nav">Share</span></button>
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="png_kicker">MOTEFUL · PNG 压缩工具</div>
+    <h1 data-i18n="png_title">PNG 压缩器</h1>
+    <p data-i18n="png_hero_desc">调色板量化减色压缩 PNG：照片/插画/截图/图标均可压缩，对比预览、批量导出。全部在浏览器本地处理，图片绝不上传。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="icon_tag_local">100% 本地处理</span>
+      <span class="tag t-gray" data-i18n="icon_tag_free">免费使用</span>
+    </div>
+  </section>
+
+  <!-- ===== ① 导入区（F-01：复用共享层双态画廊 dz-empty ↔ dz-gallery） ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="png_section_import">导入</h2>
+    <div class="dropzone" id="pngDropzone" tabindex="0" data-i18n-aria="png_dz_aria" aria-label="上传 PNG">
+      <div class="dz-empty" id="pngDzEmpty">
+        <div class="dz-ico"><i data-lucide="upload"></i></div>
+        <div class="up-main">
+          <h4 data-i18n="png_dz_title">点击选择或拖入 PNG 文件</h4>
+          <p data-i18n="png_dz_sub">支持多选 · 支持粘贴导入 · 仅 PNG（JPG/WebP 压缩请前往图片工具）</p>
+        </div>
+      </div>
+      <div class="dz-gallery" id="pngDzGallery" hidden>
+        <div class="dz-g-head">
+          <span class="dz-count" id="pngDzCount"></span>
+          <div class="dz-g-acts">
+            <button type="button" class="btn btn-ghost btn-sm" id="pngDzAddMore"><i data-lucide="image"></i><span data-i18n="png_dz_add_more">继续添加图片</span></button>
+            <button type="button" class="btn btn-secondary btn-sm" id="pngDzReset"><i data-lucide="trash-2"></i><span data-i18n="png_dz_reset">重置</span></button>
+          </div>
+        </div>
+        <div class="dz-g-list" id="pngDzList"></div>
+      </div>
+    </div>
+    <input type="file" id="pngFile" accept="image/png" multiple hidden>
+    <!-- 隐私声明（对齐 image-tool：规范 16 章 .alert.a-success） -->
+    <p class="alert a-success"><i data-lucide="lock"></i><span data-i18n="png_privacy">所有处理均在你的浏览器内完成，文件绝不会离开本设备。</span></p>
+  </section>
+
+  <!-- ===== ② 压缩参数（F-02：预设三档 / 颜色数 / 抖动 / 级别） ===== -->
+  <section class="panel" id="pngConfig">
+    <h2 class="sec-title" data-i18n="png_section_params">压缩参数</h2>
+    <div class="png-cfg-cols">
+      <div class="png-cfg-col">
+        <div class="field">
+          <span class="field-label" data-i18n="png_cfg_preset">压缩预设</span>
+          <div class="row">
+            <div class="segment" role="radiogroup" data-i18n-aria="png_cfg_preset" aria-label="压缩预设">
+              <label class="seg"><input type="radio" name="pngPreset" value="balanced" checked><span class="seg-t" data-i18n="png_p_balanced">均衡</span></label>
+              <label class="seg"><input type="radio" name="pngPreset" value="high"><span class="seg-t" data-i18n="png_p_high">高质量</span></label>
+              <label class="seg"><input type="radio" name="pngPreset" value="extreme"><span class="seg-t" data-i18n="png_p_extreme">极限压缩</span></label>
+            </div>
+          </div>
+          <p class="muted" data-i18n="png_cfg_preset_hint">均衡档按图片颜色复杂度自动判档；手动调整任意参数即进入自定义模式</p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="pngLevel" data-i18n="png_cfg_level">压缩级别</label>
+          <span class="row">
+            <input type="range" id="pngLevel" class="slider" min="0" max="9" step="1" value="6" style="--p:66.7%" data-i18n-aria="png_cfg_level" aria-label="压缩级别">
+            <span class="step" data-for="pngLevel" data-min="0" data-max="9">
+              <button type="button" class="step-btn" data-step="-1" data-i18n-aria="png_btn_level_dec" aria-label="降低压缩级别"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="pngLevelVal">6</span>
+              <button type="button" class="step-btn" data-step="1" data-i18n-aria="png_btn_level_inc" aria-label="提高压缩级别"><i data-lucide="plus"></i></button>
+            </span>
+          </span>
+          <p class="muted" data-i18n="png_cfg_level_hint">级别越高压缩越慢、体积越小（0 最快）</p>
+        </div>
+      </div>
+      <div class="png-cfg-col">
+        <div class="field">
+          <label class="field-label" for="pngColors" data-i18n="png_cfg_colors">颜色数</label>
+          <span class="row">
+            <input type="range" id="pngColors" class="slider" min="8" max="256" step="8" value="128" style="--p:48.4%" data-i18n-aria="png_cfg_colors" aria-label="颜色数">
+            <span class="step" data-for="pngColors" data-min="8" data-max="256">
+              <button type="button" class="step-btn" data-step="-8" data-i18n-aria="png_btn_colors_dec" aria-label="减少颜色数"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="pngColorsVal">128</span>
+              <button type="button" class="step-btn" data-step="8" data-i18n-aria="png_btn_colors_inc" aria-label="增加颜色数"><i data-lucide="plus"></i></button>
+            </span>
+          </span>
+          <p class="muted" data-i18n="png_cfg_colors_hint">颜色数越低体积越小，画质损失越大</p>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="png_cfg_dither">抖动</span>
+          <label class="switch"><input type="checkbox" id="pngDither" checked><span class="sw-track"><span class="sw-thumb"></span></span></label>
+          <p class="muted" data-i18n="png_cfg_dither_hint">减少渐变条纹</p>
+        </div>
+      </div>
+    </div>
+    <!-- 操作行（对齐 image-tool：btn-primary + play 三角，手动触发压缩；进度条 .progress 同款） -->
+    <div class="row" id="pngActions">
+      <button type="button" class="btn btn-primary" id="pngProcessBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span data-i18n="png_process">开始处理</span></button>
+      <div class="progress" id="pngProgress" hidden role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-bar" id="pngProgressFill"></span></div>
+      <span class="mono" id="pngProgressTxt" hidden></span>
+    </div>
+  </section>
+
+  <!-- ===== ③ 对比预览（F-03：内嵌分割滑块，原图 ⇄ 压缩后） ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="png_section_preview">对比预览</h2>
+    <div class="png-compare-empty" id="pngCompareEmpty"><p class="muted" data-i18n="png_compare_placeholder">选择一张图片开始对比</p></div>
+    <div class="png-cmp-frame" id="pngCompare" hidden>
+      <button type="button" class="nav-btn nav-prev" id="pngCmpPrev" data-i18n-aria="png_cmp_prev" aria-label="上一张" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button type="button" class="nav-btn nav-next" id="pngCmpNext" data-i18n-aria="png_cmp_next" aria-label="下一张" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      <div class="compare-area">
+        <img class="compare-after" id="pngCmpBase" alt="压缩后" draggable="false">
+        <img class="compare-before" id="pngCmpTop" alt="原图" draggable="false">
+        <span class="compare-label label-left" data-i18n="png_cmp_orig">原图</span>
+        <span class="compare-label label-right" data-i18n="png_cmp_result">压缩后</span>
+        <div class="compare-divider" id="pngCmpDivider"><div class="compare-handle" id="pngCmpHandle" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><svg viewBox="0 0 24 24" class="handle-icon"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg></div></div>
+      </div>
+    </div>
+    <!-- 批量缩略图条（多图时显示，点击切换预览对象） -->
+    <div class="png-cmp-strip" id="pngCmpStrip" hidden></div>
+  </section>
+
+  <!-- ===== ④ 导出区（结果直接显示在此区域：体积统计 + 逐张下载 + 打包 ZIP/分享） ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="png_section_export">导出</h2>
+    <div class="row" id="pngBusy" hidden>
+      <span class="spinner"></span>
+      <span data-i18n="png_busy_compressing">正在压缩</span>
+      <span class="step-val" id="pngBusyProg"></span>
+    </div>
+    <div class="muted" id="pngSummary"></div>
+    <div class="png-res-list" id="pngResList"></div>
+    <div class="row">
+      <button type="button" class="btn btn-primary" id="pngExportZip"><i data-lucide="package"></i><span data-i18n="png_export_zip">打包下载 ZIP</span></button>
+      <button type="button" class="btn btn-secondary" id="pngExportShare" data-share-open><i data-lucide="share-2"></i><span data-i18n="png_export_share">分享压缩参数</span></button>
+    </div>
+    <p class="muted png-export-note" data-i18n="png_export_note">已压缩结果可逐张下载（点结果行右侧下载按钮）或一键打包 ZIP；分享链接可恢复同款压缩参数</p>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="png_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="png_f_th1">功能</th><th data-i18n="png_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="png_f1_name">调色板量化压缩</td><td data-i18n="png_f1_desc">中位切分量化 + Floyd-Steinberg 抖动，将图片色数压到目标档位，体积明显减小，同时保留人眼可接受的画质。</td></tr>
+          <tr><td data-i18n="png_f2_name">三档预设 + 手动细调</td><td data-i18n="png_f2_desc">均衡（自动判档）/ 高质量 / 极限三档一键套用；颜色数、抖动开关、压缩级别均可手动调整。</td></tr>
+          <tr><td data-i18n="png_f3_name">对比预览</td><td data-i18n="png_f3_desc">原图 ⇄ 压缩后分割滑块实时对比，逐张显示体积与压缩率。</td></tr>
+          <tr><td data-i18n="png_f4_name">批量处理 + 打包下载</td><td data-i18n="png_f4_desc">多张 PNG 一次导入，逐张显示压缩结果，一键打包 ZIP 批量下载。</td></tr>
+          <tr><td data-i18n="png_f5_name">压不小自动兜底</td><td data-i18n="png_f5_desc">压缩后体积未减小时自动提示，并给出提高颜色数、关闭抖动的优化建议。</td></tr>
+          <tr><td data-i18n="png_f6_name">配置记忆 + 带参分享</td><td data-i18n="png_f6_desc">压缩参数本地记忆；可生成带压缩参数的分享链接，打开即恢复同款设置。</td></tr>
+          <tr><td data-i18n="png_f7_name">隐私保护</td><td data-i18n="png_f7_desc">100% 本地处理，图片与参数不上传、不注册，关闭页面即清除。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="png_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="png_u1_t">网页图片优化</div><div class="nm seo-desc" data-i18n="png_u1_d">压缩 PNG 素材减小体积，页面加载更快、更省流量，对 SEO 更友好。</div></div>
+      <div class="stat"><div class="lb" data-i18n="png_u2_t">聊天与邮件发送</div><div class="nm seo-desc" data-i18n="png_u2_d">把大体积 PNG 压小，突破聊天、邮箱的附件大小限制。</div></div>
+      <div class="stat"><div class="lb" data-i18n="png_u3_t">游戏与 UI 素材</div><div class="nm seo-desc" data-i18n="png_u3_d">图标、贴图、界面素材压缩后打包，减小安装包与资源包体积。</div></div>
+      <div class="stat"><div class="lb" data-i18n="png_u4_t">截图与存档</div><div class="nm seo-desc" data-i18n="png_u4_d">批量压缩截图与存档图片，节省云端和本地存储空间。</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="png_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="png_q_th1">问题</th><th data-i18n="png_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="png_q1">PNG 压缩后会不会失真？</td><td data-i18n="png_a1">采用有损减色压缩，压缩程度越高画质损失越大。建议使用「均衡」档，并在对比预览中确认效果后再导出。</td></tr>
+          <tr><td data-i18n="png_q2">图片会上传到服务器吗？</td><td data-i18n="png_a2">不会。所有处理都在浏览器本地完成，可断网使用。</td></tr>
+          <tr><td data-i18n="png_q3">支持哪些格式？</td><td data-i18n="png_a3">仅支持 PNG。JPG / WebP 压缩请使用图片工具集。</td></tr>
+          <tr><td data-i18n="png_q4">支持批量处理吗？</td><td data-i18n="png_a4">支持多选导入、批量压缩，结果可一键打包 ZIP 下载。</td></tr>
+          <tr><td data-i18n="png_q5">导出结果可以商用吗？</td><td data-i18n="png_a5">可以。免费、无水印，导出结果无任何使用限制。</td></tr>
+          <tr><td data-i18n="png_q6">需要注册登录吗？</td><td data-i18n="png_a6">不需要，打开网页即可使用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<!-- ===== 页脚（真实主体） ===== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+      <p class="footer-social">
+        <a class="footer-social-link" href="https://github.com/moteful/home" target="_blank" rel="noopener noreferrer" data-i18n-aria="foot_github" aria-label="GitHub repository" title="GitHub repository"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></a>
+        <a class="footer-social-link" href="mailto:moteful@outlook.com" data-i18n-aria="foot_email" aria-label="Email us" title="Email us"><i data-lucide="mail"></i></a>
+        <button type="button" class="footer-social-link" data-footer-share data-i18n-aria="foot_share" aria-label="Share this page" title="Share this page"><i data-lucide="share-2"></i></button>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v1.8.0</span>
+  </div>
+</footer>
+
+<!-- 移动端导航抽屉 -->
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head">
+      <h3>Moteful</h3>
+      <div class="drawer-head-actions">
+        <a href="../support.html" class="btn btn-ghost btn-sm" data-i18n-title="foot_support" aria-label="Support">
+          <i data-lucide="heart"></i><span data-i18n="foot_support">Support</span>
+        </a>
+        <div class="pop">
+          <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+            <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+          </button>
+          <div class="menu pop-panel">
+            <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+            <button class="menu-item lang-item" data-lang="en">English</button>
+          </div>
+        </div>
+        <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- V1.4：分享当前页入口（share.js 加载页显示） -->
+    <button type="button" class="btn btn-secondary btn-sm share-drawer-entry" data-share-entry hidden><i data-lucide="share-2"></i><span data-i18n="share_drawer_entry">分享当前页</span></button>
+    <!-- 一级分类胶囊（横向滚动） -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab on" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
+      <button class="drawer-tab" data-dtab="dev"><i data-lucide="code"></i><span data-i18n="nav_dev_group">开发者工具</span></button>
+      <button class="drawer-tab" data-dtab="games"><i data-lucide="gamepad-2"></i><span data-i18n="nav_games_group">小游戏</span></button>
+    </div>
+
+    <!-- 二级工具宫格 -->
+    <nav class="drawer-grid" id="drawerGrid">
+      <!-- 图片工具 -->
+      <div class="drawer-pane active" data-pane="image">
+        <a href="../tools/image-tool.html" class="grid-card">
+          <i data-lucide="images"></i>
+          <span data-i18n="nav_m_batch">批量处理</span>
+        </a>
+        <a href="../tools/png-compressor.html" class="grid-card">
+          <i data-lucide="image-down"></i>
+          <span><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">NEW</span></span>
+        </a>
+        <a href="../tools/stitch.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_m_compress">长图拼接</span>
+        </a>
+        <a href="../tools/qrcode.html" class="grid-card">
+          <i data-lucide="qr-code"></i>
+          <span data-i18n="nav_m_qrcode">二维码</span>
+        </a>
+        <a href="../tools/annotate.html" class="grid-card">
+          <i data-lucide="pencil"></i>
+          <span data-i18n="nav_m_annotate">打码标注</span>
+        </a>
+        <a href="../tools/id-photo-tool.html" class="grid-card">
+          <i data-lucide="user"></i>
+          <span><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">NEW</span></span>
+        </a>
+        <a href="../tools/icon-tool.html" class="grid-card">
+          <i data-lucide="radius"></i>
+          <span data-i18n="nav_m_icon">图标工具</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="list"></i>
+          <span data-i18n="nav_m_rename">重命名</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_m_cutter">裁切工具</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="pipette"></i>
+          <span data-i18n="nav_m_cutout">纯色抠图</span>
+        </a>
+      </div>
+
+      <!-- 开发者工具 -->
+      <div class="drawer-pane" data-pane="dev">
+        <a href="../dev/json.html" class="grid-card">
+          <i data-lucide="code"></i>
+          <span data-i18n="nav_dev_json">JSON 格式化</span>
+        </a>
+        <a href="../dev/regex.html" class="grid-card">
+          <i data-lucide="regex"></i>
+          <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="clock"></i>
+          <span data-i18n="nav_dev_timestamp">时间戳转换</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="binary"></i>
+          <span data-i18n="nav_dev_base64">Base64 编解码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="palette"></i>
+          <span data-i18n="nav_dev_color">颜色代码转换</span>
+        </a>
+      </div>
+
+      <!-- 小游戏 -->
+      <div class="drawer-pane" data-pane="games">
+        <a href="../games/block-clear.html" class="grid-card">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="nav_g_blockclear">方块消除</span>
+        </a>
+        <a href="../games/snake.html" class="grid-card">
+          <i data-lucide="worm"></i>
+          <span data-i18n="nav_g_snake">贪吃蛇</span>
+        </a>
+        <a href="../games/sudoku.html" class="grid-card">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_g_sudoku">数独</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+    (function(){
+      // 根据当前路径，判断应该显示哪个分类
+      function getDefaultTab(){
+        var path = location.pathname;
+        if(path.indexOf('/tools/') >= 0) return 'image';
+        if(path.indexOf('/dev/') >= 0) return 'dev';
+        if(path.indexOf('/games/') >= 0) return 'games';
+        // 首页和 support 默认显示图片工具分类（主要功能）
+        return 'image';
+      }
+
+      // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+      function setDefaultTab(){
+        var tabName = getDefaultTab();
+        var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+        tabs.forEach(function(t){
+          t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+        });
+        // 同时显示对应 pane
+        var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+        });
+      }
+
+      // DOM 加载完成后立即设置默认高亮
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', setDefaultTab);
+      } else {
+        setDefaultTab();
+      }
+
+      // 抽屉分类切换逻辑
+      document.addEventListener('click', function(e){
+        var tab = e.target.closest('.drawer-tab');
+        if(!tab) return;
+
+        var container = document.getElementById('drawerGrid');
+        if(!container) return;
+
+        // 切换 tab 高亮
+        var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+        tabs.forEach(function(t){ t.classList.remove('on'); });
+        tab.classList.add('on');
+
+        // 切换 pane
+        var target = tab.getAttribute('data-dtab');
+        var panes = container.querySelectorAll('.drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === target);
+        });
+      });
+
+      // 抽屉打开时，根据当前页自动选中对应分类
+      window.openDrawer = window.openDrawer || function(id){
+        var drawer = document.getElementById(id);
+        if(!drawer) return;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // 触发对应 tab（会自动切换 pane）
+        var tabName = getDefaultTab();
+        var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+        if(tab) tab.click();
+      };
+    })();
+    </script>
+  </aside>
+</div>
+
+<button class="to-top" id="toTop" data-i18n-aria="to_top" aria-label="返回顶部"><i data-lucide="arrow-up"></i></button>
+<div id="toasts" aria-live="polite"></div>
+
+<script src="../assets/i18n/en.js"></script>
+<script src="../assets/i18n/zh.js"></script>
+<script src="../assets/i18n/i18n.js"></script>
+<script src="../assets/js/zip.js"></script>
+<script src="../assets/js/image-import.js" defer></script>
+<script src="../assets/js/png-quantize.js" defer></script>
+<script src="../assets/js/png-encode.js" defer></script>
+<script src="../assets/js/png-compressor.js?v=1.8.0" defer></script>
+<div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
+  <div class="rec-mask" data-rec-close></div>
+  <div class="rec-box">
+    <button class="btn btn-icon btn-secondary btn-close rec-close-icon" type="button" data-rec-close data-i18n-aria="rec_close" aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="rec-check"><i data-lucide="check-circle"></i></div>
+    <p class="rec-msg" id="recMsg" data-i18n="rec_done">操作成功</p>
+    <p class="rec-sub" data-i18n="rec_sub">感谢使用 Moteful，下面这些功能你可能也用得上：</p>
+    <div class="rec-cards" id="recCards">    <a class="rec-card" href="../tools/image-tool.html">
+      <i data-lucide="images"></i>
+      <span data-i18n="nav_m_batch">基础功能</span>
+    </a>
+    <a class="rec-card" href="../tools/id-photo-tool.html">
+      <i data-lucide="user"></i>
+      <span class="rec-label"><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">NEW</span></span>
+    </a>
+    <a class="rec-card" href="../tools/icon-tool.html">
+      <i data-lucide="radius"></i>
+      <span data-i18n="nav_m_icon">图标工具</span>
+    </a>
+    <a class="rec-card" href="../tools/stitch.html">
+      <i data-lucide="layout-grid"></i>
+      <span data-i18n="nav_m_compress">拼接</span>
+    </a></div>
+    <div class="rec-tip">
+      <div class="rec-tip-line">
+        <svg class="lucide-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+        <span class="rec-tip-text" data-i18n="rec_tip_note">如果这个工具帮到了你，欢迎请作者喝杯咖啡</span>
+      </div>
+      <a class="btn btn-primary rec-tip-btn" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n="rec_tip_btn">赞助支持</a>
+    </div>
+    <div class="rec-actions">
+      <button class="btn btn-secondary" type="button" data-rec-share data-i18n="rec_share">分享</button>
+      <button class="btn btn-secondary rec-close-btn" type="button" data-rec-close data-i18n="rec_close">关闭</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
