@@ -174,6 +174,17 @@ for (const page of cfg.pages) {
       changed.push('share-meta');
     } else changed.push('share-meta(缺失)');
   }
+  // Google AdSense（V1.8.1 商业化）：全站 <head> 注入 AdSense 脚本（幂等：已存在则跳过）。
+  // 站点本体隐私/零上传承诺不变；广告脚本为商业化破例的外部请求，仅此一处。
+  const ADSENSE_SRC = 'pagead2.googlesyndication.com';
+  const adsenseTag = '  <script async src="https://' + ADSENSE_SRC + '/pagead/js/adsbygoogle.js?client=ca-pub-2226711164508785" crossorigin="anonymous"></script>';
+  if (!html.includes(ADSENSE_SRC)) {
+    drifted.push(page);
+    if (!CHECK) {
+      html = html.replace('</head>', adsenseTag + '\n</head>');
+      changed.push('adsense');
+    } else changed.push('adsense(缺失)');
+  }
   // 内联推荐（V1.1）：注入 rec.css / rec.js / 弹窗块（受 recommend-config.json 驱动）
   const recPre = path.dirname(page) === '.' ? '' : '../';
   const recCssHref = recPre + REC_CSS;

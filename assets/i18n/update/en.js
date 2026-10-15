@@ -7,7 +7,7 @@
 
 const CHANGELOG_EN = [
   {
-    "version": "v1.8.0",
+    "version": "v1.8.1",
     "date": "2026-10-14",
     "sections": [
       {

@@ -2,10 +2,10 @@
 
 # Moteful
 
-A **zero-dependency, privacy-first image toolkit** that runs entirely in your browser.
+A **privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.8.0** · 20 pages · bilingual (中文 / English)
+> Status: **v1.8.1** · 20 pages · bilingual (中文 / English)
 
 ---
 

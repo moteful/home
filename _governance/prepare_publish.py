@@ -76,7 +76,7 @@ for d in ['games/assets', 'tools/assets', 'dev/assets', 'legal/assets']:
         print('publish/%s: 已复制（%d 个文件）' % (d, sum(len(fn) for _, _, fn in os.walk(os.path.join(pub, d)))))
 
 # 复制根目录运行文件
-for f in ['favicon.png', 'favicon.ico', 'robots.txt', 'sitemap.xml']:
+for f in ['favicon.png', 'favicon.ico', 'robots.txt', 'sitemap.xml', 'ads.txt']:
     shutil.copy2(os.path.join(ROOT, f), os.path.join(pub, f))
 
 print('publish/: %d 个文件' % sum(len(fn) for _, _, fn in os.walk(pub)))
