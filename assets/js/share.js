@@ -91,13 +91,27 @@
       c: { type: 'hex' },
       sc: { type: 'hex' },
       sw: { type: 'int', min: 1, max: 20 },
+      cm: { type: 'enum', values: ['raw', 'custom'] },
+      sm: { type: 'enum', values: ['none', 'custom'] },
       bg: { type: 'hex', allowT: true },
       pd: { type: 'int', min: 0, max: 50 },
+      pdPct: { type: 'int', min: 0, max: 50 },
+      pdPx: { type: 'int', min: 0, max: 50 },
+      pdu: { type: 'enum', values: ['pct', 'px'] },
+      padOn: { type: 'int', min: 0, max: 1 },
       sz: { type: 'enum', values: ['16', '24', '32', '48', '64', '128', '256', '512'] },
       fmt: { type: 'enum', values: ['svg', 'png', 'jpg', 'webp'] },
       rt: { type: 'int', min: 0, max: 270 },
       fl: { type: 'int', min: 0, max: 3 },
-      core: ['c', 'bg', 'sz', 'fmt']
+      rotOn: { type: 'int', min: 0, max: 1 },
+      flipOn: { type: 'int', min: 0, max: 1 },
+      /* V1.9 收尾：与配置记忆键位对齐（scale/scaleMode/sizeMode/multi/cust） */
+      scaleMode: { type: 'enum', values: ['raw', 'custom'] },
+      scale: { type: 'int', min: 25, max: 200 },
+      sizeMode: { type: 'enum', values: ['single', 'multi'] },
+      multi: { type: 'str' },
+      cust: { type: 'int', min: 1, max: 1024 },
+      core: ['c', 'bg', 'sz', 'fmt', 'multi', 'cust']
     },
     'id-photo-tool': {
       sp: { type: 'enum', values: ['cun1', 'cun1s', 'cun1b', 'cun2', 'cun2s', 'cun2b', 'w5', 'cnid', 'marriage', 'us', 'jp', 'sc'] },

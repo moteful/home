@@ -247,7 +247,6 @@
     if (t) r.setAttribute('transform', t.trim());
     else r.removeAttribute('transform');
   }
-  function applySvgParams() { applyViewBox(); applyTransform(); }
   /* 渲染基准：按 图标颜色模式(原图/自定义) 与 描边模式(无描边/自定义) 重建 SVG 副本，
      原图/无描边时以导入时的原始 SVG 为基准，防止原图被强行加入颜色/描边参数 */
   function buildRenderSvg() {
@@ -582,11 +581,17 @@
       cm: params.cm, sm: params.sm,
       bg: params.bg === 't' || params.bg === 'raw' ? params.bg : params.bg.replace('#', ''),
       pdPct: params.pdPct, pdPx: params.pdPx, pdu: params.pdu,
+      padOn: params.padOn ? 1 : 0, rotOn: params.rotOn ? 1 : 0, flipOn: params.flipOn ? 1 : 0,
       sz: (selectedSizes()[0] || params.canvas),
       fmt: params.fmt,
       rt: params.rt,
       fl: params.fl,
-      padOn: params.padOn, rotOn: params.rotOn, flipOn: params.flipOn
+      /* V1.9 收尾：与配置记忆键位对齐（补 scale/scaleMode/sizeMode/multi/cust；undefined 键由 share.js 跳过） */
+      scaleMode: params.scaleMode === 'custom' ? 'custom' : undefined,
+      scale: params.scaleMode === 'custom' ? params.scale : undefined,
+      sizeMode: params.sizeMode,
+      multi: params.sizeMode === 'multi' ? params.sizes.join(',') : undefined,
+      cust: params.customSize && normalizeCustomSize(params.customSize) ? normalizeCustomSize(params.customSize) : undefined
     };
   }
   function applyShareParams(p) {
@@ -602,17 +607,34 @@
     if (p.pdPct >= 0 && p.pdPct <= 50) { params.pdPct = p.pdPct; changed = true; }
     if (p.pdPx >= 0 && p.pdPx <= 50) { params.pdPx = p.pdPx; changed = true; }
     if (!hasPdNew && p.pd >= 0 && p.pd <= 50) { params.pdPct = params.pdPx = p.pd; changed = true; }
-    if (typeof p.padOn === 'boolean') { params.padOn = p.padOn; changed = true; }
+    if (p.padOn === 1 || p.padOn === 0) { params.padOn = !!p.padOn; changed = true; }
     else if (hasPdNew || (p.pd >= 0 && p.pd <= 50)) { params.padOn = true; changed = true; } /* 旧分享有内边距值 → 迁移开启 */
     if (p.pdu === 'pct' || p.pdu === 'px') { params.pdu = p.pdu; changed = true; }
     var szN = parseInt(p.sz, 10);
-    if (!isNaN(szN) && SIZE_PRESETS.indexOf(szN) >= 0) { params.sizes = [szN]; params.canvas = szN; changed = true; }
+    if (!isNaN(szN) && SIZE_PRESETS.indexOf(szN) >= 0) {
+      params.sizes = [szN]; params.canvas = szN; changed = true;
+      /* V1.9 收尾：旧分享链接仅单尺寸 → 明确 single 模式（与配置记忆键位对齐） */
+      if (p.sizeMode !== 'single' && p.sizeMode !== 'multi') params.sizeMode = 'single';
+    }
     if (['svg', 'png', 'jpg', 'webp'].indexOf(p.fmt) >= 0) { params.fmt = p.fmt; changed = true; }
+    /* V1.9 收尾：与配置记忆键位对齐（scale/scaleMode/sizeMode/multi/cust） */
+    if (p.scaleMode === 'raw' || p.scaleMode === 'custom') { params.scaleMode = p.scaleMode; changed = true; }
+    if (p.scale >= 25 && p.scale <= 200) { params.scale = p.scale; changed = true; }
+    if (p.sizeMode === 'single' || p.sizeMode === 'multi') { params.sizeMode = p.sizeMode; changed = true; }
+    if (typeof p.multi === 'string' && p.multi) {
+      var ms = [];
+      p.multi.split(',').forEach(function (s) {
+        var n = parseInt(s, 10);
+        if (!isNaN(n) && SIZE_PRESETS.indexOf(n) >= 0 && ms.indexOf(n) < 0) ms.push(n);
+      });
+      if (ms.length) { params.sizes = ms; params.canvas = ms[0]; changed = true; }
+    }
+    if (p.cust >= 1 && p.cust <= 1024) { params.customSize = String(p.cust); changed = true; }
     if (ROT_MAP.indexOf(p.rt) >= 0) { params.rt = p.rt; changed = true; }
     if (p.fl >= 0 && p.fl <= 3) { params.fl = p.fl; changed = true; }
-    if (typeof p.rotOn === 'boolean') { params.rotOn = p.rotOn; changed = true; }
+    if (p.rotOn === 1 || p.rotOn === 0) { params.rotOn = !!p.rotOn; changed = true; }
     else if (p.rt !== 0 && ROT_MAP.indexOf(p.rt) >= 0) { params.rotOn = true; changed = true; } /* 旧分享有旋转角度 → 迁移开启 */
-    if (typeof p.flipOn === 'boolean') { params.flipOn = p.flipOn; changed = true; }
+    if (p.flipOn === 1 || p.flipOn === 0) { params.flipOn = !!p.flipOn; changed = true; }
     else if (p.fl !== 0) { params.flipOn = true; changed = true; } /* 旧分享有翻转 → 迁移开启 */
     if (changed) {
       syncUi();

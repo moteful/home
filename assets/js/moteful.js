@@ -79,6 +79,11 @@ var ICONS={
 ,'move':'<path d="M12 2v20"/><path d="m15 19-3 3-3-3"/><path d="m19 9 3 3-3 3"/><path d="M2 12h20"/><path d="m5 9-3 3 3 3"/><path d="m9 5 3-3 3 3"/>'
 ,'package':'<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>'
 ,'chevrons-left-right':'<path d="m9 7-5 5 5 5"/><path d="m15 7 5 5-5 5"/>'
+,'undo':'<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>'
+,'redo':'<path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/>'
+,'rotate-ccw':'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>'
+,'flip-h':'<path d="M12 3v18"/><path d="m16 7 5 5-5 5"/><path d="m8 7-5 5 5 5"/>'
+,'flip-v':'<path d="M3 12h18"/><path d="m8 8 4-4 4 4"/><path d="m8 16 4 4 4-4"/>'
 };
 function renderIcons(){
   $$('[data-lucide]').forEach(function(el){
