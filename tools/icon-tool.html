@@ -72,7 +72,7 @@ document.documentElement.dataset.theme=v;})();</script>
 <link rel="stylesheet" href="../assets/css/moteful.css">
   <link rel="stylesheet" href="../assets/css/share.css">
   <link rel="stylesheet" href="../assets/css/recommend.css">
-<link rel="stylesheet" href="../assets/css/icon-tool.css?v=1.9.0">
+<link rel="stylesheet" href="../assets/css/icon-tool.css?v=1.9.1">
 <script src="../assets/js/moteful.js" defer></script>
   <script src="../assets/js/share.js" defer></script>
   <script src="../assets/js/recommend.js" defer></script>
@@ -377,7 +377,7 @@ document.documentElement.dataset.theme=v;})();</script>
         <div class="dz-ico"><i data-lucide="upload"></i></div>
         <div class="up-main">
           <h4 data-i18n="icon_dz_title">点击选择或拖入 SVG 文件</h4>
-          <p data-i18n="icon_dz_sub">仅支持 .svg · 内容不会离开设备</p>
+          <p data-i18n="icon_dz_sub">支持 .svg / .ico / .icns · 内容不会离开设备</p>
         </div>
       </div>
       <!-- 已导入态：复用共享层 .dz-gallery/.dz-g-head/.dz-count/.dz-g-acts/.dz-g-list/.dz-thumb（与 image-tool 同构） -->
@@ -391,7 +391,7 @@ document.documentElement.dataset.theme=v;})();</script>
         <div class="dz-g-list" id="iconDzList"></div>
       </div>
     </div>
-    <input type="file" id="iconFile" accept=".svg" hidden>
+    <input type="file" id="iconFile" accept=".svg,.ico,.icns" hidden>
     <div class="field" id="iconCodeWrap" hidden>
       <label class="field-label" for="iconCode" data-i18n="icon_code_label">SVG 代码</label>
       <textarea id="iconCode" class="input" rows="6" placeholder="<svg …></svg>" data-i18n-ph="icon_code_ph"></textarea>
@@ -608,6 +608,8 @@ document.documentElement.dataset.theme=v;})();</script>
           <label class="seg"><input type="radio" name="iconFmt" value="png" checked data-icon-enable disabled><span class="seg-t">PNG</span></label>
           <label class="seg"><input type="radio" name="iconFmt" value="jpg" data-icon-enable disabled><span class="seg-t">JPG</span></label>
           <label class="seg"><input type="radio" name="iconFmt" value="webp" data-icon-enable disabled><span class="seg-t">WebP</span></label>
+          <label class="seg"><input type="radio" name="iconFmt" value="ico" data-icon-enable disabled><span class="seg-t">ICO</span></label>
+          <label class="seg"><input type="radio" name="iconFmt" value="icns" data-icon-enable disabled><span class="seg-t">ICNS</span></label>
         </div>
       </div>
       <div class="field">
@@ -742,7 +744,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v1.9.0</span>
+    <span data-i18n="foot_version">v1.9.1</span>
   </div>
 </footer>
 
@@ -753,7 +755,8 @@ document.documentElement.dataset.theme=v;})();</script>
 <script src="../assets/js/icon-render.js" defer></script>
 <script src="../assets/js/compare-card.js" defer></script>
 <script src="../assets/js/zip.js" defer></script>
-<script src="../assets/js/icon-tool.js?v=1.9.0" defer></script>
+<script src="../assets/js/icon-container.js?v=1.9.1" defer></script>
+<script src="../assets/js/icon-tool.js?v=1.9.1" defer></script>
 
 <div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
   <div class="rec-mask" data-rec-close></div>

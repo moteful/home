@@ -19,7 +19,10 @@
   var SIZE_PRESETS = [16, 24, 32, 48, 64, 128, 256, 512];
   var ROT_MAP = [0, 90, 180, 270];
   var FMT_MIME = { png: 'image/png', jpg: 'image/jpeg', webp: 'image/webp' };
-  var FMT_EXT = { svg: 'svg', png: 'png', jpg: 'jpg', webp: 'webp' };
+  var FMT_EXT = { svg: 'svg', png: 'png', jpg: 'jpg', webp: 'webp', ico: 'ico', icns: 'icns' };
+  /* 容器格式支持的尺寸（ICO 上限 256，ICNS 标准档位 16/32/64/128/256/512） */
+  var ICO_SIZES = [16, 24, 32, 48, 64, 128, 256];
+  var ICNS_SIZES = [16, 32, 64, 128, 256, 512];
 
   /* ================= 状态 ================= */
   var svgDoc = null;        // 净化后的 SVG Document（编辑对象）
@@ -154,13 +157,34 @@
   }
   function loadFromFile(file) {
     if (!file) return;
-    var isSvg = /\.svg$/i.test(file.name) || (file.type && file.type === 'image/svg+xml');
-    if (!isSvg) { toast(tr('icon_bad_type'), 'warning'); return; }
+    var name = String(file.name || '').toLowerCase();
+    var isSvg = /\.svg$/i.test(name) || (file.type && file.type === 'image/svg+xml');
+    var isIco = /\.ico$/i.test(name);
+    var isIcns = /\.icns$/i.test(name);
+    if (!isSvg && !isIco && !isIcns) { toast(tr('icon_bad_type'), 'warning'); return; }
     if (file.size > MAX_BYTES) { toast(tr('icon_too_big'), 'warning'); return; }
+    if (isSvg) {
+      var rdT = new FileReader();
+      rdT.onload = function () { loadFromString(String(rdT.result || ''), file.name); };
+      rdT.onerror = function () { toast(tr('icon_err_decode'), 'danger'); };
+      rdT.readAsText(file);
+      return;
+    }
+    /* ICO / ICNS：解析容器取最大尺寸位图 → 转 data:image SVG（image 元素，sanitize 白名单放行） */
     var rd = new FileReader();
-    rd.onload = function () { loadFromString(String(rd.result || ''), file.name); };
+    rd.onload = function () {
+      if (!window.MotefulIconContainer) { toast(tr('icon_err_decode'), 'danger'); return; }
+      var dec = isIco
+        ? window.MotefulIconContainer.decodeIco(rd.result)
+        : window.MotefulIconContainer.decodeIcns(rd.result);
+      if (!dec) { toast(tr('icon_bad_type'), 'warning'); return; }
+      var svgStr = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + dec.width + ' ' + dec.height +
+        '" width="' + dec.width + '" height="' + dec.height + '"><image href="' + dec.dataURL +
+        '" width="' + dec.width + '" height="' + dec.height + '"/></svg>';
+      loadFromString(svgStr, file.name);
+    };
     rd.onerror = function () { toast(tr('icon_err_decode'), 'danger'); };
-    rd.readAsText(file);
+    rd.readAsArrayBuffer(file);
   }
 
   /* ================= 编辑引擎 ================= */
@@ -434,6 +458,7 @@
   function exportFiles() {
     if (!loaded) return;
     if (params.fmt === 'svg') { exportSvg(); return; }
+    if (params.fmt === 'ico' || params.fmt === 'icns') { exportContainer(); return; }
     var sizes = selectedSizes();
     if (!sizes.length) { toast(tr('icon_pick_size'), 'warning'); return; }
     if (params.fmt === 'jpg' && (params.bg === 't' || params.bg === 'raw')) {
@@ -464,6 +489,27 @@
       afterExport();
     }).catch(function () { toast(tr('icon_export_fail'), 'danger'); });
   }
+  /* ICO / ICNS 容器导出：勾选尺寸内取各自支持档位，全部渲染 PNG 后打包单文件 */
+  function exportContainer() {
+    if (!loaded) return;
+    var isIco = params.fmt === 'ico';
+    var allowed = isIco ? ICO_SIZES : ICNS_SIZES;
+    var sizes = selectedSizes().filter(function (s) { return allowed.indexOf(s) >= 0; });
+    if (!sizes.length) { toast(isIco ? tr('icon_ico_nosize') : tr('icon_icns_nosize'), 'warning'); return; }
+    Promise.all(sizes.map(function (s) {
+      return window.MotefulIconRender.render(buildRenderSvg(), s, { padding: padForRender(s), bg: renderBg() })
+        .then(function (c) { return window.MotefulIconRender.canvasToBlob(c, 'image/png', 0.92); })
+        .then(function (b) { return b.arrayBuffer().then(function (buf) { return { size: s, data: new Uint8Array(buf) }; }); });
+    })).then(function (pngs) {
+      if (!window.MotefulIconContainer) { toast(tr('icon_export_fail'), 'danger'); return; }
+      var ab = isIco
+        ? window.MotefulIconContainer.encodeIco(pngs)
+        : window.MotefulIconContainer.encodeIcns(pngs);
+      if (!ab) { toast(tr('icon_export_fail'), 'danger'); return; }
+      downloadBlob(new Blob([ab], { type: isIco ? 'image/x-icon' : 'application/octet-stream' }), 'icon.' + (isIco ? 'ico' : 'icns'));
+      afterExport();
+    }).catch(function () { toast(tr('icon_export_fail'), 'danger'); });
+  }
   function afterExport() {
     if (window.Moteful && window.Moteful.recommend) window.Moteful.recommend.show({ actionKey: 'rec_export' });
   }
@@ -476,7 +522,7 @@
         if (window.MotefulCompareCard && window.MotefulCompareCard.preview) {
           window.MotefulCompareCard.preview(c, { title: tr('icon_export_preview') });
         } else {
-          exportRaster(params.fmt === 'svg' ? 'png' : params.fmt, size).catch(function () {});
+          exportRaster(['svg', 'ico', 'icns'].indexOf(params.fmt) >= 0 ? 'png' : params.fmt, size).catch(function () {});
         }
       })
       .catch(function () { toast(tr('icon_render_fail'), 'danger'); });
@@ -554,7 +600,7 @@
     if (mem.scale >= 25 && mem.scale <= 200) { params.scale = mem.scale; changed = true; }
     if (mem.scaleMode === 'raw' || mem.scaleMode === 'custom') { params.scaleMode = mem.scaleMode; changed = true; }
     if (SIZE_PRESETS.indexOf(mem.canvas) >= 0) { params.canvas = mem.canvas; changed = true; }
-    if (['svg', 'png', 'jpg', 'webp'].indexOf(mem.fmt) >= 0) { params.fmt = mem.fmt; changed = true; }
+    if (['svg', 'png', 'jpg', 'webp', 'ico', 'icns'].indexOf(mem.fmt) >= 0) { params.fmt = mem.fmt; changed = true; }
     if (Array.isArray(mem.sizes)) {
       var ok = [];
       mem.sizes.forEach(function (s) { if (SIZE_PRESETS.indexOf(s) >= 0 && ok.indexOf(s) < 0) ok.push(s); });
@@ -616,7 +662,7 @@
       /* V1.9 收尾：旧分享链接仅单尺寸 → 明确 single 模式（与配置记忆键位对齐） */
       if (p.sizeMode !== 'single' && p.sizeMode !== 'multi') params.sizeMode = 'single';
     }
-    if (['svg', 'png', 'jpg', 'webp'].indexOf(p.fmt) >= 0) { params.fmt = p.fmt; changed = true; }
+    if (['svg', 'png', 'jpg', 'webp', 'ico', 'icns'].indexOf(p.fmt) >= 0) { params.fmt = p.fmt; changed = true; }
     /* V1.9 收尾：与配置记忆键位对齐（scale/scaleMode/sizeMode/multi/cust） */
     if (p.scaleMode === 'raw' || p.scaleMode === 'custom') { params.scaleMode = p.scaleMode; changed = true; }
     if (p.scale >= 25 && p.scale <= 200) { params.scale = p.scale; changed = true; }
@@ -690,7 +736,7 @@
     });
     if ($id('iconSizeMulti')) $id('iconSizeMulti').checked = params.sizeMode === 'multi';
     /* 多选模式：单张导出禁用（只能打包 ZIP；未导入时本就禁用） */
-    if ($id('iconExport')) $id('iconExport').disabled = !loaded || params.sizeMode === 'multi';
+    if ($id('iconExport')) $id('iconExport').disabled = !loaded || (params.sizeMode === 'multi' && params.fmt !== 'ico' && params.fmt !== 'icns');
     $$('input[name="iconRot"]').forEach(function (r) { r.checked = String(params.rt % 360) === r.value; });
     if ($id('iconFlipH')) $id('iconFlipH').checked = !!(params.fl & 1);
     if ($id('iconFlipV')) $id('iconFlipV').checked = !!(params.fl & 2);

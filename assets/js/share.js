@@ -100,7 +100,7 @@
       pdu: { type: 'enum', values: ['pct', 'px'] },
       padOn: { type: 'int', min: 0, max: 1 },
       sz: { type: 'enum', values: ['16', '24', '32', '48', '64', '128', '256', '512'] },
-      fmt: { type: 'enum', values: ['svg', 'png', 'jpg', 'webp'] },
+      fmt: { type: 'enum', values: ['svg', 'png', 'jpg', 'webp', 'ico', 'icns'] },
       rt: { type: 'int', min: 0, max: 270 },
       fl: { type: 'int', min: 0, max: 3 },
       rotOn: { type: 'int', min: 0, max: 1 },
