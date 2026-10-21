@@ -5,7 +5,7 @@
 A **privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.8.1** · 20 pages · bilingual (中文 / English)
+> Status: **v1.9.1** · 20 pages · bilingual (中文 / English)
 
 ---
 
@@ -21,6 +21,7 @@ Your images are processed locally and **never leave your device** — no upload,
 - **ID photo tool (v1.7)** — 12 built-in photo specs (DPI adjustable), crop-composition guide, multi-photo layout, spec-named export (single / ZIP), all local.
 - **NEW / HOT tags (v1.7.1)** — solid mini tags across navigation corner badges, menu labels and tool cards; ID photo joins the cross-recommend network with a NEW badge.
 - **PNG compression (v1.8)** — in-browser PNG compressor: palette quantization (perceptual weighted + adaptive bit-depth), three presets (Balanced / High / Extreme), lossless pass-through for photos, batch import & ZIP export, download/export triggers in-page recommendations.
+- **Icon tool v1.9** — ICO/ICNS import & export: decode BMP/PNG ICO entries and ICNS PNG blocks into the editor, export multi-size container files (ICO 16–256 / ICNS 16–512); system-icon workflow on Windows & macOS.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -41,7 +42,7 @@ Your images are processed locally and **never leave your device** — no upload,
 | `tools/png-compressor.html` | PNG compressor (palette quantization / presets / batch export) |
 | `tools/annotate.html` | Image annotation |
 | `tools/qrcode.html` | QR code generator |
-| `tools/icon-tool.html` | SVG icon tool (recolor / scale / export) |
+| `tools/icon-tool.html` | Icon tool (SVG edit / ICO / ICNS import & export) |
 | `tools/id-photo-tool.html` | ID photo tool (spec crop / layout / export) |
 | `dev/json.html` | JSON formatter / minifier / validator |
 | `dev/regex.html` | Regex tester (Worker-driven) |

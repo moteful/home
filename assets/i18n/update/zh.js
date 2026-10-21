@@ -12,6 +12,18 @@
 
 const CHANGELOG_ZH = [
   {
+    "version": "v1.9.1",
+    "date": "2026-10-21",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "图片工具-图标工具 支持ICO/ICNS 导入导出"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.8.1",
     "date": "2026-10-14",
     "sections": [

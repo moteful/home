@@ -7,6 +7,18 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v1.9.1",
+    "date": "2026-10-21",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Image Tools - Icon Tool: ICO/ICNS import & export"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.8.1",
     "date": "2026-10-14",
     "sections": [
