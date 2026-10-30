@@ -41,3 +41,9 @@ HANDOVER.md
 
 # 发布包（由 prepare 脚本生成，非源码）
 publish/
+
+# ===== 根目录验收截图与门禁输出（临时产物，不入仓） =====
+_shots/
+assert_clean.txt
+inj_clean.txt
+lint_clean.txt

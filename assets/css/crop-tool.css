@@ -1,0 +1,128 @@
+/* Moteful · crop-tool.css · v2.0.0（裁剪工具私有样式 · 骨架）
+ * 依赖全局 moteful.css 令牌与共享组件：
+ *   - 画廊：全局 .dropzone/.dz-*（missing_styles_proposal.css）
+ *   - 参数：.row/.field/.field-label/.segment/.seg/.switch/.slider/.step/.step-val/.muted
+ *   - 按钮/状态：.btn-*/.progress/.spinner
+ * 本文件仅保留页面专属组件：参数四行布局、网格模板栏、预览画布容器与手机端适配。
+ * 样式治理铁律：只放页面专属布局，不新造全局组件；布局铁律：关联功能同行同区。 */
+
+/* ========== 画廊选中态（画廊主体样式由共享层提供） ========== */
+.dz-thumb{cursor:pointer}
+.dz-thumb.id-active{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+
+/* ========== 已导入态 dropzone 收缩（对齐 image-tool.css .dropzone.mini 同值） ========== */
+.dropzone.mini{padding:16px;min-height:0;background:var(--surface);align-items:stretch;text-align:left;gap:0}
+
+/* ========== 参数区（设计文档 5.2：五行布局） ========== */
+#cropConfig .crop-cfg-stack{display:flex;flex-direction:column;gap:16px}
+#cropConfig .crop-cfg-line{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-start}
+#cropConfig .segment[role="radiogroup"]{display:flex;flex-wrap:wrap}
+#cropConfig .segment[role="radiogroup"] .seg{flex:none}
+/* 行内字段组：同行的关联参数（锁比例 / 小图不放大 / 旋转翻转） */
+#cropConfig .crop-inline{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
+
+/* ========== 锁比例图标按钮（PS 风格，锁定态高亮；类名 crop-* 私有前缀） ========== */
+#cropConfig .crop-lock-btn{color:var(--text-2);border-color:var(--border)}
+#cropConfig .crop-lock-btn.on{color:var(--primary);border-color:var(--primary);background:var(--primary-soft)}
+#cropConfig .crop-lock-row{display:flex;align-items:center;gap:8px}
+
+/* ========== 网格模板栏（F-04：复用 stitch .tpl-btn/.tpl-mini 组件，四层对照 stitch.css L231-262 + L575-579） ========== */
+.tpl-btn{
+  width:48px;height:48px;border-radius:var(--r-sm);border:2px solid var(--border);
+  background:var(--surface-2);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  padding:6px;transition:border-color 0.15s;position:relative}
+.tpl-btn:hover{border-color:var(--border-strong)}
+.tpl-btn.on{border-color:var(--primary);border-width:2px}
+.tpl-btn .tpl-mini{display:grid;gap:1px;width:100%;height:100%}
+.tpl-btn .tpl-mini span{background:var(--border-strong);border-radius:1px}
+.tpl-btn.custom{border-style:dashed;font-size:10px;color:var(--text-3);flex-direction:column;gap:2px}
+.tpl-btn[data-tpl="2x2"] .tpl-mini{grid-template-columns:1fr 1fr}
+.tpl-btn[data-tpl="3x3"] .tpl-mini{grid-template-columns:repeat(3,1fr)}
+.tpl-btn[data-tpl="4x4"] .tpl-mini{grid-template-columns:repeat(4,1fr)}
+.tpl-btn[data-tpl="2x3"] .tpl-mini{grid-template-columns:repeat(3,1fr)}
+
+/* ========== 预览画布（F-03：取景窗模型占位；透明网格底） ========== */
+.crop-canvas-frame{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:var(--r-lg);
+  background:var(--surface-2);min-height:220px;user-select:none;
+  background-image:linear-gradient(45deg,var(--border) 25%,transparent 25%,transparent 75%,var(--border) 75%,var(--border)),
+                   linear-gradient(45deg,var(--border) 25%,transparent 25%,transparent 75%,var(--border) 75%,var(--border));
+  background-size:20px 20px;background-position:0 0,12px 12px}
+.crop-canvas-frame .crop-canvas-ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+#cropCv{position:absolute;inset:0;margin:auto;max-width:100%;max-height:100%;box-shadow:0 0 0 1px var(--border)}
+/* 取景窗覆盖层（F-03：固定锚点模型，窗内拖=移窗；视觉参数对齐 id-photo .id-crop-overlay，不参与导出） */
+.crop-overlay{
+  position:absolute;z-index:5;box-sizing:border-box;
+  /* 内描边：线条画在元素内部，满高/满宽触及框边时底部/边缘不被 overflow:hidden 裁掉 */
+  box-shadow:inset 0 0 0 1.5px var(--primary),0 0 0 9999px rgba(0,0,0,.28);
+  cursor:move;touch-action:none
+}
+.crop-overlay::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(255,255,255,.06) 6px 7px)}
+/* 自由取景窗缩放手柄（最小化新增；仅自由模式显示，复用主题色，不另起组件） */
+.crop-overlay .crop-h{position:absolute;width:12px;height:12px;border-radius:50%;background:#fff;
+  box-shadow:0 0 0 2px var(--primary);z-index:2;touch-action:none}
+.crop-overlay .crop-h[data-h="nw"]{left:-6px;top:-6px;cursor:nwse-resize}
+.crop-overlay .crop-h[data-h="ne"]{right:-6px;top:-6px;cursor:nesw-resize}
+.crop-overlay .crop-h[data-h="sw"]{left:-6px;bottom:-6px;cursor:nesw-resize}
+.crop-overlay .crop-h[data-h="se"]{right:-6px;bottom:-6px;cursor:nwse-resize}
+.crop-overlay .crop-h[data-h="n"]{left:50%;top:-6px;margin-left:-6px;cursor:ns-resize}
+.crop-overlay .crop-h[data-h="s"]{left:50%;bottom:-6px;margin-left:-6px;cursor:ns-resize}
+.crop-overlay .crop-h[data-h="w"]{left:-6px;top:50%;margin-top:-6px;cursor:ew-resize}
+.crop-overlay .crop-h[data-h="e"]{right:-6px;top:50%;margin-top:-6px;cursor:ew-resize}
+.crop-canvas-frame.drag-active #cropCv{cursor:grabbing}
+.crop-canvas-frame.drag-active{user-select:none}
+/* 网格结果信息：数量与单格尺寸复用本地成功色（导入区提醒绿），其余保持 muted */
+#cropGridInfo .crop-grid-num{color:var(--success);font-weight:600}
+
+/* ========== 批量缩略图条（多图时显示，复用共享 .dz-thumb） ========== */
+.crop-cmp-strip{display:flex;gap:12px;overflow-x:auto;padding-top:16px;align-items:center}
+#cropCmpStrip{flex:1;min-width:0}
+#cropCmpNav .btn-icon{flex:none}
+.crop-cmp-strip .dz-thumb{width:64px;flex:none;cursor:pointer;opacity:.72;transition:opacity var(--dur-fast)}
+.crop-cmp-strip .dz-thumb:hover{opacity:1}
+.crop-cmp-strip .dz-thumb.id-active{opacity:1;border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+
+/* ========== 导入区拖拽排序（复用 stitch.css 既有拖拽态样式，对齐等价定义，不引入 stitch.css） ========== */
+#cropDzList .dz-thumb{cursor:grab;user-select:none;-webkit-user-select:none;-ms-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#cropDzList .dz-thumb:active{cursor:grabbing}
+#cropDzList .dz-thumb img{pointer-events:none}
+#cropDzList .dz-thumb.dragging{opacity:.4}
+#cropDzList .dz-thumb.is-dragging{opacity:.55;outline:2px solid var(--primary);outline-offset:1px;transform:scale(.96)}
+#cropDzList .dz-thumb.drag-over{outline:2px solid var(--primary);outline-offset:2px}
+#cropDzList .dz-insert-line{position:absolute;width:3px;border-radius:2px;background:var(--primary);pointer-events:none;z-index:5;display:none}
+
+/* ========== 处理进度条（对齐 image-tool：.progress 在 .row 内 flex:1 伸缩） ========== */
+#cropProgress{flex:1;min-width:120px}
+
+/* ========== 导出区提示间距 ========== */
+.crop-export-note{margin-top:12px}
+
+/* ========== 结果列表（对齐 png-compress.css .png-res-row 同值参数） ========== */
+.crop-res-list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.crop-res-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);
+  border-radius:var(--r-lg);background:var(--surface);flex-wrap:wrap}
+.crop-res-row .thumb{width:52px;height:52px;border-radius:var(--r-sm);object-fit:cover;background:var(--surface-2);flex:none}
+.crop-res-main{flex:1;min-width:200px}
+.crop-res-name{font-size:13px;font-weight:600;word-break:break-all;margin-bottom:4px}
+.crop-res-size{font-size:12px;color:var(--text-3)}
+
+/* ========== 单个模式：每张图处理效果网格（参考实验网页布局） ========== */
+.crop-single-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:8px;position:relative}
+/* 副标题不占独立行：绝对定位到网格上方与预览标题同行右侧，预览图紧贴标题 */
+.crop-single-hint{position:absolute;top:-24px;right:0;margin:0;font-size:12px;color:var(--text-3);line-height:1.4}
+.crop-single-card{position:relative;border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);overflow:hidden;display:flex;flex-direction:column}
+.crop-single-thumb{width:100%;aspect-ratio:1/1;object-fit:contain;background:var(--surface-2);display:block}
+.crop-single-meta{padding:8px 10px;border-top:1px solid var(--border)}
+.crop-single-name{font-size:12px;font-weight:600;word-break:break-all;margin-bottom:2px}
+.crop-single-size{font-size:11px;color:var(--text-3)}
+.crop-single-card .btn-sm{position:absolute;top:8px;right:8px;z-index:2}
+
+/* ========== 手机端（390px） ========== */
+@media (max-width:640px){
+  #cropConfig .crop-cfg-line{gap:12px 16px}
+  .crop-canvas-frame{min-height:160px}
+  .crop-cmp-strip .dz-thumb{width:52px}
+  .crop-res-row .thumb{width:44px;height:44px}
+  .crop-res-main{min-width:150px}
+  .crop-single-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+}

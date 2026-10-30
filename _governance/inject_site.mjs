@@ -103,7 +103,7 @@ function renderRecBlock(page) {
   const cards = (cfg.recs || []).map(function (t) {
     const m = meta[t] || { icon: 'star', labelKey: t, label: t };
     const label = m.new
-      ? '<span class="rec-label"><span data-i18n="' + m.labelKey + '">' + (m.label || t) + '</span><span class="tag tag-new tag-sm" data-i18n="tag_new">NEW</span></span>'
+      ? '<span class="rec-label"><span data-i18n="' + m.labelKey + '">' + (m.label || t) + '</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>'
       : '<span data-i18n="' + m.labelKey + '">' + (m.label || t) + '</span>';
     return '    <a class="rec-card" href="' + t + '">\n      <i data-lucide="' + m.icon + '"></i>\n      ' + label + '\n    </a>';
   }).join('\n');
@@ -121,7 +121,7 @@ const hasGapCss = (html) =>
 // 不再发起任何外部请求 —— 彻底绕开「浏览器缓存旧图标 / file:// 协议 / 国产浏览器内核差异 / 子目录相对路径」四类失效场景。
 // 兜底保留 favicon.ico（16/32/48 多尺寸实体文件）：IE 等老内核只认 shortcut icon 指向实体文件。
 const FAVICON_B64 = fs.readFileSync(path.join(ROOT, 'favicon.png')).toString('base64');
-const FAVICON_MARK = 'data:image/png;base64,' + FAVICON_B64.slice(0, 40);
+const FAVICON_MARK = 'data:image/png;base64,' + FAVICON_B64; // 完整指纹：16×16 PNG 文件头前 40 字符新旧雷同，短指纹会误判已一致而跳过下发
 const ICON_LINE_RE = /^[ \t]*<link[^>]+rel=["'](?:shortcut\s+)?icon["'][^>]*>[ \t]*\r?\n?/gim;
 const hasFavicon = (html) => html.includes(FAVICON_MARK);
 const faviconLinks = (page) => {
@@ -192,6 +192,15 @@ for (const page of cfg.pages) {
       html = html.replace('</head>', adsenseScript + '\n</head>');
       changed.push('adsense-script');
     } else changed.push('adsense-script(缺失)');
+  }
+  // 百度站长验证（V1.9.2 SEO）：全站 <head> 幂等注入 baidu-site-verification meta（只读校验 https://www.moteful.app 所有权）
+  const BAIDU_META = '  <meta name="baidu-site-verification" content="codeva-Ok5o1J5DOp">';
+  if (!html.includes('baidu-site-verification')) {
+    drifted.push(page);
+    if (!CHECK) {
+      html = html.replace('</head>', BAIDU_META + '\n</head>');
+      changed.push('baidu-meta');
+    } else changed.push('baidu-meta(缺失)');
   }
   // 内联推荐（V1.1）：注入 rec.css / rec.js / 弹窗块（受 recommend-config.json 驱动）
   const recPre = path.dirname(page) === '.' ? '' : '../';

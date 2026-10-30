@@ -129,6 +129,23 @@
       d: { type: 'enum', values: ['0', '1'] },
       l: { type: 'int', min: 0, max: 9 },
       core: ['p', 'c']
+    },
+    'crop-tool': {
+      m: { type: 'enum', values: ['ratio', 'free', 'grid'] },
+      cm: { type: 'enum', values: ['custom', 'original', 'trim'] },
+      cr: { type: 'enum', values: ['1:1', '4:3', '3:2', '16:9', '9:16', 'custom'] },
+      rows: { type: 'int', min: 1, max: 6 },
+      cols: { type: 'int', min: 1, max: 6 },
+      rt: { type: 'int', min: 0, max: 270 },
+      fh: { type: 'int', min: 0, max: 1 },
+      fv: { type: 'int', min: 0, max: 1 },
+      w: { type: 'int', min: 1, max: 20000 },
+      h: { type: 'int', min: 1, max: 20000 },
+      up: { type: 'int', min: 0, max: 1 },
+      pd: { type: 'int', min: 0, max: 100 },
+      f: { type: 'enum', values: ['png', 'jpg', 'webp'] },
+      q: { type: 'int', min: 1, max: 100 },
+      core: ['m', 'cm', 'f', 'q']
     }
   };
 
@@ -145,6 +162,7 @@
     if (/icon-tool\.html/i.test(p)) return 'icon-tool';
     if (/id-photo-tool\.html/i.test(p)) return 'id-photo-tool';
     if (/png-compressor\.html/i.test(p)) return 'png-compressor';
+    if (/crop-tool\.html/i.test(p)) return 'crop-tool';
     return '';
   }
 

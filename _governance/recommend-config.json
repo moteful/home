@@ -25,7 +25,7 @@
       "label": "标注"
     },
     "tools/qrcode.html": {
-      "icon": "scan",
+      "icon": "qr-code",
       "labelKey": "nav_m_qrcode",
       "label": "二维码"
     },

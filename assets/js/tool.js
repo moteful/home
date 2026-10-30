@@ -82,7 +82,7 @@
   }
 
   /* ---------- 状态 ---------- */
-  var queue = [];        // {id, file, name, size, iw, ih, status, blob, newSize, thumb, outName, err}
+  var queue = [];        // {id, file, name, size, iw, ih, status, blob, newSize, thumb(原图画廊), outThumb(结果行变换图), outName, err}
   var fmt = 'keep';      // keep | image/jpeg | image/png | image/webp
   var quality = 80;      // 1-100
   var uid = 0;
@@ -223,7 +223,7 @@
       var n = 0;
       queue.forEach(function (it) {
         if (it.status === 'done') {
-          it.status = 'ready'; it.blob = null; it.newSize = 0; it.outName = ''; n++;
+          it.status = 'ready'; it.blob = null; it.newSize = 0; it.outName = ''; it.outThumb = ''; n++;
         }
       });
       if (n) { usedNames = {}; lastSig = ''; }  // 结果作废：清空名字池
@@ -730,7 +730,7 @@
       seen[key] = true;
       queue.push({
         id: ++uid, file: f, name: f.name, size: f.size, iw: 0, ih: 0,
-        status: 'ready', blob: null, newSize: 0, thumb: '', outName: '', err: ''
+        status: 'ready', blob: null, newSize: 0, thumb: '', outThumb: '', outName: '', err: ''
       });
       makeThumb(queue[queue.length - 1]);
       added++;
@@ -771,7 +771,7 @@
             seen[hk] = true; okN++;
             queue.push({
               id: ++uid, file: pngFile, name: pngFile.name, size: pngFile.size, iw: 0, ih: 0,
-              status: 'ready', blob: null, newSize: 0, thumb: '', outName: '', err: ''
+              status: 'ready', blob: null, newSize: 0, thumb: '', outThumb: '', outName: '', err: ''
             });
             makeThumb(queue[queue.length - 1]);
             syncEmptyState(); renderQueue(); updateOutSize(); refreshDynamic();
@@ -856,6 +856,21 @@
     img.src = url;
   }
 
+  /* 结果缩略图：基于已含全部变换（旋转/翻转/缩放/铺白）的输出 canvas 生成方形封面图，
+     只供右侧结果行 .r-thumb 使用；左侧导入画廊继续用原始 it.thumb（原图），两者互不污染。 */
+  function makeResultThumb(it, srcCanvas) {
+    try {
+      if (!srcCanvas || !srcCanvas.width || !srcCanvas.height) { it.outThumb = ''; return; }
+      var s = 80, c = document.createElement('canvas');
+      c.width = s; c.height = s;
+      var ctx = c.getContext('2d');
+      var r = Math.min(srcCanvas.width, srcCanvas.height) || 1;
+      var sx = (srcCanvas.width - r) / 2, sy = (srcCanvas.height - r) / 2;
+      ctx.drawImage(srcCanvas, sx, sy, r, r, 0, 0, s, s);
+      it.outThumb = c.toDataURL('image/png');
+    } catch (e) { it.outThumb = ''; }
+  }
+
   /* ---------- 渲染结果列表（F5 / V0.2.2 行卡片增量更新） ----------
      行 DOM 按 id 缓存在 rowMap；重复渲染只 patch 变化内容，
      不再整表 innerHTML 重建（避免缩略图闪烁与事件重复绑定）。
@@ -927,7 +942,8 @@
     var isDone = it.status === 'done';
     var cls = isDone ? 'done' : it.status === 'error' ? 'error'
       : it.status === 'processing' ? 'processing' : 'ready';
-    if (it.thumb) { rec.thumb.src = it.thumb; rec.thumb.hidden = false; }
+    var shown = it.outThumb || it.thumb;   // 完成态显示变换结果缩略图；未处理/失败回退导入原图
+    if (shown) { rec.thumb.src = shown; rec.thumb.hidden = false; }
     else rec.thumb.hidden = true;
     rec.name.textContent = it.name;
     rec.name.title = it.name;
@@ -1295,6 +1311,7 @@
           it.blob = blob; it.newSize = blob.size;
           it.targetNote = note || '';
           it.outName = uniqueName(baseName(it.name) + extFor(mime, it.name));
+          makeResultThumb(it, out);   // 结果行缩略图取变换后的输出 canvas（含旋转/翻转/缩放）
           it.status = 'done'; it.err = '';
           renderQueue();
           resolve();
@@ -1560,7 +1577,7 @@
         if (queue[i].id === id) {
           var it = queue[i];
           if (it.blob) it.blob = null;
-          it.newSize = 0; it.outName = ''; it.status = 'ready'; it.err = '';
+          it.newSize = 0; it.outName = ''; it.outThumb = ''; it.status = 'ready'; it.err = '';
           break;
         }
       }

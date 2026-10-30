@@ -5,7 +5,7 @@
 一个**隐私优先的图片工具站**，完全运行在你的浏览器里。
 图片在本地处理，**永远不会离开你的设备**——不上传、无服务器、无跟踪。
 
-> 状态：**v1.9.1** · 20 个页面 · 双语（中文 / English）
+> 状态：**v2.0.4** · 21 个页面 · 双语（中文 / English）
 
 ---
 
@@ -22,6 +22,7 @@
 - **NEW / HOT 标签（v1.7.1）**——导航角标、菜单标签、工具卡片的实心迷你标签；证件照加入站内互推网络并带 NEW 标识。
 - **PNG 压缩（v1.8）**——浏览器内 PNG 压缩：感知加权调色板量化 + 位深自适应，均衡 / 高质量 / 极限三档预设，照片类无损直通，批量导入与 ZIP 导出，下载/导出后弹站内推荐。
 - **图标工具二期（v1.9）**——ICO/ICNS 导入导出：解码 BMP/PNG 条目 ICO 与 ICNS PNG 块进编辑链，导出多尺寸容器文件（ICO 16–256 / ICNS 16–512）；打通 Windows / macOS 系统图标工作流。
+- **图片裁切工具（v2.0）**——原图处理、自由取景、比例/自定义比例裁剪、网格等分切图、去透明像素、指定尺寸输出；支持旋转翻转、批量导入与 ZIP 导出。
 - **设计即开放**——对隐私工具而言，代码本身就是信任信号。
 
 ---
@@ -40,6 +41,7 @@
 | `tools/image-tool.html` | 图片工具（压缩 / 调整尺寸 / 格式转换） |
 | `tools/stitch.html` | 图片拼接（长图合并） |
 | `tools/png-compressor.html` | PNG 压缩（调色板量化 / 三档预设 / 批量导出） |
+| `tools/crop-tool.html` | 图片裁切（自由 / 比例 / 网格 / 去透明 / 指定尺寸） |
 | `tools/annotate.html` | 图片标注 |
 | `tools/qrcode.html` | 二维码生成器 |
 | `tools/icon-tool.html` | 图标工具（SVG 编辑 / ICO / ICNS 导入导出） |
@@ -74,7 +76,7 @@ python3 -m http.server 8000
 ### 质量门禁（提交前运行）
 
 ```bash
-node _governance/inject_site.mjs --check   # 20 页漂移检查（必须为 0）
+node _governance/inject_site.mjs --check   # 21 页漂移检查（必须为 0）
 node _governance/lint.mjs                  # 样式/lint（错误数必须为 0）
 node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
@@ -86,7 +88,7 @@ node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # 图片工具（image-tool、stitch、png-compressor、annotate、qrcode、icon-tool、id-photo-tool）
+├── tools/            # 图片工具（image-tool、stitch、png-compressor、crop-tool、annotate、qrcode、icon-tool、id-photo-tool）
 ├── dev/              # 开发者工具（json、regex）
 ├── games/            # 小游戏（block-clear、snake、sudoku）
 ├── legal/            # about / contact / credits / privacy / terms

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础（V2.0 首版定稿，见 V2.0裁剪工具-设计文档 二/三章） ===== -->
+<title data-i18n="title_crop">裁切工具 - 在线免费图片裁剪九宫格切图 | Moteful</title>
+<meta name="description" content="免费在线图片裁切：原图处理、自由取景、比例与自定义比例裁剪、2×2/3×3/4×4网格切图、去透明像素与指定尺寸输出；支持旋转翻转、批量导入与ZIP打包，图片全程浏览器本地处理。">
+<meta name="keywords" content="图片裁剪,在线裁剪,裁切工具,九宫格切图,网格切图,图片切割,比例裁剪,自由裁剪,自定义比例,指定尺寸,去透明裁边,旋转翻转,image crop,crop tool,nine grid,cut image">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="裁切工具 - 在线免费图片裁剪九宫格切图">
+<meta property="og:description" content="免费在线图片裁切：原图处理、自由取景、比例与自定义比例裁剪、2×2/3×3/4×4网格切图、去透明像素与指定尺寸输出；支持旋转翻转、批量导入与ZIP打包，图片全程浏览器本地处理。">
+<meta property="og:url" content="https://moteful.app/tools/crop-tool.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="裁切工具 - 在线免费图片裁剪九宫格切图">
+<meta name="twitter:description" content="免费在线图片裁切：原图处理、自由取景、比例与自定义比例裁剪、2×2/3×3/4×4网格切图、去透明像素与指定尺寸输出；支持旋转翻转、批量导入与ZIP打包，图片全程浏览器本地处理。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/tools/crop-tool.html">
+<link rel="alternate" hreflang="x-default" href="https://moteful.app/tools/crop-tool.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "裁切工具",
+  "alternateName": "Moteful Crop Tool",
+  "description": "免费在线图片裁切工具：原图整图处理、自由取景、比例与自定义比例裁剪、网格等分切图、去透明像素与指定尺寸输出；支持旋转翻转、批量导入、ZIP 打包与带参分享。全部在浏览器本地处理，图片不上传。",
+  "url": "https://moteful.app/tools/crop-tool.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "批量导入（选择 / 拖入 / 粘贴），PNG / JPG / WebP",
+    "原图整图处理、自由取景、比例预设 1:1 / 4:3 / 3:2 / 16:9 / 9:16 与自定义比例",
+    "网格裁切：2×2 / 3×3 / 4×4 / 2×3 模板 + 自定义行列（1–6）",
+    "画布模式：原尺寸、去透明像素、指定尺寸；支持内距留白与宽高锁比例",
+    "0° / 90° / 180° / 270° 旋转，水平 / 垂直翻转，默认小图不放大",
+    "导出 PNG / JPG / WebP，质量可调，单张下载或一键打包 ZIP",
+    "100% 本地处理，内容不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/crop-tool.css?v=2.0.3">
+  <link rel="stylesheet" href="../assets/css/share.css">
+  <link rel="stylesheet" href="../assets/css/recommend.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/share.js" defer></script>
+  <script src="../assets/js/recommend.js" defer></script>
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+  <meta name="moteful-siteurl" content="https://moteful.app">
+  <meta name="moteful-pagepath" content="tools/crop-tool">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2226711164508785" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-2226711164508785">
+  <meta name="baidu-site-verification" content="codeva-Ok5o1J5DOp">
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4nM1PwSvDcRx9v18ZUltRxmgulJRWdpiDfk7GwYrDskULu1ga6ldz46LEVnOxoo0sJSkiKbUd3JDyJ4iDy1w4uNhvT5vWb5rfmAvv8P32Pu/73ud9gX8Ng91lFrudzb8OaL0hsUqWeiNqCVIgYEtlANQDsM9Yyt4+rpDYIbFF4qB0iyJMJxJBGwtMxyQOywiZzJD66Onip6FnY+xnbmmqwxLf8+dpo7w2nL2tsW3v9+aJiAtxtar1juy8/eCivD4yUPitL3FCYj4ZytO2C7JhRa1edUV6NEO8IQcuSfj25zQX9C1IxgeyNxweKhY3SQRJRNOsvCa7UuQgSbPb3ZLTHcv9WCIhk6YztYWQPXQxssYA1BrTqDYBiiLg3u9sej0/eoS060PPaAR1AJ4APL8BrIC+HXiZFXL+v8U7p1SEg5RNexoAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+</head>
+<body data-nav="image">
+
+<!-- topbar / drawer / footer 由 inject_site.mjs 统一下发（v1.8.0 骨架占位） -->
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/png-compressor.html"><i data-lucide="image-down"></i><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item on" href="../tools/crop-tool.html"><i data-lucide="crop"></i><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="pipette"></i><span data-i18n="nav_m_cutout">纯色抠图</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- V1.4：分享次入口（share.js 加载页显示；≤480px 收进抽屉） -->
+    <button type="button" class="btn btn-ghost btn-sm share-topbar-btn" data-share-topbar hidden data-i18n-aria="share_nav" aria-label="Share"><i data-lucide="share-2"></i><span data-i18n="share_nav">Share</span></button>
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="crop_kicker">MOTEFUL · 裁切工具</div>
+    <h1 data-i18n="crop_title">图片裁切器</h1>
+    <p data-i18n="crop_hero_desc">原图处理、自由取景、比例与自定义比例裁剪、网格等分切图、去透明像素与指定尺寸输出；支持旋转翻转、批量导入与 ZIP 打包，图片全程浏览器本地处理。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="icon_tag_local">100% 本地处理</span>
+      <span class="tag t-gray" data-i18n="icon_tag_free">免费使用</span>
+    </div>
+  </section>
+
+  <!-- ===== ① 导入区（F-01：复用共享层双态画廊 dz-empty ↔ dz-gallery） ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="crop_section_import">导入</h2>
+    <div class="dropzone" id="cropDropzone" tabindex="0" data-i18n-aria="crop_dz_aria" aria-label="上传图片">
+      <div class="dz-empty" id="cropDzEmpty">
+        <div class="dz-ico"><i data-lucide="upload"></i></div>
+        <div class="up-main">
+          <h4 data-i18n="crop_dz_title">点击选择或拖入图片</h4>
+          <p data-i18n="crop_dz_sub">支持多选 · 支持粘贴导入 · PNG / JPG / WebP</p>
+        </div>
+      </div>
+      <div class="dz-gallery" id="cropDzGallery" hidden>
+        <div class="dz-g-head">
+          <span class="dz-count" id="cropDzCount"></span>
+          <div class="dz-g-acts">
+            <button type="button" class="btn btn-ghost btn-sm" id="cropDzAddMore"><i data-lucide="image"></i><span data-i18n="crop_dz_add_more">继续添加图片</span></button>
+            <button type="button" class="btn btn-secondary btn-sm" id="cropDzReset"><i data-lucide="trash-2"></i><span data-i18n="crop_dz_reset">重置</span></button>
+          </div>
+        </div>
+        <div class="dz-g-list" id="cropDzList"></div>
+      </div>
+    </div>
+    <input type="file" id="cropFile" accept="image/png,image/jpeg,image/webp" multiple hidden>
+    <!-- 隐私声明（对齐 image-tool：规范 16 章 .alert.a-success） -->
+    <p class="alert a-success"><i data-lucide="lock"></i><span data-i18n="crop_privacy">所有处理均在你的浏览器内完成，文件绝不会离开本设备。</span></p>
+  </section>
+
+  <!-- ===== ② 裁剪参数（设计文档 5.2：行1 画布模式 / 行2 裁剪方式 / 行3 尺寸与变换 / 行4 网格参数） ===== -->
+  <section class="panel" id="cropConfig">
+    <h2 class="sec-title" data-i18n="crop_section_params">裁剪参数</h2>
+    <div class="crop-cfg-stack">
+
+      <!-- 行1 画布模式 + 输出尺寸（同一行；输出尺寸仅「指定尺寸」模式显示；锁比例 link 图标位于宽步进器左侧，无文字） -->
+      <div class="crop-cfg-line">
+        <div class="field">
+          <span class="field-label" data-i18n="crop_canvas_mode">画布模式</span>
+          <div class="row">
+            <div class="segment" role="radiogroup" data-i18n-aria="crop_canvas_mode" aria-label="画布模式">
+              <label class="seg"><input type="radio" name="cropCanvas" value="original"><span class="seg-t" data-i18n="crop_mode_original">原尺寸</span></label>
+              <label class="seg"><input type="radio" name="cropCanvas" value="trim"><span class="seg-t" data-i18n="crop_mode_trim">去透明像素</span></label>
+              <label class="seg"><input type="radio" name="cropCanvas" value="custom" checked><span class="seg-t" data-i18n="crop_mode_custom">指定尺寸</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="field" id="cropSizeGroup">
+          <span class="field-label" data-i18n="crop_size_label">输出尺寸</span>
+          <div class="crop-inline">
+            <span class="row">
+              <button type="button" class="btn btn-icon btn-sm crop-lock-btn" id="cropLock" aria-pressed="true" data-i18n-aria="crop_lock" aria-label="锁定宽高比" data-i18n-title="crop_lock" title="锁定宽高比">
+                <svg data-link="on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <svg data-link="off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M9 17H7A5 5 0 0 1 7 7"/><path d="M15 7h2a5 5 0 0 1 4 8"/><line x1="8" x2="12" y1="12" y2="12"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+              </button>
+              <span class="step" data-for="cropWidth" data-min="1" data-max="20000">
+                <input type="text" inputmode="numeric" size="6" id="cropWidth" class="step-val" value="800" min="1" max="20000" data-i18n-aria="crop_w" aria-label="宽度">
+              </span>
+              <span class="muted" data-i18n="crop_w">宽</span>
+            </span>
+            <span class="row">
+              <span class="step" data-for="cropHeight" data-min="1" data-max="20000">
+                <input type="text" inputmode="numeric" size="6" id="cropHeight" class="step-val" value="600" min="1" max="20000" data-i18n-aria="crop_h" aria-label="高度">
+              </span>
+              <span class="muted" data-i18n="crop_h">高</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <p class="muted" id="cropModeHint" data-i18n="crop_hint_custom">指定尺寸：输出按目标宽高等比缩放居中，小图不放大</p>
+
+      <!-- 行2 内距（去透明模式裁边四周留白；标题=内距 px）+ 小图放大（同行右侧、field 内紧邻步进器；默认关闭） -->
+      <div class="crop-cfg-line">
+        <div class="field">
+          <span class="field-label" data-i18n="crop_pad">内距 px</span>
+          <span class="row">
+            <span class="step" data-for="cropPad" data-min="0" data-max="100">
+              <button type="button" class="step-btn" data-step="-5" data-i18n-aria="crop_pad_dec" aria-label="减少内距"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="cropPadVal">10</span>
+              <button type="button" class="step-btn" data-step="5" data-i18n-aria="crop_pad_inc" aria-label="增加内距"><i data-lucide="plus"></i></button>
+            </span>
+            <label class="switch" data-i18n-title="crop_upscale" title="小图放大"><input type="checkbox" id="cropUpscale"><span class="sw-track"><span class="sw-thumb"></span></span><span class="field-label" data-i18n="crop_upscale">小图放大</span></label>
+          </span>
+        </div>
+      </div>
+
+      <!-- 行3 裁剪方式（互斥分段：自由 / 比例 / 网格）+ 预设区（比例预设与网格预设互斥、相同位置：默认网格显示网格预设，点比例切换比例预设，自由隐藏） -->
+      <div class="crop-cfg-line">
+        <div class="field">
+          <span class="field-label" data-i18n="crop_method">裁剪方式</span>
+          <div class="row">
+            <div class="segment" role="radiogroup" data-i18n-aria="crop_method" aria-label="裁剪方式">
+              <label class="seg"><input type="radio" name="cropMethod" value="single" checked><span class="seg-t" data-i18n="crop_m_single">单个</span></label>
+              <label class="seg"><input type="radio" name="cropMethod" value="free"><span class="seg-t" data-i18n="crop_m_free">自由</span></label>
+              <label class="seg"><input type="radio" name="cropMethod" value="ratio"><span class="seg-t" data-i18n="crop_m_ratio">比例</span></label>
+              <label class="seg"><input type="radio" name="cropMethod" value="grid"><span class="seg-t" data-i18n="crop_m_grid">网格</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="field" id="cropRatioBar" hidden>
+          <span class="field-label" data-i18n="crop_ratio_label">比例预设</span>
+          <div class="segment" role="radiogroup" data-i18n-aria="crop_ratio_label" aria-label="比例预设">
+            <label class="seg"><input type="radio" name="cropRatio" value="1:1" checked><span class="seg-t">1:1</span></label>
+            <label class="seg"><input type="radio" name="cropRatio" value="4:3"><span class="seg-t">4:3</span></label>
+            <label class="seg"><input type="radio" name="cropRatio" value="3:2"><span class="seg-t">3:2</span></label>
+            <label class="seg"><input type="radio" name="cropRatio" value="16:9"><span class="seg-t">16:9</span></label>
+            <label class="seg"><input type="radio" name="cropRatio" value="9:16"><span class="seg-t">9:16</span></label>
+            <label class="seg"><input type="radio" name="cropRatio" value="custom"><span class="seg-t" data-i18n="crop_ratio_custom">自定义</span></label>
+          </div>
+          <div class="row" id="cropRatioCustom" hidden>
+            <span class="muted" data-i18n="crop_ratio_custom_lbl">自定义比例</span>
+            <span class="step" data-for="cropRatioW" data-min="1" data-max="100">
+              <button type="button" class="step-btn" data-step="-1" data-i18n-aria="crop_ratio_w" aria-label="减少比例宽"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="cropRatioWVal">1</span>
+              <button type="button" class="step-btn" data-step="1" data-i18n-aria="crop_ratio_w" aria-label="增加比例宽"><i data-lucide="plus"></i></button>
+            </span>
+            <span class="muted">:</span>
+            <span class="step" data-for="cropRatioH" data-min="1" data-max="100">
+              <button type="button" class="step-btn" data-step="-1" data-i18n-aria="crop_ratio_h" aria-label="减少比例高"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="cropRatioHVal">1</span>
+              <button type="button" class="step-btn" data-step="1" data-i18n-aria="crop_ratio_h" aria-label="增加比例高"><i data-lucide="plus"></i></button>
+            </span>
+          </div>
+        </div>
+        <div class="field" id="cropGridBar">
+          <span class="field-label" data-i18n="crop_grid_label">网格</span>
+          <div class="row" role="radiogroup" data-i18n-aria="crop_grid_label" aria-label="网格模板">
+            <button type="button" class="tpl-btn" data-tpl="2x2" data-i18n-aria="crop_tpl_2x2"><div class="tpl-mini"><span></span><span></span><span></span><span></span></div></button>
+            <button type="button" class="tpl-btn on" data-tpl="3x3" data-i18n-aria="crop_tpl_3x3"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
+            <button type="button" class="tpl-btn" data-tpl="4x4" data-i18n-aria="crop_tpl_4x4"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
+            <button type="button" class="tpl-btn" data-tpl="2x3" data-i18n-aria="crop_tpl_2x3"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
+            <button type="button" class="tpl-btn custom" data-tpl="custom" aria-label="自定义"><span data-i18n="crop_tpl_custom">自定义</span></button>
+          </div>
+          <div class="row" id="cropGridCustom" hidden>
+            <span class="muted" data-i18n="crop_rows">行</span>
+            <span class="step" data-for="cropRowsVal" data-min="1" data-max="6">
+              <button type="button" class="step-btn" data-step="-1" data-i18n-aria="crop_rows_dec" aria-label="减少行数"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="cropRowsVal">3</span>
+              <button type="button" class="step-btn" data-step="1" data-i18n-aria="crop_rows_inc" aria-label="增加行数"><i data-lucide="plus"></i></button>
+            </span>
+            <span class="muted" data-i18n="crop_cols">列</span>
+            <span class="step" data-for="cropColsVal" data-min="1" data-max="6">
+              <button type="button" class="step-btn" data-step="-1" data-i18n-aria="crop_cols_dec" aria-label="减少列数"><i data-lucide="minus"></i></button>
+              <span class="step-val" id="cropColsVal">3</span>
+              <button type="button" class="step-btn" data-step="1" data-i18n-aria="crop_cols_inc" aria-label="增加列数"><i data-lucide="plus"></i></button>
+            </span>
+          </div>
+          <p class="muted" data-i18n="crop_grid_hint">网格裁切：按模板或自定义行列将图片等分切割，每格独立导出并打包</p>
+        </div>
+      </div>
+      </div>
+
+      <!-- 行4 旋转与翻转（同一行；复用 image-tool 行2 现有模块：旋转 radio + 翻转 checkbox segment，transform.js rotateFlip 功能层在 F-06 接入） -->
+      <div class="crop-cfg-line">
+        <div class="field">
+          <span class="field-label" data-i18n="crop_rotate">旋转</span>
+          <div class="segment" role="group" data-i18n-aria="crop_rotate" aria-label="旋转">
+            <label class="seg" data-rot="0"><input type="radio" name="cropRot" checked><span class="seg-t" data-i18n="crop_rot_0">不旋转</span></label>
+            <label class="seg" data-rot="90"><input type="radio" name="cropRot"><span class="seg-t" data-i18n="crop_rot_90">90°</span></label>
+            <label class="seg" data-rot="180"><input type="radio" name="cropRot"><span class="seg-t" data-i18n="crop_rot_180">180°</span></label>
+            <label class="seg" data-rot="270"><input type="radio" name="cropRot"><span class="seg-t" data-i18n="crop_rot_270">270°</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="crop_flip">翻转</span>
+          <div class="segment" role="group" data-i18n-aria="crop_flip" aria-label="翻转">
+            <label class="seg" id="cropFlipH"><input type="checkbox"><span class="seg-t"><i data-lucide="flip-h"></i><span data-i18n="crop_flip_h">水平翻转</span></span></label>
+            <label class="seg" id="cropFlipV"><input type="checkbox"><span class="seg-t"><i data-lucide="flip-v"></i><span data-i18n="crop_flip_v">垂直翻转</span></span></label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- 操作行（对齐 image-tool：btn-primary + play 三角；进度条 .progress 同款） -->
+    <div class="row" id="cropActions">
+      <button type="button" class="btn btn-primary" id="cropProcessBtn" disabled><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg><span data-i18n="crop_process">开始处理</span></button>
+      <div class="progress" id="cropProgress" hidden role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-bar" id="cropProgressFill"></span></div>
+      <span class="mono" id="cropProgressTxt" hidden></span>
+      <span class="muted" id="cropDoneTxt" hidden data-i18n="crop_done_txt">处理完成，请在页面下方的导出区域批量下载</span>
+    </div>
+  </section>
+
+  <!-- ===== ③ 预览（F-03：取景窗模型；透明网格底画布 + 批量缩略图条） ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="crop_section_preview">裁剪预览</h2>
+    <div class="crop-canvas-frame" id="cropCanvasFrame">
+      <button type="button" class="nav-btn nav-prev" id="cropCmpPrev" data-i18n-aria="crop_nav_prev" aria-label="上一张" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button type="button" class="nav-btn nav-next" id="cropCmpNext" data-i18n-aria="crop_nav_next" aria-label="下一张" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      <canvas id="cropCv" hidden></canvas>
+      <div class="crop-overlay" id="cropOverlay" hidden></div>
+      <span class="icon-preview-hint" data-i18n="crop_preview_hint">窗内拖 移窗 · 窗外拖 平移 · 滚轮 缩放 · 双击 复位</span>
+      <div class="crop-canvas-ph" id="cropPreviewPh"><p class="muted" data-i18n="crop_preview_placeholder">导入图片后在此预览取景</p></div>
+    </div>
+    <p class="muted" id="cropGridInfo" hidden></p>
+    <!-- 批量缩略图条（多图时显示，点击切换预览对象；翻页圆形按钮悬浮在预览框内，对齐 png-compressor 翻页约定） -->
+    <div class="row" id="cropCmpNav" hidden>
+      <div class="crop-cmp-strip" id="cropCmpStrip" hidden></div>
+    </div>
+    <!-- 单个模式：每张图片处理效果网格预览（参考实验网页：缩略图 + 名称 + 尺寸 + 下载） -->
+    <div class="crop-single-grid" id="cropSingleGrid" hidden></div>
+  </section>
+
+  <!-- ===== ④ 导出区（格式 + 质量 + 单张下载 / ZIP 打包 / 分享） ===== -->
+  <section class="panel">
+    <h2 class="sec-title" data-i18n="crop_section_export">导出</h2>
+    <!-- 导出区行1：格式 + 质量 同一行（对齐 image-tool 行1：.row > .field×2，质量标签+滑杆+数值同行） -->
+    <div class="row">
+      <div class="field">
+        <span class="field-label" data-i18n="crop_fmt_label">格式</span>
+        <div class="segment" role="radiogroup" data-i18n-aria="crop_fmt_label" aria-label="导出格式">
+          <label class="seg"><input type="radio" name="cropFmt" value="png" checked><span class="seg-t" data-i18n="crop_fmt_png">PNG</span></label>
+          <label class="seg"><input type="radio" name="cropFmt" value="jpg"><span class="seg-t" data-i18n="crop_fmt_jpg">JPG</span></label>
+          <label class="seg"><input type="radio" name="cropFmt" value="webp"><span class="seg-t" data-i18n="crop_fmt_webp">WebP</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label" data-i18n="crop_quality">质量</span>
+        <span class="row">
+          <input type="range" id="cropQuality" class="slider" min="1" max="100" step="1" value="90" style="--p:90%" data-i18n-aria="crop_quality" aria-label="质量">
+          <span class="step-val" id="cropQualityVal">90</span>
+        </span>
+      </div>
+    </div>
+    <div class="row" id="cropBusy" hidden>
+      <span class="spinner"></span>
+      <span data-i18n="crop_busy_processing">正在处理</span>
+      <span class="step-val" id="cropBusyProg"></span>
+    </div>
+    <div class="muted" id="cropSummary"></div>
+    <div class="crop-res-list" id="cropResList"></div>
+    <div class="row">
+      <button type="button" class="btn btn-primary" id="cropExportZip" disabled><i data-lucide="package"></i><span data-i18n="crop_export_zip">打包下载 ZIP</span></button>
+      <button type="button" class="btn btn-secondary" id="cropExportShare" data-share-open><i data-lucide="share-2"></i><span data-i18n="crop_export_share">分享裁剪参数</span></button>
+    </div>
+    <p class="muted crop-export-note" data-i18n="crop_export_note">结果可逐张下载（点结果行右侧下载按钮）或一键打包 ZIP；分享链接可恢复同款裁剪参数</p>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="crop_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="crop_f_th1">功能</th><th data-i18n="crop_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="crop_f1_name">批量导入</td><td data-i18n="crop_f1_desc">支持选择、拖入、粘贴三种方式批量导入图片，PNG / JPG / WebP 通用。</td></tr>
+          <tr><td data-i18n="crop_f2_name">原图 / 自由 / 比例 / 网格</td><td data-i18n="crop_f2_desc">原图整图套用；自由拖动取景；1:1 / 4:3 / 3:2 / 16:9 / 9:16 与自定义比例；网格等分切图。</td></tr>
+          <tr><td data-i18n="crop_f3_name">画布模式与内距</td><td data-i18n="crop_f3_desc">原尺寸、去透明像素、指定尺寸；去透明保留 ±2px 半透明安全边，支持内距留白与宽高锁比例。</td></tr>
+          <tr><td data-i18n="crop_f4_name">旋转翻转与画质保护</td><td data-i18n="crop_f4_desc">0° / 90° / 180° / 270° 旋转、水平 / 垂直翻转；默认小图不放大，JPG / WebP 质量可调。</td></tr>
+          <tr><td data-i18n="crop_f5_name">多格式导出 + 打包下载</td><td data-i18n="crop_f5_desc">PNG / JPG / WebP 三格式导出，单张下载或一键打包 ZIP 批量保存。</td></tr>
+          <tr><td data-i18n="crop_f6_name">隐私保护</td><td data-i18n="crop_f6_desc">100% 本地处理，图片与参数不上传、不注册，关闭页面即清除。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="crop_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="crop_u1_t">社交媒体配图</div><div class="nm seo-desc" data-i18n="crop_u1_d">按 1:1 / 4:3 / 3:2 / 16:9 / 9:16 等比例裁剪，适配头像、封面与信息流。</div></div>
+      <div class="stat"><div class="lb" data-i18n="crop_u2_t">电商产品图</div><div class="nm seo-desc" data-i18n="crop_u2_d">用指定尺寸统一主图 / 详情图规格，配合锁比例批量导出同规格素材。</div></div>
+      <div class="stat"><div class="lb" data-i18n="crop_u3_t">九宫格切图</div><div class="nm seo-desc" data-i18n="crop_u3_d">2×2 / 3×3 / 4×4 / 2×3 模板或自定义 1–6 行列，把大图等分切成社交多宫格。</div></div>
+      <div class="stat"><div class="lb" data-i18n="crop_u4_t">截图与素材整理</div><div class="nm seo-desc" data-i18n="crop_u4_d">批量处理截图、去透明裁边与指定尺寸归档，结果可单张保存或 ZIP 打包。</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="crop_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="crop_q_th1">问题</th><th data-i18n="crop_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="crop_q1">裁剪会压缩画质吗？</td><td data-i18n="crop_a1">裁剪本身不改变像素；缩小采用较锐利重采样，JPG / WebP 质量参数可调，PNG 保留透明与原像素。</td></tr>
+          <tr><td data-i18n="crop_q2">图片会上传到服务器吗？</td><td data-i18n="crop_a2">不会。所有读取、裁剪、旋转与导出都在当前浏览器内完成，图片不离开设备。</td></tr>
+          <tr><td data-i18n="crop_q3">支持哪些格式？</td><td data-i18n="crop_a3">导入支持 PNG / JPG / WebP；导出支持 PNG / JPG / WebP。</td></tr>
+          <tr><td data-i18n="crop_q4">九宫格切图后怎么保存？</td><td data-i18n="crop_a4">每格按「原名_行-列」命名，可单张下载或一键打包 ZIP 全部导出。</td></tr>
+          <tr><td data-i18n="crop_q5">透明背景会被裁掉吗？</td><td data-i18n="crop_a5">仅在画布模式选择「去透明像素」时按内容裁掉透明边缘，并以 ±2px 容差保护半透明区域；其他模式保留原始画布。</td></tr>
+          <tr><td data-i18n="crop_q6">需要注册登录吗？</td><td data-i18n="crop_a6">不需要，打开网页即可使用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<!-- ===== 页脚（真实主体） ===== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+      <p class="footer-social">
+        <a class="footer-social-link" href="https://github.com/moteful/home" target="_blank" rel="noopener noreferrer" data-i18n-aria="foot_github" aria-label="GitHub repository" title="GitHub repository"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></a>
+        <a class="footer-social-link" href="mailto:moteful@outlook.com" data-i18n-aria="foot_email" aria-label="Email us" title="Email us"><i data-lucide="mail"></i></a>
+        <button type="button" class="footer-social-link" data-footer-share data-i18n-aria="foot_share" aria-label="Share this page" title="Share this page"><i data-lucide="share-2"></i></button>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v2.0.4</span>
+  </div>
+</footer>
+
+<!-- 移动端导航抽屉 -->
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head">
+      <h3>Moteful</h3>
+      <div class="drawer-head-actions">
+        <a href="../support.html" class="btn btn-ghost btn-sm" data-i18n-title="foot_support" aria-label="Support">
+          <i data-lucide="heart"></i><span data-i18n="foot_support">Support</span>
+        </a>
+        <div class="pop">
+          <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+            <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+          </button>
+          <div class="menu pop-panel">
+            <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+            <button class="menu-item lang-item" data-lang="en">English</button>
+          </div>
+        </div>
+        <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- V1.4：分享当前页入口（share.js 加载页显示） -->
+    <button type="button" class="btn btn-secondary btn-sm share-drawer-entry" data-share-entry hidden><i data-lucide="share-2"></i><span data-i18n="share_drawer_entry">分享当前页</span></button>
+    <!-- 一级分类胶囊（横向滚动） -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab on" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
+      <button class="drawer-tab" data-dtab="dev"><i data-lucide="code"></i><span data-i18n="nav_dev_group">开发者工具</span></button>
+      <button class="drawer-tab" data-dtab="games"><i data-lucide="gamepad-2"></i><span data-i18n="nav_games_group">小游戏</span></button>
+    </div>
+
+    <!-- 二级工具宫格 -->
+    <nav class="drawer-grid" id="drawerGrid">
+      <!-- 图片工具 -->
+      <div class="drawer-pane active" data-pane="image">
+        <a href="../tools/image-tool.html" class="grid-card">
+          <i data-lucide="images"></i>
+          <span data-i18n="nav_m_batch">批量处理</span>
+        </a>
+        <a href="../tools/png-compressor.html" class="grid-card">
+          <i data-lucide="image-down"></i>
+          <span><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/crop-tool.html" class="grid-card">
+          <i data-lucide="crop"></i>
+          <span><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/stitch.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_m_compress">长图拼接</span>
+        </a>
+        <a href="../tools/qrcode.html" class="grid-card">
+          <i data-lucide="qr-code"></i>
+          <span data-i18n="nav_m_qrcode">二维码</span>
+        </a>
+        <a href="../tools/annotate.html" class="grid-card">
+          <i data-lucide="pencil"></i>
+          <span data-i18n="nav_m_annotate">打码标注</span>
+        </a>
+        <a href="../tools/id-photo-tool.html" class="grid-card">
+          <i data-lucide="user"></i>
+          <span><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/icon-tool.html" class="grid-card">
+          <i data-lucide="radius"></i>
+          <span data-i18n="nav_m_icon">图标工具</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="list"></i>
+          <span data-i18n="nav_m_rename">重命名</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="pipette"></i>
+          <span data-i18n="nav_m_cutout">纯色抠图</span>
+        </a>
+      </div>
+
+      <!-- 开发者工具 -->
+      <div class="drawer-pane" data-pane="dev">
+        <a href="../dev/json.html" class="grid-card">
+          <i data-lucide="code"></i>
+          <span data-i18n="nav_dev_json">JSON 格式化</span>
+        </a>
+        <a href="../dev/regex.html" class="grid-card">
+          <i data-lucide="regex"></i>
+          <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="clock"></i>
+          <span data-i18n="nav_dev_timestamp">时间戳转换</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="binary"></i>
+          <span data-i18n="nav_dev_base64">Base64 编解码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="palette"></i>
+          <span data-i18n="nav_dev_color">颜色代码转换</span>
+        </a>
+      </div>
+
+      <!-- 小游戏 -->
+      <div class="drawer-pane" data-pane="games">
+        <a href="../games/block-clear.html" class="grid-card">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="nav_g_blockclear">方块消除</span>
+        </a>
+        <a href="../games/snake.html" class="grid-card">
+          <i data-lucide="worm"></i>
+          <span data-i18n="nav_g_snake">贪吃蛇</span>
+        </a>
+        <a href="../games/sudoku.html" class="grid-card">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_g_sudoku">数独</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+    (function(){
+      // 根据当前路径，判断应该显示哪个分类
+      function getDefaultTab(){
+        var path = location.pathname;
+        if(path.indexOf('/tools/') >= 0) return 'image';
+        if(path.indexOf('/dev/') >= 0) return 'dev';
+        if(path.indexOf('/games/') >= 0) return 'games';
+        // 首页和 support 默认显示图片工具分类（主要功能）
+        return 'image';
+      }
+
+      // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+      function setDefaultTab(){
+        var tabName = getDefaultTab();
+        var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+        tabs.forEach(function(t){
+          t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+        });
+        // 同时显示对应 pane
+        var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+        });
+      }
+
+      // DOM 加载完成后立即设置默认高亮
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', setDefaultTab);
+      } else {
+        setDefaultTab();
+      }
+
+      // 抽屉分类切换逻辑
+      document.addEventListener('click', function(e){
+        var tab = e.target.closest('.drawer-tab');
+        if(!tab) return;
+
+        var container = document.getElementById('drawerGrid');
+        if(!container) return;
+
+        // 切换 tab 高亮
+        var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+        tabs.forEach(function(t){ t.classList.remove('on'); });
+        tab.classList.add('on');
+
+        // 切换 pane
+        var target = tab.getAttribute('data-dtab');
+        var panes = container.querySelectorAll('.drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === target);
+        });
+      });
+
+      // 抽屉打开时，根据当前页自动选中对应分类
+      window.openDrawer = window.openDrawer || function(id){
+        var drawer = document.getElementById(id);
+        if(!drawer) return;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // 触发对应 tab（会自动切换 pane）
+        var tabName = getDefaultTab();
+        var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+        if(tab) tab.click();
+      };
+    })();
+    </script>
+  </aside>
+</div>
+
+<button class="to-top" id="toTop" data-i18n-aria="to_top" aria-label="返回顶部"><i data-lucide="arrow-up"></i></button>
+<div id="toasts" aria-live="polite"></div>
+
+<!-- ===== 导出成功内联推荐弹窗（复用 recommend.css / recommend.js，零自定义样式） ===== -->
+<div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
+  <div class="rec-mask" data-rec-close></div>
+  <div class="rec-box">
+    <button class="btn btn-icon btn-secondary btn-close rec-close-icon" type="button" data-rec-close data-i18n-aria="rec_close" aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="rec-check"><i data-lucide="check-circle"></i></div>
+    <p class="rec-msg" id="recMsg" data-i18n="rec_done">操作成功</p>
+    <p class="rec-sub" data-i18n="rec_sub">感谢使用 Moteful，下面这些功能你可能也用得上：</p>
+    <div class="rec-cards" id="recCards">
+    <a class="rec-card" href="../tools/id-photo-tool.html">
+      <i data-lucide="user"></i>
+      <span class="rec-label"><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+    </a>
+    <a class="rec-card" href="../tools/stitch.html">
+      <i data-lucide="layout-grid"></i>
+      <span data-i18n="nav_m_compress">拼接</span>
+    </a>
+    <a class="rec-card" href="../tools/png-compressor.html">
+      <i data-lucide="image-down"></i>
+      <span class="rec-label"><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+    </a>
+    <a class="rec-card" href="../tools/image-tool.html">
+      <i data-lucide="images"></i>
+      <span data-i18n="nav_m_batch">基础功能</span>
+    </a></div>
+    <div class="rec-tip">
+      <div class="rec-tip-line">
+        <svg class="lucide-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+        <span class="rec-tip-text" data-i18n="rec_tip_note">如果这个工具帮到了你，欢迎请作者喝杯咖啡</span>
+      </div>
+      <a class="btn btn-primary rec-tip-btn" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n="rec_tip_btn">赞助支持</a>
+    </div>
+    <div class="rec-actions">
+      <button class="btn btn-secondary" type="button" data-rec-share data-i18n="rec_share">分享</button>
+      <button class="btn btn-secondary rec-close-btn" type="button" data-rec-close data-i18n="rec_close">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/i18n/en.js"></script>
+<script src="../assets/i18n/zh.js"></script>
+<script src="../assets/i18n/i18n.js"></script>
+<script src="../assets/js/zip.js"></script>
+<script src="../assets/js/image-import.js" defer></script>
+<script src="../assets/js/transform.js" defer></script>
+<script src="../assets/js/crop-tool.js?v=2.1.12" defer></script>
+</body>
+</html>

@@ -885,7 +885,8 @@
       loadFromFile(e.target.files[0]);
       this.value = '';
     });
-    if ($id('iconDzReset')) $id('iconDzReset').addEventListener('click', function () {
+    if ($id('iconDzReset')) $id('iconDzReset').addEventListener('click', function (e) {
+      e.stopPropagation(); /* 阻止冒泡到 dropzone 的 click（否则触发文件选择弹窗） */
       resetIcon();
       toast(tr('icon_reset_done'), 'info');
     });

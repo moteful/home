@@ -5,7 +5,7 @@
 A **privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v1.9.1** · 20 pages · bilingual (中文 / English)
+> Status: **v2.0.4** · 21 pages · bilingual (中文 / English)
 
 ---
 
@@ -22,6 +22,7 @@ Your images are processed locally and **never leave your device** — no upload,
 - **NEW / HOT tags (v1.7.1)** — solid mini tags across navigation corner badges, menu labels and tool cards; ID photo joins the cross-recommend network with a NEW badge.
 - **PNG compression (v1.8)** — in-browser PNG compressor: palette quantization (perceptual weighted + adaptive bit-depth), three presets (Balanced / High / Extreme), lossless pass-through for photos, batch import & ZIP export, download/export triggers in-page recommendations.
 - **Icon tool v1.9** — ICO/ICNS import & export: decode BMP/PNG ICO entries and ICNS PNG blocks into the editor, export multi-size container files (ICO 16–256 / ICNS 16–512); system-icon workflow on Windows & macOS.
+- **Image cropper v2.0** — original-image processing, free viewfinder, ratio/custom-ratio cropping, even grid splitting, transparent trim, fixed-size output, rotate/flip, batch import and ZIP export.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -40,6 +41,7 @@ Your images are processed locally and **never leave your device** — no upload,
 | `tools/image-tool.html` | Image tool (compress / resize / convert) |
 | `tools/stitch.html` | Image stitching (long-image merge) |
 | `tools/png-compressor.html` | PNG compressor (palette quantization / presets / batch export) |
+| `tools/crop-tool.html` | Image cropper (free / ratio / grid / transparent trim / fixed size) |
 | `tools/annotate.html` | Image annotation |
 | `tools/qrcode.html` | QR code generator |
 | `tools/icon-tool.html` | Icon tool (SVG edit / ICO / ICNS import & export) |
@@ -74,7 +76,7 @@ python3 -m http.server 8000
 ### Quality gates (run before committing)
 
 ```bash
-node _governance/inject_site.mjs --check   # drift check across 20 pages (must be 0)
+node _governance/inject_site.mjs --check   # drift check across 21 pages (must be 0)
 node _governance/lint.mjs                  # style/lint (must have 0 errors)
 node _governance/assert_spec.mjs           # spec assertions (requires Playwright)
 ```
@@ -86,7 +88,7 @@ node _governance/assert_spec.mjs           # spec assertions (requires Playwrigh
 ```
 moteful/
 ├── index.html, support.html, 404.html
-├── tools/            # image tools (image-tool, stitch, png-compressor, annotate, qrcode, icon-tool, id-photo-tool)
+├── tools/            # image tools (image-tool, stitch, png-compressor, crop-tool, annotate, qrcode, icon-tool, id-photo-tool)
 ├── dev/              # developer tools (json, regex)
 ├── games/            # mini-games (block-clear, snake, sudoku)
 ├── legal/            # about / contact / credits / privacy / terms

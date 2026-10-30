@@ -7,6 +7,37 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v2.0.4",
+    "date": "2026-10-30",
+    "sections": [
+      {
+        "title": "Improved",
+        "points": [
+          "Fixed the result thumbnail not refreshing immediately in the Image Tool",
+          "Fixed the abnormal display of the QR code tool icon"
+        ]
+      }
+    ]
+  },
+  {
+    "version": "v2.0.0",
+    "date": "2026-10-27",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Image Tools - Image Cropper",
+          "Four cropping modes: original image, free viewfinder, ratio, and grid",
+          "Built-in ratios: 1:1, 4:3, 3:2, 16:9, 9:16, plus custom ratios",
+          "Even grid splitting: 2×2, 3×3, 4×4, 2×3, with custom rows and columns",
+          "Canvas modes: original size, transparent trim, and fixed size; padding and aspect-ratio lock",
+          "Rotate 0° / 90° / 180° / 270° and flip horizontally / vertically",
+          "Export PNG / JPG / WebP with adjustable quality; single download or ZIP package"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v1.9.1",
     "date": "2026-10-21",
     "sections": [

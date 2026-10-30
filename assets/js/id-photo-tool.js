@@ -66,7 +66,8 @@
       });
     });
     var reset = $('idDzReset');
-    if (reset) reset.addEventListener('click', function () {
+    if (reset) reset.addEventListener('click', function (e) {
+      e.stopPropagation(); /* 阻止冒泡到 dropzone 的 click（queue 清空后会被判为「选择文件」而弹窗） */
       S.imp.queue.slice().forEach(function (it) { S.imp.remove(it.id); });
       renderGallery();
     });

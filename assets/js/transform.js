@@ -151,10 +151,117 @@
       && (opts.sizeMode || 'none') === 'none';
   }
 
+  /* ---------- PS「两次立方（较锐利）缩减」重采样 ----------
+     缩小模糊的根源是混叠；PS Bicubic Sharper 的做法分两阶段：
+     ① 级联 2× 面积平均降采样（抗混叠，信息保留）；
+     ② 最后一跳用锐利 bicubic 核（a = -0.75）分离卷积从中间尺寸缩到目标。
+     仅缩小生效（目标 < 源尺寸）；放大/等大原样返回。 */
+  function bicubicKernel(t, a) {
+    var x = Math.abs(t), y;
+    if (x <= 1) { y = ((a + 2) * x - (a + 3)) * x * x + 1; }
+    else if (x < 2) { y = (((x - 5) * x + 8) * x - 4) * a; }
+    else { y = 0; }
+    return y;
+  }
+  function bicubicDown(src, ow, oh) {
+    var iw = src.width, ih = src.height;
+    var a = -0.75;
+    var srcCtx = src.getContext('2d');
+    var srcData = srcCtx.getImageData(0, 0, iw, ih).data;
+    /* 分离卷积：先水平 iw×ih → ow×ih，再垂直 ow×ih → ow×oh */
+    var mid = new Uint8ClampedArray(ow * ih * 4);
+    var out = new Uint8ClampedArray(ow * oh * 4);
+    var x, y, c, k;
+    /* 水平 */
+    for (y = 0; y < ih; y++) {
+      for (x = 0; x < ow; x++) {
+        var sx = (x + 0.5) * iw / ow - 0.5;
+        var x0 = Math.floor(sx) - 1;
+        var wts = [];
+        var wsum = 0;
+        for (k = 0; k < 4; k++) {
+          var xx = x0 + k, t = sx - xx;
+          xx = Math.max(0, Math.min(iw - 1, xx));
+          var w = bicubicKernel(t, a);
+          wts.push([xx, w]);
+          wsum += w;
+        }
+        if (wsum !== 0) {
+          for (k = 0; k < 4; k++) wts[k][1] /= wsum;
+        }
+        var r = 0, g = 0, b = 0, al = 0;
+        for (k = 0; k < 4; k++) {
+          var srcIdx = (y * iw + wts[k][0]) * 4, ww = wts[k][1];
+          r += srcData[srcIdx] * ww; g += srcData[srcIdx + 1] * ww;
+          b += srcData[srcIdx + 2] * ww; al += srcData[srcIdx + 3] * ww;
+        }
+        var mIdx = (y * ow + x) * 4;
+        mid[mIdx] = r; mid[mIdx + 1] = g; mid[mIdx + 2] = b; mid[mIdx + 3] = al;
+      }
+    }
+    /* 垂直 */
+    for (y = 0; y < oh; y++) {
+      for (x = 0; x < ow; x++) {
+        var sy = (y + 0.5) * ih / oh - 0.5;
+        var y0 = Math.floor(sy) - 1;
+        var wts2 = [];
+        var wsum2 = 0;
+        for (k = 0; k < 4; k++) {
+          var yy = y0 + k, t2 = sy - yy;
+          yy = Math.max(0, Math.min(ih - 1, yy));
+          var w2 = bicubicKernel(t2, a);
+          wts2.push([yy, w2]);
+          wsum2 += w2;
+        }
+        if (wsum2 !== 0) {
+          for (k = 0; k < 4; k++) wts2[k][1] /= wsum2;
+        }
+        var r2 = 0, g2 = 0, b2 = 0, al2 = 0;
+        for (k = 0; k < 4; k++) {
+          var mIdx2 = (wts2[k][0] * ow + x) * 4, ww2 = wts2[k][1];
+          r2 += mid[mIdx2] * ww2; g2 += mid[mIdx2 + 1] * ww2;
+          b2 += mid[mIdx2 + 2] * ww2; al2 += mid[mIdx2 + 3] * ww2;
+        }
+        var oIdx = (y * ow + x) * 4;
+        out[oIdx] = r2; out[oIdx + 1] = g2; out[oIdx + 2] = b2; out[oIdx + 3] = al2;
+      }
+    }
+    var oc = document.createElement('canvas');
+    oc.width = ow; oc.height = oh;
+    oc.getContext('2d').putImageData(new ImageData(out, ow, oh), 0, 0);
+    return oc;
+  }
+  function smartDownscale(src, targetW, targetH) {
+    targetW = Math.max(1, Math.round(targetW));
+    targetH = Math.max(1, Math.round(targetH));
+    var sw = src.width, sh = src.height;
+    if (targetW >= sw && targetH >= sh) return src;
+    /* ① 级联 2× 面积平均（imageSmoothingQuality=low 即盒式滤波），中间画布面积护栏避免巨中间层 */
+    var cur = src;
+    var tmpA = document.createElement('canvas'), tmpB = document.createElement('canvas');
+    while (sw > targetW * 2 && sh > targetH * 2) {
+      var nw = Math.max(1, Math.round(sw / 2)), nh = Math.max(1, Math.round(sh / 2));
+      if (nw * nh <= 8000000) { /* 中间层 ≤800 万像素（4000×2000 级），面积平均代价 O(面积) 可控 */
+        var dst = (cur === src || cur === tmpA) ? tmpB : tmpA; /* ping-pong：禁止画自己到自己 */
+        dst.width = nw; dst.height = nh;
+        var t = dst.getContext('2d');
+        t.imageSmoothingEnabled = true;
+        t.imageSmoothingQuality = 'low';
+        t.drawImage(cur, 0, 0, nw, nh);
+        cur = dst; sw = nw; sh = nh;
+      } else break;
+    }
+    /* ② 分离 bicubic 锐利核最后一跳 */
+    return bicubicDown(cur, targetW, targetH);
+  }
+
   window.MotefulTransform = {
     apply: apply,
     previewSize: previewSize,
     isNoop: isNoop,
-    RATIOS: RATIOS
+    RATIOS: RATIOS,
+    rotateFlip: rotateFlip,
+    cropRect: cropRect,
+    downscale: smartDownscale
   };
 })();

@@ -32,7 +32,8 @@
     "assets/js/moteful.js",
     "assets/js/png-quantize.js",
     "assets/js/png-encode.js",
-    "assets/js/png-compressor.js"
+    "assets/js/png-compressor.js",
+    "assets/js/crop-tool.js"
   ],
   "newArchPages": [
     "index.html",
@@ -50,6 +51,7 @@
     "tools/icon-tool.html",
     "tools/id-photo-tool.html",
     "tools/png-compressor.html",
+    "tools/crop-tool.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",
