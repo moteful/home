@@ -577,3 +577,8 @@
 .tpl-btn[data-tpl="3x3"] .tpl-mini { grid-template-columns: repeat(3, 1fr); }
 .tpl-btn[data-tpl="4x4"] .tpl-mini { grid-template-columns: repeat(4, 1fr); }
 .tpl-btn[data-tpl="2x3"] .tpl-mini { grid-template-columns: repeat(3, 1fr); }
+
+/* ---------- 网格上限与留白提示行（.dz-note 共享形态 + 本页超线色） ---------- */
+/* 超软线未超硬线时的橙色提醒，色值取设计令牌 --warning（与流式标签同一口径），不新造色 */
+#stitchGridHint.stitch-note-warn { color: var(--warning); }
+#stitchGridHint span:last-child { min-width: 0; }

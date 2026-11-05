@@ -17,6 +17,12 @@
   function trn(key, n) { return String(tr(key)).replace('{n}', n); }
   function tr2(key, a, b) { return String(tr(key)).replace('{n}', a).replace('{total}', b); }
   function trwh(key, w, h) { return String(tr(key)).replace('{w}', w).replace('{h}', h); }
+  /* 多占位符填充（网格上限提示用，占位符名见 i18n stitch_hint_* / stitch_limit_* / stitch_reason_*） */
+  function trp(key, map) {
+    var s = String(tr(key));
+    Object.keys(map || {}).forEach(function (k) { s = s.split('{' + k + '}').join(map[k]); });
+    return s;
+  }
 
   /* ---------- 工具函数 ---------- */
   function $(id) { return document.getElementById(id); }
@@ -71,8 +77,13 @@
     moveMode: false,
     moveModeSrc: null,
     dragSrcId: null,        // 拖动排序：当前拖动的源图片 ID
-    saveTimer: 0
+    saveTimer: 0,
+    gridLimits: null        // 网格行列动态上限（口径见 stitch-core.js calcGridLimits）
   };
+
+  /* 手机档判定：粗指针 或 视口 ≤640px（沿用 moteful.css 既有断点口径，不自定义新阈值） */
+  var mqCompact = null;
+  function isCompact() { return !!(mqCompact && mqCompact.matches); }
 
   var CONFIG_KEY = 'moteful.stitch.config';
   var CONFIG_VERSION = 1;
@@ -146,6 +157,9 @@
     el.infoSizeG = $('stitchInfoSizeG');
     el.infoFilled = $('stitchInfoFilled');
     el.infoStreamG = $('stitchInfoStreamG');
+    el.gridHint = $('stitchGridHint');
+    el.gridHintIcon = $('stitchGridHintIcon');
+    el.gridHintTxt = $('stitchGridHintTxt');
     // 单向模式参数
     el.dirSeg = document.querySelectorAll('[data-dir]');
     el.gapSlider = $('stitchGap');
@@ -199,6 +213,7 @@
     // 切到网格模式时用已有图片重新填充格子：否则从单向模式切过来时画布全空，
     // 既看不到缩略图也无法拖动排序（原先只有再次导入或点模板才会填充）。
     if (mode === 'grid') {
+      refreshGridLimits(false);   // 先按当前图片与单格尺寸收一次上限，再建格子
       rebuildCells();
       renderGridCells();
     }
@@ -218,6 +233,8 @@
           rebuildCells();
           renderGridCells();
         }
+        // 张数与最宽图都可能变 → 行列上限必须重算（超线时夹取并说明是哪道闸）
+        refreshGridLimits(true);
         scheduleRender();
       },
       onImport: function (added, dup, bad, heic) {
@@ -587,6 +604,157 @@
     });
   }
 
+  /* ---------- 网格行列动态上限（2026-10-31 拍板：四道预算 + 分级提醒 + 手机档） ---------- */
+  /* 预算公式全部在 stitch-core.js calcGridLimits（纯函数、可单测）；本层只做三件事：
+     ① 算上限 → 夹当前行列 → 把上限写回 .step 容器 data-min/data-max（共享底座据此夹取与置灰）
+     ② 真发生夹取时用 Toast 说明是哪一道闸拦的（stitch_reason_*）
+     ③ 刷新提示行（超线橙色提醒 / 留白后果 / 已到上限说明）
+     步进器本身零改动：±1 与到界置灰仍由 moteful.js 负责。 */
+  /* 参与预算的张数 = 队列总数（含还在解码的），解码失败的剔除 */
+  function gridImageCount() {
+    var count = 0;
+    if (state.importer && state.importer.queue) {
+      state.importer.queue.forEach(function (it) { if (it.status !== 'error') count++; });
+    }
+    return count;
+  }
+
+  function currentGridLimits() {
+    var ready = state.importer ? state.importer.getReadyImages() : [];
+    // 张数按队列总数算（含还在解码的），否则上限会随解码进度抖、把用户排法误砍且回不来；
+    // 单格宽仍只取已解码的图。
+    var p = state.gParams;
+    return window.MFStitchCore.calcGridLimits(ready, {
+      rows: p.rows, cols: p.cols, gap: p.gap, margin: p.margin || 0, cellRatio: p.cellRatio
+    }, { compact: isCompact(), count: gridImageCount() });
+  }
+
+  function refreshGridLimits(notify) {
+    if (!window.MFStitchCore || !window.MFStitchCore.calcGridLimits) return;
+    var lim = currentGridLimits();
+    state.gridLimits = lim;
+    syncStepLimits(lim);
+    // 夹取延后一拍再执行：图片是逐张解码的，导入过程中 getReadyImages() 一张一张变多，
+    // 若立刻按「当前已解码几张」的临时上限收排法，会把用户的 3×3 误砍成 1×2，
+    // 而且后面图片全到齐、上限放宽了也不会自己长回来（实测踩到）。
+    scheduleGridClamp(notify);
+    updateGridHint();
+  }
+
+  var limitTimer = 0;
+  function scheduleGridClamp(notify) {
+    if (limitTimer) clearTimeout(limitTimer);
+    limitTimer = setTimeout(function () { applyGridClamp(notify); }, 420);
+  }
+  /* 立即执行待处理的夹取（导出前必须 flush，否则会按未夹取的行列去画超大画布） */
+  function applyGridClamp(notify) {
+    if (limitTimer) { clearTimeout(limitTimer); limitTimer = 0; }
+    var lim = state.gridLimits;
+    if (!lim) return;
+    var fit = window.MFStitchCore.clampGridToLimits(state.gParams.rows, state.gParams.cols, lim);
+    if (!fit.changed) { updateGridHint(); return; }
+    state.gParams.rows = fit.rows;
+    state.gParams.cols = fit.cols;
+    // 行列一变，输出尺寸 / 分级 / 折算到每轴的上限全跟着变，必须用新值重算再刷提示，
+    // 否则提示行会拿夹取前的旧尺寸说话（实测踩过：已收到 4×4 却提示「当前输出 3620×3620」）
+    lim = currentGridLimits();
+    state.gridLimits = lim;
+    syncStepLimits(lim);
+    setNumStepValue('rows', fit.rows);
+    setNumStepValue('cols', fit.cols);
+    rebuildCells();
+    renderGridCells();
+    scheduleRender();
+    scheduleSave();
+    if (notify !== false) {
+      flashNote(trp('stitch_limit_clamped', {
+        r: fit.rows, c: fit.cols, reason: tr('stitch_reason_' + (fit.binding || 'cellCap'))
+      }), 'warning');
+    }
+    updateGridHint();
+  }
+
+  /* 手机档判定：粗指针 或 视口 ≤640px（沿用 moteful.css 既有断点口径，不自定义新阈值）。
+     平板外接鼠标 / 桌面窄窗都按各自命中的那条走，不做 UA 嗅探。 */
+  function initCompactQuery() {
+    if (mqCompact || !window.matchMedia) return;
+    try {
+      mqCompact = window.matchMedia('(pointer: coarse), (max-width: 640px)');
+      var onChange = function () { refreshGridLimits(false); scheduleRender(); };
+      if (mqCompact.addEventListener) mqCompact.addEventListener('change', onChange);
+      else if (mqCompact.addListener) mqCompact.addListener(onChange); // 老 Safari
+    } catch (e) { mqCompact = null; }
+  }
+
+  /* 读某一轴的上限：以容器 data-max 为唯一事实源（refreshGridLimits 每次都会写回）；
+     属性缺失时退回历史值 6，保证 JS 尚未跑到时兜底行为与放开前一致。 */
+  function stepMax(target) {
+    var root = document.querySelector('#stitchCustomCtl [data-step-target="' + target + '"]');
+    var v = root ? parseInt(root.getAttribute('data-max'), 10) : NaN;
+    return (Number.isFinite(v) && v >= 1) ? v : 6;
+  }
+
+  /* 上限写回步进器容器与输入框：共享底座 moteful.js 读 data-min/data-max 做夹取与 +/- 置灰。
+     容器缺这两个属性时底座按 0~99 夹（历史坑），所以每次刷新都显式写全。 */
+  function syncStepLimits(lim) {
+    [['rows', lim.rowsMax], ['cols', lim.colsMax]].forEach(function (p) {
+      var root = document.querySelector('#stitchCustomCtl [data-step-target="' + p[0] + '"]');
+      if (!root) return;
+      root.setAttribute('data-min', '1');
+      root.setAttribute('data-max', String(p[1]));
+      var input = root.querySelector('.step-val');
+      if (input) { input.setAttribute('min', '1'); input.setAttribute('max', String(p[1])); }
+    });
+  }
+
+  function gridBgWord() {
+    var bg = state.gParams.bgColor;
+    return bg === 'transparent' ? tr('stitch_bg_transparent')
+      : bg === '#000000' ? tr('stitch_bg_black') : tr('stitch_bg_white');
+  }
+
+  function setHintIcon(name) {
+    var host = el.gridHintIcon;
+    if (!host || host.getAttribute('data-icon') === name) return;
+    host.setAttribute('data-icon', name);
+    // 共享底座只渲染尚未替换过的 [data-lucide]（已是 svg 的会跳过），所以整段重建再刷新
+    host.innerHTML = '<i data-lucide="' + name + '"></i>';
+    if (window.MF && MF.refreshIcons) MF.refreshIcons();
+  }
+
+  /* 提示行一句文案，按优先级取第一条命中的（不堆叠、不新增组件，复用导入区 .dz-note 形态）：
+     ① 超软线未超硬线 → 橙色「手机上可能导不出来」（放行，但让用户自己权衡）
+     ② 有空格 → 说明留白后果（背景词跟着实际选择走：白 / 黑 / 透明）
+     ③ 行列已顶到上限 → 灰字说明当前最多几行几列、依据是张数与单格尺寸 */
+  function updateGridHint() {
+    if (!el.gridHint || !el.gridHintTxt) return;
+    var lim = state.gridLimits;
+    var count = gridImageCount();   // 与预算同一口径，避免解码期提示与上限说明打架
+    var filled = 0;
+    state.cells.forEach(function (c) { if (c.imageId) filled++; });
+    var blank = state.cells.length - filled;
+    var atMax = !!(lim && (state.gParams.rows >= lim.rowsMax || state.gParams.cols >= lim.colsMax ||
+      state.gParams.rows * state.gParams.cols >= lim.cellsMax));
+    var msg = '', warn = false;
+    if (lim && lim.hasImages && state.mode === 'grid' && lim.tier === 'warn') {
+      msg = trp('stitch_hint_warn', { w: lim.outW, h: lim.outH });
+      warn = true;
+    } else if (blank > 0 && count > 0) {
+      msg = trp('stitch_hint_blank', { n: blank, bg: gridBgWord() });
+    } else if (atMax && count > 0) {
+      msg = trp('stitch_hint_max', {
+        cells: lim.cellsMax,
+        reason: tr('stitch_reason_' + (lim.cellsBinding || 'cellCap')),
+        w: lim.cellW, h: lim.cellH
+      });
+    }
+    if (!msg) { setHidden(el.gridHint, true); return; }
+    setHidden(el.gridHint, false);
+    el.gridHint.classList.toggle('stitch-note-warn', warn);
+    setHintIcon(warn ? 'alert-triangle' : 'info');
+    el.gridHintTxt.textContent = msg;
+  }
+
   /* ---------- 网格模式：格子管理 ---------- */
   function rebuildCells() {
     state.cells = [];
@@ -914,11 +1082,14 @@
         el.infoStreamG.classList.remove('stitch-stream-tag');
       }
     }
+    updateGridHint(); // 提示行随每次渲染刷新（留白数 / 超线分级 / 是否已到上限）
   }
 
   /* ---------- 导出 ---------- */
   function exportImage() {
     if (state.isExporting) return;
+    // 有待处理的夹取先落地，避免按未夹取的行列去画超预算画布（夹取是延后一拍执行的）
+    applyGridClamp(false);
     var ready = state.importer ? state.importer.getReadyImages() : [];
     if (ready.length === 0) return;
     if (state.mode === 'vertical' && ready.length < 2) {
@@ -1181,29 +1352,34 @@
   }
   function initNumStep(root, opts) {
     var min = opts.min, max = opts.max, fallback = opts.fallback;
+    // max 允许传函数：行列上限随图片张数/单格尺寸/间距动态变化（见 refreshGridLimits）
+    function maxOf() { return (typeof max === 'function') ? max() : max; }
     var input = root.querySelector('.step-val');
     var btns = root.querySelectorAll('[data-step]');
     if (!input || btns.length === 0) return;
     function syncBtns(n) {
+      var mx = maxOf();
       btns.forEach(function (b) {
         var s = parseInt(b.getAttribute('data-step'), 10) || 0;
         if (s < 0) b.disabled = n <= min;
-        else if (s > 0) b.disabled = n >= max;
+        else if (s > 0) b.disabled = n >= mx;
       });
     }
     function setVal(n) {
       n = parseStepDigits(n);          // 先去非数字字符 + 去前导零（如 007 → 7）
-      n = clampStep(n, min, max, fallback); // 再按 min/max 夹取（失焦矫正）
+      n = clampStep(n, min, maxOf(), fallback); // 再按 min/max 夹取（失焦矫正）
       input.value = String(n);
       syncBtns(n);
       opts.onChange(n);
     }
-    // 增减按钮：读取 data-step 步长（与全站 .step-btn 约定一致）
-    btns.forEach(function (b) {
-      b.addEventListener('click', function () {
-        var s = parseInt(b.getAttribute('data-step'), 10) || 0;
-        setVal(parseStepDigits(input.value) + s);
-      });
+    // 增减按钮：本页不自加步长。共享底座 moteful.js 已对每个 .step-btn 直接监听并注册在先
+    // （读 data-step → 按 .step 的 data-min/data-max 夹取 → 写回 .step-val → 同步 ± 禁用态 → 派发 input），
+    // 这里若再自加一次就会出现 ±2 跳变（实测：点一下 + 从 3 变 5）。
+    // 约定与 annotate.js 一致：等共享引擎改完值，冒泡到 document 时回读新值提交。
+    document.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('.step-btn') : null;
+      if (!b || !root.contains(b)) return;
+      setVal(input.value);
     });
     // 实时限制：只允许数字字符（粘贴 / 输入非数字会被清洗掉）
     input.addEventListener('input', function () {
@@ -1227,12 +1403,13 @@
     if (!root) return;
     var input = root.querySelector('.step-val');
     var btns = root.querySelectorAll('[data-step]');
-    var n = clampStep(parseStepDigits(v), 1, 6, 3);
+    var mx = stepMax(target);   // 动态上限（原写死 6）
+    var n = clampStep(parseStepDigits(v), 1, mx, 3);
     if (input) input.value = String(n);
     btns.forEach(function (b) {
       var s = parseInt(b.getAttribute('data-step'), 10) || 0;
       if (s < 0) b.disabled = n <= 1;
-      else if (s > 0) b.disabled = n >= 6;
+      else if (s > 0) b.disabled = n >= mx;
     });
   }
 
@@ -1248,7 +1425,7 @@
     document.querySelectorAll('#stitchCustomCtl [data-step-target]').forEach(function (root) {
       var target = root.getAttribute('data-step-target'); // 'rows' 或 'cols'
       initNumStep(root, {
-        min: 1, max: 6, fallback: 3,
+        min: 1, max: function () { return stepMax(target); }, fallback: 3,
         initValue: state.gParams[target],
         onChange: function (v) {
           state.gParams[target] = v;
@@ -1256,6 +1433,8 @@
           renderGridCells();
           scheduleRender();
           scheduleSave();
+          // 行列变了 → 输出尺寸与分级（ok/warn/over）要重算，提示行随之刷新
+          refreshGridLimits(false);
         }
       });
     });
@@ -1269,6 +1448,7 @@
         renderGridCells();
         scheduleRender();
         scheduleSave();
+        refreshGridLimits(false); // 间距挤占单边预算 → 上限与分级重算
       });
     }
     // 背景
@@ -1278,6 +1458,7 @@
         state.gParams.bgColor = b.value;
         scheduleRender();
         scheduleSave();
+        updateGridHint(); // 留白提示里的背景词跟着选择走（白 / 黑 / 透明）
       });
     });
     // 圆角
@@ -1309,6 +1490,7 @@
         state.gParams.cellRatio = b.value;
         scheduleRender();
         scheduleSave();
+        refreshGridLimits(false); // 单格高随比例变 → 单边/面积预算与分级全部重算
       });
     });
     // 格式
@@ -1353,7 +1535,7 @@
       var parts = tpl.split('x');
       state.gParams.rows = parseInt(parts[0], 10);
       state.gParams.cols = parseInt(parts[1], 10);
-      // 走步进器同步（夹取 1-6 + 更新增减按钮禁用态），不再直接写原生 input
+      // 走步进器同步（夹到当前动态上限 + 更新增减按钮禁用态），不再直接写原生 input
       setNumStepValue('rows', state.gParams.rows);
       setNumStepValue('cols', state.gParams.cols);
     }
@@ -1361,6 +1543,8 @@
     renderGridCells();
     scheduleRender();
     scheduleSave();
+    // 模板排法可能超出当前预算（如 8 张小图点 4×4 以上）→ 夹取并告知用户实际生效的排法
+    refreshGridLimits(true);
   }
 
   /* ---------- 同步 UI 从参数 ---------- */
@@ -1578,6 +1762,9 @@
     renderGallery();
     renderGridCells();
     syncEmptyState();
+    // 行列上限首帧收一次（静默：开页就弹 Toast 太吵，提示行会说明当前上限）
+    initCompactQuery();
+    refreshGridLimits(false);
     scheduleRender();
 
     // 语言切换刷新
@@ -1586,6 +1773,7 @@
         setTimeout(function () {
           renderGallery();
           syncEmptyState();
+          updateGridHint(); // 提示行文案随语言重取
         }, 0);
       });
     });

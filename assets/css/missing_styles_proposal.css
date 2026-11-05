@@ -207,7 +207,7 @@ body[data-nav="game"] .nav-links .nav-pop .btn[data-nav-key="game"]::after {
 }
 
 /* 使用场景描述文字（.stat .nm.seo-desc）：压过 .stat .nm 的"统计数字"样式
-   （26px 粗等宽），统一为正文风格 13px/常规字重 —— 参数与 stitch.css 成功案例一致 */
+   （22px 粗系统栈），统一为正文风格 13px/常规字重 —— 参数与 stitch.css 成功案例一致 */
 .seo-desc{
   font-size:13px;
   font-weight:400;
@@ -793,3 +793,77 @@ input.step-val:focus-visible{
 }
 
 /* icon-tool 色板组件（V1.5 图标工具）：.icon-cp-trig/.icon-cp-chip/.icon-cp-hex/.icon-cp-arrow/.icon-cp-pop/.icon-cp-hue/.icon-cp-huecursor/.icon-cp-sv/.icon-cp-cursor/.icon-cp-foot/.icon-cp-prev/.icon-cp-hexinput/.icon-cp-eyed/.icon-cp-pal —— 替换原生 input[type=color]，全站首个自定义取色面板 */
+
+/* ============================================================
+   V2.0.5 字数统计工具 · 页面私有样式（word-counter.html 登记）
+   零新组件；仅工作区排版（编辑器高度与等宽/常规字体档、限额模板下拉、
+   自定义语速输入、限额余量三色进度条、卡片标题与说明行间距、指标卡列数）。
+   ============================================================ */
+textarea.wc-editor{height:320px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.6}
+textarea.wc-editor.wc-dragover{border-color:var(--primary);box-shadow:0 0 0 3px var(--ring)}
+.wc-progress{margin-top:10px}
+/* 设计文档第 5 章：≥1024px 指标卡 3–4 列（共享 .stat-grid 是 auto-fit，1280 下会排成 5+2 出现孤卡） */
+@media (min-width:1024px){
+  #wcMetrics.stat-grid{grid-template-columns:repeat(4,1fr)}
+}
+.wc-limit-sel .select-btn{min-width:170px}
+.wc-speed-input{width:82px;height:34px;padding:0 8px;font-size:13px}
+.wc-progress.state-safe .progress-bar{background:var(--success)}
+.wc-progress.state-near .progress-bar{background:var(--warning)}
+.wc-progress.state-over .progress-bar{background:var(--danger)}
+@media (max-width:768px){
+  /* 设计文档 10.1：移动端 textarea 高约 240px */
+  textarea.wc-editor{height:240px}
+  /* 设计文档第 10 章：移动端输入框字号 ≥16px，避免 iOS Safari 聚焦时自动放大页面 */
+  textarea.wc-editor,.wc-speed-input{font-size:16px}
+}
+/* TC-WC-14（P0 必验）：共享 .stat-grid 是 minmax(200px) auto-fit，
+   ≤480px 视口放不下两列会塌成单列窄字条；这里锁两列，指标卡不塌。 */
+@media (max-width:480px){
+  #wcMetrics.stat-grid{grid-template-columns:repeat(2,1fr)}
+}
+/* F-01 字体档：默认等宽（上方 var(--mono)），切「常规」时挂 .wc-sans 覆盖字体族 */
+textarea.wc-editor.wc-sans{font-family:var(--font)}
+/* 页内零内联样式（铁律 1）：以下承载卡片标题、操作条与说明行的排版，取值全部为 4 的倍数 */
+.wc-field-full{width:100%}
+.wc-actions{margin-top:12px}
+.wc-card-head{margin-bottom:12px}
+.wc-card-title{margin:0}
+.wc-note{margin-top:12px}
+.wc-subnote{margin-top:8px}
+.wc-limit-card{margin-top:12px}
+/* ---- 第十一节 移动端异常修复（2026-11-05）----
+   任务二：口径区分组捆扎。.wc-pair 是不可拆整体（标签与其控件同排、nowrap），
+   .wc-grp 允许组内多对控件按组换行。窄屏按组整体换行，禁止标签留在上一行、控件掉到下一行。 */
+.wc-grp{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.wc-pair{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+/* 360 英文态实测：标签 "Silent reading speed"（120px）+ 三档分段（192px）= 320px > 可用 294px，
+   整组塞不下时标签与分段控件按 flex 比例同时被压缩，分段被压成两排（高 98px），
+   标签与控件顶边差 38px → 判为不同排。
+   解法：控件段禁止收缩（保持单排 192px），只让标签换行吸收宽度差。
+   CJK 有全站 word-break:keep-all 保护不会拆词；标签两行与控件同行相邻，顶边差回到 <24px。 */
+.wc-pair > .field-label{white-space:normal}
+.wc-pair > .segment{flex-shrink:0}
+/* 任务一：语速单位小字（13px 在字号阶梯 {12,13,14,15,22,32} 内，不新造字号） */
+.wc-unit{font-size:13px;color:var(--text-3);white-space:nowrap}
+/* 任务三：触控热区 ≥44px —— 只在移动端生效（≤768px，与本文件既有移动端规则同一断点）。
+   首版误做成无条件生效，把桌面端也抬到 44，破坏了设计规范的 38/35/24 几何（干系人截图点名「组件太高」）。
+   全部带 .wc-set-panel / .wc-limit-sel 页面级作用域，不裸重定义共享组件类
+   .switch/.seg-t/.select-btn（全站 21 页统一改需另行授权）。 */
+@media (max-width:768px){
+  .wc-set-panel .switch{min-height:44px}
+  .wc-set-panel .seg-t{min-height:44px}
+  .wc-set-panel .wc-speed-input{height:44px}
+  .wc-limit-sel .select-btn{min-height:44px}
+}
+/* 任务四：横屏（640×360）限额浮层 5 项 205px 全部超出屏幕下沿且不可内滚。
+   基础改法：受视口约束的最大高度 + 内部滚动（桌面 40vh 远大于内容，无视觉变化）。
+   实测不足：口径区重排后触发器落到 y≈260，下方仅剩约 100px，40vh 仍截到 3/5 项。
+   补第二层（工单 11.4 两种改法组合）：短视口下改为贴底浮层（fixed 在视口内，
+   左右各留 8px，高度受视口约束并可内滚），保证 5 项全部可点。
+   注：这是浮层自身定位，不是侧边固定栏（assert_spec B4 的判定显式排除 .pop-panel）。 */
+.wc-limit-sel .pop-panel{max-height:40vh;overflow-y:auto}
+@media (max-height:480px){
+  .wc-limit-sel .pop-panel{position:fixed;top:auto;bottom:8px;left:8px;right:8px;
+    max-height:calc(100vh - 16px)}
+}

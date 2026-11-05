@@ -45,6 +45,12 @@
       "labelKey": "nav_m_png",
       "label": "PNG 压缩",
       "new": true
+    },
+    "dev/word-counter.html": {
+      "icon": "file-text",
+      "labelKey": "nav_dev_wordcount",
+      "label": "字数统计",
+      "new": true
     }
   },
   "pages": {
@@ -77,7 +83,8 @@
         "tools/image-tool.html",
         "tools/icon-tool.html",
         "tools/png-compressor.html",
-        "tools/stitch.html"
+        "tools/stitch.html",
+        "dev/word-counter.html"
       ]
     },
     "tools/icon-tool.html": {

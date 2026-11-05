@@ -33,7 +33,9 @@
     "assets/js/png-quantize.js",
     "assets/js/png-encode.js",
     "assets/js/png-compressor.js",
-    "assets/js/crop-tool.js"
+    "assets/js/crop-tool.js",
+    "assets/js/wordcount-core.js",
+    "assets/js/wordcount-tool.js"
   ],
   "newArchPages": [
     "index.html",
@@ -52,6 +54,7 @@
     "tools/id-photo-tool.html",
     "tools/png-compressor.html",
     "tools/crop-tool.html",
+    "dev/word-counter.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",
@@ -61,6 +64,7 @@
     "dev/json.html",
     "dev/regex.html"
   ],
+  "warnCap": 199,
   "rules": {
     "fontPxLadder": [
       12,

@@ -141,9 +141,12 @@
     var gap = params.gap || 0, margin = params.margin || 0;
     var ratio = RATIO_MAP[params.cellRatio] || 1;
 
-    // 单格宽度 = 最宽图宽度（保证不放大失真），至少 800
-    var cellW = 800;
+    // 单格宽度 = 最宽图宽度（与单向拼接 calcVerticalLayout 同口径：取最宽、不额外设下限）
+    // 曾写死「至少 800」，小图会被强行放大导致总尺寸虚高
+    // （实测：8 张 600×600 拼 2 行 4 列输出 3200×1600，应为 2400×1200）
+    var cellW = 0;
     images.forEach(function (img) { if (img.width > cellW) cellW = img.width; });
+    if (cellW <= 0) cellW = 800; // 无可测图片时的空态兜底，不参与有图时的尺寸计算
     var cellH = Math.round(cellW / ratio);
 
     var totalWidth = cols * cellW + (cols - 1) * gap + margin * 2;
@@ -166,8 +169,9 @@
     var rows = params.rows, cols = params.cols;
     var gap = params.gap || 0, margin = params.margin || 0;
 
-    var cellW = 800;
+    var cellW = 0;
     images.forEach(function (img) { if (img.width > cellW) cellW = img.width; });
+    if (cellW <= 0) cellW = 800; // 无可测图片时的空态兜底（同 calcGridSize 口径）
 
     // 按行计算每行高度
     var rowHeights = [];
@@ -220,6 +224,108 @@
     }
 
     return { totalWidth: totalWidth, totalHeight: totalHeight, positions: positions };
+  }
+
+  /* ---------- 网格行列上限：四道预算取最小 ---------- */
+  /* 口径（2026-10-31 业主拍板，调档须再行确认）：
+     ① 单边预算 side      —— 拼出的图单边不超过它；撞浏览器画布边长上限的后果是
+        「导出成功但是空白图」，不是报错，所以必须提前拦。
+     ② 面积预算 areaHard —— 总像素不超过它；超出后移动端画不出来 / 内存爆。
+        分级：≤ areaSoft 不打扰；areaSoft~areaHard 只给橙色提醒（允许将就）；
+        超 areaHard 才夹取。手机档 areaSoft = areaHard，即超线直接收，不给将就。
+     ③ 张数预算 images    —— 总格数 ≤ 图片张数 × redundancy（2 允许留白构图，但不许离谱）。
+     ④ 绝对硬顶 axisCap / cellCap —— 每轴与总格数封顶；预览是 DOM 格子，太密手指点不准。
+     无图可测时单格宽退回 EMPTY_CELL_W，张数预算退回 36 格（保持放开前的手感）。 */
+  var EMPTY_CELL_W = 800;
+  var GRID_BUDGET = {
+    desktop: { side: 8192, areaSoft: 12000000, areaHard: 24000000, axisCap: 32, cellCap: 400, redundancy: 2 },
+    mobile:  { side: 6144, areaSoft:  8000000, areaHard:  8000000, axisCap: 12, cellCap: 100, redundancy: 2 }
+  };
+
+  function calcGridLimits(images, params, opts) {
+    var B = (opts && opts.compact) ? GRID_BUDGET.mobile : GRID_BUDGET.desktop;
+    var gap = params.gap || 0, margin = params.margin || 0;
+    var ratio = RATIO_MAP[params.cellRatio] || 1;
+    var list = images || [];
+
+    var cellW = 0;
+    list.forEach(function (img) { if (img.width > cellW) cellW = img.width; });
+    if (cellW <= 0) cellW = EMPTY_CELL_W;
+    var cellH = Math.round(cellW / ratio);
+
+    // ① 单边：cols*cellW + (cols-1)*gap + 2*margin ≤ side  →  cols ≤ (side - 2*margin + gap) / (cellW + gap)
+    var sideCols = Math.floor((B.side - margin * 2 + gap) / (cellW + gap));
+    var sideRows = Math.floor((B.side - margin * 2 + gap) / (cellH + gap));
+    if (sideCols < 1) sideCols = 1;
+    if (sideRows < 1) sideRows = 1;
+    // ② 面积（含 gap 占位，保守）
+    var perCell = (cellW + gap) * (cellH + gap);
+    var areaCells = Math.max(1, Math.floor(B.areaHard / perCell));
+    // ③ 张数：opts.count 可显式传入「队列总张数」。图片是逐张解码的，若按已解码张数算，
+    //    上限会随解码进度一路抖（8 张的导入可能先按 1 张的上限把 6×6 砍成 2×2，之后回不来）。
+    var n = (opts && typeof opts.count === 'number') ? opts.count : list.length;
+    var imgCells = n > 0 ? Math.max(1, Math.ceil(n * B.redundancy)) : 36;
+    // ④ 总格数闸 = ②③与 cellCap 的最小值，并记下是哪一道闸住
+    var cellCand = [['area', areaCells], ['images', imgCells], ['cellCap', B.cellCap]];
+    var cellBinding = 'cellCap', cellsMax = B.cellCap;
+    cellCand.forEach(function (c) { if (c[1] < cellsMax) { cellsMax = c[1]; cellBinding = c[0]; } });
+
+    // 每轴闸 = ①与 axisCap 的最小值，并记下绑定原因
+    function axisMax(sideV, curBinding) {
+      var v = sideV, b = 'side';
+      if (B.axisCap < v) { v = B.axisCap; b = 'axisCap'; }
+      return { max: v, binding: b };
+    }
+    var ra = axisMax(sideRows), ca = axisMax(sideCols);
+
+    var rows = Math.max(1, params.rows || 1), cols = Math.max(1, params.cols || 1);
+    /* 把「总格数闸」折算到每一轴上：另一轴当前是几，本轴最多就是 floor(总闸 / 另一轴)。
+       不折算的话 + 号要到点击后才会被夹回来，用户看到的是「点了没反应」；
+       折算后共享底座 moteful.js 恰好在会越界的那一步把 + 号置灰，反馈精确。 */
+    var rowsEff = Math.floor(cellsMax / cols), rowsBind = ra.binding;
+    if (rowsEff < ra.max) { rowsBind = cellBinding; }
+    rowsEff = Math.max(1, Math.min(ra.max, rowsEff));
+    var colsEff = Math.floor(cellsMax / rows), colsBind = ca.binding;
+    if (colsEff < ca.max) { colsBind = cellBinding; }
+    colsEff = Math.max(1, Math.min(ca.max, colsEff));
+
+    var outW = cols * cellW + (cols - 1) * gap + margin * 2;
+    var outH = rows * cellH + (rows - 1) * gap + margin * 2;
+    var area = outW * outH;
+    var tier = area <= B.areaSoft ? 'ok' : (area <= B.areaHard ? 'warn' : 'over');
+
+    return {
+      cellW: cellW, cellH: cellH,
+      /* rowsMax / colsMax 已按另一轴当前值折算 → 只用于步进器 +/- 的置灰与手输夹取，
+         反馈精确（点下去一定会越界时就提前禁掉）；
+         rowsAxis / colsAxis 是未折算的每轴硬闸 → 用于夹取，配合总格数闸从较长一轴退让，
+         这样 6×6 遇到 16 格预算会收到 3×5（15 格）而不是被单边折算砍成 2×6（12 格）。 */
+      rowsMax: rowsEff, rowsBinding: rowsBind, colsMax: colsEff, colsBinding: colsBind,
+      rowsAxis: ra.max, colsAxis: ca.max,
+      cellsMax: cellsMax, cellsBinding: cellBinding,
+      tier: tier, outW: outW, outH: outH, area: area,
+      hasImages: n > 0, budget: B
+    };
+  }
+
+  /* 把当前行列夹进上限：先按每轴硬闸收，再按总格数闸从「较长的一轴」逐格退让，
+     这样 6×6 收到 16 格会变成 3×5 而不是 4×4 或 1×16，形状失真最小。
+     用 rowsAxis/colsAxis（未折算硬闸）而不是 rowsMax/colsMax（已按另一轴折算的置灰线）。 */
+  function clampGridToLimits(rows, cols, lim) {
+    var r0 = Math.max(1, rows || 1), c0 = Math.max(1, cols || 1);
+    var r = r0, c = c0, binding = '';
+    var axR = lim.rowsAxis || lim.rowsMax, axC = lim.colsAxis || lim.colsMax;
+    if (r > axR) { r = axR; binding = lim.rowsBinding; }
+    if (c > axC) { c = axC; binding = binding || lim.colsBinding; }
+    if (r * c > lim.cellsMax) {
+      while (r * c > lim.cellsMax && (r > 1 || c > 1)) { if (r >= c) r--; else c--; }
+      // 总格数闸后触发，它就是最终收手的元凶，优先报它（例：4 张 4000×3000 先被单边收到 2，
+      // 再被总像素收到 1×1，真正该说的是「总像素超过安全尺寸」而不是单边）
+      binding = lim.cellsBinding;
+    }
+    if (r < 1) r = 1;
+    if (c < 1) c = 1;
+    return { rows: r, cols: c, changed: (r !== r0 || c !== c0), binding: binding || lim.cellsBinding };
   }
 
   /* ---------- 填充方式：计算 drawImage 参数 ---------- */
@@ -473,6 +579,9 @@
     calcHorizontalLayout: calcHorizontalLayout,
     calcGridSize: calcGridSize,
     calcGridSizeFree: calcGridSizeFree,
+    calcGridLimits: calcGridLimits,
+    clampGridToLimits: clampGridToLimits,
+    GRID_BUDGET: GRID_BUDGET,
     calcDrawRect: calcDrawRect,
     drawCell: drawCell,
     drawStitch: drawStitch,

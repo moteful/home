@@ -515,8 +515,15 @@
 
     // V0.2.8：数字步进器 圆形[−] [input] 圆形[+]；V0.2.11：data-qstep 按钮走质量专属逻辑
     // V0.4优化：步进值强制取整，避免产生小数
+    // 带 data-step-shared 的 .step（缩放百分比）不在此绑定：增减交还共享底座 moteful.js ——
+    // 它的 .step-btn 监听注册在先，已按 .step 的 data-min/data-max 夹取、写回 .step-val 并派发 input；
+    // 本页若再自加一次，单步就变成 ±2（实测 50 → 52）。值变化由 sizePercent 自身的 input 监听
+    // 同步 tf.percent 与预估尺寸，无需本页重复处理。四边内距等其余步进器本次未点名，维持现状。
     document.querySelectorAll('.step-btn').forEach(function (btn) {
       if (btn.hasAttribute('data-qstep')) return;
+      var sharedTarget = $(btn.getAttribute('data-for'));
+      var sharedBox = sharedTarget && sharedTarget.closest ? sharedTarget.closest('.step') : null;
+      if (sharedBox && sharedBox.hasAttribute('data-step-shared')) return;
       btn.addEventListener('click', function () {
         var targetId = btn.getAttribute('data-for');
         var target = $(targetId);

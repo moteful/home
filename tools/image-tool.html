@@ -139,7 +139,7 @@ document.documentElement.dataset.theme=v;})();</script>
         <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
         <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
         <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
-        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span></a>
         <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
         <hr class="menu-sep">
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
@@ -150,9 +150,11 @@ document.documentElement.dataset.theme=v;})();</script>
       <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
         <span data-i18n="nav_dev">Developer</span>
       </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
       <div class="menu pop-panel">
         <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
         <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <a class="menu-item" href="../dev/word-counter.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
         <hr class="menu-sep">
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
@@ -273,7 +275,7 @@ document.documentElement.dataset.theme=v;})();</script>
             <label class="seg" data-size="exact"><input type="radio" name="sz"><span class="seg-t" data-i18n="v02_size_exact">Exact size</span></label></div></div>
           <span class="stack" id="sizePercentCtl" hidden style="display:none">
             <span class="field-label" data-i18n="v02_percent_label">Scale (%)</span>
-            <span class="row"><span class="step">
+            <span class="row"><span class="step" data-min="1" data-max="400" data-step-shared>
               <button type="button" class="step-btn" data-step="-1" data-for="sizePercent" aria-label="decrease"><i data-lucide="minus"></i></button>
               <input type="text" inputmode="numeric" size="6" id="sizePercent" class="step-val" min="1" max="400" value="50">
               <button type="button" class="step-btn" data-step="1" data-for="sizePercent" aria-label="increase"><i data-lucide="plus"></i></button>
@@ -585,7 +587,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.0.4</span>
+    <span data-i18n="foot_version">v2.0.5</span>
   </div>
 </footer>
 
@@ -653,7 +655,7 @@ document.documentElement.dataset.theme=v;})();</script>
         </a>
         <a href="../tools/id-photo-tool.html" class="grid-card">
           <i data-lucide="user"></i>
-          <span><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+          <span data-i18n="nav_m_idphoto">证件照</span>
         </a>
         <a href="../tools/icon-tool.html" class="grid-card">
           <i data-lucide="radius"></i>
@@ -678,6 +680,10 @@ document.documentElement.dataset.theme=v;})();</script>
         <a href="../dev/regex.html" class="grid-card">
           <i data-lucide="regex"></i>
           <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="../dev/word-counter.html" class="grid-card">
+          <i data-lucide="file-text"></i>
+          <span><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
         </a>
         <a href="#" class="grid-card soon" aria-disabled="true">
           <i data-lucide="clock"></i>

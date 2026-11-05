@@ -29,6 +29,7 @@ const cssPath = path.join(root, cfg.cssSource);
 const FONT_LADDER = new Set(cfg.rules.fontPxLadder);
 const RADIUS_OK = new Set(cfg.rules.radiusAllowed);
 const SPACING_MULT = cfg.rules.spacingMultiple;
+const WARN_CAP = cfg.warnCap;
 
 /** @type {{rule:string,level:string,file:string,loc:string,msg:string}[]} */
 const findings = [];
@@ -289,7 +290,10 @@ if (warns.length) {
 }
 console.log('\n' + '-'.repeat(64));
 console.log(`按规则统计: ${Object.entries(byRule).map(([k, v]) => `${k}=${v}`).join('  ') || '无'}`);
-console.log(`基线对照: error 0 / warn 153（2026-09-05 image-tool 迁移三件套后；只许变小）`);
+console.log(`告警上限: warn ≤ ${WARN_CAP}（来自 lint.config.json 的 warnCap 配置项，只许变小）`);
 console.log(`结果: error=${errors.length}  warn=${warns.length}`);
-console.log(errors.length === 0 ? '✅ PASS（error 清零）' : '❌ FAIL（error>0，退出码 1）');
-process.exit(errors.length === 0 ? 0 : 1);
+const pass = errors.length === 0 && warns.length <= WARN_CAP;
+if (pass) console.log('✅ PASS（error 清零且 warn 不高于上限）');
+else if (errors.length) console.log(`❌ FAIL（error>0，退出码 1）`);
+else console.log(`❌ FAIL（warn ${warns.length} > 上限 ${WARN_CAP}，退出码 1）`);
+process.exit(pass ? 0 : 1);

@@ -69,7 +69,7 @@ document.documentElement.dataset.theme=v;})();</script>
 
 <link rel="stylesheet" href="../assets/css/moteful.css">
   <link rel="stylesheet" href="../assets/css/recommend.css">
-<link rel="stylesheet" href="../assets/css/stitch.css">
+<link rel="stylesheet" href="../assets/css/stitch.css?v=2.0.5">
   <link rel="stylesheet" href="../assets/css/share.css">
 <script src="../assets/js/moteful.js" defer></script>
   <script src="../assets/js/recommend.js" defer></script>
@@ -77,10 +77,10 @@ document.documentElement.dataset.theme=v;})();</script>
 <script src="../assets/i18n/zh.js" defer></script>
 <script src="../assets/i18n/i18n.js" defer></script>
 <script src="../assets/js/image-import.js" defer></script>
-<script src="../assets/js/stitch-core.js" defer></script>
+<script src="../assets/js/stitch-core.js?v=2.0.5" defer></script>
 <script src="../assets/js/qrcode-core.js" defer></script>
 <script src="../assets/js/share.js" defer></script>
-<script src="../assets/js/stitch.js" defer></script>
+<script src="../assets/js/stitch.js?v=2.0.5" defer></script>
   <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
   <meta name="moteful-siteurl" content="https://moteful.app">
   <meta name="moteful-pagepath" content="tools/stitch">
@@ -112,7 +112,7 @@ document.documentElement.dataset.theme=v;})();</script>
         <a class="menu-item on" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
         <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
         <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
-        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span></a>
         <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
         <hr class="menu-sep">
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
@@ -123,9 +123,11 @@ document.documentElement.dataset.theme=v;})();</script>
       <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
         <span data-i18n="nav_dev">Developer</span>
       </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
       <div class="menu pop-panel">
         <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
         <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <a class="menu-item" href="../dev/word-counter.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
         <hr class="menu-sep">
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
@@ -229,7 +231,7 @@ document.documentElement.dataset.theme=v;})();</script>
         </a>
         <a href="../tools/id-photo-tool.html" class="grid-card">
           <i data-lucide="user"></i>
-          <span><span data-i18n="nav_m_idphoto">证件照</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+          <span data-i18n="nav_m_idphoto">证件照</span>
         </a>
         <a href="../tools/icon-tool.html" class="grid-card">
           <i data-lucide="radius"></i>
@@ -254,6 +256,10 @@ document.documentElement.dataset.theme=v;})();</script>
         <a href="../dev/regex.html" class="grid-card">
           <i data-lucide="regex"></i>
           <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="../dev/word-counter.html" class="grid-card">
+          <i data-lucide="file-text"></i>
+          <span><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
         </a>
         <a href="#" class="grid-card soon" aria-disabled="true">
           <i data-lucide="clock"></i>
@@ -922,21 +928,26 @@ document.documentElement.dataset.theme=v;})();</script>
         <button type="button" class="tpl-btn" data-tpl="4x4" data-i18n-aria="stitch_tpl_4x4"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
         <button type="button" class="tpl-btn" data-tpl="2x3" data-i18n-aria="stitch_tpl_2x3"><div class="tpl-mini"><span></span><span></span><span></span><span></span><span></span><span></span></div></button>
         <button type="button" class="tpl-btn custom" data-tpl="custom" aria-label="自定义"><span data-i18n="stitch_tpl_custom">自定义</span></button>
-        <!-- 自定义行列控制（复用全站 .step 标准步进器组件） -->
+        <!-- 自定义行列控制（复用全站 .step 标准步进器组件）
+             【为什么这里写 99 而不是真实上限】共享底座 moteful.js 在页面加载那一刻就把容器上的
+             data-min/data-max 读成闭包常量，此后动态写回它看不见。这里若留小数字，+/- 会被永久锁死
+             （实测：预算算到 16 行，+ 号也加不过 6；手输 10 后点一下 + 还会被打回 6）。
+             99 = 底座自己的缺省值，等于「底座不做主，交给页内活夹取」：真实上限由 stitch.js
+             refreshGridLimits 按四道预算算出后写回，口径见 stitch-core.js calcGridLimits。 -->
         <div class="tpl-custom-ctl" id="stitchCustomCtl">
           <div class="row custom-step-row">
             <label data-i18n="stitch_rows">行</label>
-            <span class="step" data-step-target="rows">
+            <span class="step" data-step-target="rows" data-min="1" data-max="99">
               <button type="button" class="step-btn" data-step="-1" data-for="stitchRows" aria-label="减少行"><i data-lucide="minus"></i></button>
-              <input type="text" inputmode="numeric" size="3" id="stitchRows" class="step-val" min="1" max="6" value="3" aria-label="行数">
+              <input type="text" inputmode="numeric" size="3" id="stitchRows" class="step-val" min="1" max="99" value="3" aria-label="行数">
               <button type="button" class="step-btn" data-step="1" data-for="stitchRows" aria-label="增加行"><i data-lucide="plus"></i></button>
             </span>
           </div>
           <div class="row custom-step-row">
             <label data-i18n="stitch_cols">列</label>
-            <span class="step" data-step-target="cols">
+            <span class="step" data-step-target="cols" data-min="1" data-max="99">
               <button type="button" class="step-btn" data-step="-1" data-for="stitchCols" aria-label="减少列"><i data-lucide="minus"></i></button>
-              <input type="text" inputmode="numeric" size="3" id="stitchCols" class="step-val" min="1" max="6" value="3" aria-label="列数">
+              <input type="text" inputmode="numeric" size="3" id="stitchCols" class="step-val" min="1" max="99" value="3" aria-label="列数">
               <button type="button" class="step-btn" data-step="1" data-for="stitchCols" aria-label="增加列"><i data-lucide="plus"></i></button>
             </span>
           </div>
@@ -962,6 +973,10 @@ document.documentElement.dataset.theme=v;})();</script>
         <div class="info-item"><span class="info-label" data-i18n="stitch_filled_count">已填充</span><span class="info-val" id="stitchInfoFilled">—</span></div>
         <div class="info-item" id="stitchInfoStreamG"></div>
       </div>
+
+      <!-- 网格上限与留白提示：一句文案，由 stitch.js updateGridHint 按优先级填充
+           （超线橙色提醒 → 留白后果 → 已到上限说明），形态复用导入区 .dz-note，不新造组件 -->
+      <p class="dz-note" id="stitchGridHint" hidden><span id="stitchGridHintIcon"></span><span id="stitchGridHintTxt"></span></p>
 
       <!-- 参数工具栏 -->
       <div class="stitch-toolbar stitch-toolbar-grid">
@@ -1143,7 +1158,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.0.4</span>
+    <span data-i18n="foot_version">v2.0.5</span>
   </div>
 </footer>
 

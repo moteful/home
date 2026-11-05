@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="wc_seo_title">在线字数统计 · 中英词数字符 / 句子 / 段落统计与阅读时长 | Moteful</title>
+<meta name="description" content="免费在线字数统计工具，实时统计汉字数、英文词数、字符数、句子与段落，估算阅读与朗读时长；纯本地运行不上传。关键词覆盖 字数统计 / word counter / 字符统计 / 英文词数 / 阅读时长。">
+<meta name="keywords" content="字数统计,word counter,字符统计,英文词数,阅读时长,句子统计,段落统计,在线字数统计,开发者工具">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="在线字数统计工具 - 中英词数字符/句子/段落统计与阅读时长">
+<meta property="og:description" content="免费在线字数统计工具，实时统计汉字数、英文词数、字符数、句子与段落，估算阅读与朗读时长；纯本地运行不上传。">
+<meta property="og:url" content="https://moteful.app/dev/word-counter.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="在线字数统计工具 - 中英词数字符/句子/段落统计与阅读时长">
+<meta name="twitter:description" content="免费在线字数统计工具，实时统计汉字数、英文词数、字符数、句子与段落，估算阅读与朗读时长；纯本地运行不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/dev/word-counter.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "在线字数统计工具",
+  "alternateName": "Moteful Word Counter",
+  "description": "免费在线字数统计工具，实时统计汉字数、英文词数、字符数、句子与段落，估算阅读与朗读时长；纯本地运行不上传。",
+  "url": "https://moteful.app/dev/word-counter.html",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "实时统计总字符 / 不含空格字符 / 汉字数 / 英文词数",
+    "句子（估算）、段落与行数统计",
+    "空格与标点两项口径开关",
+    "默读三档与朗读档时长估算，语速可自定义",
+    "平台限额模板预检",
+    "100% 本地运行，断网可用，数据不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/share.css">
+<!-- 页面私有样式（wc- 前缀类）登记于 assets/css/missing_styles_proposal.css，页面零内联样式 -->
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/share.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+  <script src="../assets/js/wordcount-core.js?v=2.0.5" defer></script>
+  <script src="../assets/js/wordcount-tool.js?v=2.0.5" defer></script>
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+  <meta name="moteful-siteurl" content="https://moteful.app">
+  <meta name="moteful-pagepath" content="dev/word-counter">
+
+  <link rel="alternate" hreflang="x-default" href="https://moteful.app/dev/word-counter.html">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2226711164508785" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-2226711164508785">
+  <meta name="baidu-site-verification" content="codeva-Ok5o1J5DOp">
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4nM1PwSvDcRx9v18ZUltRxmgulJRWdpiDfk7GwYrDskULu1ga6ldz46LEVnOxoo0sJSkiKbUd3JDyJ4iDy1w4uNhvT5vWb5rfmAvv8P32Pu/73ud9gX8Ng91lFrudzb8OaL0hsUqWeiNqCVIgYEtlANQDsM9Yyt4+rpDYIbFF4qB0iyJMJxJBGwtMxyQOywiZzJD66Onip6FnY+xnbmmqwxLf8+dpo7w2nL2tsW3v9+aJiAtxtar1juy8/eCivD4yUPitL3FCYj4ZytO2C7JhRa1edUV6NEO8IQcuSfj25zQX9C1IxgeyNxweKhY3SQRJRNOsvCa7UuQgSbPb3ZLTHcv9WCIhk6YztYWQPXQxssYA1BrTqDYBiiLg3u9sej0/eoS060PPaAR1AJ4APL8BrIC+HXiZFXL+v8U7p1SEg5RNexoAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+</head>
+<body data-nav="dev">
+
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/png-compressor.html"><i data-lucide="image-down"></i><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/crop-tool.html"><i data-lucide="crop"></i><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span></a>
+        <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="pipette"></i><span data-i18n="nav_m_cutout">纯色抠图</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <a class="menu-item on" href="../dev/word-counter.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="clock"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- V1.4：分享次入口（share.js 加载页显示；≤480px 收进抽屉） -->
+    <button type="button" class="btn btn-ghost btn-sm share-topbar-btn" data-share-topbar hidden data-i18n-aria="share_nav" aria-label="Share"><i data-lucide="share-2"></i><span data-i18n="share_nav">Share</span></button>
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head">
+      <h3>Moteful</h3>
+      <div class="drawer-head-actions">
+        <a href="../support.html" class="btn btn-ghost btn-sm" data-i18n-title="foot_support" aria-label="Support">
+          <i data-lucide="heart"></i><span data-i18n="foot_support">Support</span>
+        </a>
+        <div class="pop">
+          <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+            <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+          </button>
+          <div class="menu pop-panel">
+            <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+            <button class="menu-item lang-item" data-lang="en">English</button>
+          </div>
+        </div>
+        <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- V1.4：分享当前页入口（share.js 加载页显示） -->
+    <button type="button" class="btn btn-secondary btn-sm share-drawer-entry" data-share-entry hidden><i data-lucide="share-2"></i><span data-i18n="share_drawer_entry">分享当前页</span></button>
+    <!-- 一级分类胶囊（横向滚动） -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab on" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
+      <button class="drawer-tab" data-dtab="dev"><i data-lucide="code"></i><span data-i18n="nav_dev_group">开发者工具</span></button>
+      <button class="drawer-tab" data-dtab="games"><i data-lucide="gamepad-2"></i><span data-i18n="nav_games_group">小游戏</span></button>
+    </div>
+
+    <!-- 二级工具宫格 -->
+    <nav class="drawer-grid" id="drawerGrid">
+      <!-- 图片工具 -->
+      <div class="drawer-pane active" data-pane="image">
+        <a href="../tools/image-tool.html" class="grid-card">
+          <i data-lucide="images"></i>
+          <span data-i18n="nav_m_batch">批量处理</span>
+        </a>
+        <a href="../tools/png-compressor.html" class="grid-card">
+          <i data-lucide="image-down"></i>
+          <span><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/crop-tool.html" class="grid-card">
+          <i data-lucide="crop"></i>
+          <span><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/stitch.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_m_compress">长图拼接</span>
+        </a>
+        <a href="../tools/qrcode.html" class="grid-card">
+          <i data-lucide="qr-code"></i>
+          <span data-i18n="nav_m_qrcode">二维码</span>
+        </a>
+        <a href="../tools/annotate.html" class="grid-card">
+          <i data-lucide="pencil"></i>
+          <span data-i18n="nav_m_annotate">打码标注</span>
+        </a>
+        <a href="../tools/id-photo-tool.html" class="grid-card">
+          <i data-lucide="user"></i>
+          <span data-i18n="nav_m_idphoto">证件照</span>
+        </a>
+        <a href="../tools/icon-tool.html" class="grid-card">
+          <i data-lucide="radius"></i>
+          <span data-i18n="nav_m_icon">图标工具</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="list"></i>
+          <span data-i18n="nav_m_rename">重命名</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="pipette"></i>
+          <span data-i18n="nav_m_cutout">纯色抠图</span>
+        </a>
+      </div>
+
+      <!-- 开发者工具 -->
+      <div class="drawer-pane" data-pane="dev">
+        <a href="../dev/json.html" class="grid-card">
+          <i data-lucide="code"></i>
+          <span data-i18n="nav_dev_json">JSON 格式化</span>
+        </a>
+        <a href="../dev/regex.html" class="grid-card">
+          <i data-lucide="regex"></i>
+          <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="../dev/word-counter.html" class="grid-card">
+          <i data-lucide="file-text"></i>
+          <span><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="clock"></i>
+          <span data-i18n="nav_dev_timestamp">时间戳转换</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="binary"></i>
+          <span data-i18n="nav_dev_base64">Base64 编解码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="palette"></i>
+          <span data-i18n="nav_dev_color">颜色代码转换</span>
+        </a>
+      </div>
+
+      <!-- 小游戏 -->
+      <div class="drawer-pane" data-pane="games">
+        <a href="../games/block-clear.html" class="grid-card">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="nav_g_blockclear">方块消除</span>
+        </a>
+        <a href="../games/snake.html" class="grid-card">
+          <i data-lucide="worm"></i>
+          <span data-i18n="nav_g_snake">贪吃蛇</span>
+        </a>
+        <a href="../games/sudoku.html" class="grid-card">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_g_sudoku">数独</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+    (function(){
+      // 根据当前路径，判断应该显示哪个分类
+      function getDefaultTab(){
+        var path = location.pathname;
+        if(path.indexOf('/tools/') >= 0) return 'image';
+        if(path.indexOf('/dev/') >= 0) return 'dev';
+        if(path.indexOf('/games/') >= 0) return 'games';
+        // 首页和 support 默认显示图片工具分类（主要功能）
+        return 'image';
+      }
+
+      // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+      function setDefaultTab(){
+        var tabName = getDefaultTab();
+        var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+        tabs.forEach(function(t){
+          t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+        });
+        // 同时显示对应 pane
+        var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+        });
+      }
+
+      // DOM 加载完成后立即设置默认高亮
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', setDefaultTab);
+      } else {
+        setDefaultTab();
+      }
+
+      // 抽屉分类切换逻辑
+      document.addEventListener('click', function(e){
+        var tab = e.target.closest('.drawer-tab');
+        if(!tab) return;
+
+        var container = document.getElementById('drawerGrid');
+        if(!container) return;
+
+        // 切换 tab 高亮
+        var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+        tabs.forEach(function(t){ t.classList.remove('on'); });
+        tab.classList.add('on');
+
+        // 切换 pane
+        var target = tab.getAttribute('data-dtab');
+        var panes = container.querySelectorAll('.drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === target);
+        });
+      });
+
+      // 抽屉打开时，根据当前页自动选中对应分类
+      window.openDrawer = window.openDrawer || function(id){
+        var drawer = document.getElementById(id);
+        if(!drawer) return;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // 触发对应 tab（会自动切换 pane）
+        var tabName = getDefaultTab();
+        var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+        if(tab) tab.click();
+      };
+    })();
+    </script>
+  </aside>
+</div>
+
+<script>
+(function(){
+  // 根据当前路径，判断应该显示哪个分类
+  function getDefaultTab(){
+    var path = location.pathname;
+    if(path.indexOf('/tools/') >= 0) return 'image';
+    if(path.indexOf('/dev/') >= 0) return 'dev';
+    if(path.indexOf('/games/') >= 0) return 'games';
+    // 首页默认显示图片工具分类（主要功能）
+    return 'image';
+  }
+
+  // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+  function setDefaultTab(){
+    var tabName = getDefaultTab();
+    var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+    tabs.forEach(function(t){
+      t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+    // 同时显示对应 pane
+    var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+    });
+  }
+
+  // DOM 加载完成后立即设置默认高亮
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setDefaultTab);
+  } else {
+    setDefaultTab();
+  }
+
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 触发对应 tab（会自动切换 pane）
+    var tabName = getDefaultTab();
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
+
+<script>
+(function(){
+  // 根据当前路径，判断应该显示哪个分类
+  function getDefaultTab(){
+    var path = location.pathname;
+    if(path.indexOf('/tools/') >= 0) return 'image';
+    if(path.indexOf('/dev/') >= 0) return 'dev';
+    if(path.indexOf('/games/') >= 0) return 'games';
+    // 首页默认显示图片工具分类（主要功能）
+    return 'image';
+  }
+
+  // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+  function setDefaultTab(){
+    var tabName = getDefaultTab();
+    var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+    tabs.forEach(function(t){
+      t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+    // 同时显示对应 pane
+    var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+    });
+  }
+
+  // DOM 加载完成后立即设置默认高亮
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setDefaultTab);
+  } else {
+    setDefaultTab();
+  }
+
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 触发对应 tab（会自动切换 pane）
+    var tabName = getDefaultTab();
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
+
+<script>
+(function(){
+  // 根据当前路径，判断应该显示哪个分类
+  function getDefaultTab(){
+    var path = location.pathname;
+    if(path.indexOf('/tools/') >= 0) return 'image';
+    if(path.indexOf('/dev/') >= 0) return 'dev';
+    if(path.indexOf('/games/') >= 0) return 'games';
+    // 首页默认显示图片工具分类（主要功能）
+    return 'image';
+  }
+
+  // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+  function setDefaultTab(){
+    var tabName = getDefaultTab();
+    var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+    tabs.forEach(function(t){
+      t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+    // 同时显示对应 pane
+    var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+    });
+  }
+
+  // DOM 加载完成后立即设置默认高亮
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setDefaultTab);
+  } else {
+    setDefaultTab();
+  }
+
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 触发对应 tab（会自动切换 pane）
+    var tabName = getDefaultTab();
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
+
+<script>
+(function(){
+  // 根据当前路径，判断应该显示哪个分类
+  function getDefaultTab(){
+    var path = location.pathname;
+    if(path.indexOf('/tools/') >= 0) return 'image';
+    if(path.indexOf('/dev/') >= 0) return 'dev';
+    if(path.indexOf('/games/') >= 0) return 'games';
+    // 首页默认显示图片工具分类（主要功能）
+    return 'image';
+  }
+
+  // 页面加载时，默认给对应分类胶囊加上 on 类
+  function setDefaultTab(){
+    var tabName = getDefaultTab();
+    var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+    tabs.forEach(function(t){
+      t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+  }
+
+  // DOM 加载完成后立即设置默认高亮
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setDefaultTab);
+  } else {
+    setDefaultTab();
+  }
+
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 触发对应 tab（会自动切换 pane）
+    var tabName = getDefaultTab();
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+
+  // 抽屉内语言切换按钮
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('#drawerLangBtn');
+    if(!btn) return;
+    // 切换语言：zh ↔ en
+    var current = (typeof readLang === 'function') ? readLang() : 'zh';
+    var next = (current === 'en') ? 'zh' : 'en';
+    if(typeof setLang === 'function') setLang(next);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  // 根据当前路径，判断应该显示哪个分类
+  function getDefaultTab(){
+    var path = location.pathname;
+    if(path.indexOf('/tools/') >= 0) return 'image';
+    if(path.indexOf('/dev/') >= 0) return 'dev';
+    if(path.indexOf('/games/') >= 0) return 'games';
+    return 'home';
+  }
+
+  // 页面加载时，默认给对应分类胶囊加上 on 类
+  function setDefaultTab(){
+    var tabName = getDefaultTab();
+    var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+    tabs.forEach(function(t){
+      t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+    });
+  }
+
+  // DOM 加载完成后立即设置默认高亮
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setDefaultTab);
+  } else {
+    setDefaultTab();
+  }
+
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 触发对应 tab（会自动切换 pane）
+    var tabName = getDefaultTab();
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
+
+<script>
+(function(){
+  // 抽屉分类切换逻辑
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.drawer-tab');
+    if(!tab) return;
+
+    var container = document.getElementById('drawerGrid');
+    if(!container) return;
+
+    // 切换 tab 高亮
+    var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+    tabs.forEach(function(t){ t.classList.remove('on'); });
+    tab.classList.add('on');
+
+    // 切换 pane
+    var target = tab.getAttribute('data-dtab');
+    var panes = container.querySelectorAll('.drawer-pane');
+    panes.forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-pane') === target);
+    });
+  });
+
+  // 抽屉打开时，根据当前页自动选中对应分类
+  window.openDrawer = window.openDrawer || function(id){
+    var drawer = document.getElementById(id);
+    if(!drawer) return;
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 根据当前路径判断应该显示哪个分类
+    var path = location.pathname;
+    var tabName = 'home';
+    if(path.indexOf('/tools/') >= 0) tabName = 'image';
+    else if(path.indexOf('/dev/') >= 0) tabName = 'dev';
+    else if(path.indexOf('/games/') >= 0) tabName = 'games';
+
+    // 触发对应 tab
+    var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+    if(tab) tab.click();
+  };
+})();
+</script>
+
+<main class="page">
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="wc_kicker">MOTEFUL · 开发者工具</div>
+    <h1 data-i18n="wc_title">字数统计工具</h1>
+    <p data-i18n="wc_hero_desc">实时统计中英文字数、字符、句子与段落，估算阅读与朗读时长；</p>
+    <p data-i18n="wc_hero_local">文本仅在本机处理，不上传服务器。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="wc_privacy_note">100% 本地统计，文本不上传，可离线使用</span>
+      <span class="tag t-gray" data-i18n="wc_tag_free">免费使用</span>
+    </div>
+  </section>
+
+  <!-- ===== 文本输入区 ===== -->
+  <section class="panel">
+    <div class="field wc-field-full">
+      <label class="field-label" for="wcText" data-i18n="wc_editor_label">文本内容</label>
+      <textarea id="wcText" class="input wc-editor" spellcheck="false" placeholder="粘贴或输入文本，实时统计…" data-i18n-ph="wc_editor_ph"></textarea>
+    </div>
+    <div class="row wc-actions">
+      <button type="button" class="btn btn-ghost btn-sm" id="wcBtnClear"><i data-lucide="trash-2"></i><span data-i18n="wc_act_clear">清空</span></button>
+      <button type="button" class="btn btn-ghost btn-sm" id="wcBtnCopy"><i data-lucide="copy"></i><span class="copy-label" data-i18n="wc_act_copy">复制摘要</span></button>
+      <button type="button" class="btn btn-ghost btn-sm" id="wcBtnPaste"><i data-lucide="clipboard-paste"></i><span data-i18n="wc_act_paste">粘贴</span></button>
+      <button type="button" class="btn btn-ghost btn-sm" id="wcBtnSample"><i data-lucide="sparkles"></i><span data-i18n="wc_act_sample">示例文本</span></button>
+    </div>
+  </section>
+
+  <!-- ===== 统计指标 ===== -->
+  <section class="panel">
+    <div class="row wc-card-head">
+      <h3 class="sec-title wc-card-title" data-i18n="wc_metrics_head">统计结果</h3>
+    </div>
+    <div class="stat-grid" id="wcMetrics" aria-live="polite">
+      <div class="stat"><div class="lb" data-i18n="wc_metric_chars">总字符</div><div class="nm" id="wcMChars">0</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_metric_chars_ns">不含空格</div><div class="nm" id="wcMCharsNs">0</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_metric_hanzi">汉字数</div><div class="nm" id="wcMHanzi">0</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_metric_words">英文词数</div><div class="nm" id="wcMWords">0</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_metric_sent">句子数（估算）</div><div class="nm" id="wcMSent">0</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_metric_para">段落数</div><div class="nm" id="wcMPara">0</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_metric_lines">行数</div><div class="nm" id="wcMLines">0</div></div>
+    </div>
+    <p class="muted wc-note" id="wcEmptyHint" data-i18n="wc_empty_hint">输入或粘贴文本后，这里会实时显示各项统计</p>
+    <p class="muted wc-subnote" id="wcBreakdown" hidden></p>
+    <p class="muted wc-subnote" id="wcStorageWarn" hidden data-i18n="wc_storage_warn">本次未本地保存</p>
+  </section>
+
+  <!-- ===== 口径与设置 ===== -->
+  <section class="panel wc-set-panel">
+    <div class="row wc-card-head">
+      <h3 class="sec-title wc-card-title" data-i18n="wc_set_head">统计口径</h3>
+    </div>
+    <!-- 第十一节 任务二：口径区分两行，分组由干系人指定。
+         每组「标签 + 其控件」用 .wc-pair 捆成不可拆的整体（inline-flex + nowrap），
+         多控件组用 .wc-grp 允许按组整体换行；窄屏禁止标签留在上一行、控件掉到下一行。
+         旧的 <span class="sp"> 占位符随重排移除（.sp 仅在 .footer-bar 下有定义，页内本就不生效）。 -->
+    <div class="row">
+      <label class="switch"><span data-i18n="wc_set_ws">含空格</span><input type="checkbox" id="wcOptWs" checked><span class="sw-track"><span class="sw-thumb"></span></span></label>
+      <label class="switch"><span data-i18n="wc_set_punct">含标点</span><input type="checkbox" id="wcOptPunct" checked><span class="sw-track"><span class="sw-thumb"></span></span></label>
+      <div class="wc-pair">
+        <span class="field-label" data-i18n="wc_set_font">字体</span>
+        <div class="segment" role="radiogroup" data-i18n-aria="wc_set_font" aria-label="字体" id="wcFontSeg">
+          <label class="seg"><input type="radio" name="wc-font" value="mono" checked><span class="seg-t" data-i18n="wc_font_mono">等宽</span></label>
+          <label class="seg"><input type="radio" name="wc-font" value="sans"><span class="seg-t" data-i18n="wc_font_sans">常规</span></label>
+        </div>
+      </div>
+      <div class="wc-pair">
+        <span class="field-label" data-i18n="wc_set_limit">限额模板</span>
+        <div class="select pop wc-limit-sel" id="wcLimitSel">
+          <button type="button" class="select-btn" data-pop><span class="select-label" id="wcLimitLabel" data-wc-limit-label>Meta 描述 155</span><i data-lucide="chevron-down"></i></button>
+          <!-- 浮层必须挂在 .pop-panel 里（全站 .pop 展开机制：.pop.open 才显形），
+               直接把 .select-list 放在 .pop 内会常驻可见（复用四层对照教训） -->
+          <div class="pop-panel">
+            <ul class="select-list">
+              <li data-limit="title"><span data-i18n="wc_limit_tpl_title">标题 20</span><i data-lucide="check"></i></li>
+              <li data-limit="xbio"><span data-i18n="wc_limit_tpl_xbio">X 简介 160</span><i data-lucide="check"></i></li>
+              <li data-limit="meta" class="on"><span data-i18n="wc_limit_tpl_meta">Meta 描述 155</span><i data-lucide="check"></i></li>
+              <li data-limit="abstract"><span data-i18n="wc_limit_tpl_abstract">论文摘要 300</span><i data-lucide="check"></i></li>
+              <li data-limit="wechat"><span data-i18n="wc_limit_tpl_wechat">公众号摘要 120</span><i data-lucide="check"></i></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="wc-pair">
+        <span class="field-label" data-i18n="wc_set_speed">默读语速</span>
+        <div class="segment" role="radiogroup" data-i18n-aria="wc_set_speed" aria-label="默读语速" id="wcSpeedSeg">
+          <label class="seg"><input type="radio" name="wc-speed" value="quiet-slow"><span class="seg-t" data-i18n="wc_speed_slow">慢</span></label>
+          <label class="seg"><input type="radio" name="wc-speed" value="quiet-normal" checked><span class="seg-t" data-i18n="wc_speed_normal">常</span></label>
+          <label class="seg"><input type="radio" name="wc-speed" value="quiet-fast"><span class="seg-t" data-i18n="wc_speed_fast">快</span></label>
+        </div>
+      </div>
+      <div class="wc-grp">
+        <div class="wc-pair"><span class="field-label" data-i18n="wc_set_speed_custom">自定义语速</span><input id="wcSpeedZh" class="input wc-speed-input" type="number" min="1" max="2000" step="10" placeholder="400" data-i18n-aria="wc_custom_zh" aria-label="中文语速（字/分）"><span class="wc-unit" data-i18n="wc_unit_cpm">字 / 分</span></div>
+        <div class="wc-pair"><input id="wcSpeedEn" class="input wc-speed-input" type="number" min="1" max="2000" step="10" placeholder="225" data-i18n-aria="wc_custom_en" aria-label="英文语速（词/分）"><span class="wc-unit" data-i18n="wc_unit_wpm">词 / 分</span></div>
+      </div>
+      <!-- 朗读档纳入同一套「每档可调 + 按档分记」（设计文档 4.3）：改这一对只影响「朗读约」 -->
+      <div class="wc-grp">
+        <div class="wc-pair"><span class="field-label" data-i18n="wc_set_speed_speak">朗读语速</span><input id="wcSpeedSpeakZh" class="input wc-speed-input" type="number" min="1" max="2000" step="10" placeholder="220" data-i18n-aria="wc_custom_speak_zh" aria-label="朗读中文语速（字/分）"><span class="wc-unit" data-i18n="wc_unit_cpm">字 / 分</span></div>
+        <div class="wc-pair"><input id="wcSpeedSpeakEn" class="input wc-speed-input" type="number" min="1" max="2000" step="10" placeholder="140" data-i18n-aria="wc_custom_speak_en" aria-label="朗读英文语速（词/分）"><span class="wc-unit" data-i18n="wc_unit_wpm">词 / 分</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 时长·限额 ===== -->
+  <section class="panel">
+    <div class="stat-grid" id="wcTimeGrid" aria-live="polite">
+      <div class="stat"><div class="lb" data-i18n="wc_time_quiet">默读约</div><div class="nm" id="wcTimeQuiet">—</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_time_speak">朗读约</div><div class="nm" id="wcTimeSpeak">—</div></div>
+    </div>
+    <p class="muted wc-note" data-i18n="wc_time_note">时长为估算值，按所选语速与字数估算</p>
+    <div class="stat wc-limit-card">
+      <div class="row"><span class="lb" data-i18n="wc_limit_label">限额余量</span><span class="sp"></span><b id="wcLimitState" data-i18n="wc_limit_safe">安全</b></div>
+      <div class="progress wc-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="wcLimitBar"><span class="progress-bar"></span></div>
+    </div>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="wc_features_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="wc_f_th1">功能</th><th data-i18n="wc_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="wc_f1_name">实时统计</td><td data-i18n="wc_f1_desc">输入即算，总字符、不含空格字符、汉字数、英文词数、句子（估算）、段落与行数实时更新，无需点击按钮。</td></tr>
+          <tr><td data-i18n="wc_f2_name">中英混排</td><td data-i18n="wc_f2_desc">汉字与英文单词分开计数，写作平台同时校验中英文长度时一目了然。</td></tr>
+          <tr><td data-i18n="wc_f3_name">阅读时长估算</td><td data-i18n="wc_f3_desc">默读可选快、常、慢三档，另有朗读档，每档语速均可自行调整，帮助规划录制与讲解节奏。</td></tr>
+          <tr><td data-i18n="wc_f4_name">平台限额预检</td><td data-i18n="wc_f4_desc">内置常见平台描述 / 标题字符上限模板，写作时即可判断是否超限。</td></tr>
+          <tr><td data-i18n="wc_f5_name">隐私保护</td><td data-i18n="wc_f5_desc">全部统计在浏览器本地完成，文本不上传服务器，断网后也能继续使用。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="wc_usecases_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="wc_u1_t">新媒体写作</div><div class="nm seo-desc" data-i18n="wc_u1_d">实时看中文字数与字符数，对照 160 字简介、155 字 Meta 描述等平台上限提前预检</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_u2_t">中英混排校对</div><div class="nm seo-desc" data-i18n="wc_u2_d">汉字与英文单词分开计数，空格与标点两项口径开关对照平台要求</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_u3_t">朗读脚本规划</div><div class="nm seo-desc" data-i18n="wc_u3_d">默读三档加朗读档，语速可自定义，估算时长以安排视频录制与讲解节奏</div></div>
+      <div class="stat"><div class="lb" data-i18n="wc_u4_t">论文作业检查</div><div class="nm seo-desc" data-i18n="wc_u4_d">句子、段落、行数一起核对，快速确认字数与结构是否符合要求</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="wc_faq_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="wc_q_th1">问题</th><th data-i18n="wc_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="wc_q1">数据会上传到服务器吗？</td><td data-i18n="wc_a1">不会。全部统计在浏览器本地完成，可断网使用，文本不上传。</td></tr>
+          <tr><td data-i18n="wc_q2">汉字数和英文词数怎么区分？</td><td data-i18n="wc_a2">汉字按单字计数；英文按单词计数，连字符词算一个词、网址与邮箱算一个单元；数字串单独计数，不并入英文词数；中英混排时分别列出。</td></tr>
+          <tr><td data-i18n="wc_q3">"含空格 / 不含空格"是什么意思？</td><td data-i18n="wc_a3">「含空格」决定是否计入空白字符，「含标点」决定是否计入标点符号；按平台常用口径关掉对应项，可对照其字符上限。</td></tr>
+          <tr><td data-i18n="wc_q4">阅读时长是怎么估算的？</td><td data-i18n="wc_a4">默读有快、常、慢三档，另有朗读档，四档语速都可自行修改；结果显示为「约 X 分钟」，仅供参考。</td></tr>
+          <tr><td data-i18n="wc_q5">段落数和行数有什么区别？</td><td data-i18n="wc_a5">段落按空行划分：只有空行才算新段落，段内的单个换行不换段；行数按实际换行统计，因此行数通常不少于段落数。</td></tr>
+          <tr><td data-i18n="wc_q6">需要注册登录吗？</td><td data-i18n="wc_a6">不需要，打开网页即可使用，无任何账号要求。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<div class="modal" id="wcClearModal" role="dialog" aria-modal="true" data-i18n-aria="wc_clear_title" aria-label="清空文本？">
+  <div class="modal-mask" data-close></div>
+  <div class="modal-card">
+    <h3 data-i18n="wc_clear_title">清空文本？</h3>
+    <p data-i18n="wc_clear_desc">将删除当前全部文本与草稿，此操作不可撤销。</p>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost" data-close data-i18n="wc_clear_cancel">取消</button>
+      <button type="button" class="btn btn-danger" id="wcClearConfirm" data-i18n="wc_clear_ok">清空</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+      <p class="footer-social">
+        <a class="footer-social-link" href="https://github.com/moteful/home" target="_blank" rel="noopener noreferrer" data-i18n-aria="foot_github" aria-label="GitHub repository" title="GitHub repository"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></a>
+        <a class="footer-social-link" href="mailto:moteful@outlook.com" data-i18n-aria="foot_email" aria-label="Email us" title="Email us"><i data-lucide="mail"></i></a>
+        <button type="button" class="footer-social-link" data-footer-share data-i18n-aria="foot_share" aria-label="Share this page" title="Share this page"><i data-lucide="share-2"></i></button>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v2.0.5</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -7,6 +7,27 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v2.0.5",
+    "date": "2026-11-04",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Developer Tools - Word Counter",
+          "Live counts for Chinese characters, English words, characters, paragraphs and lines",
+          "Draft autosaves; drop in a txt file to count it"
+        ]
+      },
+      {
+        "title": "Improved",
+        "points": [
+          "Image Tools - Stitch: grid rows/columns rule adjusted",
+          "Image Tools - Stitch: fixed the abnormal export size bug"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.0.4",
     "date": "2026-10-30",
     "sections": [
