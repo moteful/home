@@ -7,8 +7,8 @@
 
 const CHANGELOG_EN = [
   {
-    "version": "v2.0.5",
-    "date": "2026-11-04",
+    "version": "v2.0.6",
+    "date": "2026-11-07",
     "sections": [
       {
         "title": "New",
@@ -22,7 +22,8 @@ const CHANGELOG_EN = [
         "title": "Improved",
         "points": [
           "Image Tools - Stitch: grid rows/columns rule adjusted",
-          "Image Tools - Stitch: fixed the abnormal export size bug"
+          "Image Tools - Stitch: fixed the abnormal export size bug",
+          "Home page toolbox: click a card to open the tool"
         ]
       }
     ]

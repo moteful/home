@@ -42,9 +42,15 @@
     try { document.dispatchEvent(new CustomEvent('moteful:langchange', { detail: { lang: l } })); } catch (e) {}
   }
   window.applyLang = applyLang;
-  var savedLang; try { savedLang = localStorage.getItem('moteful-lang'); } catch (e) {}
-  if (!savedLang) { savedLang = (navigator.language && navigator.language.toLowerCase().indexOf('zh') >= 0) ? 'zh' : 'en'; }
+  /* 语种优先取 head 预置脚本的结果（window.MF_LANG，首帧前已判定）；预置脚本缺失时回退原本判定逻辑 */
+  var savedLang = window.MF_LANG;
+  if (savedLang !== 'zh' && savedLang !== 'en') {
+    try { savedLang = localStorage.getItem('moteful-lang'); } catch (e) {}
+    if (!savedLang) { savedLang = (navigator.language && navigator.language.toLowerCase().indexOf('zh') >= 0) ? 'zh' : 'en'; }
+  }
   applyLang(savedLang === 'zh' ? 'zh' : 'en');
+  /* 换词完成，解除 head 预置脚本挂的「待译暂遮」标记（配套样式见 assets/css/missing_styles_proposal.css） */
+  document.documentElement.removeAttribute('data-i18n-pending');
   var langBtn = document.getElementById('langBtn');
   if (langBtn) {
     langBtn.addEventListener('click', function () {

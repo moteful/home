@@ -202,6 +202,27 @@ for (const page of cfg.pages) {
       changed.push('baidu-meta');
     } else changed.push('baidu-meta(缺失)');
   }
+  // 语种防闪（V2.0.6）：全站 <head> 幂等注入语种预置脚本。
+  // 静态兜底文案是英文，而 i18n 引擎在 </body> 前才执行，浏览器先绘制英文再换词 = 中文用户每次刷新闪一次英文。
+  // 预置脚本在首帧之前判定语种（判定口径与 assets/js/moteful.js 的 LANG_KEYS 一致），中文态给 <html> 打
+  // data-i18n-pending，配套暂遮样式在 assets/css/missing_styles_proposal.css，i18n.js 换词完成后摘除标记。
+  // 英文态不打标记（兜底本就是英文，无闪可防）；2500ms 看门狗兜底，词典脚本万一加载失败不至于永久隐身。
+  const LANG_GUARD_MARK = '/*MF_LANG*/';
+  const langGuardScript = `  <script>${LANG_GUARD_MARK}(function(){
+  var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
+  try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
+  if(v!=='zh'&&v!=='en'){v=(navigator.language&&navigator.language.toLowerCase().indexOf('zh')>=0)?'zh':'en';}
+  var g=(v==='zh')?'zh':'en';window.MF_LANG=g;
+  if(g==='zh'){var h=document.documentElement;h.setAttribute('data-i18n-pending','1');
+  setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
+})();</script>`;
+  if (!html.includes(LANG_GUARD_MARK)) {
+    drifted.push(page);
+    if (!CHECK) {
+      html = html.replace('</head>', langGuardScript + '\n</head>');
+      changed.push('lang-guard');
+    } else changed.push('lang-guard(缺失)');
+  }
   // 内联推荐（V1.1）：注入 rec.css / rec.js / 弹窗块（受 recommend-config.json 驱动）
   const recPre = path.dirname(page) === '.' ? '' : '../';
   const recCssHref = recPre + REC_CSS;

@@ -12,8 +12,8 @@
 
 const CHANGELOG_ZH = [
   {
-    "version": "v2.0.5",
-    "date": "2026-11-04",
+    "version": "v2.0.6",
+    "date": "2026-11-07",
     "sections": [
       {
         "title": "新增",
@@ -27,7 +27,8 @@ const CHANGELOG_ZH = [
         "title": "优化",
         "points": [
           "图片工具-拼接 网格行列设置规则调整",
-          "图片工具-拼接 修复导出尺寸异常的bug"
+          "图片工具-拼接 修复导出尺寸异常的bug",
+          "首页-工具箱 点击卡片即可进入页面"
         ]
       }
     ]

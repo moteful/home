@@ -867,3 +867,9 @@ textarea.wc-editor.wc-sans{font-family:var(--font)}
   .wc-limit-sel .pop-panel{position:fixed;top:auto;bottom:8px;left:8px;right:8px;
     max-height:calc(100vh - 16px)}
 }
+/* ===== 语种防闪（V2.0.6）=====
+   静态兜底文案是英文，i18n 引擎在 </body> 前才执行 → 中文用户每次刷新先看到英文再被换词。
+   head 内联预置脚本（由 _governance/inject_site.mjs 全站下发）在首帧前判定语种，中文态给 <html> 打
+   data-i18n-pending；i18n.js 换词完成后摘除，预置脚本另有 2500ms 看门狗，词典万一加载失败不会永久隐身。
+   英文态不打标记（兜底本就是英文）。用 visibility 而非 display：盒子保留 → 换词时零布局位移。 */
+html[data-i18n-pending] [data-i18n]{visibility:hidden}

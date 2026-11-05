@@ -212,7 +212,6 @@
     resultEl.innerHTML = emptyState('search', 'rx_need_pattern', 'rx_need_pattern_desc', '20px');
     if (window.refreshIcons) window.refreshIcons();
   }
-  function renderEmpty() { renderNoPattern(); }
 
   /* 高亮渲染：DOM 节点拼接，文本一律 textContent 写入（杜绝 XSS/破版）；
      index/end 为与 Worker 同源的 UTF-16 码元偏移，中英混排与代理对都不会截断；奇偶 match 交替两色 */
