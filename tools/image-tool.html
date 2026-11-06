@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -16,6 +16,7 @@
 <meta property="og:url" content="https://moteful.app/tools/image-tool.html">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
@@ -36,6 +37,7 @@
   "url": "https://moteful.app/tools/image-tool.html",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Web (任何现代浏览器)",
+  "inLanguage": ["zh-CN", "en", "es"],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -63,7 +65,7 @@
   }
 }
 </script>
-<meta name="description" id="metaDesc" content="免费在线图片批量处理工具，支持批量压缩、压缩到指定大小（50KB~1MB）、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪，支持剪贴板粘贴导入。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
+<meta name="description" data-i18n-content="meta_desc_tool" id="metaDesc" content="免费在线图片批量处理工具，支持批量压缩、压缩到指定大小（50KB~1MB）、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪，支持剪贴板粘贴导入。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
 <!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
 <script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
 if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
@@ -76,34 +78,6 @@ document.documentElement.dataset.theme=v;})();</script>
   <link rel="stylesheet" href="../assets/css/share.css">
 <script src="../assets/js/moteful.js" defer></script>
   <script src="../assets/js/recommend.js" defer></script>
-<script>
-// SEO：页面加载和语言切换时更新 meta description / og:description
-(function(){
-  function updateSeoMeta(){
-    try{
-      var desc = (window.I18N && window.I18N.t && window.I18N.t('meta_desc_tool')) ||
-                 (window.MOTEFUL_I18N && window.MOTEFUL_I18N.zh && window.MOTEFUL_I18N.zh.meta_desc_tool) ||
-                 '免费在线图片批量处理工具，支持批量压缩、格式转换、尺寸调整、旋转翻转裁剪。全部在浏览器本地运行，图片不上传，保护隐私。';
-      var metaDesc = document.getElementById('metaDesc');
-      var ogDesc = document.getElementById('ogDesc');
-      if(metaDesc) metaDesc.setAttribute('content', desc);
-      if(ogDesc) ogDesc.setAttribute('content', desc);
-    }catch(e){}
-  }
-  // 页面加载时更新
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', updateSeoMeta);
-  } else {
-    updateSeoMeta();
-  }
-  // 语言切换时更新（监听 lang-item 点击）
-  document.addEventListener('click', function(e){
-    if(e.target.closest('.lang-item')){
-      setTimeout(updateSeoMeta, 50);
-    }
-  });
-})();
-</script>
   <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
   <meta name="moteful-siteurl" content="https://moteful.app">
   <meta name="moteful-pagepath" content="tools/image-tool">
@@ -117,9 +91,11 @@ document.documentElement.dataset.theme=v;})();</script>
   <script>/*MF_LANG*/(function(){
   var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
   try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
-  if(v!=='zh'&&v!=='en'){v=(navigator.language&&navigator.language.toLowerCase().indexOf('zh')>=0)?'zh':'en';}
-  var g=(v==='zh')?'zh':'en';window.MF_LANG=g;
-  if(g==='zh'){var h=document.documentElement;h.setAttribute('data-i18n-pending','1');
+  var n=(navigator.language||'').toLowerCase();
+  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
+  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
+  if(g!=='en'){h.setAttribute('data-i18n-pending','1');
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
 })();</script>
 </head>
@@ -198,6 +174,7 @@ document.documentElement.dataset.theme=v;})();</script>
       <div class="menu pop-panel">
         <button class="menu-item lang-item" data-lang="zh">简体中文</button>
         <button class="menu-item lang-item" data-lang="en">English</button>
+        <button class="menu-item lang-item" data-lang="es">Español</button>
       </div>
     </div>
     <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
@@ -595,7 +572,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.0.6</span>
+    <span data-i18n="foot_version">v2.0.7</span>
   </div>
 </footer>
 
@@ -616,6 +593,7 @@ document.documentElement.dataset.theme=v;})();</script>
           <div class="menu pop-panel">
             <button class="menu-item lang-item" data-lang="zh">简体中文</button>
             <button class="menu-item lang-item" data-lang="en">English</button>
+            <button class="menu-item lang-item" data-lang="es">Español</button>
           </div>
         </div>
         <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
@@ -800,6 +778,7 @@ document.documentElement.dataset.theme=v;})();</script>
 
 <script src="../assets/i18n/en.js"></script>
 <script src="../assets/i18n/zh.js"></script>
+<script src="../assets/i18n/es.js"></script>
 <script src="../assets/i18n/i18n.js"></script>
 <script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
 <script src="../assets/js/qrcode-core.js" defer></script>

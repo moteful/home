@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title data-i18n="title_support">Support Moteful</title>
-<meta name="description" content="Support Moteful's free, privacy-first tools.">
+<meta name="description" data-i18n-content="meta_desc_support" content="Support Moteful's free, privacy-first tools.">
 <!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统 -->
 <script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
 if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
@@ -21,6 +21,18 @@ document.documentElement.dataset.theme=v;})();</script>
 
   <link rel="alternate" hreflang="x-default" href="https://moteful.app/support.html">
   <link rel="canonical" href="https://moteful.app/support.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Moteful">
+  <meta property="og:title" content="Support Moteful">
+  <meta property="og:description" content="Support Moteful's free, privacy-first tools.">
+  <meta property="og:url" content="https://moteful.app/support.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Support Moteful">
+  <meta name="twitter:description" content="Support Moteful's free, privacy-first tools.">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2226711164508785" crossorigin="anonymous"></script>
   <meta name="google-adsense-account" content="ca-pub-2226711164508785">
   <meta name="baidu-site-verification" content="codeva-Ok5o1J5DOp">
@@ -29,9 +41,11 @@ document.documentElement.dataset.theme=v;})();</script>
   <script>/*MF_LANG*/(function(){
   var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
   try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
-  if(v!=='zh'&&v!=='en'){v=(navigator.language&&navigator.language.toLowerCase().indexOf('zh')>=0)?'zh':'en';}
-  var g=(v==='zh')?'zh':'en';window.MF_LANG=g;
-  if(g==='zh'){var h=document.documentElement;h.setAttribute('data-i18n-pending','1');
+  var n=(navigator.language||'').toLowerCase();
+  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
+  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
+  if(g!=='en'){h.setAttribute('data-i18n-pending','1');
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
 })();</script>
 </head>
@@ -110,6 +124,7 @@ document.documentElement.dataset.theme=v;})();</script>
       <div class="menu pop-panel">
         <button class="menu-item lang-item" data-lang="zh">简体中文</button>
         <button class="menu-item lang-item" data-lang="en">English</button>
+        <button class="menu-item lang-item" data-lang="es">Español</button>
       </div>
     </div>
     <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
@@ -209,7 +224,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.0.6</span>
+    <span data-i18n="foot_version">v2.0.7</span>
   </div>
 </footer>
 
@@ -229,6 +244,7 @@ document.documentElement.dataset.theme=v;})();</script>
           <div class="menu pop-panel">
             <button class="menu-item lang-item" data-lang="zh">简体中文</button>
             <button class="menu-item lang-item" data-lang="en">English</button>
+            <button class="menu-item lang-item" data-lang="es">Español</button>
           </div>
         </div>
         <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
@@ -413,6 +429,7 @@ document.documentElement.dataset.theme=v;})();</script>
 
 <script src="assets/i18n/en.js"></script>
 <script src="assets/i18n/zh.js"></script>
+<script src="assets/i18n/es.js"></script>
 <script src="assets/i18n/i18n.js"></script>
 <script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
 </body>

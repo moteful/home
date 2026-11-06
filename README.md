@@ -5,7 +5,7 @@
 A **privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v2.0.4** · 21 pages · bilingual (中文 / English)
+> Status: **v2.0.7** · 22 pages · trilingual (中文 / English / Español)
 
 ---
 
@@ -13,7 +13,7 @@ Your images are processed locally and **never leave your device** — no upload,
 
 - **100% in-browser** — pure client-side processing, privacy by design.
 - **Zero build step** — vanilla HTML/CSS/JS, no `node_modules`, no bundler.
-- **Bilingual UI** — 中文 / English, switchable at runtime.
+- **Trilingual UI** — 中文 / English / Español, switchable at runtime, with no language flash on reload.
 - **Consistent design** — enforced by a built-in governance suite (lint + spec assertions + template injection).
 - **Share & SEO ready** — share panel with config-preset links / QR codes (v1.4), compare-result cards, social footer row, OG/Twitter/canonical/hreflang/JSON-LD tags (v1.4.4).
 - **Icon toolbox (v1.5)** — SVG icon editor: recolor, stroke, scale, rotate/flip, custom color picker, multi-size export & one-click ZIP; tool pages cross-recommend each other.
@@ -23,6 +23,9 @@ Your images are processed locally and **never leave your device** — no upload,
 - **PNG compression (v1.8)** — in-browser PNG compressor: palette quantization (perceptual weighted + adaptive bit-depth), three presets (Balanced / High / Extreme), lossless pass-through for photos, batch import & ZIP export, download/export triggers in-page recommendations.
 - **Icon tool v1.9** — ICO/ICNS import & export: decode BMP/PNG ICO entries and ICNS PNG blocks into the editor, export multi-size container files (ICO 16–256 / ICNS 16–512); system-icon workflow on Windows & macOS.
 - **Image cropper v2.0** — original-image processing, free viewfinder, ratio/custom-ratio cropping, even grid splitting, transparent trim, fixed-size output, rotate/flip, batch import and ZIP export.
+- **Word counter (v2.0.5)** — in-browser text stats: Chinese characters, English words, characters, paragraphs and lines; draft autosaves and a `.txt` file can be dropped in. Same round fixed mobile layout (labels never split from controls, ≥44px touch targets).
+- **Home toolbox refresh (v2.0.6)** — the whole tool card is clickable, and a pre-paint language guard stops the reload flash that briefly showed English before your language.
+- **Spanish & trilingual SEO (v2.0.7)** — full Español dictionary (three dictionaries, identical key order), trilingual changelog, localized title/description on all 22 pages, and Open Graph + Twitter share cards on every registered page.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -48,6 +51,7 @@ Your images are processed locally and **never leave your device** — no upload,
 | `tools/id-photo-tool.html` | ID photo tool (spec crop / layout / export) |
 | `dev/json.html` | JSON formatter / minifier / validator |
 | `dev/regex.html` | Regex tester (Worker-driven) |
+| `dev/word-counter.html` | Word counter (Chinese characters / English words / paragraphs & lines) |
 | `games/block-clear.html` | Block Clear (relaxing puzzle) |
 | `games/snake.html` | Snake |
 | `games/sudoku.html` | Sudoku |
@@ -58,8 +62,8 @@ Your images are processed locally and **never leave your device** — no upload,
 ## 🛠 Tech stack
 
 - **Frontend:** vanilla HTML + CSS + JavaScript, no framework, no build step.
-- **i18n:** `assets/i18n/{zh,en}.js` (dictionary-driven, strict 1:1 key parity).
-- **Core styles/scripts** (`moteful.css` / `moteful.js` / `template.html`) are **read-only contracts** — see `CONTRACT.md`.
+- **i18n:** `assets/i18n/{zh,en,es}.js` (dictionary-driven, strict 1:1 key-order parity across all three languages) plus `assets/i18n/update/{zh,en,es}.js` for the in-page changelog.
+- **Core styles/scripts** (`moteful.css` / `moteful.js` / `template.html`) are **read-only contracts** — see `_governance/CONTRACT.md`.
 - **Governance** (`_governance/`): keeps all pages UI-consistent and self-checking.
 
 ---
@@ -76,7 +80,7 @@ python3 -m http.server 8000
 ### Quality gates (run before committing)
 
 ```bash
-node _governance/inject_site.mjs --check   # drift check across 21 pages (must be 0)
+node _governance/inject_site.mjs --check   # drift check across 22 pages (must be 0)
 node _governance/lint.mjs                  # style/lint (must have 0 errors)
 node _governance/assert_spec.mjs           # spec assertions (requires Playwright)
 ```
@@ -89,13 +93,13 @@ node _governance/assert_spec.mjs           # spec assertions (requires Playwrigh
 moteful/
 ├── index.html, support.html, 404.html
 ├── tools/            # image tools (image-tool, stitch, png-compressor, crop-tool, annotate, qrcode, icon-tool, id-photo-tool)
-├── dev/              # developer tools (json, regex)
+├── dev/              # developer tools (json, regex, word-counter)
 ├── games/            # mini-games (block-clear, snake, sudoku)
 ├── legal/            # about / contact / credits / privacy / terms
 ├── assets/
 │   ├── css/          # moteful.css (read-only) + module css (rec- namespace)
 │   ├── js/           # moteful.js (read-only) + modules (recommend.js, qrcode-core.js …)
-│   └── i18n/         # zh.js / en.js
+│   └── i18n/         # zh.js / en.js / es.js + update/ (changelog)
 ├── _governance/      # inject_site.mjs, lint.mjs, assert_spec.mjs, configs
 └── template.html     # read-only page skeleton
 ```
@@ -115,7 +119,7 @@ otherwise it is silently skipped by the quality gates:
 2. `lint.config.json` → page list
 3. `spec_rules.csv` → applicable-pages column
 
-See `USER_PROMPT.md` for the full onboarding guide.
+See `_governance/USER_PROMPT.md` for the full onboarding guide.
 
 ---
 

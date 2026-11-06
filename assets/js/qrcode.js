@@ -111,8 +111,8 @@
 
     // meta：版本 / 模块数 / 纠错 / 字节
     var meta = document.querySelector('[data-i18n="qr_meta"]');
-    var t = (window.MOTEFUL_I18N && window.MOTEFUL_I18N[document.documentElement.lang === 'en' ? 'en' : 'zh'] &&
-      window.MOTEFUL_I18N[document.documentElement.lang === 'en' ? 'en' : 'zh'].qr_meta) || '版本 {v} · {n}×{n} 模块 · 纠错 {ecc} · {bytes} 字节';
+    var L = window.currentLang || (document.documentElement.lang === 'zh-CN' ? 'zh' : document.documentElement.lang === 'es' ? 'es' : 'en');
+    var t = (window.MOTEFUL_I18N && window.MOTEFUL_I18N[L] && window.MOTEFUL_I18N[L].qr_meta) || '版本 {v} · {n}×{n} 模块 · 纠错 {ecc} · {bytes} 字节';
     $('qrMeta').textContent = t.replace('{v}', result.version).replace(/{n}/g, result.size)
       .replace('{ecc}', getChecked('qrEcc')).replace('{bytes}', result.byteLen);
   }

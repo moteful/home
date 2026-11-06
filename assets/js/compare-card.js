@@ -20,7 +20,7 @@
       var s = window.t(key);
       if (s !== key) return s;
     }
-    var d = (window.MOTEFUL_I18N || {})[(window.currentLang === 'zh' ? 'zh' : 'en')] || {};
+    var d = (window.MOTEFUL_I18N || {})[window.currentLang || 'en'] || {};
     return (d[key] != null) ? d[key] : key;
   }
 

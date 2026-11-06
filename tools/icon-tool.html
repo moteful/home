@@ -6,7 +6,7 @@
 
 <!-- ===== SEO：基础 ===== -->
 <title data-i18n="title_icon">图标工具 - 在线 SVG 图标编辑器 | Moteful</title>
-<meta name="description" content="免费在线 SVG 图标工具：改色、描边、背景、缩放、旋转、翻转，一键导出 SVG/PNG/JPG/WebP 任意尺寸。全部在浏览器本地处理，内容不上传。">
+<meta name="description" data-i18n-content="meta_desc_icon" content="免费在线 SVG 图标工具：改色、描边、背景、缩放、旋转、翻转，一键导出 SVG/PNG/JPG/WebP 任意尺寸。全部在浏览器本地处理，内容不上传。">
 <meta name="keywords" content="图标工具,SVG编辑器,图标改色,在线图标,图标导出,favicon生成,SVG转PNG,图标工具在线">
 <meta name="author" content="Moteful">
 <meta name="robots" content="index, follow">
@@ -19,6 +19,7 @@
 <meta property="og:url" content="https://moteful.app/tools/icon-tool.html">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
 
 <!-- ===== SEO：Twitter Card ===== -->
 <meta name="twitter:card" content="summary_large_image">
@@ -39,6 +40,7 @@
   "url": "https://moteful.app/tools/icon-tool.html",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Web (任何现代浏览器)",
+  "inLanguage": ["zh-CN", "en", "es"],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -89,9 +91,11 @@ document.documentElement.dataset.theme=v;})();</script>
   <script>/*MF_LANG*/(function(){
   var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
   try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
-  if(v!=='zh'&&v!=='en'){v=(navigator.language&&navigator.language.toLowerCase().indexOf('zh')>=0)?'zh':'en';}
-  var g=(v==='zh')?'zh':'en';window.MF_LANG=g;
-  if(g==='zh'){var h=document.documentElement;h.setAttribute('data-i18n-pending','1');
+  var n=(navigator.language||'').toLowerCase();
+  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
+  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
+  if(g!=='en'){h.setAttribute('data-i18n-pending','1');
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
 })();</script>
 </head>
@@ -166,6 +170,7 @@ document.documentElement.dataset.theme=v;})();</script>
       <div class="menu pop-panel">
         <button class="menu-item lang-item" data-lang="zh">简体中文</button>
         <button class="menu-item lang-item" data-lang="en">English</button>
+        <button class="menu-item lang-item" data-lang="es">Español</button>
       </div>
     </div>
     <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
@@ -188,6 +193,7 @@ document.documentElement.dataset.theme=v;})();</script>
           <div class="menu pop-panel">
             <button class="menu-item lang-item" data-lang="zh">简体中文</button>
             <button class="menu-item lang-item" data-lang="en">English</button>
+            <button class="menu-item lang-item" data-lang="es">Español</button>
           </div>
         </div>
         <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
@@ -759,12 +765,13 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.0.6</span>
+    <span data-i18n="foot_version">v2.0.7</span>
   </div>
 </footer>
 
 <script src="../assets/i18n/en.js"></script>
 <script src="../assets/i18n/zh.js"></script>
+<script src="../assets/i18n/es.js"></script>
 <script src="../assets/i18n/i18n.js"></script>
 <script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
 <script src="../assets/js/icon-render.js" defer></script>

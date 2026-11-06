@@ -7,12 +7,13 @@
 
 const CHANGELOG_EN = [
   {
-    "version": "v2.0.6",
+    "version": "v2.0.7",
     "date": "2026-11-07",
     "sections": [
       {
         "title": "New",
         "points": [
+          "Spanish language",
           "Developer Tools - Word Counter",
           "Live counts for Chinese characters, English words, characters, paragraphs and lines",
           "Draft autosaves; drop in a txt file to count it"

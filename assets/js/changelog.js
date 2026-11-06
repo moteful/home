@@ -2,8 +2,8 @@
  * Moteful 更新日志卡片渲染脚本
  *
  * 功能：
- * 1. 根据当前语言选择对应数据（CHANGELOG_ZH / CHANGELOG_EN）
- * 2. 语种降级：中文地区缺文件用中文，非中文地区缺文件用英文
+ * 1. 根据当前语言选择对应数据（CHANGELOG_ZH / CHANGELOG_EN / CHANGELOG_ES）
+ * 2. 语种降级：本语种数据缺失时，中文地区用中文，其余用英文（英文是站点默认语言）
  * 3. 只显示最近 3 个版本，每个版本最多 3 条要点
  */
 
@@ -12,33 +12,33 @@
 
   /**
    * 获取当前站点语言（与全站 i18n 保持一致）
+   * i18n.js 是同步脚本，先于本脚本跑完判定（预置结果 → localStorage → 浏览器语言），
+   * 所以这里直接复用它的口径，避免两套判定互相不一致。
    */
   function getCurrentLang() {
-    // 优先用 i18n.js 设置的全局变量
-    if (window.currentLang === 'zh' || window.currentLang === 'en') return window.currentLang;
-    // 其次从 localStorage 读取
+    var v = window.currentLang || window.MF_LANG;
+    if (typeof window.normLang === 'function') return window.normLang(v);
+    if (v === 'zh' || v === 'es') return v;
+    if (v === 'en') return 'en';
     var saved = localStorage.getItem('moteful-lang');
-    if (saved === 'zh' || saved === 'en') return saved;
-    // 默认跟随浏览器语言
-    return navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+    if (saved === 'zh' || saved === 'es') return saved;
+    if (saved === 'en') return 'en';
+    var nav = (navigator.language || '').toLowerCase();
+    return nav.indexOf('zh') >= 0 ? 'zh' : (nav.indexOf('es') === 0 ? 'es' : 'en');
   }
 
   /**
-   * 根据语言获取更新日志数据
-   * 降级规则：
-   * - 当前语言有数据就用
-   * - 中文地区（zh-CN / zh-TW / zh-HK）缺英文文件时用中文
-   * - 非中文地区缺中文文件时用英文
+   * 根据语言获取更新日志数据（缺本语种数据时按地区降级）
    */
   function getChangelogData(lang) {
-    // 当前语言有数据就用
+    if (lang === 'es' && typeof CHANGELOG_ES !== 'undefined') return CHANGELOG_ES;
     if (lang === 'zh' && typeof CHANGELOG_ZH !== 'undefined') return CHANGELOG_ZH;
     if (lang === 'en' && typeof CHANGELOG_EN !== 'undefined') return CHANGELOG_EN;
 
-    // 降级：判断用户地区
-    var isChineseRegion = navigator.language && navigator.language.toLowerCase().startsWith('zh');
-    if (isChineseRegion && typeof CHANGELOG_ZH !== 'undefined') return CHANGELOG_ZH;
-    if (!isChineseRegion && typeof CHANGELOG_EN !== 'undefined') return CHANGELOG_EN;
+    // 降级：中文地区用中文，其余一律用英文（英文为站点默认语言）
+    if (navigator.language && navigator.language.toLowerCase().indexOf('zh') === 0 && typeof CHANGELOG_ZH !== 'undefined') return CHANGELOG_ZH;
+    if (typeof CHANGELOG_EN !== 'undefined') return CHANGELOG_EN;
+    if (typeof CHANGELOG_ZH !== 'undefined') return CHANGELOG_ZH;
 
     return []; // 都没有就返回空
   }

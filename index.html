@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title data-i18n="title_index">Moteful — Free online tools that run 100% in your browser</title>
-<meta name="description" content="Moteful is a collection of free, privacy-first online tools: image compression to a target size, format conversion, stitching, annotation, QR codes and SVG icon editing. Your files are processed locally in your browser and never uploaded to any server.">
+<meta name="description" data-i18n-content="meta_desc_index" content="Moteful is a collection of free, privacy-first online tools: image compression to a target size, format conversion, stitching, annotation, QR codes and SVG icon editing. Your files are processed locally in your browser and never uploaded to any server.">
 <!-- 两态主题预置：正式键 → 旧键 → 跟随系统 -->
 <script>
 (function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
@@ -29,8 +29,9 @@ document.documentElement.dataset.theme=v;})();
   <meta property="og:title" content="Moteful — Free online tools that run 100% in your browser">
   <meta property="og:description" content="Moteful is a collection of free, privacy-first online tools: image compression to a target size, format conversion, stitching, annotation, QR codes and SVG icon editing. Your files are processed locally and never uploaded.">
   <meta property="og:url" content="https://moteful.app/">
-  <meta property="og:locale" content="zh_CN">
-  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <meta property="og:locale:alternate" content="es_ES">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Moteful — Free online tools that run 100% in your browser">
   <meta name="twitter:description" content="Moteful is a collection of free, privacy-first online tools: image compression to a target size, format conversion, stitching, annotation, QR codes and SVG icon editing. Your files are processed locally and never uploaded.">
@@ -43,7 +44,7 @@ document.documentElement.dataset.theme=v;})();
   "alternateName": "Moteful 免费在线工具",
   "url": "https://moteful.app/",
   "description": "Moteful 是免费、隐私优先的在线工具集：图片批量压缩/压缩到指定大小/格式转换/尺寸调整、拼接、标注、二维码、SVG 图标编辑等，全部在浏览器本地运行，文件不上传。",
-  "inLanguage": "zh-CN",
+  "inLanguage": ["zh-CN", "en", "es"],
   "publisher": {
     "@type": "Organization",
     "name": "Moteful",
@@ -69,9 +70,11 @@ document.documentElement.dataset.theme=v;})();
   <script>/*MF_LANG*/(function(){
   var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
   try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
-  if(v!=='zh'&&v!=='en'){v=(navigator.language&&navigator.language.toLowerCase().indexOf('zh')>=0)?'zh':'en';}
-  var g=(v==='zh')?'zh':'en';window.MF_LANG=g;
-  if(g==='zh'){var h=document.documentElement;h.setAttribute('data-i18n-pending','1');
+  var n=(navigator.language||'').toLowerCase();
+  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
+  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
+  if(g!=='en'){h.setAttribute('data-i18n-pending','1');
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
 })();</script>
 </head>
@@ -151,6 +154,7 @@ document.documentElement.dataset.theme=v;})();
       <div class="menu pop-panel">
         <button class="menu-item lang-item" data-lang="zh">简体中文</button>
         <button class="menu-item lang-item" data-lang="en">English</button>
+        <button class="menu-item lang-item" data-lang="es">Español</button>
       </div>
     </div>
     <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
@@ -161,7 +165,7 @@ document.documentElement.dataset.theme=v;})();
 
   <!-- ===== Hero ===== -->
   <section class="hero">
-    <div class="kicker">MOTEFUL · SMALL TOOLS, FULLY LOADED</div>
+    <div class="kicker" data-i18n="hero_kicker">MOTEFUL · SMALL TOOLS, FULLY LOADED</div>
     <span class="tag t-success tag-dot" data-i18n="badge_local">Processed 100% locally — never uploaded</span>
     <h1 data-i18n="hero_title">Free online tools that respect your privacy</h1>
     <p data-i18n="hero_sub">Compress, convert and resize images right in your browser. No uploads, no size limits, no tracking. Your files never leave your device.</p>
@@ -293,7 +297,7 @@ document.documentElement.dataset.theme=v;})();
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.0.6</span>
+    <span data-i18n="foot_version">v2.0.7</span>
   </div>
 </footer>
 
@@ -314,6 +318,7 @@ document.documentElement.dataset.theme=v;})();
           <div class="menu pop-panel">
             <button class="menu-item lang-item" data-lang="zh">简体中文</button>
             <button class="menu-item lang-item" data-lang="en">English</button>
+            <button class="menu-item lang-item" data-lang="es">Español</button>
           </div>
         </div>
         <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
@@ -499,9 +504,11 @@ document.documentElement.dataset.theme=v;})();
 <!-- i18n 引擎（同步加载，先于 defer 的 moteful.js） -->
 <script src="assets/i18n/en.js"></script>
 <script src="assets/i18n/zh.js"></script>
+<script src="assets/i18n/es.js"></script>
 <script src="assets/i18n/i18n.js"></script>
 <script src="assets/i18n/update/zh.js"></script>
 <script src="assets/i18n/update/en.js"></script>
+<script src="assets/i18n/update/es.js"></script>
 <script src="assets/js/changelog.js" defer></script>
 <script>if(typeof window.applyLang==='function'&&!window.I18N){window.I18N={setLang:window.applyLang};}</script>
 </body>

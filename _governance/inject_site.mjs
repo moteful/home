@@ -207,13 +207,17 @@ for (const page of cfg.pages) {
   // 预置脚本在首帧之前判定语种（判定口径与 assets/js/moteful.js 的 LANG_KEYS 一致），中文态给 <html> 打
   // data-i18n-pending，配套暂遮样式在 assets/css/missing_styles_proposal.css，i18n.js 换词完成后摘除标记。
   // 英文态不打标记（兜底本就是英文，无闪可防）；2500ms 看门狗兜底，词典脚本万一加载失败不至于永久隐身。
+  // V2.0.7：顺带把 <html lang> 也写成判定结果 —— 22 页静态兜底里有 13 页写死 zh-CN，
+  // 西语态要等 i18n.js 才纠正，屏幕阅读器与浏览器翻译提示在此之前都读错语种（与 i18n.js 的 LANG_ATTR 同口径）。
   const LANG_GUARD_MARK = '/*MF_LANG*/';
   const langGuardScript = `  <script>${LANG_GUARD_MARK}(function(){
   var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
   try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
-  if(v!=='zh'&&v!=='en'){v=(navigator.language&&navigator.language.toLowerCase().indexOf('zh')>=0)?'zh':'en';}
-  var g=(v==='zh')?'zh':'en';window.MF_LANG=g;
-  if(g==='zh'){var h=document.documentElement;h.setAttribute('data-i18n-pending','1');
+  var n=(navigator.language||'').toLowerCase();
+  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
+  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
+  if(g!=='en'){h.setAttribute('data-i18n-pending','1');
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
 })();</script>`;
   if (!html.includes(LANG_GUARD_MARK)) {
@@ -222,6 +226,24 @@ for (const page of cfg.pages) {
       html = html.replace('</head>', langGuardScript + '\n</head>');
       changed.push('lang-guard');
     } else changed.push('lang-guard(缺失)');
+  } else if (!/window\.MF_LANG=g;[\s\S]{0,80}?h\.lang=/.test(html)) {
+    // 已注入但仍是旧写法（只认 zh/en，或首帧前没写 <html lang>）→ 整段重写
+    drifted.push(page);
+    if (!CHECK) {
+      html = html.replace(/  <script>\/\*MF_LANG\*\/[\s\S]*?<\/script>/, langGuardScript);
+      changed.push('lang-guard(升级)');
+    } else changed.push('lang-guard(旧版)');
+  }
+  // 西语词典（V2.0.7）：紧随 zh.js 注入 es.js，保持同前缀、同 defer 写法（幂等：已存在则跳过）
+  const zhTagRe = /<script src="((?:\.\.\/)?assets\/i18n\/zh\.js)"( defer)?><\/script>/;
+  if (!/assets\/i18n\/es\.js/.test(html)) {
+    const zm = html.match(zhTagRe);
+    if (!zm) { console.error('✗ ' + page + ': 找不到 zh.js 脚本锚点（es.js 下发）'); process.exit(1); }
+    drifted.push(page);
+    if (!CHECK) {
+      html = html.replace(zhTagRe, (m) => m + '\n' + m.replace('zh.js', 'es.js'));
+      changed.push('es-dict');
+    } else changed.push('es-dict(缺失)');
   }
   // 内联推荐（V1.1）：注入 rec.css / rec.js / 弹窗块（受 recommend-config.json 驱动）
   const recPre = path.dirname(page) === '.' ? '' : '../';
