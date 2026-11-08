@@ -7,6 +7,21 @@
 
 const CHANGELOG_ES = [
   {
+    "version": "v2.1.0",
+    "date": "2026-11-10",
+    "sections": [
+      {
+        "title": "Novedades",
+        "points": [
+          "Herramientas de desarrollo — Conversor de marcas de tiempo",
+          "Convierte marcas de tiempo y fechas en ambos sentidos; detecta segundos/milisegundos automáticamente",
+          "52 zonas horarias con búsqueda; los huecos y solapamientos del horario de verano se señalan claramente",
+          "Seis plantillas de formato con copia en un clic; guarda tus últimas 5 conversiones"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.0.7",
     "date": "2026-11-07",
     "sections": [

@@ -905,8 +905,9 @@ html[data-i18n-pending] [data-i18n],html[data-i18n-pending] .lang-label{visibili
 .ts-col > :nth-child(2){grid-row:2}
 .ts-col > :nth-child(3){grid-row:3}
 .ts-col > :nth-child(4){grid-row:4}
-.ts-inline-field{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px}
+.ts-inline-field{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding-left:15px}
 .ts-inline-field .field-label{white-space:nowrap}
+.ts-inline-field .ts-input,.ts-inline-field .ts-dt{width:100%;max-width:340px}
 /* 两栏结果卡顶边对齐：结果卡紧随上方字段，栏内余量留在底部 */
 .ts-col > .ts-result{margin-top:0}
 .ts-input{font-size:13px;font-family:var(--mono)}
@@ -1015,7 +1016,8 @@ html[data-i18n-pending] [data-i18n],html[data-i18n-pending] .lang-label{visibili
 .select-list li[aria-disabled="true"]{opacity:.45;cursor:not-allowed;pointer-events:none}
 @media (max-width:520px){
   .ts-sel{max-width:none}
-  .ts-inline-field{grid-template-columns:1fr;gap:6px}
+  .ts-inline-field{grid-template-columns:1fr;align-items:start;gap:6px}
+  .ts-inline-field .ts-input,.ts-inline-field .ts-dt{max-width:none}
   /* 窄屏下时间戳值独占一行，避免 19 位日期时间被拆成两半 */
   .ts-amb-opt{display:grid;grid-template-columns:1fr auto;grid-template-areas:"k tag" "v v";row-gap:6px}
   .ts-amb-k{grid-area:k}

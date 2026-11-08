@@ -59,7 +59,7 @@
       "new": true
     },
     "dev/json.html": {
-      "icon": "code",
+      "icon": "file-braces",
       "labelKey": "nav_dev_json",
       "label": "Json"
     },

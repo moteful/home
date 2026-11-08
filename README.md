@@ -5,7 +5,7 @@
 A **privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v2.0.7** · 22 pages · trilingual (中文 / English / Español)
+> Status: **v2.1.1** · 23 pages · trilingual (中文 / English / Español)
 
 ---
 
@@ -26,6 +26,8 @@ Your images are processed locally and **never leave your device** — no upload,
 - **Word counter (v2.0.5)** — in-browser text stats: Chinese characters, English words, characters, paragraphs and lines; draft autosaves and a `.txt` file can be dropped in. Same round fixed mobile layout (labels never split from controls, ≥44px touch targets).
 - **Home toolbox refresh (v2.0.6)** — the whole tool card is clickable, and a pre-paint language guard stops the reload flash that briefly showed English before your language.
 - **Spanish & trilingual SEO (v2.0.7)** — full Español dictionary (three dictionaries, identical key order), trilingual changelog, localized title/description on all 22 pages, and Open Graph + Twitter share cards on every registered page.
+- **Timestamp converter (v2.1.0)** — bidirectional Unix timestamp ↔ date conversion, 52 city timezones with search, DST-aware, custom date-time picker, full keyboard support.
+- **UI polish (v2.1.1)** — timestamp input labels aligned with the result panel, JSON tool icon switched to file-braces, support-related icons unified to heart-handshake, shorter cropper menu label.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -52,6 +54,7 @@ Your images are processed locally and **never leave your device** — no upload,
 | `dev/json.html` | JSON formatter / minifier / validator |
 | `dev/regex.html` | Regex tester (Worker-driven) |
 | `dev/word-counter.html` | Word counter (Chinese characters / English words / paragraphs & lines) |
+| `dev/timestamp.html` | Timestamp converter (Unix ↔ date / 52 timezones / DST) |
 | `games/block-clear.html` | Block Clear (relaxing puzzle) |
 | `games/snake.html` | Snake |
 | `games/sudoku.html` | Sudoku |
@@ -80,7 +83,7 @@ python3 -m http.server 8000
 ### Quality gates (run before committing)
 
 ```bash
-node _governance/inject_site.mjs --check   # drift check across 22 pages (must be 0)
+node _governance/inject_site.mjs --check   # drift check across 23 pages (must be 0)
 node _governance/lint.mjs                  # style/lint (must have 0 errors)
 node _governance/assert_spec.mjs           # spec assertions (requires Playwright)
 ```
@@ -93,7 +96,7 @@ node _governance/assert_spec.mjs           # spec assertions (requires Playwrigh
 moteful/
 ├── index.html, support.html, 404.html
 ├── tools/            # image tools (image-tool, stitch, png-compressor, crop-tool, annotate, qrcode, icon-tool, id-photo-tool)
-├── dev/              # developer tools (json, regex, word-counter)
+├── dev/              # developer tools (json, regex, word-counter, timestamp)
 ├── games/            # mini-games (block-clear, snake, sudoku)
 ├── legal/            # about / contact / credits / privacy / terms
 ├── assets/

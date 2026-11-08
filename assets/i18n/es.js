@@ -58,7 +58,7 @@ window.MOTEFUL_I18N.es = {
   "foot_support": "Soporte",
   "foot_legal": "Legal",
   "foot_operator_title": "Operado por",
-  "foot_version": "v2.1.0",
+  "foot_version": "v2.1.1",
   "rec_done": "{action} completado",
   "rec_sub": "Gracias por usar Moteful — también te puede interesar:",
   "rec_tip_note": "Si esta herramienta te ayudó, invítale un café al autor",
@@ -484,7 +484,7 @@ window.MOTEFUL_I18N.es = {
   "nav_m_idphoto": "Foto de carnet",
   "nav_m_rename": "Renombrar",
   "nav_m_icon": "Generador de iconos",
-  "nav_m_cutter": "Corte por cuadrícula",
+  "nav_m_cutter": "Recorte",
   "nav_m_png": "Compresor PNG",
   "nav_m_cutout": "Recorte de color",
 

@@ -7,6 +7,21 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v2.1.0",
+    "date": "2026-11-10",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Developer Tools - Timestamp Converter",
+          "Convert timestamps and dates in both directions; seconds/milliseconds auto-detected",
+          "52 time zones with search; daylight-saving gaps and overlaps are clearly flagged",
+          "Six format templates with one-click copy; keeps your last 5 conversions"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.0.7",
     "date": "2026-11-07",
     "sections": [
