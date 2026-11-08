@@ -1,0 +1,775 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="ts_seo_title">在线时间戳转换 · 秒 / 毫秒双向换算与多时区日期工具 | Moteful</title>
+<meta name="description" data-i18n-content="meta_desc_timestamp" content="免费在线时间戳转换工具：10 位秒 / 13 位毫秒自动识别，位数歧义并列两种解析；时间戳与日期时间双向换算，支持本地时间、UTC 与全球 50 个主要城市时区（共 52 个选项），6 种格式模板，正确处理夏令时缺口与重叠。全键盘可操作，纯前端本地运行，不上传任何数据。">
+<meta name="keywords" content="时间戳转换,timestamp converter,unix时间戳,epoch,时间戳转日期,日期转时间戳,毫秒时间戳,秒级时间戳,开发者工具">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="在线时间戳转换工具 - 秒 / 毫秒双向换算与多时区日期">
+<meta property="og:description" content="免费在线时间戳转换工具：秒 / 毫秒自动识别与歧义并列解析，时间戳与日期双向换算，本地时间、UTC 与 50 个城市时区共 52 个选项，正确处理夏令时缺口与重叠，全键盘可操作、纯本地运行。">
+<meta property="og:url" content="https://moteful.app/dev/timestamp.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="在线时间戳转换工具 - 秒 / 毫秒双向换算与多时区日期">
+<meta name="twitter:description" content="免费在线时间戳转换工具：秒 / 毫秒自动识别与歧义并列解析，时间戳与日期双向换算，本地时间、UTC 与 50 个城市时区共 52 个选项，正确处理夏令时缺口与重叠，全键盘可操作、纯本地运行。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/dev/timestamp.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "在线时间戳转换工具",
+  "alternateName": "Moteful Timestamp Converter",
+  "description": "免费在线时间戳转换工具：10 位秒 / 13 位毫秒自动识别，位数歧义并列两种解析；时间戳与日期时间双向换算，支持本地时间、UTC 与全球 50 个主要城市时区（共 52 个选项），6 种格式模板，正确处理夏令时缺口与重叠。全键盘可操作，纯前端本地运行，不上传任何数据。",
+  "url": "https://moteful.app/dev/timestamp.html",
+  "applicationCategory": "DeveloperApplication",
+  "softwareVersion": "2.1.0",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "inLanguage": ["zh-CN", "en", "es"],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "10 位秒 / 13 位毫秒自动识别，位数歧义并列两种解析并支持手动指定单位",
+    "时间戳与日期时间双向换算，秒级与毫秒级结果同时给出",
+    "本地时间、UTC 与全球 50 个主要城市时区（共 52 个选项），可按城市或 UTC 偏移搜索",
+    "6 种格式模板：标准、ISO 8601、斜杠日期、RFC 2822、纯时间戳与自定义",
+    "正确处理夏令时缺口与重叠，缺口给出前后两条合法值，重叠列出两个候选",
+    "自定义日期时间选择器与下拉列表全键盘可操作，方向键移动、Home / End 直达、PageUp / PageDown 翻月",
+    "最近 5 条记录一键回填，仅保存在本机并可随时清空",
+    "中文 / English / Español 三语界面",
+    "100% 本地运行，断网可用，数据不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/recommend.css">
+  <link rel="stylesheet" href="../assets/css/share.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/recommend.js" defer></script>
+  <script src="../assets/js/share.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/es.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+  <script src="../assets/js/timestamp-core.js?v=2.1.0" defer></script>
+  <script src="../assets/js/timestamp-tool.js?v=2.1.0" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4nM1PwSvDcRx9v18ZUltRxmgulJRWdpiDfk7GwYrDskULu1ga6ldz46LEVnOxoo0sJSkiKbUd3JDyJ4iDy1w4uNhvT5vWb5rfmAvv8P32Pu/73ud9gX8Ng91lFrudzb8OaL0hsUqWeiNqCVIgYEtlANQDsM9Yyt4+rpDYIbFF4qB0iyJMJxJBGwtMxyQOywiZzJD66Onip6FnY+xnbmmqwxLf8+dpo7w2nL2tsW3v9+aJiAtxtar1juy8/eCivD4yUPitL3FCYj4ZytO2C7JhRa1edUV6NEO8IQcuSfj25zQX9C1IxgeyNxweKhY3SQRJRNOsvCa7UuQgSbPb3ZLTHcv9WCIhk6YztYWQPXQxssYA1BrTqDYBiiLg3u9sej0/eoS060PPaAR1AJ4APL8BrIC+HXiZFXL+v8U7p1SEg5RNexoAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+  <meta name="moteful-siteurl" content="https://moteful.app">
+  <meta name="moteful-pagepath" content="dev/timestamp">
+  <meta name="google-adsense-account" content="ca-pub-2226711164508785">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2226711164508785" crossorigin="anonymous"></script>
+  <meta name="baidu-site-verification" content="codeva-Ok5o1J5DOp">
+  <script>/*MF_LANG*/(function(){
+  var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
+  try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
+  var n=(navigator.language||'').toLowerCase();
+  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
+  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
+  if(g!=='en'){h.setAttribute('data-i18n-pending','1');
+  setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
+})();</script>
+</head>
+<body data-nav="dev">
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/png-compressor.html"><i data-lucide="image-down"></i><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/crop-tool.html"><i data-lucide="crop"></i><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span></a>
+        <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="pipette"></i><span data-i18n="nav_m_cutout">纯色抠图</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="code"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <a class="menu-item" href="../dev/word-counter.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item on" href="../dev/timestamp.html"><i data-lucide="stamp"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- V1.4：分享次入口（share.js 加载页显示；≤480px 收进抽屉） -->
+    <button type="button" class="btn btn-ghost btn-sm share-topbar-btn" data-share-topbar hidden data-i18n-aria="share_nav" aria-label="Share"><i data-lucide="share-2"></i><span data-i18n="share_nav">Share</span></button>
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+        <button class="menu-item lang-item" data-lang="es">Español</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head">
+      <h3>Moteful</h3>
+      <div class="drawer-head-actions">
+        <a href="../support.html" class="btn btn-ghost btn-sm" data-i18n-title="foot_support" aria-label="Support">
+          <i data-lucide="heart"></i><span data-i18n="foot_support">Support</span>
+        </a>
+        <div class="pop">
+          <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+            <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+          </button>
+          <div class="menu pop-panel">
+            <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+            <button class="menu-item lang-item" data-lang="en">English</button>
+            <button class="menu-item lang-item" data-lang="es">Español</button>
+          </div>
+        </div>
+        <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- V1.4：分享当前页入口（share.js 加载页显示） -->
+    <button type="button" class="btn btn-secondary btn-sm share-drawer-entry" data-share-entry hidden><i data-lucide="share-2"></i><span data-i18n="share_drawer_entry">分享当前页</span></button>
+    <!-- 一级分类胶囊（横向滚动） -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab on" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
+      <button class="drawer-tab" data-dtab="dev"><i data-lucide="code"></i><span data-i18n="nav_dev_group">开发者工具</span></button>
+      <button class="drawer-tab" data-dtab="games"><i data-lucide="gamepad-2"></i><span data-i18n="nav_games_group">小游戏</span></button>
+    </div>
+
+    <!-- 二级工具宫格 -->
+    <nav class="drawer-grid" id="drawerGrid">
+      <!-- 图片工具 -->
+      <div class="drawer-pane active" data-pane="image">
+        <a href="../tools/image-tool.html" class="grid-card">
+          <i data-lucide="images"></i>
+          <span data-i18n="nav_m_batch">批量处理</span>
+        </a>
+        <a href="../tools/png-compressor.html" class="grid-card">
+          <i data-lucide="image-down"></i>
+          <span><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/crop-tool.html" class="grid-card">
+          <i data-lucide="crop"></i>
+          <span><span data-i18n="nav_m_cutter">裁切工具</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/stitch.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_m_compress">长图拼接</span>
+        </a>
+        <a href="../tools/qrcode.html" class="grid-card">
+          <i data-lucide="qr-code"></i>
+          <span data-i18n="nav_m_qrcode">二维码</span>
+        </a>
+        <a href="../tools/annotate.html" class="grid-card">
+          <i data-lucide="pencil"></i>
+          <span data-i18n="nav_m_annotate">打码标注</span>
+        </a>
+        <a href="../tools/id-photo-tool.html" class="grid-card">
+          <i data-lucide="user"></i>
+          <span data-i18n="nav_m_idphoto">证件照</span>
+        </a>
+        <a href="../tools/icon-tool.html" class="grid-card">
+          <i data-lucide="radius"></i>
+          <span data-i18n="nav_m_icon">图标工具</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="list"></i>
+          <span data-i18n="nav_m_rename">重命名</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="pipette"></i>
+          <span data-i18n="nav_m_cutout">纯色抠图</span>
+        </a>
+      </div>
+
+      <!-- 开发者工具 -->
+      <div class="drawer-pane" data-pane="dev">
+        <a href="../dev/json.html" class="grid-card">
+          <i data-lucide="code"></i>
+          <span data-i18n="nav_dev_json">JSON 格式化</span>
+        </a>
+        <a href="../dev/regex.html" class="grid-card">
+          <i data-lucide="regex"></i>
+          <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="../dev/word-counter.html" class="grid-card">
+          <i data-lucide="file-text"></i>
+          <span><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../dev/timestamp.html" class="grid-card">
+          <i data-lucide="stamp"></i>
+          <span><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="binary"></i>
+          <span data-i18n="nav_dev_base64">Base64 编解码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="palette"></i>
+          <span data-i18n="nav_dev_color">颜色代码转换</span>
+        </a>
+      </div>
+
+      <!-- 小游戏 -->
+      <div class="drawer-pane" data-pane="games">
+        <a href="../games/block-clear.html" class="grid-card">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="nav_g_blockclear">方块消除</span>
+        </a>
+        <a href="../games/snake.html" class="grid-card">
+          <i data-lucide="worm"></i>
+          <span data-i18n="nav_g_snake">贪吃蛇</span>
+        </a>
+        <a href="../games/sudoku.html" class="grid-card">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_g_sudoku">数独</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+    (function(){
+      // 根据当前路径，判断应该显示哪个分类
+      function getDefaultTab(){
+        var path = location.pathname;
+        if(path.indexOf('/tools/') >= 0) return 'image';
+        if(path.indexOf('/dev/') >= 0) return 'dev';
+        if(path.indexOf('/games/') >= 0) return 'games';
+        // 首页和 support 默认显示图片工具分类（主要功能）
+        return 'image';
+      }
+
+      // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+      function setDefaultTab(){
+        var tabName = getDefaultTab();
+        var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+        tabs.forEach(function(t){
+          t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+        });
+        // 同时显示对应 pane
+        var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+        });
+      }
+
+      // DOM 加载完成后立即设置默认高亮
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', setDefaultTab);
+      } else {
+        setDefaultTab();
+      }
+
+      // 抽屉分类切换逻辑
+      document.addEventListener('click', function(e){
+        var tab = e.target.closest('.drawer-tab');
+        if(!tab) return;
+
+        var container = document.getElementById('drawerGrid');
+        if(!container) return;
+
+        // 切换 tab 高亮
+        var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+        tabs.forEach(function(t){ t.classList.remove('on'); });
+        tab.classList.add('on');
+
+        // 切换 pane
+        var target = tab.getAttribute('data-dtab');
+        var panes = container.querySelectorAll('.drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === target);
+        });
+      });
+
+      // 抽屉打开时，根据当前页自动选中对应分类
+      window.openDrawer = window.openDrawer || function(id){
+        var drawer = document.getElementById(id);
+        if(!drawer) return;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // 触发对应 tab（会自动切换 pane）
+        var tabName = getDefaultTab();
+        var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+        if(tab) tab.click();
+      };
+    })();
+    </script>
+  </aside>
+</div>
+
+<main class="page">
+
+  <!-- ===== 页头 ===== -->
+  <section class="hero">
+    <div class="kicker" data-i18n="ts_kicker">MOTEFUL · 开发者工具</div>
+    <h1 data-i18n="ts_title">时间戳转换</h1>
+    <p data-i18n="ts_sub">时间戳与日期时间双向换算，支持秒 / 毫秒自动识别与多时区。全部计算在你的浏览器本地完成。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="ts_badge_local">本地处理 · 不上传</span>
+      <span class="tag t-gray" data-i18n="ts_badge_free">永久免费 · 无需注册</span>
+    </div>
+  </section>
+
+  <!-- ===== ① 当前时间戳 ===== -->
+  <section class="panel">
+    <div class="ts-head">
+      <h2 class="sec-title ts-title"><i data-lucide="stamp"></i><span data-i18n="ts_now_title">当前时间戳</span></h2>
+      <span class="muted" data-i18n="ts_now_hint">每秒自动刷新，点击卡片即可复制</span>
+    </div>
+    <div class="ts-now-grid">
+      <div class="ts-now-card">
+        <div class="ts-now-head">
+          <div class="ts-now-k" data-i18n="ts_now_sec">秒级（10 位）</div>
+          <button type="button" class="btn btn-secondary btn-sm ts-now-btn" id="tsBtnNowSec" data-i18n-aria="ts_now_copy_sec"><i data-lucide="copy"></i><span data-i18n="ts_btn_copy">复制</span></button>
+        </div>
+        <div class="ts-now-v" id="tsNowSec">—</div>
+      </div>
+      <div class="ts-now-card">
+        <div class="ts-now-head">
+          <div class="ts-now-k" data-i18n="ts_now_ms">毫秒级（13 位）</div>
+          <button type="button" class="btn btn-secondary btn-sm ts-now-btn" id="tsBtnNowMs" data-i18n-aria="ts_now_copy_ms"><i data-lucide="copy"></i><span data-i18n="ts_btn_copy">复制</span></button>
+        </div>
+        <div class="ts-now-v" id="tsNowMs">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ② 主换算区（同一 .panel 内两栏） ===== -->
+  <section class="panel">
+    <div class="ts-workspace">
+      <div class="ts-col">
+        <h2 class="sec-title ts-title" data-i18n="ts_fwd_title">时间戳 → 日期</h2>
+        <div class="field">
+          <input class="input ts-input" id="tsInput" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="输入时间戳，如 1700000000" data-i18n-ph="ts_fwd_ph" aria-label="时间戳输入" data-i18n-aria="ts_fwd_aria">
+        </div>
+        <div class="segment ts-unit-seg" role="radiogroup" aria-label="时间戳输入" data-i18n-aria="ts_fwd_aria">
+          <label class="seg"><input type="radio" name="ts-unit" value="auto" checked><span class="seg-t" data-i18n="ts_unit_auto">自动</span></label>
+          <label class="seg"><input type="radio" name="ts-unit" value="s"><span class="seg-t" data-i18n="ts_unit_s">秒</span></label>
+          <label class="seg"><input type="radio" name="ts-unit" value="ms"><span class="seg-t" data-i18n="ts_unit_ms">毫秒</span></label>
+        </div>
+        <div class="ts-result" id="tsFwdResult" aria-live="polite" aria-label="换算结果" data-i18n-aria="ts_result_aria">
+          <div class="ts-result-head">
+            <span class="field-label" data-i18n="ts_fwd_out">换算结果</span>
+            <button type="button" class="btn btn-secondary btn-sm" id="tsBtnCopyFwd"><i data-lucide="copy"></i><span data-i18n="ts_btn_copy">复制</span></button>
+          </div>
+          <div class="ts-result-empty" data-i18n="ts_empty">等待输入</div>
+          <div class="ts-result-body" id="tsFwdBody" hidden>
+            <div class="ts-result-main" id="tsFwdMain">—</div>
+            <div class="ts-result-meta" id="tsFwdMeta">—</div>
+            <p class="ts-soft" id="tsFwdSoft" hidden></p>
+            <div class="ts-amb" id="tsFwdAmb" hidden>
+              <button type="button" class="ts-amb-opt" data-amb-unit="s">
+                <span class="ts-amb-k" data-i18n="ts_ambiguous_as_s">按秒解析</span>
+                <span class="ts-amb-v" id="tsFwdAmbS">—</span>
+                <span class="tag t-success ts-amb-tag" data-i18n="ts_ambiguous_reco" hidden>推荐</span>
+              </button>
+              <button type="button" class="ts-amb-opt" data-amb-unit="ms">
+                <span class="ts-amb-k" data-i18n="ts_ambiguous_as_ms">按毫秒解析</span>
+                <span class="ts-amb-v" id="tsFwdAmbMs">—</span>
+                <span class="tag t-success ts-amb-tag" data-i18n="ts_ambiguous_reco" hidden>推荐</span>
+              </button>
+            </div>
+            <div id="tsFwdKv">
+              <div class="ts-kv"><span class="ts-k" data-i18n="ts_iso">ISO 8601</span><code class="ts-v" id="tsFwdIso">—</code></div>
+              <div class="ts-kv"><span class="ts-k" data-i18n="ts_epoch_s">秒级时间戳</span><code class="ts-v" id="tsFwdSec">—</code></div>
+              <div class="ts-kv"><span class="ts-k" data-i18n="ts_epoch_ms">毫秒级时间戳</span><code class="ts-v" id="tsFwdMs">—</code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ts-col">
+        <h2 class="sec-title ts-title" data-i18n="ts_rev_title">日期 → 时间戳</h2>
+        <div class="field ts-inline-field">
+          <span class="field-label" id="tsPickLabel" data-i18n="ts_rev_pick">选择日期时间</span>
+          <div class="pop ts-dt" id="tsDatePick">
+            <button type="button" class="input ts-input ts-dt-btn" id="tsDatePickBtn" data-pop aria-labelledby="tsPickLabel" aria-haspopup="dialog" aria-expanded="false">
+              <span class="ts-dt-text" id="tsDatePickText" data-i18n="ts_pick_empty">点击选择日期时间</span>
+              <i data-lucide="clock"></i>
+            </button>
+            <div class="pop-panel ts-dt-panel" role="dialog" aria-label="选择日期时间" data-i18n-aria="ts_pick_dialog">
+              <div class="ts-dt-head">
+                <button type="button" class="btn btn-ghost btn-icon btn-sm ts-dt-nav" id="tsCalPrev" aria-label="上个月" data-i18n-aria="ts_pick_prev"><i data-lucide="chevron-left"></i></button>
+                <span class="ts-dt-title" id="tsCalTitle"></span>
+                <button type="button" class="btn btn-ghost btn-icon btn-sm ts-dt-nav" id="tsCalNext" aria-label="下个月" data-i18n-aria="ts_pick_next"><i data-lucide="chevron-right"></i></button>
+              </div>
+              <div class="ts-dt-week" id="tsCalWeek" aria-hidden="true"></div>
+              <div class="ts-dt-grid" id="tsCalGrid"></div>
+              <div class="ts-dt-time">
+                <span class="ts-dt-tlabel" data-i18n="ts_pick_time">时间</span>
+                <input class="input ts-dt-tin" id="tsCalH" type="text" inputmode="numeric" maxlength="2" value="00" aria-label="时" data-i18n-aria="ts_pick_hour">
+                <span class="ts-dt-tsep">:</span>
+                <input class="input ts-dt-tin" id="tsCalM" type="text" inputmode="numeric" maxlength="2" value="00" aria-label="分" data-i18n-aria="ts_pick_min">
+                <span class="ts-dt-tsep">:</span>
+                <input class="input ts-dt-tin" id="tsCalS" type="text" inputmode="numeric" maxlength="2" value="00" aria-label="秒" data-i18n-aria="ts_pick_sec">
+              </div>
+              <div class="ts-dt-foot">
+                <button type="button" class="btn btn-primary btn-sm" id="tsCalNow" data-i18n="ts_pick_now">现在</button>
+                <button type="button" class="btn btn-primary btn-sm" id="tsCalDone" data-i18n="ts_pick_done">完成</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field ts-inline-field">
+          <label class="field-label" for="tsDateText" data-i18n="ts_rev_manual">可直接手输，格式 yyyy-MM-dd HH:mm:ss</label>
+          <input class="input ts-input" id="tsDateText" type="text" autocomplete="off" spellcheck="false" placeholder="yyyy-MM-dd HH:mm:ss" data-i18n-ph="ts_rev_ph" aria-label="日期时间输入" data-i18n-aria="ts_rev_aria">
+        </div>
+        <div class="ts-result" id="tsRevResult" aria-live="polite" aria-label="换算结果" data-i18n-aria="ts_result_aria">
+          <div class="ts-result-head">
+            <span class="field-label" data-i18n="ts_rev_out">对应时间戳</span>
+            <button type="button" class="btn btn-secondary btn-sm" id="tsBtnCopyRev"><i data-lucide="copy"></i><span data-i18n="ts_now_copy_sec">复制秒级</span></button>
+          </div>
+          <div class="ts-result-empty" data-i18n="ts_empty">等待输入</div>
+          <div class="ts-result-body" id="tsRevBody" hidden>
+            <p class="ts-soft" id="tsRevSoft" hidden></p>
+            <div class="ts-dst" id="tsRevDst" hidden>
+              <p class="ts-dst-msg" id="tsRevDstMsg"></p>
+              <div class="ts-dst-opts" id="tsRevDstOpts"></div>
+            </div>
+            <div id="tsRevKv">
+              <div class="ts-kv"><span class="ts-k" data-i18n="ts_epoch_s">秒级时间戳</span><code class="ts-v" id="tsRevSec">—</code></div>
+              <div class="ts-kv"><span class="ts-k" data-i18n="ts_epoch_ms">毫秒级时间戳</span><code class="ts-v" id="tsRevMs">—</code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert a-danger ts-error" id="tsError" role="alert" hidden>
+      <i data-lucide="alert-triangle"></i>
+      <p id="tsErrorText"></p>
+    </div>
+    <p class="muted ts-storage-warn" id="tsStorageWarn" hidden data-i18n="ts_storage_warn">浏览器阻止了本地存储，记录与偏好不会被保存（换算功能不受影响）</p>
+  </section>
+
+  <!-- ===== ③ 参数行 ===== -->
+  <section class="panel ts-params-panel">
+    <div class="ts-params">
+      <div class="field ts-sel-field">
+        <span class="field-label" id="tsZoneLabel" data-i18n="ts_zone_label">时区</span>
+        <div class="select pop ts-sel" id="tsZoneSel">
+          <button type="button" class="select-btn" data-pop aria-labelledby="tsZoneLabel" aria-haspopup="listbox" aria-expanded="false">
+            <span class="ts-zone-main"><span class="select-label" id="tsZoneValue" data-i18n="ts_zone_local">本地</span><span class="ts-zone-off" id="tsZoneOff"></span></span>
+            <i data-lucide="chevron-down"></i>
+          </button>
+          <div class="pop-panel">
+            <div class="ts-zone-search">
+              <i data-lucide="search"></i>
+              <input class="input ts-zone-search-in" id="tsZoneSearch" type="text" autocomplete="off" spellcheck="false" placeholder="搜索城市或 UTC 偏移" data-i18n-ph="ts_zone_search" aria-label="搜索时区" data-i18n-aria="ts_zone_search_aria">
+            </div>
+            <ul class="select-list" role="listbox" aria-labelledby="tsZoneLabel">
+              <li data-zone="local" class="on"><span class="ts-zone-opt"><span data-i18n="ts_zone_local">本地</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="UTC"><span class="ts-zone-opt"><span data-i18n="ts_zone_utc">UTC</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li class="ts-zone-group" role="presentation" data-i18n="ts_zone_group_world">世界城市</li>
+              <li data-zone="Pacific/Honolulu" data-alias="honolulu pacific/honolulu"><span class="ts-zone-opt"><span data-i18n="ts_zone_honolulu">檀香山</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Anchorage" data-alias="anchorage america/anchorage"><span class="ts-zone-opt"><span data-i18n="ts_zone_anchorage">安克雷奇</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Los_Angeles" data-alias="los angeles america/los_angeles"><span class="ts-zone-opt"><span data-i18n="ts_zone_la">洛杉矶</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Denver" data-alias="denver america/denver"><span class="ts-zone-opt"><span data-i18n="ts_zone_denver">丹佛</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Chicago" data-alias="chicago america/chicago"><span class="ts-zone-opt"><span data-i18n="ts_zone_chicago">芝加哥</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Mexico_City" data-alias="mexico city america/mexico_city"><span class="ts-zone-opt"><span data-i18n="ts_zone_mexicocity">墨西哥城</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/New_York" data-alias="new york america/new_york"><span class="ts-zone-opt"><span data-i18n="ts_zone_newyork">纽约</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Bogota" data-alias="bogotá america/bogota"><span class="ts-zone-opt"><span data-i18n="ts_zone_bogota">波哥大</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Santiago" data-alias="santiago america/santiago"><span class="ts-zone-opt"><span data-i18n="ts_zone_santiago">圣地亚哥</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Sao_Paulo" data-alias="são paulo america/sao_paulo"><span class="ts-zone-opt"><span data-i18n="ts_zone_saopaulo">圣保罗</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="America/Argentina/Buenos_Aires" data-alias="buenos aires america/argentina/buenos_aires"><span class="ts-zone-opt"><span data-i18n="ts_zone_buenosaires">布宜诺斯艾利斯</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Europe/London" data-alias="london europe/london"><span class="ts-zone-opt"><span data-i18n="ts_zone_london">伦敦</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Europe/Paris" data-alias="paris europe/paris"><span class="ts-zone-opt"><span data-i18n="ts_zone_paris">巴黎</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Europe/Berlin" data-alias="berlin europe/berlin"><span class="ts-zone-opt"><span data-i18n="ts_zone_berlin">柏林</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Europe/Madrid" data-alias="madrid europe/madrid"><span class="ts-zone-opt"><span data-i18n="ts_zone_madrid">马德里</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Africa/Lagos" data-alias="lagos africa/lagos"><span class="ts-zone-opt"><span data-i18n="ts_zone_lagos">拉各斯</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Africa/Casablanca" data-alias="casablanca africa/casablanca"><span class="ts-zone-opt"><span data-i18n="ts_zone_casablanca">卡萨布兰卡</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Africa/Cairo" data-alias="cairo africa/cairo"><span class="ts-zone-opt"><span data-i18n="ts_zone_cairo">开罗</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Africa/Johannesburg" data-alias="johannesburg africa/johannesburg"><span class="ts-zone-opt"><span data-i18n="ts_zone_johannesburg">约翰内斯堡</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Europe/Athens" data-alias="athens europe/athens"><span class="ts-zone-opt"><span data-i18n="ts_zone_athens">雅典</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Europe/Moscow" data-alias="moscow europe/moscow"><span class="ts-zone-opt"><span data-i18n="ts_zone_moscow">莫斯科</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Europe/Istanbul" data-alias="istanbul europe/istanbul"><span class="ts-zone-opt"><span data-i18n="ts_zone_istanbul">伊斯坦布尔</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Riyadh" data-alias="riyadh asia/riyadh"><span class="ts-zone-opt"><span data-i18n="ts_zone_riyadh">利雅得</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Africa/Nairobi" data-alias="nairobi africa/nairobi"><span class="ts-zone-opt"><span data-i18n="ts_zone_nairobi">内罗毕</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Tehran" data-alias="tehran asia/tehran"><span class="ts-zone-opt"><span data-i18n="ts_zone_tehran">德黑兰</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Dubai" data-alias="dubai asia/dubai"><span class="ts-zone-opt"><span data-i18n="ts_zone_dubai">迪拜</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Baku" data-alias="baku asia/baku"><span class="ts-zone-opt"><span data-i18n="ts_zone_baku">巴库</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Kabul" data-alias="kabul asia/kabul"><span class="ts-zone-opt"><span data-i18n="ts_zone_kabul">喀布尔</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Karachi" data-alias="karachi asia/karachi"><span class="ts-zone-opt"><span data-i18n="ts_zone_karachi">卡拉奇</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Kolkata" data-alias="new delhi asia/kolkata"><span class="ts-zone-opt"><span data-i18n="ts_zone_newdelhi">新德里</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Kathmandu" data-alias="kathmandu asia/kathmandu"><span class="ts-zone-opt"><span data-i18n="ts_zone_kathmandu">加德满都</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Dhaka" data-alias="dhaka asia/dhaka"><span class="ts-zone-opt"><span data-i18n="ts_zone_dhaka">达卡</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Almaty" data-alias="almaty asia/almaty"><span class="ts-zone-opt"><span data-i18n="ts_zone_almaty">阿拉木图</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Yangon" data-alias="yangon asia/yangon"><span class="ts-zone-opt"><span data-i18n="ts_zone_yangon">仰光</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Bangkok" data-alias="bangkok asia/bangkok"><span class="ts-zone-opt"><span data-i18n="ts_zone_bangkok">曼谷</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Jakarta" data-alias="jakarta asia/jakarta"><span class="ts-zone-opt"><span data-i18n="ts_zone_jakarta">雅加达</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Ho_Chi_Minh" data-alias="ho chi minh city asia/ho_chi_minh"><span class="ts-zone-opt"><span data-i18n="ts_zone_hochiminh">胡志明市</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Shanghai" data-alias="shanghai 上海 beijing 北京 asia/shanghai"><span class="ts-zone-opt"><span data-i18n="ts_zone_beijing">北京</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Hong_Kong" data-alias="hong kong asia/hong_kong"><span class="ts-zone-opt"><span data-i18n="ts_zone_hongkong">香港</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Taipei" data-alias="taipei asia/taipei"><span class="ts-zone-opt"><span data-i18n="ts_zone_taipei">台北</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Singapore" data-alias="singapore asia/singapore"><span class="ts-zone-opt"><span data-i18n="ts_zone_singapore">新加坡</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Manila" data-alias="manila asia/manila"><span class="ts-zone-opt"><span data-i18n="ts_zone_manila">马尼拉</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Australia/Perth" data-alias="perth australia/perth"><span class="ts-zone-opt"><span data-i18n="ts_zone_perth">珀斯</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Tokyo" data-alias="tokyo asia/tokyo"><span class="ts-zone-opt"><span data-i18n="ts_zone_tokyo">东京</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Asia/Seoul" data-alias="seoul asia/seoul"><span class="ts-zone-opt"><span data-i18n="ts_zone_seoul">首尔</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Australia/Adelaide" data-alias="adelaide australia/adelaide"><span class="ts-zone-opt"><span data-i18n="ts_zone_adelaide">阿德莱德</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Australia/Sydney" data-alias="sydney australia/sydney"><span class="ts-zone-opt"><span data-i18n="ts_zone_sydney">悉尼</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Australia/Brisbane" data-alias="brisbane australia/brisbane"><span class="ts-zone-opt"><span data-i18n="ts_zone_brisbane">布里斯班</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Pacific/Auckland" data-alias="auckland pacific/auckland"><span class="ts-zone-opt"><span data-i18n="ts_zone_auckland">奥克兰</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li data-zone="Pacific/Kiritimati" data-alias="kiritimati pacific/kiritimati"><span class="ts-zone-opt"><span data-i18n="ts_zone_kiritimati">基里蒂马蒂</span><span class="ts-zone-off" data-zone-off></span></span><i data-lucide="check"></i></li>
+              <li class="ts-zone-none" role="presentation" id="tsZoneNone" hidden data-i18n="ts_zone_none">没有匹配的时区</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="field ts-sel-field">
+        <span class="field-label" id="tsPatternLabel" data-i18n="ts_pattern_label">格式化模板</span>
+        <div class="select pop ts-sel" id="tsPatternSel">
+          <button type="button" class="select-btn" data-pop aria-labelledby="tsPatternLabel" aria-haspopup="listbox" aria-expanded="false">
+            <span class="select-label" id="tsPatternValue" data-i18n="ts_pattern_std">标准</span>
+            <i data-lucide="chevron-down"></i>
+          </button>
+          <div class="pop-panel">
+            <ul class="select-list" role="listbox" aria-labelledby="tsPatternLabel">
+              <li data-pattern="std" class="on"><span data-i18n="ts_pattern_std">标准</span><i data-lucide="check"></i></li>
+              <li data-pattern="iso"><span data-i18n="ts_pattern_iso">ISO 8601</span><i data-lucide="check"></i></li>
+              <li data-pattern="slash"><span data-i18n="ts_pattern_slash">斜杠日期</span><i data-lucide="check"></i></li>
+              <li data-pattern="rfc"><span data-i18n="ts_pattern_rfc">RFC 2822</span><i data-lucide="check"></i></li>
+              <li data-pattern="epoch"><span data-i18n="ts_pattern_epoch">纯时间戳</span><i data-lucide="check"></i></li>
+              <li data-pattern="custom"><span data-i18n="ts_pattern_custom">自定义</span><i data-lucide="check"></i></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="field ts-ms-field">
+        <span class="field-label" data-i18n="ts_ms_label">毫秒精度</span>
+        <label class="switch"><input type="checkbox" id="tsMsToggle"><span class="sw-track"><span class="sw-thumb"></span></span><span class="muted" data-i18n="ts_ms_hint">只影响显示精度，不改变时刻</span></label>
+      </div>
+    </div>
+    <div class="field" id="tsCustomWrap" hidden>
+      <label class="field-label" for="tsPatternCustom" data-i18n="ts_pattern_custom">自定义</label>
+      <input class="input ts-input" id="tsPatternCustom" type="text" maxlength="200" autocomplete="off" spellcheck="false" placeholder="输入模板，如 yyyy-MM-dd HH:mm:ss" data-i18n-ph="ts_pattern_custom_ph" aria-label="自定义格式化模板" data-i18n-aria="ts_pattern_custom_aria">
+    </div>
+  </section>
+
+  <!-- ===== ④ 最近记录 ===== -->
+  <section class="panel">
+    <div class="ts-head">
+      <h2 class="sec-title ts-title" data-i18n="ts_recent_title">最近记录</h2>
+      <button type="button" class="btn btn-ghost btn-sm" id="tsBtnClearRecent"><i data-lucide="trash-2"></i><span data-i18n="ts_recent_clear">清空记录</span></button>
+    </div>
+    <p class="muted" data-i18n="ts_recent_max">最多保留 5 条，仅存于本机</p>
+    <div class="ts-rec" id="tsRecent" aria-live="polite">
+      <p class="muted ts-rec-empty" data-i18n="ts_recent_empty">暂无记录，完成一次换算后会自动留下</p>
+    </div>
+  </section>
+
+  <!-- ===== 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="ts_seo1_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="ts_f_th1">功能</th><th data-i18n="ts_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="ts_f1_name">双向换算</td><td data-i18n="ts_f1_desc">时间戳与日期时间互转，粘贴即算，也可直接手动输入。</td></tr>
+          <tr><td data-i18n="ts_f2_name">单位识别</td><td data-i18n="ts_f2_desc">10 位秒级与 13 位毫秒级自动识别；位数无法确定时并列给出两种解析，并请你手动指定单位。</td></tr>
+          <tr><td data-i18n="ts_f3_name">时区切换</td><td data-i18n="ts_f3_desc">在 UTC、本地时间与全球 50 个主要城市时区之间即时切换，支持按城市或偏移搜索。</td></tr>
+          <tr><td data-i18n="ts_f4_name">夏令时处理</td><td data-i18n="ts_f4_desc">正确区分夏令时的缺口与重叠，缺口给出前后两条合法值，重叠列出两个候选。</td></tr>
+          <tr><td data-i18n="ts_f5_name">6 种格式</td><td data-i18n="ts_f5_desc">内置标准、ISO 8601、斜杠日期、RFC 2822、纯时间戳与自定义模板。</td></tr>
+          <tr><td data-i18n="ts_f6_name">最近记录</td><td data-i18n="ts_f6_desc">最近 5 条记录可一键回填，也可一键清空。</td></tr>
+          <tr><td data-i18n="ts_f7_name">隐私保护</td><td data-i18n="ts_f7_desc">全部换算在浏览器本地完成，不上传任何输入。</td></tr>
+          <tr><td data-i18n="ts_f8_name">全键盘操作</td><td data-i18n="ts_f8_desc">时区、格式、日历三个选择器都能只用键盘完成：Enter 或空格展开，方向键移动，Home / End 直达两端，PageUp / PageDown 翻月。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="ts_seo2_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="ts_u1_t">日志排查</div><div class="nm seo-desc" data-i18n="ts_u1_d">把 13 位毫秒时间戳换成可读时间，确认事件先后。</div></div>
+      <div class="stat"><div class="lb" data-i18n="ts_u2_t">接口对接</div><div class="nm seo-desc" data-i18n="ts_u2_d">校验返回的时间字段是否落在预期区间。</div></div>
+      <div class="stat"><div class="lb" data-i18n="ts_u3_t">跨时区协作</div><div class="nm seo-desc" data-i18n="ts_u3_d">把本地日期时间换回时间戳写进配置，用于跨时区会议或定时任务。</div></div>
+      <div class="stat"><div class="lb" data-i18n="ts_u4_t">数据库核对</div><div class="nm seo-desc" data-i18n="ts_u4_d">切换时区看同一时刻在不同城市分别是几点；粘贴含敏感信息的日志也不会上传。</div></div>
+    </div>
+  </details>
+
+  <!-- ===== 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="ts_seo3_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="ts_q_th1">问题</th><th data-i18n="ts_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="ts_seo3_q1">10 位和 13 位时间戳有什么区别？</td><td data-i18n="ts_seo3_a1">10 位是秒级（如 1700000000），13 位是毫秒级（如 1700000000000），两者可以表示同一时刻但数值相差 1000 倍。本工具按位数自动识别；11 位、12 位或 14 位以上无法确定，会并列给出两种解析并请你手动指定单位，不会静默猜测。负值同样按位数判断，符号不计入位数。</td></tr>
+          <tr><td data-i18n="ts_seo3_q2">为什么有些时间会提示「不存在」或「出现两次」？</td><td data-i18n="ts_seo3_a2">那是夏令时（DST）造成的。春季拨快时本地时间会跳过一段（例如纽约 2024-03-10 从 02:00 直接跳到 03:00），落在间隙里的 02:30 并不存在，工具会给出缺口前 01:30 与顺延后 03:30 两条合法值。秋季回拨时同一段本地时间会经过两次（例如纽约 2024-11-03 的 01:30），工具会列出 −04:00 与 −05:00 两条候选让你选。中国自 1992 年起不实行夏令时，所以选北京时不会遇到这两种提示。</td></tr>
+          <tr><td data-i18n="ts_seo3_q3">我的数据会被上传吗？</td><td data-i18n="ts_seo3_a3">不会。本页是纯前端工具，所有换算都在你的浏览器里用 JavaScript 完成，不向任何服务器发送输入内容，也不加载第三方时区库。最近记录与偏好只写进本机的 localStorage，可随时一键清空；浏览器阻止本地存储时工具照常可用，只是不保存记录。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<!-- ===== 清空最近记录 · 二次确认 ===== -->
+<div class="modal" id="tsClearModal" role="dialog" aria-modal="true" aria-label="清空最近记录？" data-i18n-aria="ts_clear_title">
+  <div class="modal-mask" data-close></div>
+  <div class="modal-card">
+    <h3 data-i18n="ts_clear_title">清空最近记录？</h3>
+    <p><span data-i18n="ts_clear_body">将删除本机保存的记录，此操作不可撤销。</span></p>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost" data-close data-i18n="ts_clear_cancel">取消</button>
+      <button type="button" class="btn btn-danger" id="tsClearConfirm" data-i18n="ts_clear_ok">清空</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+      <p class="footer-social">
+        <a class="footer-social-link" href="https://github.com/moteful/home" target="_blank" rel="noopener noreferrer" data-i18n-aria="foot_github" aria-label="GitHub repository" title="GitHub repository"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></a>
+        <a class="footer-social-link" href="mailto:moteful@outlook.com" data-i18n-aria="foot_email" aria-label="Email us" title="Email us"><i data-lucide="mail"></i></a>
+        <button type="button" class="footer-social-link" data-footer-share data-i18n-aria="foot_share" aria-label="Share this page" title="Share this page"><i data-lucide="share-2"></i></button>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v2.1.0</span>
+  </div>
+</footer>
+<div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
+  <div class="rec-mask" data-rec-close></div>
+  <div class="rec-box">
+    <button class="btn btn-icon btn-secondary btn-close rec-close-icon" type="button" data-rec-close data-i18n-aria="rec_close" aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="rec-check"><i data-lucide="check-circle"></i></div>
+    <p class="rec-msg" id="recMsg" data-i18n="rec_done">操作成功</p>
+    <p class="rec-sub" data-i18n="rec_sub">感谢使用 Moteful，下面这些功能你可能也用得上：</p>
+    <div class="rec-cards" id="recCards">    <a class="rec-card" href="../dev/word-counter.html">
+      <i data-lucide="file-text"></i>
+      <span class="rec-label"><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+    </a>
+    <a class="rec-card" href="../dev/json.html">
+      <i data-lucide="code"></i>
+      <span data-i18n="nav_dev_json">Json</span>
+    </a>
+    <a class="rec-card" href="../dev/regex.html">
+      <i data-lucide="regex"></i>
+      <span data-i18n="nav_dev_regex">Regex</span>
+    </a></div>
+    <div class="rec-tip">
+      <div class="rec-tip-line">
+        <svg class="lucide-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+        <span class="rec-tip-text" data-i18n="rec_tip_note">如果这个工具帮到了你，欢迎请作者喝杯咖啡</span>
+      </div>
+      <a class="btn btn-primary rec-tip-btn" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n="rec_tip_btn">赞助支持</a>
+    </div>
+    <div class="rec-actions">
+      <button class="btn btn-secondary" type="button" data-rec-share data-i18n="rec_share">分享</button>
+      <button class="btn btn-secondary rec-close-btn" type="button" data-rec-close data-i18n="rec_close">关闭</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

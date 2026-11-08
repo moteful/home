@@ -55,6 +55,7 @@
     "tools/png-compressor.html",
     "tools/crop-tool.html",
     "dev/word-counter.html",
+    "dev/timestamp.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",
