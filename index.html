@@ -120,6 +120,7 @@ document.documentElement.dataset.theme=v;})();
         <a class="menu-item" href="dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
         <a class="menu-item" href="dev/word-counter.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
         <a class="menu-item" href="dev/timestamp.html"><i data-lucide="stamp"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="dev/markdown.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_markdown">Markdown 编辑器</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
         <hr class="menu-sep">
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
         <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
@@ -229,6 +230,11 @@ document.documentElement.dataset.theme=v;})();
         <h3><span data-i18n="card_timestamp_title">Timestamp Converter</span> <span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></h3>
         <p data-i18n="card_timestamp_desc">Convert timestamps and dates in both directions, auto-detect seconds/milliseconds, multiple time zones and format templates; 100% local, never uploaded.</p>
       </a>
+      <a class="tool-card" href="dev/markdown.html">
+        <div class="tool-ico"><i data-lucide="file-text"></i></div>
+        <h3><span data-i18n="card_markdown_title">Markdown Editor</span> <span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></h3>
+        <p data-i18n="card_markdown_desc">Write Markdown with live preview, one-click formatting and local autosave; copy or download your draft — 100% local.</p>
+      </a>
     </div>
   </section>
 
@@ -258,7 +264,6 @@ document.documentElement.dataset.theme=v;})();
   <section class="panel" id="changelog-section">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
       <h2 class="sec-title" style="margin-bottom:0" data-i18n="news_head">What's new</h2>
-      <a href="#changelog" id="changelog-view-all" data-i18n="news_view_all" style="font-size:13px;color:var(--primary);font-weight:500;white-space:nowrap;display:none">查看全部 →</a>
     </div>
     <p class="muted" style="margin:8px 0 16px" data-i18n="news_sub">Changelog of the Moteful toolbox.</p>
     <div class="stack" id="changelog-list">
@@ -302,7 +307,7 @@ document.documentElement.dataset.theme=v;})();
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.1.1</span>
+    <span data-i18n="foot_version">v2.1.2</span>
   </div>
 </footer>
 
@@ -404,6 +409,10 @@ document.documentElement.dataset.theme=v;})();
         <a href="dev/timestamp.html" class="grid-card">
           <i data-lucide="stamp"></i>
           <span><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="dev/markdown.html" class="grid-card">
+          <i data-lucide="file-text"></i>
+          <span><span data-i18n="nav_dev_markdown">Markdown 编辑器</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
         </a>
         <a href="#" class="grid-card soon" aria-disabled="true">
           <i data-lucide="binary"></i>

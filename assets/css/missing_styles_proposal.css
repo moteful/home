@@ -1045,3 +1045,91 @@ html[data-i18n-pending] [data-i18n],html[data-i18n-pending] .lang-label{visibili
 @media (max-height:480px){
   .ts-sel .pop-panel{position:fixed;top:auto;bottom:8px;left:8px;right:8px;max-height:calc(100vh - 16px)}
 }
+
+/* ============================================================
+   Markdown 编辑器（v2.1.2，dev/markdown.html 私有，.md- 前缀）
+   ============================================================ */
+.md-hero-title{display:flex;align-items:center;gap:12px}
+.md-hero-title [data-lucide]{width:32px;height:32px;color:var(--primary);flex:none}
+.md-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.md-head .sec-title{font-size:16px;margin:0}
+.md-hint{font-size:12px}
+.md-viewseg{display:none;margin-left:auto}
+.md-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:6px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2)}
+.md-tb-sep{width:1px;align-self:stretch;background:var(--border);margin:2px 4px}
+.md-tb-icon{padding:0 10px}
+/* 与 SEO 三卡 .seo-summary-icon 同一套箭头：灰色 + 展开旋转 180°，仅尺寸按工具栏收敛到 14px */
+.md-toolbar .pop > .btn [data-lucide="chevron-down"]{width:14px;height:14px;color:var(--text-3);transition:transform var(--dur-fast)}
+.md-toolbar .pop.open > .btn [data-lucide="chevron-down"]{transform:rotate(180deg)}
+/* 下拉候选项图标取 16px（全站 .menu-item 默认 15px 偏小）；文字保持全站菜单默认，只限本工具栏不改导航菜单 */
+.md-toolbar .pop-panel .menu-item [data-lucide]{width:16px;height:16px}
+.md-glyph{font:600 16px var(--font);line-height:1}
+.md-g-b{font-weight:700}
+.md-g-i{font-style:italic}
+.md-g-u{text-decoration:underline}
+.md-g-s{text-decoration:line-through}
+.md-split{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+textarea.md-editor{height:420px;resize:none;font-family:var(--mono);font-size:13px;line-height:1.7}
+.md-preview{height:420px;overflow:auto;padding:14px 16px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface);display:flex;flex-direction:column}
+.md-preview > .empty{margin:auto}
+.md-status{display:flex;justify-content:space-between;align-items:center;gap:8px 16px;flex-wrap:wrap;font-size:12px;color:var(--text-3)}
+.md-stats{display:inline-flex;gap:14px;flex-wrap:wrap}
+.md-status b{font:600 12px var(--mono);color:var(--text-2)}
+@media (max-width:768px){
+  .md-hint{display:none}
+  .md-viewseg{display:inline-flex}
+  .md-split{grid-template-columns:1fr}
+  textarea.md-editor{height:340px}
+  .md-preview{height:340px}
+  .md-panel:has(.md-viewseg input[value="edit"]:checked) .md-preview{display:none}
+  .md-panel:has(.md-viewseg input[value="preview"]:checked) textarea.md-editor{display:none}
+}
+/* P0 接线补充：预览正文排版（全部限定在 .md-body 内，不改全站默认） */
+.md-body{min-width:0;font-size:14px;line-height:1.75;color:var(--text);overflow-wrap:anywhere}
+.md-body > *{margin:0 0 12px}
+.md-body > :last-child{margin-bottom:0}
+.md-body h1{font-size:22px;font-weight:700;line-height:1.35;margin:0 0 14px}
+.md-body h2{font-size:18px;font-weight:700;margin:4px 0 10px}
+.md-body h3{font-size:16px;font-weight:700;margin:4px 0 8px}
+.md-body h4,.md-body h5,.md-body h6{font-size:14px;font-weight:700;margin:4px 0 8px}
+.md-body ul,.md-body ol{padding-left:22px;margin:0 0 12px}
+.md-body li{margin:3px 0}
+.md-body li > ul,.md-body li > ol{margin:3px 0 0}
+.md-body blockquote{margin:0 0 12px;padding:8px 12px;border-left:3px solid var(--border-strong);
+  background:var(--surface-2);color:var(--text-2);border-radius:0 var(--r-md) var(--r-md) 0}
+.md-body code{font:12.5px/1.6 var(--mono);padding:1px 5px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:var(--r-sm)}
+.md-body pre{margin:0 0 12px;padding:12px;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:var(--r-md);overflow:auto}
+.md-body pre code{display:block;padding:0;border:0;background:none;white-space:pre}
+.md-body table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%;margin:0 0 12px}
+.md-body th,.md-body td{border:1px solid var(--border);padding:6px 10px;text-align:left;overflow-wrap:anywhere}
+.md-body th{background:var(--surface-2);font-weight:600}
+.md-body hr{border:0;border-top:1px solid var(--border);margin:14px 0}
+.md-body img{max-width:100%;height:auto;border-radius:var(--r-sm)}
+.md-body a{color:var(--primary);text-decoration:underline}
+.md-body input[type="checkbox"]{margin-right:6px}
+/* 预览外框：代码块 / 表格的「类型 + 复制 + 收起」头。
+   折叠交给原生 details/summary（与 SEO 三卡同一套逻辑），箭头直接挂 .seo-summary-icon 复用其样式。 */
+.md-block{margin:0 0 12px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);overflow:hidden}
+.md-block-head{display:flex;align-items:center;gap:8px;padding:4px 8px 4px 12px;cursor:pointer;list-style:none;user-select:none}
+.md-block-head::-webkit-details-marker{display:none}
+.md-block-head:hover{background:var(--surface)}
+.md-block[open] > .md-block-head{border-bottom:1px solid var(--border)}
+.md-block[open] > .md-block-head .seo-summary-icon{transform:rotate(180deg)}
+.md-block-label{flex:1;min-width:0;font:600 12px var(--mono);color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.md-block-copy{flex:none;color:var(--text-3)}
+.md-block > pre{margin:0;border:0;border-radius:0;background:none}
+.md-block > table{margin:0}
+.md-statnote{font-size:12px}
+@media (max-width:768px){
+  textarea.md-editor{font-size:16px}
+  .md-toolbar .btn{min-height:44px}
+  .md-toolbar .btn-icon{width:44px}
+  .md-toolbar .pop-panel .menu-item{min-height:44px}
+  .md-actions .btn{min-height:44px}
+  .md-hist .btn{min-height:44px}
+  .md-restore .btn{min-height:44px}
+  .md-body table{table-layout:auto}
+}
+

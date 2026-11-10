@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ===== SEO：基础 ===== -->
+<title data-i18n="md_seo_title">在线 Markdown 编辑器 · 实时预览与本地草稿，免费免注册 | Moteful</title>
+<meta name="description" data-i18n-content="meta_desc_markdown" content="免费在线 Markdown 编辑器：左右双栏实时预览，工具栏一键插入标题、粗体、列表、表格等常用语法；草稿自动保存在本机，支持复制 Markdown、复制 HTML 与下载 .md 文件。纯前端本地运行，不上传任何内容，中文 / English / Español 三语界面。">
+<meta name="keywords" content="Markdown编辑器,markdown editor,在线Markdown,Markdown预览,Markdown转HTML,Markdown草稿,开发者工具">
+<meta name="author" content="Moteful">
+<meta name="robots" content="index, follow">
+
+<!-- ===== SEO：Open Graph（社交分享卡片） ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Moteful">
+<meta property="og:title" content="在线 Markdown 编辑器 - 实时预览与本地草稿">
+<meta property="og:description" content="免费在线 Markdown 编辑器：双栏实时预览，工具栏一键排版，草稿自动保存在本机，支持复制 Markdown、复制 HTML 与下载 .md，纯本地运行不上传。">
+<meta property="og:url" content="https://moteful.app/dev/markdown.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+
+<!-- ===== SEO：Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="在线 Markdown 编辑器 - 实时预览与本地草稿">
+<meta name="twitter:description" content="免费在线 Markdown 编辑器：双栏实时预览，工具栏一键排版，草稿自动保存在本机，支持复制 Markdown、复制 HTML 与下载 .md，纯本地运行不上传。">
+
+<!-- ===== SEO：canonical（防重复内容） ===== -->
+<link rel="canonical" href="https://moteful.app/dev/markdown.html">
+
+<!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "在线 Markdown 编辑器",
+  "alternateName": "Moteful Markdown Editor",
+  "description": "免费在线 Markdown 编辑器：左右双栏实时预览，工具栏一键插入标题、粗体、列表、表格等常用语法；草稿自动保存在本机，支持复制 Markdown、复制 HTML 与下载 .md 文件。纯前端本地运行，不上传任何内容，中文 / English / Español 三语界面。",
+  "url": "https://moteful.app/dev/markdown.html",
+  "applicationCategory": "DeveloperApplication",
+  "softwareVersion": "2.1.2",
+  "operatingSystem": "Web (任何现代浏览器)",
+  "inLanguage": [
+    "zh-CN",
+    "en",
+    "es"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "featureList": [
+    "左右双栏实时预览，手机端编辑 / 预览单栏切换",
+    "工具栏一键插入标题、粗体、斜体、删除线、列表、引用、代码、表格、链接、分割线",
+    "预览只构建安全 DOM，不执行脚本，链接协议白名单过滤",
+    "草稿自动保存在本机浏览器，刷新不丢，可一键清空",
+    "复制 Markdown 原文、复制渲染 HTML、下载 .md 文件",
+    "字符、字数、段落实时统计",
+    "中文 / English / Español 三语界面",
+    "100% 本地运行，断网可用，数据不上传"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Moteful",
+    "url": "https://moteful.app"
+  }
+}
+</script>
+
+<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
+if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
+if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=v;})();</script>
+
+<link rel="stylesheet" href="../assets/css/moteful.css">
+  <link rel="stylesheet" href="../assets/css/recommend.css">
+  <link rel="stylesheet" href="../assets/css/share.css">
+<script src="../assets/js/moteful.js" defer></script>
+  <script src="../assets/js/recommend.js" defer></script>
+  <script src="../assets/js/share.js" defer></script>
+<script src="../assets/i18n/en.js" defer></script>
+<script src="../assets/i18n/zh.js" defer></script>
+<script src="../assets/i18n/es.js" defer></script>
+<script src="../assets/i18n/i18n.js" defer></script>
+  <script src="../assets/js/wordcount-core.js?v=2.1.2" defer></script>
+  <script src="../assets/js/markdown-core.js?v=2.1.2" defer></script>
+  <script src="../assets/js/markdown-tool.js?v=2.1.2" defer></script>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4nM1PwSvDcRx9v18ZUltRxmgulJRWdpiDfk7GwYrDskULu1ga6ldz46LEVnOxoo0sJSkiKbUd3JDyJ4iDy1w4uNhvT5vWb5rfmAvv8P32Pu/73ud9gX8Ng91lFrudzb8OaL0hsUqWeiNqCVIgYEtlANQDsM9Yyt4+rpDYIbFF4qB0iyJMJxJBGwtMxyQOywiZzJD66Onip6FnY+xnbmmqwxLf8+dpo7w2nL2tsW3v9+aJiAtxtar1juy8/eCivD4yUPitL3FCYj4ZytO2C7JhRa1edUV6NEO8IQcuSfj25zQX9C1IxgeyNxweKhY3SQRJRNOsvCa7UuQgSbPb3ZLTHcv9WCIhk6YztYWQPXQxssYA1BrTqDYBiiLg3u9sej0/eoS060PPaAR1AJ4APL8BrIC+HXiZFXL+v8U7p1SEg5RNexoAAAAASUVORK5CYII=">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
+  <meta name="moteful-siteurl" content="https://moteful.app">
+  <meta name="moteful-pagepath" content="dev/markdown">
+  <meta name="google-adsense-account" content="ca-pub-2226711164508785">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2226711164508785" crossorigin="anonymous"></script>
+  <meta name="baidu-site-verification" content="codeva-Ok5o1J5DOp">
+  <script>/*MF_LANG*/(function(){
+  var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
+  try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
+  var n=(navigator.language||'').toLowerCase();
+  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
+  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
+  if(g!=='en'){h.setAttribute('data-i18n-pending','1');
+  setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
+})();</script>
+</head>
+<body data-nav="dev">
+<body data-nav="dev">
+<header class="topbar">
+  <a class="logo" href="../index.html">
+    <span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span>
+    <span class="logo-text">Moteful</span>
+  </a>
+  <nav class="nav-links" aria-label="Main">
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
+          <span data-i18n="nav_image">Image Tools</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
+        <a class="menu-item" href="../tools/png-compressor.html"><i data-lucide="image-down"></i><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/crop-tool.html"><i data-lucide="crop"></i><span data-i18n="nav_m_cutter">裁切</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
+        <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
+        <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
+        <a class="menu-item" href="../tools/id-photo-tool.html"><i data-lucide="user"></i><span data-i18n="nav_m_idphoto">证件照</span></a>
+        <a class="menu-item" href="../tools/icon-tool.html"><i data-lucide="radius"></i><span data-i18n="nav_m_icon">图标工具</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="list"></i><span data-i18n="nav_m_rename">重命名</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="pipette"></i><span data-i18n="nav_m_cutout">纯色抠图</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="dev">
+        <span data-i18n="nav_dev">Developer</span>
+      </button>
+      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../dev/json.html"><i data-lucide="file-braces"></i><span data-i18n="nav_dev_json">Json</span></a>
+        <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
+        <a class="menu-item" href="../dev/word-counter.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../dev/timestamp.html"><i data-lucide="stamp"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item on" href="../dev/markdown.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_markdown">Markdown 编辑器</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <hr class="menu-sep">
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="binary"></i><span data-i18n="nav_dev_base64">Base64 编解码</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+        <a class="menu-item soon" href="#" aria-disabled="true"><i data-lucide="palette"></i><span data-i18n="nav_dev_color">颜色代码转换</span><span class="tag t-gray" data-i18n="tag_soon">即将推出</span></a>
+      </div>
+    </span>
+    <span class="pop nav-pop">
+      <button class="btn btn-ghost btn-sm" data-pop data-nav-key="game">
+        <span data-i18n="nav_games">游戏</span>
+      </button>
+      <div class="menu pop-panel">
+        <a class="menu-item" href="../games/block-clear.html"><i data-lucide="gamepad-2"></i><span data-i18n="nav_g_blockclear">方块消除</span></a>
+        <a class="menu-item" href="../games/snake.html"><i data-lucide="worm"></i><span data-i18n="nav_g_snake">贪吃蛇</span></a>
+        <a class="menu-item" href="../games/sudoku.html"><i data-lucide="grid-3x3"></i><span data-i18n="nav_g_sudoku">数独</span></a>
+      </div>
+    </span>
+  </nav>
+  <div class="nav-acts">
+    <!-- V1.4：分享次入口（share.js 加载页显示；≤480px 收进抽屉） -->
+    <button type="button" class="btn btn-ghost btn-sm share-topbar-btn" data-share-topbar hidden data-i18n-aria="share_nav" aria-label="Share"><i data-lucide="share-2"></i><span data-i18n="share_nav">Share</span></button>
+    <!-- 赞助入口：常驻外链，不弹窗、不拦路（V0.9） -->
+    <a class="btn btn-ghost btn-sm" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n-aria="nav_support" aria-label="Support"><i data-lucide="heart-handshake"></i><span data-i18n="nav_support">Support</span></a>
+    <!-- 主题：胶囊双钮 -->
+    <div class="theme-sw" role="radiogroup" aria-label="Theme">
+      <button class="sw-btn" data-set-theme="light" aria-label="Light"><i data-lucide="sun"></i></button>
+      <button class="sw-btn" data-set-theme="dark" aria-label="Dark"><i data-lucide="moon"></i></button>
+    </div>
+    <!-- 语种：无边框幽灵按钮 + 下拉（与规范一致） -->
+    <div class="pop pop-end">
+      <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+        <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+      </button>
+      <div class="menu pop-panel">
+        <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+        <button class="menu-item lang-item" data-lang="en">English</button>
+        <button class="menu-item lang-item" data-lang="es">Español</button>
+      </div>
+    </div>
+    <button class="btn btn-icon btn-sm menu-btn" onclick="openDrawer('drawerNav')" aria-label="Menu"><i data-lucide="menu"></i></button>
+  </div>
+</header>
+<div class="drawer" id="drawerNav" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-mask" data-dclose></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head">
+      <h3>Moteful</h3>
+      <div class="drawer-head-actions">
+        <a href="../support.html" class="btn btn-ghost btn-sm" data-i18n-title="foot_support" aria-label="Support">
+          <i data-lucide="heart-handshake"></i><span data-i18n="foot_support">Support</span>
+        </a>
+        <div class="pop">
+          <button class="btn btn-ghost btn-sm" data-pop data-i18n-title="nav_lang_title" aria-label="Language">
+            <i data-lucide="globe"></i><span class="lang-label">English</span><i data-lucide="chevron-down"></i>
+          </button>
+          <div class="menu pop-panel">
+            <button class="menu-item lang-item" data-lang="zh">简体中文</button>
+            <button class="menu-item lang-item" data-lang="en">English</button>
+            <button class="menu-item lang-item" data-lang="es">Español</button>
+          </div>
+        </div>
+        <button class="btn btn-icon btn-sm" data-dclose aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- V1.4：分享当前页入口（share.js 加载页显示） -->
+    <button type="button" class="btn btn-secondary btn-sm share-drawer-entry" data-share-entry hidden><i data-lucide="share-2"></i><span data-i18n="share_drawer_entry">分享当前页</span></button>
+    <!-- 一级分类胶囊（横向滚动） -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab on" data-dtab="image"><i data-lucide="images"></i><span data-i18n="nav_image_group">图片工具</span></button>
+      <button class="drawer-tab" data-dtab="dev"><i data-lucide="code"></i><span data-i18n="nav_dev_group">开发者工具</span></button>
+      <button class="drawer-tab" data-dtab="games"><i data-lucide="gamepad-2"></i><span data-i18n="nav_games_group">小游戏</span></button>
+    </div>
+
+    <!-- 二级工具宫格 -->
+    <nav class="drawer-grid" id="drawerGrid">
+      <!-- 图片工具 -->
+      <div class="drawer-pane active" data-pane="image">
+        <a href="../tools/image-tool.html" class="grid-card">
+          <i data-lucide="images"></i>
+          <span data-i18n="nav_m_batch">批量处理</span>
+        </a>
+        <a href="../tools/png-compressor.html" class="grid-card">
+          <i data-lucide="image-down"></i>
+          <span><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/crop-tool.html" class="grid-card">
+          <i data-lucide="crop"></i>
+          <span><span data-i18n="nav_m_cutter">裁切</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../tools/stitch.html" class="grid-card">
+          <i data-lucide="layout-grid"></i>
+          <span data-i18n="nav_m_compress">长图拼接</span>
+        </a>
+        <a href="../tools/qrcode.html" class="grid-card">
+          <i data-lucide="qr-code"></i>
+          <span data-i18n="nav_m_qrcode">二维码</span>
+        </a>
+        <a href="../tools/annotate.html" class="grid-card">
+          <i data-lucide="pencil"></i>
+          <span data-i18n="nav_m_annotate">打码标注</span>
+        </a>
+        <a href="../tools/id-photo-tool.html" class="grid-card">
+          <i data-lucide="user"></i>
+          <span data-i18n="nav_m_idphoto">证件照</span>
+        </a>
+        <a href="../tools/icon-tool.html" class="grid-card">
+          <i data-lucide="radius"></i>
+          <span data-i18n="nav_m_icon">图标工具</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="list"></i>
+          <span data-i18n="nav_m_rename">重命名</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="pipette"></i>
+          <span data-i18n="nav_m_cutout">纯色抠图</span>
+        </a>
+      </div>
+
+      <!-- 开发者工具 -->
+      <div class="drawer-pane" data-pane="dev">
+        <a href="../dev/json.html" class="grid-card">
+          <i data-lucide="file-braces"></i>
+          <span data-i18n="nav_dev_json">JSON 格式化</span>
+        </a>
+        <a href="../dev/regex.html" class="grid-card">
+          <i data-lucide="regex"></i>
+          <span data-i18n="nav_dev_regex">正则测试</span>
+        </a>
+        <a href="../dev/word-counter.html" class="grid-card">
+          <i data-lucide="file-text"></i>
+          <span><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../dev/timestamp.html" class="grid-card">
+          <i data-lucide="stamp"></i>
+          <span><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="../dev/markdown.html" class="grid-card">
+          <i data-lucide="file-text"></i>
+          <span><span data-i18n="nav_dev_markdown">Markdown 编辑器</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="binary"></i>
+          <span data-i18n="nav_dev_base64">Base64 编解码</span>
+        </a>
+        <a href="#" class="grid-card soon" aria-disabled="true">
+          <i data-lucide="palette"></i>
+          <span data-i18n="nav_dev_color">颜色代码转换</span>
+        </a>
+      </div>
+
+      <!-- 小游戏 -->
+      <div class="drawer-pane" data-pane="games">
+        <a href="../games/block-clear.html" class="grid-card">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="nav_g_blockclear">方块消除</span>
+        </a>
+        <a href="../games/snake.html" class="grid-card">
+          <i data-lucide="worm"></i>
+          <span data-i18n="nav_g_snake">贪吃蛇</span>
+        </a>
+        <a href="../games/sudoku.html" class="grid-card">
+          <i data-lucide="grid-3x3"></i>
+          <span data-i18n="nav_g_sudoku">数独</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+    (function(){
+      // 根据当前路径，判断应该显示哪个分类
+      function getDefaultTab(){
+        var path = location.pathname;
+        if(path.indexOf('/tools/') >= 0) return 'image';
+        if(path.indexOf('/dev/') >= 0) return 'dev';
+        if(path.indexOf('/games/') >= 0) return 'games';
+        // 首页和 support 默认显示图片工具分类（主要功能）
+        return 'image';
+      }
+
+      // 页面加载时，默认给对应分类胶囊加上 on 类，并显示对应 pane
+      function setDefaultTab(){
+        var tabName = getDefaultTab();
+        var tabs = document.querySelectorAll('#drawerNav .drawer-tab');
+        tabs.forEach(function(t){
+          t.classList.toggle('on', t.getAttribute('data-dtab') === tabName);
+        });
+        // 同时显示对应 pane
+        var panes = document.querySelectorAll('#drawerNav .drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === tabName);
+        });
+      }
+
+      // DOM 加载完成后立即设置默认高亮
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', setDefaultTab);
+      } else {
+        setDefaultTab();
+      }
+
+      // 抽屉分类切换逻辑
+      document.addEventListener('click', function(e){
+        var tab = e.target.closest('.drawer-tab');
+        if(!tab) return;
+
+        var container = document.getElementById('drawerGrid');
+        if(!container) return;
+
+        // 切换 tab 高亮
+        var tabs = container.parentElement.querySelectorAll('.drawer-tab');
+        tabs.forEach(function(t){ t.classList.remove('on'); });
+        tab.classList.add('on');
+
+        // 切换 pane
+        var target = tab.getAttribute('data-dtab');
+        var panes = container.querySelectorAll('.drawer-pane');
+        panes.forEach(function(p){
+          p.classList.toggle('active', p.getAttribute('data-pane') === target);
+        });
+      });
+
+      // 抽屉打开时，根据当前页自动选中对应分类
+      window.openDrawer = window.openDrawer || function(id){
+        var drawer = document.getElementById(id);
+        if(!drawer) return;
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // 触发对应 tab（会自动切换 pane）
+        var tabName = getDefaultTab();
+        var tab = drawer.querySelector('.drawer-tab[data-dtab="' + tabName + '"]');
+        if(tab) tab.click();
+      };
+    })();
+    </script>
+  </aside>
+</div>
+<main class="page">
+
+  <section class="hero">
+    <div class="kicker" data-i18n="md_kicker">MOTEFUL · 开发者工具</div>
+    <h1 class="md-hero-title"><i data-lucide="file-text"></i><span data-i18n="md_title">Markdown 编辑器</span></h1>
+    <p data-i18n="md_sub">边写边预览的 Markdown 编辑器，常用语法一键插入，草稿自动保存在本机。全部在你的浏览器本地完成。</p>
+    <div class="row">
+      <span class="tag t-success" data-i18n="md_badge_local">本地处理 · 不上传</span>
+      <span class="tag t-gray" data-i18n="md_badge_free">永久免费 · 无需注册</span>
+    </div>
+  </section>
+
+  <!-- ===== ① 编辑器主卡 ===== -->
+  <section class="panel md-panel">
+    <div class="md-head">
+      <h2 class="sec-title" data-i18n="md_editor_title">编辑与预览</h2>
+      <span class="muted md-hint" data-i18n="md_editor_hint">左侧输入 Markdown，右侧实时预览</span>
+      <div class="segment md-viewseg" role="radiogroup" aria-label="视图切换" data-i18n-aria="md_view_aria">
+        <label class="seg"><input type="radio" name="mdView" value="edit" checked><span class="seg-t"><i data-lucide="pencil"></i><span data-i18n="md_view_edit">编辑</span></span></label>
+        <label class="seg"><input type="radio" name="mdView" value="preview"><span class="seg-t"><i data-lucide="eye"></i><span data-i18n="md_view_preview">预览</span></span></label>
+      </div>
+    </div>
+    <div class="alert a-info md-restore" id="mdRestore" role="status" hidden>
+      <i data-lucide="info" aria-hidden="true"></i>
+      <p data-i18n="md_restore_q">发现上次保存在本机的草稿，是否恢复？</p>
+      <button type="button" class="btn btn-primary btn-sm" id="mdRestoreYes" data-i18n="md_restore_yes">恢复草稿</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="mdRestoreNo" data-i18n="md_restore_no">忽略并删除</button>
+    </div>
+    <div class="alert a-warn md-warn" id="mdWarn" role="status" hidden>
+      <i data-lucide="info" aria-hidden="true"></i>
+      <p id="mdWarnText" data-i18n="md_warn_links">已拦截 {n} 个不合规链接，按纯文本显示。</p>
+    </div>
+    <div class="md-toolbar" role="toolbar" aria-label="格式工具栏" data-i18n-aria="md_toolbar_aria">
+      <button type="button" class="btn btn-ghost btn-icon" id="mdTbBold" title="粗体" data-i18n-title="md_tb_bold" aria-label="粗体" data-i18n-aria="md_tb_bold"><span class="md-glyph md-g-b" aria-hidden="true">B</span></button>
+      <button type="button" class="btn btn-ghost btn-icon" id="mdTbItalic" title="斜体" data-i18n-title="md_tb_italic" aria-label="斜体" data-i18n-aria="md_tb_italic"><span class="md-glyph md-g-i" aria-hidden="true">I</span></button>
+      <button type="button" class="btn btn-ghost btn-icon" id="mdTbUnderline" title="下划线" data-i18n-title="md_tb_underline" aria-label="下划线" data-i18n-aria="md_tb_underline"><span class="md-glyph md-g-u" aria-hidden="true">U</span></button>
+      <button type="button" class="btn btn-ghost btn-icon" id="mdTbStrike" title="删除线" data-i18n-title="md_tb_strike" aria-label="删除线" data-i18n-aria="md_tb_strike"><span class="md-glyph md-g-s" aria-hidden="true">S</span></button>
+      <button type="button" class="btn btn-ghost btn-icon" id="mdTbHeading" title="标题" data-i18n-title="md_tb_heading" aria-label="标题" data-i18n-aria="md_tb_heading"><span class="md-glyph" aria-hidden="true">H</span></button>
+      <span class="md-tb-sep" aria-hidden="true"></span>
+      <div class="pop">
+        <button type="button" class="btn btn-ghost md-tb-icon" id="mdTbList" title="列表" data-i18n-title="md_tb_list" aria-label="列表" data-i18n-aria="md_tb_list" data-pop><i data-lucide="list"></i><i data-lucide="chevron-down"></i></button>
+        <div class="menu pop-panel">
+          <button type="button" class="menu-item" id="mdTbUl" title="无序列表" data-i18n-title="md_tb_ul"><i data-lucide="list"></i><span data-i18n="md_tb_ul">无序列表</span></button>
+          <button type="button" class="menu-item" id="mdTbOl" title="有序列表" data-i18n-title="md_tb_ol"><i data-lucide="list-ordered"></i><span data-i18n="md_tb_ol">有序列表</span></button>
+        </div>
+      </div>
+      <div class="pop">
+        <button type="button" class="btn btn-ghost md-tb-icon" id="mdTbAlign" title="对齐方式" data-i18n-title="md_tb_align" aria-label="对齐方式" data-i18n-aria="md_tb_align" data-pop><i data-lucide="align-left"></i><i data-lucide="chevron-down"></i></button>
+        <div class="menu pop-panel">
+          <button type="button" class="menu-item" id="mdTbAlignLeft" title="左对齐" data-i18n-title="md_align_left"><i data-lucide="align-left"></i><span data-i18n="md_align_left">左对齐</span></button>
+          <button type="button" class="menu-item" id="mdTbAlignCenter" title="居中" data-i18n-title="md_align_center"><i data-lucide="align-center"></i><span data-i18n="md_align_center">居中</span></button>
+          <button type="button" class="menu-item" id="mdTbAlignRight" title="右对齐" data-i18n-title="md_align_right"><i data-lucide="align-right"></i><span data-i18n="md_align_right">右对齐</span></button>
+          <button type="button" class="menu-item" id="mdTbAlignJustify" title="两端对齐" data-i18n-title="md_align_justify"><i data-lucide="align-justify"></i><span data-i18n="md_align_justify">两端对齐</span></button>
+        </div>
+      </div>
+      <span class="md-tb-sep" aria-hidden="true"></span>
+      <div class="pop md-tb-insert">
+        <button type="button" class="btn btn-ghost" id="mdTbInsert" title="插入" data-i18n-title="md_tb_insert" aria-label="插入" data-i18n-aria="md_tb_insert" data-pop><i data-lucide="circle-plus"></i><span data-i18n="md_tb_insert">插入</span><i data-lucide="chevron-down"></i></button>
+        <div class="menu pop-panel">
+          <button type="button" class="menu-item" id="mdTbTable" title="表格" data-i18n-title="md_tb_table"><i data-lucide="table-2"></i><span data-i18n="md_tb_table">表格</span></button>
+          <button type="button" class="menu-item" id="mdTbLink" title="链接" data-i18n-title="md_tb_link"><i data-lucide="link"></i><span data-i18n="md_tb_link">链接</span></button>
+          <button type="button" class="menu-item" id="mdTbImage" title="图片" data-i18n-title="md_insert_image"><i data-lucide="image"></i><span data-i18n="md_insert_image">图片</span></button>
+          <button type="button" class="menu-item" id="mdTbCode" title="代码" data-i18n-title="md_tb_code"><i data-lucide="code"></i><span data-i18n="md_tb_code">代码</span></button>
+          <button type="button" class="menu-item" id="mdTbQuote" title="引用" data-i18n-title="md_tb_quote"><i data-lucide="message-square-quote"></i><span data-i18n="md_tb_quote">引用</span></button>
+          <button type="button" class="menu-item" id="mdTbHr" title="分割线" data-i18n-title="md_tb_hr"><i data-lucide="minus"></i><span data-i18n="md_tb_hr">分割线</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="md-split">
+      <textarea id="mdInput" class="input md-editor" spellcheck="false" placeholder="在此输入或粘贴 Markdown…" data-i18n-ph="md_input_ph" aria-label="Markdown 输入" data-i18n-aria="md_input_aria"></textarea>
+      <div id="mdPreview" class="md-preview" aria-live="polite" aria-label="渲染预览" data-i18n-aria="md_preview_aria">
+        <div class="empty" id="mdEmpty">
+          <div class="e-ico"><i data-lucide="file-text"></i></div>
+          <h4 data-i18n="md_empty_title">预览为空</h4>
+          <p data-i18n="md_empty_desc">在左侧输入 Markdown，这里会实时显示排版效果。</p>
+          <button type="button" class="btn btn-secondary" id="mdSample"><i data-lucide="sparkles"></i><span data-i18n="md_empty_sample">载入示例</span></button>
+        </div>
+        <div class="md-body" id="mdBody"></div>
+      </div>
+    </div>
+    <div class="md-status">
+      <span class="md-stats">
+        <span class="md-stat"><span data-i18n="md_stat_chars">字符</span> <b id="mdStatChars">0</b></span>
+        <span class="md-stat"><span data-i18n="md_stat_words">字数</span> <b id="mdStatWords">0</b></span>
+        <span class="md-stat"><span data-i18n="md_stat_paras">段落</span> <b id="mdStatParas">0</b></span>
+      </span>
+      <span class="md-save" id="mdSaveState" data-i18n="md_save_idle">草稿自动保存 · 仅本机</span>
+    </div>
+    <p class="muted md-statnote" data-i18n="md_stat_note">统计口径与字数统计页一致，按输入的 Markdown 原文计算（含语法符号）。</p>
+    <div class="row md-hist">
+      <button type="button" class="btn btn-secondary btn-sm" id="mdUndo" disabled title="撤销上一步修改" data-i18n-title="md_hist_undo_title"><i data-lucide="undo"></i><span data-i18n="md_hist_undo">撤销</span></button>
+      <button type="button" class="btn btn-secondary btn-sm" id="mdRedo" disabled title="重做刚撤销的那一步" data-i18n-title="md_hist_redo_title"><i data-lucide="redo"></i><span data-i18n="md_hist_redo">重做</span></button>
+      <button type="button" class="btn btn-secondary btn-sm" id="mdReset" disabled title="还原到载入时的内容" data-i18n-title="md_hist_reset_title"><i data-lucide="rotate-ccw"></i><span data-i18n="md_hist_reset">还原</span></button>
+    </div>
+    <div class="row md-actions">
+      <button type="button" class="btn btn-secondary" id="mdCopyMd"><i data-lucide="copy"></i><span data-i18n="md_copy_md">复制 Markdown</span></button>
+      <button type="button" class="btn btn-secondary" id="mdCopyHtml"><i data-lucide="code"></i><span data-i18n="md_copy_html">复制 HTML</span></button>
+      <button type="button" class="btn btn-secondary" id="mdDownload"><i data-lucide="download"></i><span data-i18n="md_download">下载 .md</span></button>
+      <button type="button" class="btn btn-secondary" id="mdClear"><i data-lucide="trash-2"></i><span data-i18n="md_clear">清空</span></button>
+    </div>
+  </section>
+
+  <!-- ===== ② 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="md_seo1_title">功能介绍</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="md_f_th1">功能</th><th data-i18n="md_f_th2">说明</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="md_f1_name">实时预览</td><td data-i18n="md_f1_desc">左侧输入 Markdown，右侧即时排版；手机端可切换编辑 / 预览单栏。</td></tr>
+          <tr><td data-i18n="md_f2_name">语法工具栏</td><td data-i18n="md_f2_desc">粗体、斜体、下划线、删除线、标题一键套用；列表、对齐方式、插入三个下拉菜单，涵盖表格、链接、图片、代码、引用与分割线。</td></tr>
+          <tr><td data-i18n="md_f9_name">撤销与重做</td><td data-i18n="md_f9_desc">随时撤销、重做，连续输入自动合并为一步；「还原」一键回到载入时的内容。</td></tr>
+          <tr><td data-i18n="md_f10_name">预览区交互</td><td data-i18n="md_f10_desc">代码块带语言标签，可一键复制、收起展开；表格同样支持复制与收起。</td></tr>
+          <tr><td data-i18n="md_f3_name">安全渲染</td><td data-i18n="md_f3_desc">预览只构建安全 DOM，不执行任何脚本；链接经协议白名单过滤，恶意内容无法运行。</td></tr>
+          <tr><td data-i18n="md_f4_name">本地草稿</td><td data-i18n="md_f4_desc">输入自动保存在本机浏览器，下次打开会询问是否恢复内容与光标位置，可随时一键清空。</td></tr>
+          <tr><td data-i18n="md_f5_name">多种导出</td><td data-i18n="md_f5_desc">复制 Markdown 原文、复制 HTML 源码、下载 .md 文件，随取随用。</td></tr>
+          <tr><td data-i18n="md_f6_name">实时统计</td><td data-i18n="md_f6_desc">字符、字数、段落数实时更新，写作进度一目了然。</td></tr>
+          <tr><td data-i18n="md_f7_name">隐私保护</td><td data-i18n="md_f7_desc">纯前端本地运行，不上传任何输入，断网也能使用。</td></tr>
+          <tr><td data-i18n="md_f8_name">三语界面</td><td data-i18n="md_f8_desc">中文、English、Español 即时切换。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ===== ③ 使用场景（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="md_seo2_title">使用场景</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="stat-grid">
+      <div class="stat"><div class="lb" data-i18n="md_u1_t">写项目文档</div><div class="nm seo-desc" data-i18n="md_u1_d">README、更新日志、接口说明，边写边看排版效果。</div></div>
+      <div class="stat"><div class="lb" data-i18n="md_u2_t">写博客草稿</div><div class="nm seo-desc" data-i18n="md_u2_d">先在此排版，再复制 Markdown 原文或 HTML 源码，发布到博客与内容平台。</div></div>
+      <div class="stat"><div class="lb" data-i18n="md_u3_t">整理学习笔记</div><div class="nm seo-desc" data-i18n="md_u3_d">用标题与列表整理读书和课堂笔记，结构清晰易复习。</div></div>
+      <div class="stat"><div class="lb" data-i18n="md_u4_t">离线写作</div><div class="nm seo-desc" data-i18n="md_u4_d">通勤路上断网也能写，草稿自动保存在本机，回来接着写。</div></div>
+    </div>
+  </details>
+
+  <!-- ===== ④ 常见问题（SEO 文字内容，折叠面板默认收起） ===== -->
+  <details class="panel seo-details">
+    <summary class="seo-summary">
+      <span class="seo-summary-title" data-i18n="md_seo3_title">常见问题</span>
+      <i data-lucide="chevron-down" class="seo-summary-icon"></i>
+    </summary>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th data-i18n="md_q_th1">问题</th><th data-i18n="md_q_th2">答案</th></tr></thead>
+        <tbody>
+          <tr><td data-i18n="md_seo3_q1">我的内容会被上传吗？</td><td data-i18n="md_seo3_a1">不会。本页是纯前端工具，解析与预览都在你的浏览器里完成，不向任何服务器发送输入内容。草稿只写进本机的 localStorage，可随时一键清空；浏览器阻止本地存储时工具照常可用，只是不保存草稿。</td></tr>
+          <tr><td data-i18n="md_seo3_q2">支持哪些 Markdown 语法？</td><td data-i18n="md_seo3_a2">支持标题、粗体、斜体、下划线、删除线、有序与无序列表、任务列表、引用、行内代码与代码块、表格（含列对齐）、链接、图片和分割线；下划线与段落对齐为扩展语法。数学公式与流程图暂不支持。</td></tr>
+          <tr><td data-i18n="md_seo3_q3">草稿保存在哪里？</td><td data-i18n="md_seo3_a3">草稿只保存在本机浏览器的 localStorage 中，不上传、不同步到其他设备。点「清空」即可删除；隐私模式或存储配额满时状态条会提示无法保存。</td></tr>
+          <tr><td data-i18n="md_seo3_q4">手机上怎么用？</td><td data-i18n="md_seo3_a4">小屏设备提供「编辑 / 预览」切换：默认单栏编辑，点「预览」查看排版，再点「编辑」继续写，数据不会丢失。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+
+<!-- ===== 清空草稿 · 二次确认 ===== -->
+<div class="modal" id="mdClearModal" role="dialog" aria-modal="true" aria-label="清空草稿？" data-i18n-aria="md_clear_title">
+  <div class="modal-mask" data-close></div>
+  <div class="modal-card">
+    <h3 data-i18n="md_clear_title">清空草稿？</h3>
+    <p><span data-i18n="md_clear_body">将清空编辑内容并删除本机保存的草稿，此操作不可撤销。</span></p>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost" data-close data-i18n="md_clear_cancel">取消</button>
+      <button type="button" class="btn btn-danger" id="mdClearConfirm" data-i18n="md_clear_ok">清空</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-mark"><img src="../assets/img/logo-mark.png" alt="" width="34" height="34"></span><span class="logo-text">Moteful</span></span>
+      <span class="tagline" data-i18n="foot_tagline">Free, privacy-first online tools.</span>
+    </div>
+    <nav>
+      <h4 data-i18n="foot_legal">Legal</h4>
+      <a href="../legal/about.html"><span data-i18n="foot_about">About</span></a>
+      <a href="../legal/privacy.html"><span data-i18n="foot_privacy">Privacy</span></a>
+      <a href="../legal/terms.html"><span data-i18n="foot_terms">Terms</span></a>
+    </nav>
+    <nav>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="../legal/credits.html"><span data-i18n="foot_credits">Credits</span></a>
+      <a href="../legal/contact.html"><span data-i18n="foot_contact">Contact</span></a>
+      <a href="../support.html"><span data-i18n="foot_support_us">Support us</span></a>
+      <a href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer"><span data-i18n="foot_tip">♥ PayPal</span></a>
+    </nav>
+    <div>
+      <h4 data-i18n="foot_operator_title">Operated by</h4>
+      <p class="footer-entity" data-i18n="foot_operator">Moteful 由居住在中国的独立开发者 准哥 运营</p>
+      <p class="footer-social">
+        <a class="footer-social-link" href="https://github.com/moteful/home" target="_blank" rel="noopener noreferrer" data-i18n-aria="foot_github" aria-label="GitHub repository" title="GitHub repository"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></a>
+        <a class="footer-social-link" href="mailto:moteful@outlook.com" data-i18n-aria="foot_email" aria-label="Email us" title="Email us"><i data-lucide="mail"></i></a>
+        <button type="button" class="footer-social-link" data-footer-share data-i18n-aria="foot_share" aria-label="Share this page" title="Share this page"><i data-lucide="share-2"></i></button>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
+    <span class="sp"></span>
+    <span data-i18n="foot_version">v2.1.2</span>
+  </div>
+</footer>
+<div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">
+  <div class="rec-mask" data-rec-close></div>
+  <div class="rec-box">
+    <button class="btn btn-icon btn-secondary btn-close rec-close-icon" type="button" data-rec-close data-i18n-aria="rec_close" aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="rec-check"><i data-lucide="check-circle"></i></div>
+    <p class="rec-msg" id="recMsg" data-i18n="rec_done">操作成功</p>
+    <p class="rec-sub" data-i18n="rec_sub">感谢使用 Moteful，下面这些功能你可能也用得上：</p>
+    <div class="rec-cards" id="recCards">    <a class="rec-card" href="../dev/word-counter.html">
+      <i data-lucide="file-text"></i>
+      <span class="rec-label"><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+    </a>
+    <a class="rec-card" href="../dev/timestamp.html">
+      <i data-lucide="stamp"></i>
+      <span class="rec-label"><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+    </a>
+    <a class="rec-card" href="../dev/json.html">
+      <i data-lucide="file-braces"></i>
+      <span data-i18n="nav_dev_json">Json</span>
+    </a></div>
+    <div class="rec-tip">
+      <div class="rec-tip-line">
+        <i data-lucide="heart-handshake" class="lucide-ico"></i>
+        <span class="rec-tip-text" data-i18n="rec_tip_note">如果这个工具帮到了你，欢迎请作者喝杯咖啡</span>
+      </div>
+      <a class="btn btn-primary rec-tip-btn" href="https://www.paypal.com/ncp/payment/EMH4YJBBK5L3C" target="_blank" rel="noopener noreferrer" data-i18n="rec_tip_btn">赞助支持</a>
+    </div>
+    <div class="rec-actions">
+      <button class="btn btn-secondary" type="button" data-rec-share data-i18n="rec_share">分享</button>
+      <button class="btn btn-secondary rec-close-btn" type="button" data-rec-close data-i18n="rec_close">关闭</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

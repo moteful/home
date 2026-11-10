@@ -10,7 +10,7 @@
   "operatorZh": "Moteful 由居住在中国的独立开发者 准哥 运营",
   "operatorEn": "Moteful is operated by 准哥, an independent developer based in China.",
   "copyright": "© 2026 Moteful. All tools run locally in your browser.",
-  "version": "v2.1.1",
+  "version": "v2.1.2",
   "designSystemLabel": "Design System v0905-r6.1",
   "navMenuActive": {
     "_说明": "某页打开导航下拉时高亮哪个菜单项（值=菜单项的 data-i18n 键）；不需要高亮的页面不要写",
@@ -26,6 +26,7 @@
     "dev/regex.html": "nav_dev_regex",
     "dev/word-counter.html": "nav_dev_wordcount",
     "dev/timestamp.html": "nav_dev_timestamp",
+    "dev/markdown.html": "nav_dev_markdown",
     "games/block-clear.html": "nav_g_blockclear",
     "games/snake.html": "nav_g_snake",
     "games/sudoku.html": "nav_g_sudoku"
@@ -55,6 +56,7 @@
     "dev/regex.html",
     "dev/word-counter.html",
     "dev/timestamp.html",
+    "dev/markdown.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",

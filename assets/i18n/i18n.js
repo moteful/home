@@ -48,8 +48,6 @@
     var titleEl = document.querySelector('title[data-i18n]');
     if (titleEl) { var tk = titleEl.getAttribute('data-i18n'); if (d[tk] != null) titleEl.textContent = d[tk]; }
     refreshThemeLabel();
-    var langLabel = document.getElementById('langLabel');
-    if (langLabel) langLabel.textContent = d[l === 'zh' ? 'lang_to_en' : 'lang_to_zh'];
     paintLangLabels();
     try { localStorage.setItem('moteful-lang', l); } catch (e) {}
     /* 通知各页面语言已切换（动态生成的内容可监听此事件重新渲染） */
@@ -71,11 +69,4 @@
   /* moteful.js 是 defer 脚本，会在本脚本之后用「zh|en 二元」写法覆写 .lang-label；
      DOMContentLoaded 在所有 defer 脚本之后触发，这里复核一次，保证三语标签正确（不改只读的 moteful.js） */
   document.addEventListener('DOMContentLoaded', paintLangLabels);
-  var langBtn = document.getElementById('langBtn');
-  if (langBtn) {
-    langBtn.addEventListener('click', function () {
-      var cur = document.documentElement.lang === 'zh-CN' ? 'zh' : 'en';
-      applyLang(cur === 'zh' ? 'en' : 'zh');
-    });
-  }
 })();

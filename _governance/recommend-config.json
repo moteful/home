@@ -58,6 +58,12 @@
       "label": "时间戳转换",
       "new": true
     },
+    "dev/markdown.html": {
+      "icon": "file-text",
+      "labelKey": "nav_dev_markdown",
+      "label": "Markdown 编辑器",
+      "new": true
+    },
     "dev/json.html": {
       "icon": "file-braces",
       "labelKey": "nav_dev_json",
@@ -131,7 +137,15 @@
       "recs": [
         "dev/word-counter.html",
         "dev/json.html",
-        "dev/regex.html"
+        "dev/regex.html",
+        "dev/markdown.html"
+      ]
+    },
+    "dev/markdown.html": {
+      "recs": [
+        "dev/word-counter.html",
+        "dev/timestamp.html",
+        "dev/json.html"
       ]
     }
   }

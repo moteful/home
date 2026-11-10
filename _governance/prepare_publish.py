@@ -54,16 +54,25 @@ if os.path.isdir(pub):
     shutil.rmtree(pub)
 os.makedirs(pub)
 
-# 复制 16 个页面（pages 列表，含 404.html 作为线上错误页；template.html 不在 pages 内故不复制）
+# 复制全部注册页面（pages 列表，含 404.html 作为线上错误页；template.html 不在 pages 内故不复制）
 for p in pages:
     s = os.path.join(ROOT, p.replace('/', os.sep))
     d = os.path.join(pub, p.replace('/', os.sep))
     os.makedirs(os.path.dirname(d), exist_ok=True)
     shutil.copy2(s, d)
 
-# 复制 assets（排除备份 *.bak）
+# 复制 assets（排除备份 *.bak* 与第三方说明文档）
 def ignore(src, names):
-    return [n for n in names if n.endswith('.bak') or n == '.git']
+    out = []
+    rel = os.path.relpath(src, ROOT).replace(os.sep, '/')
+    for n in names:
+        if n == '.git':
+            out.append(n)
+        elif '.bak' in n:            # 覆盖 .bak / .bak-20261108 这类带日期的备份
+            out.append(n)
+        elif rel.startswith('assets/vendor') and n.lower().startswith('readme'):
+            out.append(n)            # 第三方 README 不对外发布；同目录 LICENSE 必须保留（MIT 合规）
+    return out
 
 
 shutil.copytree(os.path.join(ROOT, 'assets'), os.path.join(pub, 'assets'), ignore=ignore)
