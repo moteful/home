@@ -7,6 +7,28 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v2.1.3",
+    "date": "2026-11-13",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Developer Tools - Markdown Editor",
+          "Edit and preview side by side, supporting headings, bold, italic, strikethrough, underline, lists, alignment, quotes, code, links, images, tables and more",
+          "Toolbar supports undo / redo / reset, and inserting tables, links, images, code, quotes and dividers",
+          "Preview code blocks show the language type, with one-click copy and collapse/expand; tables can also be copied and collapsed",
+          "Drafts autosave and restore the next time you open the page"
+        ]
+      },
+      {
+        "title": "Improved",
+        "points": [
+          "Language now follows your system by default"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.1.0",
     "date": "2026-11-10",
     "sections": [

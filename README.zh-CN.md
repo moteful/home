@@ -5,7 +5,7 @@
 一个**隐私优先的图片工具站**，完全运行在你的浏览器里。
 图片在本地处理，**永远不会离开你的设备**——不上传、无服务器、无跟踪。
 
-> 状态：**v2.1.1** · 23 个页面 · 三语（中文 / English / Español）
+> 状态：**v2.1.3** · 24 个页面 · 三语（中文 / English / Español）
 
 ---
 
@@ -28,6 +28,8 @@
 - **西班牙语与三语 SEO（v2.0.7）**——完整 Español 语言包（三套字典键序严格一致）、更新日志三语、22 页标题与描述随语种切换、全站注册页补齐 Open Graph / Twitter 分享卡片。
 - **时间戳转换工具（v2.1.0）**——Unix 时间戳与日期双向换算、52 个城市时区带搜索、夏令时感知、自定义日期时间选择器、全键盘操作。
 - **界面细节优化（v2.1.1）**——时间戳页小标题与结果区内文对齐、JSON 工具图标换 file-braces、支持类图标统一 heart-handshake、导航「裁切工具」简化为「裁切」并同步首页卡片。
+- **Markdown 编辑器（v2.1.2）**——编辑区与预览区左右对照，支持标题、加粗、斜体、删除线、下划线、列表、对齐、引用、代码、链接、图片、表格；可撤销 / 重做 / 还原，预览区代码块显示语言类型并支持一键复制与收起展开，草稿自动保存、下次打开自动恢复。
+- **默认深色与语种跟随系统（v2.1.3）**——站点默认以深色主题打开并记住你的切换；界面语言默认跟随系统语言（无匹配语种时显示英文），后续新增语言包会被自动识别。图片线 New 标签已下线。
 - **设计即开放**——对隐私工具而言，代码本身就是信任信号。
 
 ---
@@ -55,6 +57,7 @@
 | `dev/regex.html` | 正则测试（Worker 驱动） |
 | `dev/word-counter.html` | 字数统计（汉字 / 英文词 / 字符 / 段落行数） |
 | `dev/timestamp.html` | 时间戳转换（Unix ↔ 日期 / 52 时区 / 夏令时） |
+| `dev/markdown.html` | Markdown 编辑器（左右对照预览 / 格式工具栏 / 草稿恢复） |
 | `games/block-clear.html` | 方块消除（休闲解谜） |
 | `games/snake.html` | 贪吃蛇 |
 | `games/sudoku.html` | 数独 |
@@ -83,7 +86,7 @@ python3 -m http.server 8000
 ### 质量门禁（提交前运行）
 
 ```bash
-node _governance/inject_site.mjs --check   # 23 页漂移检查（必须为 0）
+node _governance/inject_site.mjs --check   # 24 页漂移检查（必须为 0）
 node _governance/lint.mjs                  # 样式/lint（错误数必须为 0）
 node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
@@ -96,7 +99,7 @@ node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 moteful/
 ├── index.html, support.html, 404.html
 ├── tools/            # 图片工具（image-tool、stitch、png-compressor、crop-tool、annotate、qrcode、icon-tool、id-photo-tool）
-├── dev/              # 开发者工具（json、regex、word-counter、timestamp）
+├── dev/              # 开发者工具（json、regex、word-counter、timestamp、markdown）
 ├── games/            # 小游戏（block-clear、snake、sudoku）
 ├── legal/            # about / contact / credits / privacy / terms
 ├── assets/

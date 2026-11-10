@@ -66,10 +66,10 @@
 }
 </script>
 <meta name="description" data-i18n-content="meta_desc_tool" id="metaDesc" content="免费在线图片批量处理工具，支持批量压缩、压缩到指定大小（50KB~1MB）、格式转换（PNG/JPEG/WEBP）、尺寸调整、旋转翻转裁剪，支持剪贴板粘贴导入。全部在浏览器本地运行，图片不上传，保护隐私，无需注册。">
-<!-- 两态主题预置：moteful-theme → mf-theme → 跟随系统（防闪烁） -->
+<!-- 两态主题预置：moteful-theme → mf-theme → 默认深色（防闪烁） -->
 <script>(function(){var v=null;try{v=localStorage.getItem('moteful-theme')}catch(e){}
 if(v!=='light'&&v!=='dark'){try{v=localStorage.getItem('mf-theme')}catch(e){}}
-if(v!=='light'&&v!=='dark'){v=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+if(v!=='light'&&v!=='dark'){v='dark'}
 document.documentElement.dataset.theme=v;})();</script>
 <link rel="stylesheet" href="../assets/css/moteful.css">
   <link rel="stylesheet" href="../assets/css/recommend.css">
@@ -91,9 +91,9 @@ document.documentElement.dataset.theme=v;})();</script>
   <script>/*MF_LANG*/(function(){
   var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
   try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
-  var n=(navigator.language||'').toLowerCase();
-  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
-  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var av=["en","es","zh"];
+  if(av.indexOf(v)<0){var n=(navigator.language||'').toLowerCase().split('-')[0];v=av.indexOf(n)>=0?n:'en';}
+  var g=v;window.MF_LANG=g;
   var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
   if(g!=='en'){h.setAttribute('data-i18n-pending','1');
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
@@ -115,11 +115,10 @@ document.documentElement.dataset.theme=v;})();</script>
       <button class="btn btn-ghost btn-sm" data-pop data-nav-key="image">
           <span data-i18n="nav_image">Image Tools</span>
       </button>
-      <span class="nav-corner nav-corner-new" data-i18n="tag_new">New</span>
       <div class="menu pop-panel">
         <a class="menu-item on" href="../tools/image-tool.html"><i data-lucide="images"></i><span data-i18n="nav_m_batch">Batch process</span></a>
-        <a class="menu-item" href="../tools/png-compressor.html"><i data-lucide="image-down"></i><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
-        <a class="menu-item" href="../tools/crop-tool.html"><i data-lucide="crop"></i><span data-i18n="nav_m_cutter">裁切</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../tools/png-compressor.html"><i data-lucide="image-down"></i><span data-i18n="nav_m_png">PNG 压缩</span></a>
+        <a class="menu-item" href="../tools/crop-tool.html"><i data-lucide="crop"></i><span data-i18n="nav_m_cutter">裁切</span></a>
         <a class="menu-item" href="../tools/stitch.html"><i data-lucide="layout-grid"></i><span data-i18n="nav_m_compress">Stitch</span></a>
         <a class="menu-item" href="../tools/qrcode.html"><i data-lucide="qr-code"></i><span data-i18n="nav_m_qrcode">二维码</span></a>
         <a class="menu-item" href="../tools/annotate.html"><i data-lucide="pencil"></i><span data-i18n="nav_m_annotate">Annotate</span></a>
@@ -138,7 +137,7 @@ document.documentElement.dataset.theme=v;})();</script>
       <div class="menu pop-panel">
         <a class="menu-item" href="../dev/json.html"><i data-lucide="file-braces"></i><span data-i18n="nav_dev_json">Json</span></a>
         <a class="menu-item" href="../dev/regex.html"><i data-lucide="regex"></i><span data-i18n="nav_dev_regex">Regex</span></a>
-        <a class="menu-item" href="../dev/word-counter.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
+        <a class="menu-item" href="../dev/word-counter.html"><i data-lucide="file-type"></i><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
         <a class="menu-item" href="../dev/timestamp.html"><i data-lucide="stamp"></i><span data-i18n="nav_dev_timestamp">时间戳转换</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
         <a class="menu-item" href="../dev/markdown.html"><i data-lucide="file-text"></i><span data-i18n="nav_dev_markdown">Markdown 编辑器</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></a>
         <hr class="menu-sep">
@@ -573,7 +572,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.1.2</span>
+    <span data-i18n="foot_version">v2.1.3</span>
   </div>
 </footer>
 
@@ -622,11 +621,11 @@ document.documentElement.dataset.theme=v;})();</script>
         </a>
         <a href="../tools/png-compressor.html" class="grid-card">
           <i data-lucide="image-down"></i>
-          <span><span data-i18n="nav_m_png">PNG 压缩</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+          <span data-i18n="nav_m_png">PNG 压缩</span>
         </a>
         <a href="../tools/crop-tool.html" class="grid-card">
           <i data-lucide="crop"></i>
-          <span><span data-i18n="nav_m_cutter">裁切</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
+          <span data-i18n="nav_m_cutter">裁切</span>
         </a>
         <a href="../tools/stitch.html" class="grid-card">
           <i data-lucide="layout-grid"></i>
@@ -669,7 +668,7 @@ document.documentElement.dataset.theme=v;})();</script>
           <span data-i18n="nav_dev_regex">正则测试</span>
         </a>
         <a href="../dev/word-counter.html" class="grid-card">
-          <i data-lucide="file-text"></i>
+          <i data-lucide="file-type"></i>
           <span><span data-i18n="nav_dev_wordcount">字数统计</span><span class="tag tag-new tag-sm" data-i18n="tag_new">New</span></span>
         </a>
         <a href="../dev/timestamp.html" class="grid-card">

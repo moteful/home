@@ -17,19 +17,22 @@
     if (themeText) { var cur = document.documentElement.getAttribute('data-theme') || 'system'; themeText.textContent = getThemeLabel(cur); }
   }
   window.refreshThemeLabel = refreshThemeLabel;
-  /* 三语支持（V2.0.7 加西语）：语种码 → html lang 属性；下拉触发器上的当前语种名用母语自称 */
+  /* 语种码 → html lang 属性（zh 写 zh-CN；未列映射的语种直接用码值）；下拉触发器上的当前语种名优先取下拉项的母语自称 */
   var LANG_ATTR = { zh: 'zh-CN', en: 'en', es: 'es' };
   var LANG_NATIVE = { zh: '简体中文', en: 'English', es: 'Español' };
-  function normLang(v) { return (v === 'zh' || v === 'es') ? v : 'en'; }
+  /* V2.1.3：有效性按「词典是否已加载」判定 —— 未来加语种只要词典加载即自动识别；未加载一律兜底英文 */
+  function normLang(v) { return (M && M[v]) ? v : 'en'; }
   window.normLang = normLang;
   function paintLangLabels() {
     var lb = document.querySelectorAll('.lang-label');
-    for (var i = 0; i < lb.length; i++) lb[i].textContent = LANG_NATIVE[currentLang] || currentLang;
+    var item = document.querySelector('.lang-item[data-lang="' + currentLang + '"]');
+    var name = (item && item.textContent.trim()) || LANG_NATIVE[currentLang] || currentLang;
+    for (var i = 0; i < lb.length; i++) lb[i].textContent = name;
   }
   function applyLang(l) {
     l = normLang(l);
     currentLang = l; window.currentLang = l;
-    document.documentElement.lang = LANG_ATTR[l];
+    document.documentElement.lang = LANG_ATTR[l] || l;
     var d = (M && M[l]) || M.en || {};
     var els = document.querySelectorAll('[data-i18n]');
     for (var i = 0; i < els.length; i++) { var k = els[i].getAttribute('data-i18n'); if (d[k] != null) els[i].textContent = d[k]; }
@@ -54,13 +57,15 @@
     try { document.dispatchEvent(new CustomEvent('moteful:langchange', { detail: { lang: l } })); } catch (e) {}
   }
   window.applyLang = applyLang;
-  /* 语种优先取 head 预置脚本的结果（window.MF_LANG，首帧前已判定）；预置脚本缺失时回退原本判定逻辑 */
+  /* 语种优先取 head 预置脚本的结果（window.MF_LANG，首帧前已判定）；预置脚本缺失时回退同口径判定：
+     存储偏好 → 系统语言主子标签匹配已加载词典 → 英文兜底（V2.1.3，与 head 预置脚本一致） */
   var savedLang = window.MF_LANG;
-  if (savedLang !== 'zh' && savedLang !== 'en' && savedLang !== 'es') {
-    try { savedLang = localStorage.getItem('moteful-lang'); } catch (e) {}
-    if (!savedLang) {
-      var nav = (navigator.language || '').toLowerCase();
-      savedLang = nav.indexOf('zh') >= 0 ? 'zh' : (nav.indexOf('es') === 0 ? 'es' : 'en');
+  if (!(M && M[savedLang])) {
+    var ks = ['moteful-lang', 'mf-lang', 'lang', 'language', 'locale', 'i18n-lang'];
+    try { for (var ki = 0; ki < ks.length; ki++) { var kv = localStorage.getItem(ks[ki]); if (kv) { savedLang = kv; break; } } } catch (e) {}
+    if (!(M && M[savedLang])) {
+      var nav = (navigator.language || '').toLowerCase().split('-')[0];
+      savedLang = (M && M[nav]) ? nav : 'en';
     }
   }
   applyLang(savedLang);

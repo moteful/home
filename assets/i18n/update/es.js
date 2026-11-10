@@ -7,6 +7,28 @@
 
 const CHANGELOG_ES = [
   {
+    "version": "v2.1.3",
+    "date": "2026-11-13",
+    "sections": [
+      {
+        "title": "Novedades",
+        "points": [
+          "Herramientas de desarrollo — Editor de Markdown",
+          "Edición y vista previa en paralelo; compatible con títulos, negrita, cursiva, tachado, subrayado, listas, alineación, citas, código, enlaces, imágenes, tablas y más",
+          "La barra de herramientas permite deshacer / rehacer / restaurar e insertar tablas, enlaces, imágenes, código, citas y separadores",
+          "Los bloques de código de la vista previa muestran el tipo de lenguaje y permiten copiar y plegar/desplegar con un clic; las tablas también se pueden copiar y plegar",
+          "El borrador se guarda automáticamente y se restaura la próxima vez que abras la página"
+        ]
+      },
+      {
+        "title": "Mejoras",
+        "points": [
+          "El idioma ahora sigue el de tu sistema de forma predeterminada"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.1.0",
     "date": "2026-11-10",
     "sections": [

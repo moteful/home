@@ -47,7 +47,7 @@
       "new": true
     },
     "dev/word-counter.html": {
-      "icon": "file-text",
+      "icon": "file-type",
       "labelKey": "nav_dev_wordcount",
       "label": "字数统计",
       "new": true

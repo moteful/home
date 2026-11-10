@@ -90,8 +90,7 @@
     msCache: null,           // 打码底图缓存（原图 + 已提交操作）
     lumaKey: '', lumaVal: null,
     exporting: false,
-    wipeTimer: 0,
-    renderTimer: 0
+    wipeTimer: 0
   };
 
   var el = {};
@@ -554,11 +553,6 @@
     if (index < 0) index = 0;
     if (index >= modalItems.length) index = modalItems.length - 1;
     window.MFCompare.open(modalItems, index, triggerEl || null);
-  }
-
-  function scheduleRender(ms) {
-    clearTimeout(state.renderTimer);
-    state.renderTimer = setTimeout(render, ms || 0);
   }
 
   function updateStageAria(it) {

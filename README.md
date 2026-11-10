@@ -5,7 +5,7 @@
 A **privacy-first image toolkit** that runs entirely in your browser.
 Your images are processed locally and **never leave your device** — no upload, no server, no tracking.
 
-> Status: **v2.1.1** · 23 pages · trilingual (中文 / English / Español)
+> Status: **v2.1.3** · 24 pages · trilingual (中文 / English / Español)
 
 ---
 
@@ -28,6 +28,8 @@ Your images are processed locally and **never leave your device** — no upload,
 - **Spanish & trilingual SEO (v2.0.7)** — full Español dictionary (three dictionaries, identical key order), trilingual changelog, localized title/description on all 22 pages, and Open Graph + Twitter share cards on every registered page.
 - **Timestamp converter (v2.1.0)** — bidirectional Unix timestamp ↔ date conversion, 52 city timezones with search, DST-aware, custom date-time picker, full keyboard support.
 - **UI polish (v2.1.1)** — timestamp input labels aligned with the result panel, JSON tool icon switched to file-braces, support-related icons unified to heart-handshake, shorter cropper menu label.
+- **Markdown editor (v2.1.2)** — split edit/preview with headings, bold, italic, strikethrough, underline, lists, alignment, quotes, code, links, images and tables; undo / redo / reset, preview code blocks with language labels plus one-click copy and collapse, and locally saved drafts that restore on reopen.
+- **Dark by default (v2.1.3)** — the site opens in dark mode and remembers your toggle; the UI language follows your system language (English when unmatched) and newly added language packs are picked up automatically. NEW badges were retired from the image line.
 - **Open by design** — for a privacy tool, the code *is* the trust signal.
 
 ---
@@ -55,6 +57,7 @@ Your images are processed locally and **never leave your device** — no upload,
 | `dev/regex.html` | Regex tester (Worker-driven) |
 | `dev/word-counter.html` | Word counter (Chinese characters / English words / paragraphs & lines) |
 | `dev/timestamp.html` | Timestamp converter (Unix ↔ date / 52 timezones / DST) |
+| `dev/markdown.html` | Markdown editor (split preview / formatting toolbar / draft recovery) |
 | `games/block-clear.html` | Block Clear (relaxing puzzle) |
 | `games/snake.html` | Snake |
 | `games/sudoku.html` | Sudoku |
@@ -83,7 +86,7 @@ python3 -m http.server 8000
 ### Quality gates (run before committing)
 
 ```bash
-node _governance/inject_site.mjs --check   # drift check across 23 pages (must be 0)
+node _governance/inject_site.mjs --check   # drift check across 24 pages (must be 0)
 node _governance/lint.mjs                  # style/lint (must have 0 errors)
 node _governance/assert_spec.mjs           # spec assertions (requires Playwright)
 ```
@@ -96,7 +99,7 @@ node _governance/assert_spec.mjs           # spec assertions (requires Playwrigh
 moteful/
 ├── index.html, support.html, 404.html
 ├── tools/            # image tools (image-tool, stitch, png-compressor, crop-tool, annotate, qrcode, icon-tool, id-photo-tool)
-├── dev/              # developer tools (json, regex, word-counter, timestamp)
+├── dev/              # developer tools (json, regex, word-counter, timestamp, markdown)
 ├── games/            # mini-games (block-clear, snake, sudoku)
 ├── legal/            # about / contact / credits / privacy / terms
 ├── assets/

@@ -10,8 +10,8 @@
  *  - 内容层（品牌/主体/版本/版权）改 site-config.json；结构层（菜单/排版）改 site-blocks/*.html
  *  - 模板内占位符：{{BRAND}} {{LOGO_ICON}} {{TAGLINE}} {{OPERATOR}} {{COPYRIGHT}} {{FOOTER_RIGHT}}
  *  - 子目录页（legal/ tools/）自动加 ../ 路径前缀（纯相对路径铁律）
- *  - 顺带同步 assets/i18n/{zh,en}.js 的 foot_version 到 config.version
- *  - 只写 8 个页面与词表的 foot_version，绝不触碰 moteful.css / moteful.js / template.html（只读铁律）
+ *  - 顺带同步各语种词表（assets/i18n/*.js，引擎除外）的 foot_version 到 config.version；operator 仅 zh/en 有配置源
+ *  - 只写注册页面与词表的 foot_version，绝不触碰 moteful.css / moteful.js / template.html（只读铁律）
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -129,6 +129,11 @@ const faviconLinks = (page) => {
   return `  <link rel="icon" type="image/png" href="data:image/png;base64,${FAVICON_B64}">\n  <link rel="shortcut icon" href="${pre}favicon.ico">\n</head>`;
 };
 
+// V2.1.3：可用语种表不再写死 —— 下发时扫描 assets/i18n/ 的词表文件（两位语种码，引擎 i18n.js 除外）派生。
+// 未来新增语种：放入词表文件 + 顶栏/抽屉加下拉项 + 重新下发即自动生效，判定代码无需再改。
+const I18N_DIR = path.join(ROOT, 'assets', 'i18n');
+const LANG_PACKS = fs.readdirSync(I18N_DIR).filter((f) => /^[a-z]{2}\.js$/.test(f)).map((f) => f.slice(0, -3)).sort();
+
 let drifted = [];
 for (const page of cfg.pages) {
   const file = path.join(ROOT, page);
@@ -204,46 +209,53 @@ for (const page of cfg.pages) {
   }
   // 语种防闪（V2.0.6）：全站 <head> 幂等注入语种预置脚本。
   // 静态兜底文案是英文，而 i18n 引擎在 </body> 前才执行，浏览器先绘制英文再换词 = 中文用户每次刷新闪一次英文。
-  // 预置脚本在首帧之前判定语种（判定口径与 assets/js/moteful.js 的 LANG_KEYS 一致），中文态给 <html> 打
+  // 预置脚本在首帧之前判定语种（判定口径与 assets/js/moteful.js 的 LANG_KEYS 一致），非英文态给 <html> 打
   // data-i18n-pending，配套暂遮样式在 assets/css/missing_styles_proposal.css，i18n.js 换词完成后摘除标记。
   // 英文态不打标记（兜底本就是英文，无闪可防）；2500ms 看门狗兜底，词典脚本万一加载失败不至于永久隐身。
-  // V2.0.7：顺带把 <html lang> 也写成判定结果 —— 22 页静态兜底里有 13 页写死 zh-CN，
-  // 西语态要等 i18n.js 才纠正，屏幕阅读器与浏览器翻译提示在此之前都读错语种（与 i18n.js 的 LANG_ATTR 同口径）。
+  // V2.0.7：顺带把 <html lang> 也写成判定结果（与 i18n.js 的 LANG_ATTR 同口径，zh 写 zh-CN）。
+  // V2.1.3：判定口径改为「存储偏好 → 系统语言主子标签匹配可用语言包 → 英文兜底」；
+  // 可用语言包 av 由下发时扫描词表目录派生（LANG_PACKS），未来加语种重新下发即自动更新，无需改判定代码。
   const LANG_GUARD_MARK = '/*MF_LANG*/';
   const langGuardScript = `  <script>${LANG_GUARD_MARK}(function(){
   var ks=['moteful-lang','mf-lang','lang','language','locale','i18n-lang'],v=null;
   try{for(var i=0;i<ks.length;i++){v=localStorage.getItem(ks[i]);if(v)break;}}catch(e){}
-  var n=(navigator.language||'').toLowerCase();
-  if(v!=='zh'&&v!=='en'&&v!=='es'){v=n.indexOf('zh')>=0?'zh':(n.indexOf('es')===0?'es':'en');}
-  var g=(v==='zh'||v==='es')?v:'en';window.MF_LANG=g;
+  var av=${JSON.stringify(LANG_PACKS)};
+  if(av.indexOf(v)<0){var n=(navigator.language||'').toLowerCase().split('-')[0];v=av.indexOf(n)>=0?n:'en';}
+  var g=v;window.MF_LANG=g;
   var h=document.documentElement;h.lang=(g==='zh'?'zh-CN':g);
   if(g!=='en'){h.setAttribute('data-i18n-pending','1');
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
 })();</script>`;
-  if (!html.includes(LANG_GUARD_MARK)) {
+  const guardRe = /  <script>\/\*MF_LANG\*\/[\s\S]*?<\/script>/;
+  const guardOld = html.match(guardRe);
+  if (!guardOld) {
     drifted.push(page);
     if (!CHECK) {
       html = html.replace('</head>', langGuardScript + '\n</head>');
       changed.push('lang-guard');
     } else changed.push('lang-guard(缺失)');
-  } else if (!/window\.MF_LANG=g;[\s\S]{0,80}?h\.lang=/.test(html)) {
-    // 已注入但仍是旧写法（只认 zh/en，或首帧前没写 <html lang>）→ 整段重写
+  } else if (guardOld[0] !== langGuardScript) {
+    // 已注入但与当前生成不一致（旧写死口径 / 语言包增减）→ 整段重写
     drifted.push(page);
     if (!CHECK) {
-      html = html.replace(/  <script>\/\*MF_LANG\*\/[\s\S]*?<\/script>/, langGuardScript);
+      html = html.replace(guardRe, langGuardScript);
       changed.push('lang-guard(升级)');
     } else changed.push('lang-guard(旧版)');
   }
-  // 西语词典（V2.0.7）：紧随 zh.js 注入 es.js，保持同前缀、同 defer 写法（幂等：已存在则跳过）
+  // 语言包脚本（V2.0.7 西语下发 / V2.1.3 泛化）：LANG_PACKS 里每个词表，页面缺其脚本标签即
+  // 紧随 zh.js 补注入（沿用 zh.js 的前缀与 defer 写法；幂等：已存在则跳过）。
+  // 未来新增语种：放入词表文件 + 顶栏/抽屉加下拉项 + 重新下发即全自动生效。
   const zhTagRe = /<script src="((?:\.\.\/)?assets\/i18n\/zh\.js)"( defer)?><\/script>/;
-  if (!/assets\/i18n\/es\.js/.test(html)) {
+  for (const lang of LANG_PACKS) {
+    if (lang === 'zh') continue;
+    if (new RegExp('assets/i18n/' + lang + '\\.js').test(html)) continue;
     const zm = html.match(zhTagRe);
-    if (!zm) { console.error('✗ ' + page + ': 找不到 zh.js 脚本锚点（es.js 下发）'); process.exit(1); }
+    if (!zm) { console.error('✗ ' + page + ': 找不到 zh.js 脚本锚点（' + lang + '.js 下发）'); process.exit(1); }
     drifted.push(page);
     if (!CHECK) {
-      html = html.replace(zhTagRe, (m) => m + '\n' + m.replace('zh.js', 'es.js'));
-      changed.push('es-dict');
-    } else changed.push('es-dict(缺失)');
+      html = html.replace(zhTagRe, (m) => m + '\n' + m.replace('zh.js', lang + '.js'));
+      changed.push(lang + '-dict');
+    } else changed.push(lang + '-dict(缺失)');
   }
   // 内联推荐（V1.1）：注入 rec.css / rec.js / 弹窗块（受 recommend-config.json 驱动）
   const recPre = path.dirname(page) === '.' ? '' : '../';
@@ -344,17 +356,19 @@ if (!CHECK && cfg.prevBrand && cfg.prevBrand !== cfg.brand) {
 }
 
   // 词表 foot_version / foot_operator 同步（页面可见文案以词表为准，只改 HTML 静态兜底不生效）
+  // V2.1.3：版本号同步全部语言包（LANG_PACKS 扫描）；operator 仅在该语种有配置源时替换（zh/operatorZh、en/operatorEn），
+  // 其余语种的 operator 保留人工撰写文案（如 es 为西语），避免被英文误覆盖。
   if (!CHECK) {
-    for (const lang of ['zh', 'en']) {
-      const f = path.join(ROOT, 'assets', 'i18n', lang + '.js');
+    for (const lang of LANG_PACKS) {
+      const f = path.join(I18N_DIR, lang + '.js');
       let s = fs.readFileSync(f, 'utf8');
       const before = s;
       // 版本号
       s = s.replace(/("(?:foot_version)"\s*:\s*")[^"]*(")/, `$1${cfg.version}$2`);
-      // 主体名：整条 foot_operator 按语言替换为全量文案（zh/operatorZh、en/operatorEn）
-      const op = lang === 'zh' ? (cfg.operatorZh || cfg.operator) : (cfg.operatorEn || cfg.operator);
-      s = s.replace(/("foot_operator"\s*:\s*")[^"]*(")/, `$1${op}$2`);
-      if (s !== before) { fs.writeFileSync(f, s); console.log(`✓ assets/i18n/${lang}.js: foot_version → ${cfg.version} / foot_operator → ${op}`); }
+      // 主体名：整条 foot_operator 按语言替换为全量文案
+      const op = lang === 'zh' ? (cfg.operatorZh || cfg.operator) : (lang === 'en' ? (cfg.operatorEn || cfg.operator) : null);
+      if (op) s = s.replace(/("foot_operator"\s*:\s*")[^"]*(")/, `$1${op}$2`);
+      if (s !== before) { fs.writeFileSync(f, s); console.log(`✓ assets/i18n/${lang}.js: foot_version → ${cfg.version}${op ? ' / foot_operator → ' + op : ''}`); }
     }
   }
 

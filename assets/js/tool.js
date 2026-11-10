@@ -20,8 +20,6 @@
     return (d[key] != null) ? d[key] : key;
   }
   function trn(key, n) { return String(tr(key)).replace('{n}', n); }
-  function tr2(key, a, b) { return String(tr(key)).replace('{n}', a).replace('{total}', b); }
-  function trwh(key, w, h) { return String(tr(key)).replace('{w}', w).replace('{h}', h); }
 
   /* ---------- 工具函数 ---------- */
   function formatBytes(b) {

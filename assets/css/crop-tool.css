@@ -24,7 +24,6 @@
 /* ========== 锁比例图标按钮（PS 风格，锁定态高亮；类名 crop-* 私有前缀） ========== */
 #cropConfig .crop-lock-btn{color:var(--text-2);border-color:var(--border)}
 #cropConfig .crop-lock-btn.on{color:var(--primary);border-color:var(--primary);background:var(--primary-soft)}
-#cropConfig .crop-lock-row{display:flex;align-items:center;gap:8px}
 
 /* ========== 网格模板栏（F-04：复用 stitch .tpl-btn/.tpl-mini 组件，四层对照 stitch.css L231-262 + L575-579） ========== */
 .tpl-btn{
