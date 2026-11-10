@@ -10,9 +10,12 @@
 
   function $(id) { return document.getElementById(id); }
   var input = $('mdInput'), preview = $('mdPreview'), body = $('mdBody'), empty = $('mdEmpty'),
+    splitEl = document.querySelector('.md-split'),
     warn = $('mdWarn'), warnText = $('mdWarnText'),
     restore = $('mdRestore'), restoreYes = $('mdRestoreYes'), restoreNo = $('mdRestoreNo'),
     saveState = $('mdSaveState'),
+    tocWrap = $('mdTocWrap'), tocPanel = $('mdTocPanel'), tocBtn = $('mdTocBtn'),
+    importFile = $('mdImportFile'),
     statChars = $('mdStatChars'), statWords = $('mdStatWords'), statParas = $('mdStatParas');
 
   function tr(key, vars) {
@@ -26,7 +29,7 @@
   }
   function toast(msg, type) { if (window.toast) window.toast(msg, type); }
   /* ---------- 渲染 + 统计 + 提示（统计复用 WordCounterCore，与解析共用同一次回调） ---------- */
-  var lastBlocks = null;
+  var lastBlocks = null, lastHeadings = null;
   function clearBody() { while (body.firstChild) body.removeChild(body.firstChild); }
   function setStats(chars, words, paras) {
     statChars.textContent = String(chars);
@@ -128,8 +131,9 @@
   }
   function render(text) {
     if (String(text).trim() === '') {
-      lastBlocks = null;
+      lastBlocks = null; lastHeadings = null;
       clearBody();
+      renderToc([]);
       setStats(0, 0, 0);
       warn.hidden = true;
       empty.hidden = false;
@@ -138,11 +142,13 @@
     empty.hidden = true;
     var r = Core.parse(text);
     lastBlocks = r.blocks;
+    lastHeadings = r.headings;
     var frag = Core.render(r.blocks, document);
     var memo = readFolds();   // 逐键重渲染时保住用户手动收起的那几块
     clearBody();
     body.appendChild(frag);
     decorate(memo);
+    renderToc(r.headings);
     var a = WC.analyzeText(text, {});
     setStats(a.cAll, a.cZh + a.wEn, a.paragraphs);
     showWarn(r);
@@ -307,8 +313,11 @@
     toast(tr('md_copied'), 'success');
     flashCopied(btn, key);
     /* 预览区逐块复制不弹推荐窗：那是导出级动作，连点会刷屏 */
-    if (!noRec && window.Moteful && window.Moteful.recommend) {
-      try { window.Moteful.recommend.show({ actionKey: 'rec_copy' }); } catch (e) {}
+    if (!noRec) recommend('rec_copy');
+  }
+  function recommend(key) {
+    if (window.Moteful && window.Moteful.recommend) {
+      try { window.Moteful.recommend.show({ actionKey: key }); } catch (e) {}
     }
   }
   function copyText(v, btn, key, noRec) {
@@ -339,7 +348,224 @@
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
     toast(tr('md_downloaded'), 'success');
+    recommend('rec_download');
   }
+  /* ---------- P1 导入：点击选择 + 全页拖入（只认 .md / .markdown / .txt，上限 1 MB） ---------- */
+  var IMPORT_MAX = 1024 * 1024, TEXT_EXT = /\.(md|markdown|txt)$/i;
+  function importFiles(files) {
+    var f = files && files[0];
+    if (!f) return;
+    if (!TEXT_EXT.test(f.name || '')) { toast(tr('md_import_type'), 'warning'); return; }
+    if (f.size > IMPORT_MAX) { toast(tr('md_import_size'), 'warning'); return; }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var text = String(reader.result == null ? '' : reader.result);
+      pushStep(input.value);
+      setText(text);
+      baseText = input.value;
+      toast(tr('md_import_ok', { name: f.name }), 'success');
+    };
+    reader.onerror = function () { toast(tr('md_import_fail'), 'warning'); };
+    reader.readAsText(f, 'utf-8');
+  }
+  function dropFeedback(on) { input.classList.toggle('md-dragover', !!on); }
+
+  /* ---------- P1 目录：标题 id 由内核生成，点击滚到预览中的位置 ---------- */
+  function renderToc(list) {
+    tocPanel.textContent = '';
+    if (!list || !list.length) { tocWrap.hidden = true; return; }
+    tocWrap.hidden = false;
+    list.forEach(function (h, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'menu-item md-toc-item md-toc-l' + h.level;
+      b.title = h.text;
+      var sp = document.createElement('span');
+      sp.className = 'md-toc-text';
+      sp.textContent = (i + 1) + '. ' + h.text;
+      b.appendChild(sp);
+      b.addEventListener('click', function () { jumpToHeading(h.id); });
+      tocPanel.appendChild(b);
+    });
+  }
+  function closeTocPop() {
+    var p = tocBtn.closest('.pop');
+    if (p) p.classList.remove('open');
+  }
+  function jumpToHeading(id) {
+    closeTocPop();
+    if (window.matchMedia && window.matchMedia('(max-width:768px)').matches) {
+      var r = document.querySelector('input[name="mdView"][value="preview"]');
+      if (r && !r.checked) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
+    }
+    setTimeout(function () {
+      var el = document.getElementById(id);
+      if (!el || !preview.clientHeight) return;
+      var top = el.getBoundingClientRect().top - preview.getBoundingClientRect().top + preview.scrollTop - 8;
+      preview.scrollTop = Math.max(0, top);
+      el.classList.add('md-flash');
+      setTimeout(function () { el.classList.remove('md-flash'); }, 1300);
+    }, 30);
+  }
+
+  /* ---------- P1 导出独立 HTML：单文件自带样式，不引用站内资源 ---------- */
+  var EXPORT_CSS = [
+    ':root{color-scheme:light dark}',
+    'body{margin:0;padding:32px 16px;background:#f4f7fb;color:#0f172a;font:15px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif}',
+    '.doc{max-width:760px;margin:0 auto;padding:32px 36px;background:#fff;border:1px solid #e2e8f0;border-radius:12px}',
+    '.doc>:first-child{margin-top:0}',
+    '.doc h1{font-size:28px;line-height:1.35;margin:0 0 16px}',
+    '.doc h2{font-size:22px;margin:28px 0 12px}',
+    '.doc h3{font-size:18px;margin:24px 0 10px}',
+    '.doc h4,.doc h5,.doc h6{font-size:15px;margin:20px 0 8px}',
+    '.doc p,.doc ul,.doc ol,.doc blockquote,.doc pre,.doc table{margin:0 0 14px}',
+    '.doc a{color:#0284c7}',
+    '.doc blockquote{margin-left:0;padding:10px 14px;border-left:3px solid #cbd5e1;background:#f1f5f9;color:#475569}',
+    '.doc code{font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;padding:1px 5px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px}',
+    '.doc pre{padding:14px;background:#0f172a;color:#e2e8f0;border-radius:8px;overflow:auto}',
+    '.doc pre code{padding:0;border:0;background:none;color:inherit;white-space:pre}',
+    '.doc table{border-collapse:collapse;width:100%}',
+    '.doc th,.doc td{border:1px solid #e2e8f0;padding:7px 10px;text-align:left}',
+    '.doc th{background:#f1f5f9}',
+    '.doc hr{border:0;border-top:1px solid #e2e8f0;margin:20px 0}',
+    '.doc img{max-width:100%;height:auto}',
+    '.doc .tok-com{color:#94a3b8;font-style:italic}',
+    '.doc .tok-kw{color:#7dd3fc;font-weight:600}',
+    '.doc .tok-str{color:#86efac}',
+    '.doc .tok-num{color:#fcd34d}',
+    '.doc .tok-tag{color:#fca5a5}',
+    '.doc .tok-attr{color:#c4b5fd}',
+    '.doc .tok-var{color:#a5b4fc}',
+    '@media (prefers-color-scheme:dark){body{background:#0b1220;color:#e2e8f0}.doc{background:#0f172a;border-color:#1e293b}.doc blockquote{background:#131e33;border-color:#334155;color:#94a3b8}.doc code{background:#131e33;border-color:#1e293b}.doc th,.doc td{border-color:#1e293b}.doc th{background:#131e33}.doc pre{background:#020617}}',
+    '@media (max-width:600px){body{padding:0}.doc{border:0;border-radius:0;padding:20px 16px}}'
+  ].join('\n');
+  function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function saveBlob(text, mime, name) {
+    var a = document.createElement('a');
+    var url = URL.createObjectURL(new Blob([text], { type: mime }));
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+  function exportHtml() {
+    if (!lastBlocks) { toast(tr('md_copy_empty'), 'warning'); return; }
+    var title = lastHeadings && lastHeadings[0] ? lastHeadings[0].text : tr('md_export_title');
+    var lang = document.documentElement.lang || 'en';
+    var html = '<!DOCTYPE html>\n<html lang="' + escHtml(lang) + '">\n<head>\n<meta charset="utf-8">\n' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>' + escHtml(title) + '</title>\n' +
+      '<style>\n' + EXPORT_CSS + '\n</style>\n</head>\n<body>\n<article class="doc">\n' +
+      Core.renderHTML(lastBlocks, document) + '\n</article>\n</body>\n</html>\n';
+    saveBlob(html, 'text/html;charset=utf-8', 'moteful-markdown-' + today() + '.html');
+    toast(tr('md_export_ok'), 'success');
+    recommend('rec_export');
+  }
+
+  /* ---------- P1 复制富文本：ClipboardItem 双 MIME，失败降级为复制 HTML 源码 ---------- */
+  function execCopyText(v) {
+    var ta = document.createElement('textarea');
+    ta.value = v; ta.style.position = 'fixed'; ta.style.top = '-1000px';
+    document.body.appendChild(ta); ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function copyRich(btn) {
+    if (!lastBlocks) { toast(tr('md_copy_empty'), 'warning'); return; }
+    var html = Core.renderHTML(lastBlocks, document);
+    var plain = input.value;
+    function ok() { toast(tr('md_rich_ok'), 'success'); flashCopied(btn, 'md_copy_rich'); recommend('rec_copy'); }
+    function fallback() {
+      if (execCopyText(html)) { toast(tr('md_rich_fail'), 'info'); flashCopied(btn, 'md_copy_rich'); recommend('rec_copy'); }
+      else toast(tr('md_copy_fail'), 'warning');
+    }
+    if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
+      try {
+        var item = new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([plain], { type: 'text/plain' })
+        });
+        navigator.clipboard.write([item]).then(ok, fallback);
+        return;
+      } catch (e) {}
+    }
+    fallback();
+  }
+
+  /* ---------- P1 滚动同步：块级行号 → 文本镜像测高 → 预览跟随（偏差 ≤ 1 块） ---------- */
+  var mirror = null, marks = [], mirrorText = null, topCache = null;
+  var lineCache = null, lineCacheText = null, syncRaf = 0;
+  function lineOffsets(text) {
+    if (lineCacheText === text) return lineCache;
+    var arr = [0];
+    for (var i = 0; i < text.length; i++) if (text.charCodeAt(i) === 10) arr.push(i + 1);
+    lineCacheText = text; lineCache = arr;
+    return arr;
+  }
+  function buildMirror() {
+    if (!mirror) {
+      mirror = document.createElement('div');
+      mirror.className = 'md-mirror';
+      mirror.setAttribute('aria-hidden', 'true');
+      splitEl.appendChild(mirror);
+    }
+    var cs = window.getComputedStyle(input);
+    var padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+    mirror.style.width = Math.max(0, input.clientWidth - padX) + 'px';
+    mirror.style.font = cs.font || (cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily);
+    mirror.style.lineHeight = cs.lineHeight;
+    mirror.style.letterSpacing = cs.letterSpacing;
+    mirror.style.whiteSpace = 'pre-wrap';
+    mirror.style.overflowWrap = 'break-word';
+    mirror.style.wordBreak = cs.wordBreak;
+    mirror.textContent = '';
+    marks = [];
+    var text = input.value, offs = lineOffsets(text), prev = 0;
+    (lastBlocks || []).forEach(function (b) {
+      var off = offs[Math.min(b.line || 0, offs.length - 1)] || 0;
+      if (off < prev) off = prev;
+      if (off > text.length) off = text.length;
+      mirror.appendChild(document.createTextNode(text.slice(prev, off)));
+      var m = document.createElement('span');
+      m.className = 'md-m';
+      m.appendChild(document.createTextNode('\u200b'));
+      mirror.appendChild(m);
+      marks.push(m);
+      prev = off;
+    });
+    mirror.appendChild(document.createTextNode(text.slice(prev) + '\n'));
+  }
+  function blockTops() {
+    var text = input.value;
+    if (mirrorText === text && topCache) return topCache;
+    buildMirror();
+    mirrorText = text;
+    var box = mirror.getBoundingClientRect();
+    topCache = marks.map(function (m) { return Math.max(0, m.getBoundingClientRect().top - box.top); });
+    return topCache;
+  }
+  function nearestBlock(tops, y) {
+    var lo = 0, hi = tops.length - 1, ans = 0;
+    while (lo <= hi) {
+      var mid = (lo + hi) >> 1;
+      if (tops[mid] <= y + 2) { ans = mid; lo = mid + 1; } else hi = mid - 1;
+    }
+    return ans;
+  }
+  function syncFromEditor() {
+    if (!lastBlocks || !lastBlocks.length) return;
+    if (!preview.clientHeight || preview.offsetParent === null) return;
+    if (input.scrollTop + input.clientHeight >= input.scrollHeight - 2) { preview.scrollTop = preview.scrollHeight; return; }
+    var idx = nearestBlock(blockTops(), input.scrollTop);
+    var el = body.children[idx];
+    if (!el) return;
+    var top = el.getBoundingClientRect().top - preview.getBoundingClientRect().top + preview.scrollTop - 8;
+    preview.scrollTop = Math.max(0, top);
+  }
+  window.addEventListener('resize', function () { mirrorText = null; topCache = null; });
+
   /* ---------- 列表 / 引用前缀（重复点击不叠加） ---------- */
   function lead(line) { return line.match(/^\s*/)[0]; }
   function bare(line) { return line.replace(/^\s*(?:[-*+]|\d+\.)\s+/, '').replace(/^\s*>\s?/, '').replace(/^#{1,6}\s+/, ''); }
@@ -436,6 +662,25 @@
     copyText(lastBlocks ? Core.renderHTML(lastBlocks, document) : '', this, 'md_copy_html');
   });
   $('mdDownload').addEventListener('click', download);
+  $('mdExportHtml').addEventListener('click', exportHtml);
+  $('mdCopyRich').addEventListener('click', function () { copyRich(this); });
+  $('mdImport').addEventListener('click', function () { importFile.click(); });
+  importFile.addEventListener('change', function () {
+    if (this.files && this.files.length) importFiles(this.files);
+    this.value = '';
+  });
+  /* 拖入 .md / .txt：浏览器默认会把文件直接导航打开、页面状态全丢，必须整页接管 */
+  document.addEventListener('dragover', function (e) {
+    if (!e.dataTransfer || Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') < 0) return;
+    e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; dropFeedback(true);
+  });
+  document.addEventListener('dragleave', function (e) {
+    if (e.relatedTarget === null) dropFeedback(false);
+  });
+  document.addEventListener('drop', function (e) {
+    if (!e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files.length) return;
+    e.preventDefault(); dropFeedback(false); importFiles(e.dataTransfer.files);
+  });
   $('mdSample').addEventListener('click', function () { pushStep(input.value); setText(tr('md_sample_text')); baseText = input.value; });
   $('mdClear').addEventListener('click', function () {
     if (window.MF && window.MF.openModal) window.MF.openModal('mdClearModal');
@@ -450,7 +695,11 @@
   });
   /* ---------- 分栏切换：保住两栏各自的滚动位置（F-01 接受标准） ---------- */
   var scrollMemo = { edit: 0, preview: 0 };
-  input.addEventListener('scroll', function () { scrollMemo.edit = input.scrollTop; });
+  input.addEventListener('scroll', function () {
+    scrollMemo.edit = input.scrollTop;
+    if (syncRaf) return;
+    syncRaf = window.requestAnimationFrame(function () { syncRaf = 0; syncFromEditor(); });
+  });
   preview.addEventListener('scroll', function () { scrollMemo.preview = preview.scrollTop; });
   Array.prototype.forEach.call(document.querySelectorAll('input[name="mdView"]'), function (r) {
     r.addEventListener('change', function () {

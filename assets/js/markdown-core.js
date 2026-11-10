@@ -1,4 +1,4 @@
-/* ===== markdown-core.js · Markdown 安全子集解析内核（V2.1.2 P0） =====
+/* ===== markdown-core.js · Markdown 安全子集解析内核（V2.1.4 P0+P1） =====
    两段式：parse() 逐行状态机切块 + 行内分词；render() 逐元素建 DOM。
    安全契约（设计文档 4.4）：零 innerHTML；用户文字只进文本节点；
    属性白名单 a→href/title、img→src/alt/title；协议白名单 http/https/mailto/相对路径。
@@ -143,6 +143,143 @@
     });
     return out;
   }
+  /* ---------- 目录：标题 id 只保留中英文/数字/下划线连字符，重复再追加序号 ---------- */
+  function slugify(s) {
+    var v = String(s == null ? '' : s).trim().toLowerCase();
+    v = v.replace(/[\s\u3000]+/g, '-');
+    v = v.replace(/[^a-z0-9\u00c0-\u024f\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uac00-\ud7af_-]+/g, '');
+    v = v.replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '');
+    return v || 'section';
+  }
+  function collectHeadings(blocks, out) {
+    for (var i = 0; i < blocks.length; i++) {
+      var b = blocks[i];
+      if (b.type === 'h') out.push(b);
+      else if (b.type === 'quote') collectHeadings(b.children, out);
+      else if (b.type === 'list') {
+        for (var k = 0; k < b.items.length; k++) collectHeadings(b.items[k].blocks, out);
+      }
+    }
+    return out;
+  }
+  function toc(headings) {
+    return (headings || []).filter(function (h) {
+      return h && h.id && h.level >= 1 && h.level <= 6;
+    }).map(function (h) { return { level: h.level, text: h.text, id: h.id }; });
+  }
+  /* ---------- 代码高亮：受控语言集 ----------
+     只把代码切成 (class, text) 片段，渲染端仍用 createTextNode / span 建 DOM；
+     原文一个字都不改，复制与导出拿到的 textContent 与输入完全一致。
+     字符串用手写扫描而非正则，避免未闭合引号触发回溯。 */
+  var HL_MAX = 20000;
+  var HL_ALIAS = {
+    js: 'js', javascript: 'js', jsx: 'js', mjs: 'js', cjs: 'js', ts: 'js', typescript: 'js', tsx: 'js',
+    json: 'json', jsonc: 'json',
+    css: 'css', scss: 'css', less: 'css',
+    html: 'html', htm: 'html', xml: 'html', svg: 'html', vue: 'html',
+    bash: 'bash', sh: 'bash', shell: 'bash', zsh: 'bash', console: 'bash',
+    py: 'python', python: 'python'
+  };
+  function readQuoted(code, i, allowNewline) {
+    var q = code.charAt(i), j = i + 1, n = code.length;
+    while (j < n) {
+      var ch = code.charAt(j);
+      if (ch === '\\') { j += 2; continue; }
+      if (ch === q) return code.slice(i, j + 1);
+      if (ch === '\n' && !allowNewline) return null;
+      j++;
+    }
+    return null;
+  }
+  function readJsStr(code, i) {
+    var q = code.charAt(i);
+    if (q !== '"' && q !== "'" && q !== '`') return null;
+    return readQuoted(code, i, q === '`');
+  }
+  function readDoubleStr(code, i) { return code.charAt(i) === '"' ? readQuoted(code, i, false) : null; }
+  function readAnyStr(code, i) {
+    var q = code.charAt(i);
+    if (q !== '"' && q !== "'") return null;
+    return readQuoted(code, i, false);
+  }
+  function readHtmlStr(code, i) {
+    var q = code.charAt(i);
+    if (q !== '"' && q !== "'") return null;
+    return readQuoted(code, i, true);
+  }
+  function readTriple(code, i) {
+    var q = code.substr(i, 3);
+    if (q !== '"""' && q !== "'''") return null;
+    var end = code.indexOf(q, i + 3);
+    return end === -1 ? null : code.slice(i, end + 3);
+  }
+  var HL_RULES = {
+    js: [
+      { c: 'com', re: /\/\/[^\n]*|\/\*[\s\S]*?\*\//y },
+      { c: 'str', fn: readJsStr },
+      { c: 'num', re: /\b(?:0[xX][0-9a-fA-F]+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)\b/y },
+      { c: 'kw', re: /\b(?:var|let|const|function|return|if|else|for|while|do|switch|case|break|continue|new|typeof|instanceof|class|extends|super|this|try|catch|finally|throw|async|await|yield|import|export|default|from|void|delete|in|of|null|undefined|true|false)\b/y }
+    ],
+    json: [
+      { c: 'str', fn: readDoubleStr },
+      { c: 'num', re: /-?\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/y },
+      { c: 'kw', re: /\b(?:true|false|null)\b/y }
+    ],
+    css: [
+      { c: 'com', re: /\/\*[\s\S]*?\*\//y },
+      { c: 'str', fn: readAnyStr },
+      { c: 'kw', re: /@[a-zA-Z-]+/y },
+      { c: 'attr', re: /[a-zA-Z-]+(?=\s*:)/y },
+      { c: 'num', re: /#[0-9a-fA-F]{3,8}\b|\b\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw|s|ms|fr|ch|deg|pt)?\b/y }
+    ],
+    html: [
+      { c: 'com', re: /<!--[\s\S]*?-->/y },
+      { c: 'tag', re: /<\/?[a-zA-Z][\w:-]*/y },
+      { c: 'attr', re: /\b[a-zA-Z_:][\w:.-]*(?=\s*=)/y },
+      { c: 'str', fn: readHtmlStr }
+    ],
+    bash: [
+      { c: 'str', fn: readAnyStr },
+      { c: 'com', re: /#[^\n]*/y },
+      { c: 'var', re: /\$\{[^}\n]*\}|\$[A-Za-z_][\w]*/y },
+      { c: 'kw', re: /\b(?:if|then|else|elif|fi|for|while|do|done|case|esac|function|in|echo|export|local|return|sudo|cd|rm|cp|mv|mkdir|touch|cat|grep|sed|awk|curl|wget)\b/y },
+      { c: 'num', re: /\b\d+\b/y }
+    ],
+    python: [
+      { c: 'str', fn: readTriple },
+      { c: 'com', re: /#[^\n]*/y },
+      { c: 'str', fn: readAnyStr },
+      { c: 'num', re: /\b\d+(?:\.\d+)?\b/y },
+      { c: 'kw', re: /\b(?:def|class|return|if|elif|else|for|while|break|continue|import|from|as|try|except|finally|raise|with|lambda|yield|global|nonlocal|pass|in|is|not|and|or|None|True|False|print|len|range)\b/y }
+    ]
+  };
+  function scanTokens(code, rules) {
+    var out = [], buf = '', i = 0, n = code.length;
+    function flush() { if (buf) { out.push({ t: 'plain', v: buf }); buf = ''; } }
+    while (i < n) {
+      var hit = null;
+      for (var k = 0; k < rules.length; k++) {
+        var rule = rules[k], text = null;
+        if (rule.fn) text = rule.fn(code, i);
+        else {
+          rule.re.lastIndex = i;
+          var m = rule.re.exec(code);
+          text = m && m[0] ? m[0] : null;
+        }
+        if (text) { hit = { t: rule.c, v: text }; break; }
+      }
+      if (hit) { flush(); out.push(hit); i += hit.v.length; }
+      else { buf += code.charAt(i); i++; }
+    }
+    flush();
+    return out;
+  }
+  function highlight(code, lang) {
+    var src = String(code == null ? '' : code);
+    var key = HL_ALIAS[String(lang || '').toLowerCase()];
+    if (!key || !src || src.length > HL_MAX) return [{ t: 'plain', v: src }];
+    return scanTokens(src, HL_RULES[key]);
+  }
   /* ---------- 块级：逐行状态机 ---------- */
   function splitRow(line) {
     var SENT = String.fromCharCode(0);
@@ -170,7 +307,7 @@
       RE.quote.test(line) || RE.item.test(line) || RE.align.test(line) ||
       (line.indexOf('|') !== -1 && next != null && isTableSep(next));
   }
-  function parseList(lines, i, stats, headings) {
+  function parseList(lines, i, stats, base) {
     var n = lines.length;
     var m0 = lines[i].match(RE.item);
     var base = m0[1].length, ordered = /\d/.test(m0[2][0]);
@@ -193,7 +330,7 @@
       if (im && ind2 <= base) {
         if (ind2 < base) break;
         if (/\d/.test(im[2][0]) !== ordered) break;
-        cur = { content: [im[3]] }; items.push(cur); i++; continue;
+        cur = { content: [im[3]], line: base + i }; items.push(cur); i++; continue;
       }
       if (cur && ind2 >= base + 2) { cur.content.push(L.slice(base + 2)); i++; continue; }
       if (cur && ind2 > base) { cur.content.push(L.slice(base)); i++; continue; }
@@ -203,14 +340,15 @@
     items.forEach(function (it) {
       var tm = it.content[0] ? it.content[0].match(/^\[([ xX])\]\s+(.*)$/) : null;
       if (tm) { it.task = true; it.checked = tm[1] !== ' '; it.content[0] = tm[2]; }
-      it.blocks = parseBlocks(it.content, stats, headings);
+      it.blocks = parseBlocks(it.content, stats, it.line);
     });
     return { block: { type: 'list', ordered: ordered, items: items }, next: i };
   }
-  function parseBlocks(lines, stats, headings) {
+  function parseBlocks(lines, stats, base) {
     var blocks = [], i = 0, n = lines.length, alignFor = null;
+    base = base || 0;
     while (i < n) {
-      var line = lines[i];
+      var line = lines[i], start = i;
       if (line.trim() === '') { alignFor = null; i++; continue; }
       var am = alignFor === null ? line.match(RE.align) : null;
       if (am) {
@@ -230,22 +368,21 @@
           if (k >= len && t.slice(k).trim() === '') { i++; break; }
           buf.push(lines[i]); i++;
         }
-        blocks.push({ type: 'code', lang: lang, text: buf.join('\n') });
+        blocks.push({ type: 'code', lang: lang, text: buf.join('\n'), line: base + start });
         continue;
       }
-      if (RE.hr.test(line)) { blocks.push({ type: 'hr' }); i++; continue; }
+      if (RE.hr.test(line)) { blocks.push({ type: 'hr', line: base + start }); i++; continue; }
       var hm = line.match(RE.head);
       if (hm) {
         var text = hm[2].replace(/\s+#+\s*$/, '');
         var level = hm[1].length, toks = tokenizeInline(text, stats);
-        headings.push({ level: level, text: plainText(toks) });
-        blocks.push({ type: 'h', level: level, inline: toks, align: align });
+        blocks.push({ type: 'h', level: level, inline: toks, align: align, line: base + start });
         i++; continue;
       }
       if (RE.quote.test(line)) {
         var qbuf = [];
         while (i < n && RE.quote.test(lines[i])) { qbuf.push(lines[i].replace(/^\s{0,3}>\s?/, '')); i++; }
-        blocks.push({ type: 'quote', children: parseBlocks(qbuf, stats, headings), align: align });
+        blocks.push({ type: 'quote', children: parseBlocks(qbuf, stats, base + start), align: align, line: base + start });
         continue;
       }
       if (line.indexOf('|') !== -1 && i + 1 < n && isTableSep(lines[i + 1])) {
@@ -262,28 +399,37 @@
           rows.push(r.slice(0, coln)); i++;
         }
         var tk = function (s) { return tokenizeInline(s, stats); };
-        blocks.push({ type: 'table', head: head.map(tk), rows: rows.map(function (row) { return row.map(tk); }), aligns: colAlign });
+        blocks.push({ type: 'table', head: head.map(tk), rows: rows.map(function (row) { return row.map(tk); }), aligns: colAlign, line: base + start });
         continue;
       }
       if (RE.item.test(line)) {
-        var res = parseList(lines, i, stats, headings);
+        var res = parseList(lines, i, stats, base);
         /* 对齐标记只作用于它所在的那一个列表项，不整串列表跟着变 */
         if (align && res.block.items.length) res.block.items[0].align = align;
+        res.block.line = base + start;
         blocks.push(res.block); i = res.next; continue;
       }
       var pbuf = [line]; i++;
       while (i < n && lines[i].trim() !== '' && !isBlockStart(lines[i], lines[i + 1])) { pbuf.push(lines[i]); i++; }
       if (pbuf.length >= 2 && pbuf[0].indexOf('|') !== -1 && pbuf[1].indexOf('|') !== -1 && !isTableSep(pbuf[1])) stats.tablesDegraded++;
-      blocks.push({ type: 'p', inline: tokenizeInline(pbuf.join('\n'), stats), align: align });
+      blocks.push({ type: 'p', inline: tokenizeInline(pbuf.join('\n'), stats), align: align, line: base + start });
     }
     return blocks;
   }
   /* ---------- 入口：parse(md) → {blocks, headings, links, tablesDegraded} ---------- */
   function parse(md) {
     var stats = { total: 0, safe: 0, tablesDegraded: 0 };
-    var headings = [];
     var src = String(md == null ? '' : md).replace(/\r\n?/g, '\n').replace(/\x00/g, '');
-    var blocks = parseBlocks(src.split('\n'), stats, headings);
+    var blocks = parseBlocks(src.split('\n'), stats, 0);
+    var used = {}, headings = [];
+    collectHeadings(blocks, []).forEach(function (b) {
+      var text = plainText(b.inline);
+      var base = 'md-h-' + slugify(text), id = base, n = 2;
+      while (used[id]) { id = base + '-' + n; n++; }
+      used[id] = 1;
+      b.id = id;
+      headings.push({ level: b.level, text: text, id: id });
+    });
     return { blocks: blocks, headings: headings, links: { total: stats.total, safe: stats.safe }, tablesDegraded: stats.tablesDegraded };
   }
   /* ---------- 渲染：只 createElement / createTextNode，绝不 innerHTML ---------- */
@@ -308,13 +454,20 @@
   }
   function renderBlock(doc, b, parent) {
     if (b.type === 'p') { var p = el(doc, 'p'); setAlign(p, b.align); appendInline(doc, p, b.inline); parent.appendChild(p); return; }
-    if (b.type === 'h') { var h = el(doc, 'h' + b.level); setAlign(h, b.align); appendInline(doc, h, b.inline); parent.appendChild(h); return; }
+    if (b.type === 'h') { var h = el(doc, 'h' + b.level); if (b.id) h.setAttribute('id', b.id); setAlign(h, b.align); appendInline(doc, h, b.inline); parent.appendChild(h); return; }
     if (b.type === 'hr') { parent.appendChild(el(doc, 'hr')); return; }
     if (b.type === 'code') {
       var pre = el(doc, 'pre'), cd = el(doc, 'code');
       /* CommonMark 惯例：语言落在 class="language-xxx"，复制出的 HTML 也能被高亮器识别 */
       if (b.lang) cd.setAttribute('class', 'language-' + b.lang.split(/\s+/)[0]);
-      cd.appendChild(doc.createTextNode(b.text)); pre.appendChild(cd); parent.appendChild(pre); return;
+      highlight(b.text, b.lang).forEach(function (tok) {
+        if (tok.t === 'plain') { cd.appendChild(doc.createTextNode(tok.v)); return; }
+        var sp = el(doc, 'span');
+        sp.setAttribute('class', 'tok-' + tok.t);
+        sp.appendChild(doc.createTextNode(tok.v));
+        cd.appendChild(sp);
+      });
+      pre.appendChild(cd); parent.appendChild(pre); return;
     }
     if (b.type === 'quote') { var q = el(doc, 'blockquote'); setAlign(q, b.align); renderBlocks(doc, b.children, q); parent.appendChild(q); return; }
     if (b.type === 'list') {
@@ -384,7 +537,7 @@
     for (var i = 0; i < kids.length; i++) out += serializeNode(kids[i]);
     return out;
   }
-  var api = { parse: parse, render: render, renderHTML: renderHTML, safeHref: safeHref };
+  var api = { parse: parse, render: render, renderHTML: renderHTML, safeHref: safeHref, toc: toc, highlight: highlight };
   root.MarkdownCore = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof self !== 'undefined' ? self : this);

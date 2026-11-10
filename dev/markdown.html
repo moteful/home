@@ -39,7 +39,7 @@
   "description": "免费在线 Markdown 编辑器：左右双栏实时预览，工具栏一键插入标题、粗体、列表、表格等常用语法；草稿自动保存在本机，支持复制 Markdown、复制 HTML 与下载 .md 文件。纯前端本地运行，不上传任何内容，中文 / English / Español 三语界面。",
   "url": "https://moteful.app/dev/markdown.html",
   "applicationCategory": "DeveloperApplication",
-  "softwareVersion": "2.1.2",
+  "softwareVersion": "2.1.4",
   "operatingSystem": "Web (任何现代浏览器)",
   "inLanguage": [
     "zh-CN",
@@ -86,8 +86,8 @@ document.documentElement.dataset.theme=v;})();</script>
 <script src="../assets/i18n/es.js" defer></script>
 <script src="../assets/i18n/i18n.js" defer></script>
   <script src="../assets/js/wordcount-core.js?v=2.1.2" defer></script>
-  <script src="../assets/js/markdown-core.js?v=2.1.2" defer></script>
-  <script src="../assets/js/markdown-tool.js?v=2.1.2" defer></script>
+  <script src="../assets/js/markdown-core.js?v=2.1.4" defer></script>
+  <script src="../assets/js/markdown-tool.js?v=2.1.4" defer></script>
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQElEQVR4nM1PwSvDcRx9v18ZUltRxmgulJRWdpiDfk7GwYrDskULu1ga6ldz46LEVnOxoo0sJSkiKbUd3JDyJ4iDy1w4uNhvT5vWb5rfmAvv8P32Pu/73ud9gX8Ng91lFrudzb8OaL0hsUqWeiNqCVIgYEtlANQDsM9Yyt4+rpDYIbFF4qB0iyJMJxJBGwtMxyQOywiZzJD66Onip6FnY+xnbmmqwxLf8+dpo7w2nL2tsW3v9+aJiAtxtar1juy8/eCivD4yUPitL3FCYj4ZytO2C7JhRa1edUV6NEO8IQcuSfj25zQX9C1IxgeyNxweKhY3SQRJRNOsvCa7UuQgSbPb3ZLTHcv9WCIhk6YztYWQPXQxssYA1BrTqDYBiiLg3u9sej0/eoS060PPaAR1AJ4APL8BrIC+HXiZFXL+v8U7p1SEg5RNexoAAAAASUVORK5CYII=">
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
@@ -107,7 +107,6 @@ document.documentElement.dataset.theme=v;})();</script>
   setTimeout(function(){h.removeAttribute('data-i18n-pending')},2500);}
 })();</script>
 </head>
-<body data-nav="dev">
 <body data-nav="dev">
 <header class="topbar">
   <a class="logo" href="../index.html">
@@ -416,6 +415,8 @@ document.documentElement.dataset.theme=v;})();</script>
       <p id="mdWarnText" data-i18n="md_warn_links">已拦截 {n} 个不合规链接，按纯文本显示。</p>
     </div>
     <div class="md-toolbar" role="toolbar" aria-label="格式工具栏" data-i18n-aria="md_toolbar_aria">
+      <button type="button" class="btn btn-ghost" id="mdImport" title="导入 Markdown 文件" data-i18n-title="md_import_title" aria-label="导入 Markdown 文件" data-i18n-aria="md_import_title"><i data-lucide="folder-open"></i><span data-i18n="md_import">导入</span></button>
+      <span class="md-tb-sep" aria-hidden="true"></span>
       <button type="button" class="btn btn-ghost btn-icon" id="mdTbBold" title="粗体" data-i18n-title="md_tb_bold" aria-label="粗体" data-i18n-aria="md_tb_bold"><span class="md-glyph md-g-b" aria-hidden="true">B</span></button>
       <button type="button" class="btn btn-ghost btn-icon" id="mdTbItalic" title="斜体" data-i18n-title="md_tb_italic" aria-label="斜体" data-i18n-aria="md_tb_italic"><span class="md-glyph md-g-i" aria-hidden="true">I</span></button>
       <button type="button" class="btn btn-ghost btn-icon" id="mdTbUnderline" title="下划线" data-i18n-title="md_tb_underline" aria-label="下划线" data-i18n-aria="md_tb_underline"><span class="md-glyph md-g-u" aria-hidden="true">U</span></button>
@@ -438,6 +439,10 @@ document.documentElement.dataset.theme=v;})();</script>
           <button type="button" class="menu-item" id="mdTbAlignJustify" title="两端对齐" data-i18n-title="md_align_justify"><i data-lucide="align-justify"></i><span data-i18n="md_align_justify">两端对齐</span></button>
         </div>
       </div>
+      <div class="pop md-toc-pop" id="mdTocWrap" hidden>
+        <button type="button" class="btn btn-ghost md-tb-icon" id="mdTocBtn" title="目录" data-i18n-title="md_toc" aria-label="目录" data-i18n-aria="md_toc" data-pop><i data-lucide="menu"></i><span data-i18n="md_toc">目录</span><i data-lucide="chevron-down"></i></button>
+        <div class="menu pop-panel md-toc-panel" id="mdTocPanel" aria-label="文章目录" data-i18n-aria="md_toc_title"></div>
+      </div>
       <span class="md-tb-sep" aria-hidden="true"></span>
       <div class="pop md-tb-insert">
         <button type="button" class="btn btn-ghost" id="mdTbInsert" title="插入" data-i18n-title="md_tb_insert" aria-label="插入" data-i18n-aria="md_tb_insert" data-pop><i data-lucide="circle-plus"></i><span data-i18n="md_tb_insert">插入</span><i data-lucide="chevron-down"></i></button>
@@ -452,7 +457,7 @@ document.documentElement.dataset.theme=v;})();</script>
       </div>
     </div>
     <div class="md-split">
-      <textarea id="mdInput" class="input md-editor" spellcheck="false" placeholder="在此输入或粘贴 Markdown…" data-i18n-ph="md_input_ph" aria-label="Markdown 输入" data-i18n-aria="md_input_aria"></textarea>
+      <textarea id="mdInput" class="input md-editor" spellcheck="false" placeholder="在此输入或粘贴 Markdown…" data-i18n-ph="md_input_ph" aria-label="Markdown 输入" data-i18n-aria="md_input_aria" title="也可以把 .md 文件拖入编辑器" data-i18n-title="md_import_drop"></textarea>
       <div id="mdPreview" class="md-preview" aria-live="polite" aria-label="渲染预览" data-i18n-aria="md_preview_aria">
         <div class="empty" id="mdEmpty">
           <div class="e-ico"><i data-lucide="file-text"></i></div>
@@ -480,9 +485,12 @@ document.documentElement.dataset.theme=v;})();</script>
     <div class="row md-actions">
       <button type="button" class="btn btn-secondary" id="mdCopyMd"><i data-lucide="copy"></i><span data-i18n="md_copy_md">复制 Markdown</span></button>
       <button type="button" class="btn btn-secondary" id="mdCopyHtml"><i data-lucide="code"></i><span data-i18n="md_copy_html">复制 HTML</span></button>
+      <button type="button" class="btn btn-secondary" id="mdCopyRich"><i data-lucide="clipboard-paste"></i><span data-i18n="md_copy_rich">复制富文本</span></button>
       <button type="button" class="btn btn-secondary" id="mdDownload"><i data-lucide="download"></i><span data-i18n="md_download">下载 .md</span></button>
+      <button type="button" class="btn btn-secondary" id="mdExportHtml"><i data-lucide="file-text"></i><span data-i18n="md_export_html">导出 HTML</span></button>
       <button type="button" class="btn btn-secondary" id="mdClear"><i data-lucide="trash-2"></i><span data-i18n="md_clear">清空</span></button>
     </div>
+    <input type="file" id="mdImportFile" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden>
   </section>
 
   <!-- ===== ② 功能介绍（SEO 文字内容，折叠面板默认收起） ===== -->
@@ -590,7 +598,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.1.3</span>
+    <span data-i18n="foot_version">v2.1.4</span>
   </div>
 </footer>
 <div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">

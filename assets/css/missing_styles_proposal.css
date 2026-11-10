@@ -1104,3 +1104,37 @@ textarea.md-editor{height:420px;resize:none;font-family:var(--mono);font-size:13
   .md-body table{table-layout:auto}
 }
 
+/* P1（v2.1.4）：导入拖入高亮、目录下拉、滚动同步镜像、代码高亮配色。
+   镜像只用来量行位置：height:0 + overflow:hidden 既不参与排版，也不会把页面撑出滚动条。 */
+.md-split{position:relative}
+.md-mirror{position:absolute;top:0;left:0;height:0;overflow:hidden;visibility:hidden;pointer-events:none;
+  box-sizing:border-box;white-space:pre-wrap;overflow-wrap:break-word}
+.md-m{display:inline}
+textarea.md-editor.md-dragover{border-color:var(--primary);outline:2px solid var(--primary-soft);outline-offset:-2px}
+.md-toolbar{position:relative}
+.md-toc-pop{position:static}
+.md-toc-pop .pop-panel{left:0;right:0;min-width:0;max-width:none;width:auto}
+.md-toc-panel{max-height:320px;overflow:auto}
+.md-toc-item{width:100%;text-align:left}
+.md-toc-text{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.md-toc-l2 .md-toc-text{padding-left:10px}
+.md-toc-l3 .md-toc-text{padding-left:20px}
+.md-toc-l4 .md-toc-text{padding-left:30px}
+.md-toc-l5 .md-toc-text{padding-left:40px}
+.md-toc-l6 .md-toc-text{padding-left:50px}
+.md-body .md-flash{background:var(--primary-soft);border-radius:var(--r-sm);
+  box-shadow:0 0 0 4px var(--primary-soft);transition:background var(--dur-slow),box-shadow var(--dur-slow)}
+.md-body pre code .tok-com{color:var(--text-3);font-style:italic}
+.md-body pre code .tok-kw{color:var(--primary);font-weight:600}
+.md-body pre code .tok-str{color:var(--success)}
+.md-body pre code .tok-num{color:var(--warning)}
+.md-body pre code .tok-tag{color:var(--danger)}
+.md-body pre code .tok-attr{color:var(--info)}
+.md-body pre code .tok-var{color:var(--text-2)}
+/* 窄屏：所有下拉面板改为整条工具栏宽度。默认面板按按钮左边缘绝对定位，
+   靠右的按钮在 390 宽会把手风琴面板顶到视口外（实测 12px 横向溢出）。 */
+@media (max-width:480px){
+  .md-toolbar .pop{position:static}
+  .md-toolbar .pop-panel{left:0;right:0;min-width:0;max-width:none;width:auto;max-height:320px;overflow:auto}
+}
+
