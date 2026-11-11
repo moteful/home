@@ -37,7 +37,9 @@
     "assets/js/wordcount-core.js",
     "assets/js/wordcount-tool.js",
     "assets/js/markdown-core.js",
-    "assets/js/markdown-tool.js"
+    "assets/js/markdown-tool.js",
+    "assets/js/base64-core.js",
+    "assets/js/base64-tool.js"
   ],
   "newArchPages": [
     "index.html",
@@ -59,6 +61,7 @@
     "dev/word-counter.html",
     "dev/timestamp.html",
     "dev/markdown.html",
+    "dev/base64.html",
     "games/block-clear.html",
     "games/snake.html",
     "games/sudoku.html",

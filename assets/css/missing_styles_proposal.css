@@ -1138,3 +1138,36 @@ textarea.md-editor.md-dragover{border-color:var(--primary);outline:2px solid var
   .md-toolbar .pop-panel{left:0;right:0;min-width:0;max-width:none;width:auto;max-height:320px;overflow:auto}
 }
 
+/* ============================================================
+   Base64 编解码工具（v2.1.5，dev/base64.html 私有，.b64- 前缀）
+   仅工作区排版：页头/卡片标题图标布局、选项竖排、输入输出等宽文本域、
+   统计四值栅格与移动端触控热区；不改共享组件默认行为。
+   字号只取站点刻度：13（等宽文本域，对齐 dev/json·markdown）· 12（辅助说明）。
+   窄屏文本域回到 16px 防 iOS 聚焦缩放；分段器收敛内距保证三档单行不折。
+   ============================================================ */
+.b64-hero-title{display:flex;align-items:center;gap:12px}
+.b64-hero-title [data-lucide]{width:32px;height:32px;color:var(--primary);flex:none}
+/* 卡片标题沿用全站 .sec-title（22px/600），此处只补图标布局，勿覆写字号 */
+.b64-title{display:flex;align-items:center;gap:8px}
+.b64-title [data-lucide]{width:20px;height:20px;color:var(--primary);flex-shrink:0}
+.b64-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.b64-opts{display:flex;flex-direction:column;gap:16px}
+.b64-switches{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+.b64-input,.b64-output{min-height:180px;font-family:var(--mono);font-size:13px;line-height:1.6;
+  overflow-wrap:anywhere;word-break:break-all}
+.b64-out-wrap{display:flex;flex-direction:column;min-width:0}
+.b64-local-note{display:flex;align-items:center;gap:6px;font-size:12px}
+.b64-local-note [data-lucide]{width:14px;height:14px;flex-shrink:0}
+/* 统计四值：桌面一行四列、窄屏 2×2（共享 .stat-grid 是 auto-fit，1280 下会排成 5+2 孤卡） */
+.b64-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:768px){
+  .b64-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .b64-head .btn{min-height:44px}
+  .b64-switches .switch{min-height:44px}
+  .b64-input,.b64-output{font-size:16px}
+}
+@media (max-width:640px){
+  /* 三档分段器窄屏单行不折：收敛横向内距 + 触控热区抬到 44px */
+  .b64-opts .seg-t{padding-left:10px;padding-right:10px;min-height:44px}
+}
+

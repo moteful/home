@@ -73,6 +73,12 @@
       "icon": "regex",
       "labelKey": "nav_dev_regex",
       "label": "Regex"
+    },
+    "dev/base64.html": {
+      "icon": "binary",
+      "labelKey": "nav_dev_base64",
+      "label": "Base64 编解码",
+      "new": true
     }
   },
   "pages": {
@@ -145,7 +151,15 @@
       "recs": [
         "dev/word-counter.html",
         "dev/timestamp.html",
-        "dev/json.html"
+        "dev/json.html",
+        "dev/base64.html"
+      ]
+    },
+    "dev/base64.html": {
+      "recs": [
+        "dev/json.html",
+        "dev/timestamp.html",
+        "dev/markdown.html"
       ]
     }
   }
