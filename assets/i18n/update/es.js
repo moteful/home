@@ -7,6 +7,24 @@
 
 const CHANGELOG_ES = [
   {
+    "version": "v2.1.6",
+    "date": "2026-11-15",
+    "sections": [
+      {
+        "title": "Novedades",
+        "points": [
+          "Codificador / decodificador Base64"
+        ]
+      },
+      {
+        "title": "Mejoras",
+        "points": [
+          "Editor Markdown: se añadió panel de índice, importación de archivos .md (hasta 1 MB), exportación a HTML y desplazamiento sincronizado entre el editor y la vista previa"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.1.3",
     "date": "2026-11-13",
     "sections": [

@@ -6,8 +6,8 @@
 
 <!-- ===== SEO：基础 ===== -->
 <title data-i18n="b64_seo_title">在线 Base64 编解码 · 文本与 Base64 双向转换 | Moteful</title>
-<meta name="description" data-i18n-content="meta_desc_base64" content="免费在线 Base64 编解码工具：文本与 Base64 双向转换，自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节；支持折行宽度、URL-safe 字符集与填充开关，实时统计字符 / 字节 / 输出长度 / 体积变化。纯前端本地运行，不上传任何内容。">
-<meta name="keywords" content="Base64,base64编码,base64解码,Base64 converter,base64 encode,base64 decode,URL-safe,UTF-8,开发者工具">
+<meta name="description" data-i18n-content="meta_desc_base64" content="免费在线 Base64 编解码工具：文本与 Base64 双向转换，自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节；支持文件转 Base64 / Data URI、粘贴图片预览与把 Base64 解码下载为文件；折行宽度、URL-safe 与填充开关，实时统计。纯前端本地运行，不上传任何内容。">
+<meta name="keywords" content="Base64,base64编码,base64解码,文件转base64,data uri,图片转base64,base64下载,Base64 converter,URL-safe,UTF-8,开发者工具">
 <meta name="author" content="Moteful">
 <meta name="robots" content="index, follow">
 
@@ -15,8 +15,8 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Moteful">
 <meta property="og:title" content="在线 Base64 编解码工具 - 文本与 Base64 双向转换">
-<meta property="og:description" content="免费在线 Base64 编解码工具：自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节，支持折行宽度、URL-safe 字符集与填充开关，实时统计，纯本地运行、不上传。">
-<meta property="og:url" content="https://moteful.app/dev/base64.html">
+<meta property="og:description" content="免费在线 Base64 编解码工具：自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节，支持文件转 Base64 / Data URI、粘贴图片预览与解码下载文件，纯本地运行、不上传。">
+<meta property="og:url" content="https://moteful.app/dev/base64">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:locale:alternate" content="es_ES">
@@ -24,10 +24,10 @@
 <!-- ===== SEO：Twitter Card ===== -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="在线 Base64 编解码工具 - 文本与 Base64 双向转换">
-<meta name="twitter:description" content="免费在线 Base64 编解码工具：自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节，支持折行宽度、URL-safe 字符集与填充开关，实时统计，纯本地运行、不上传。">
+<meta name="twitter:description" content="免费在线 Base64 编解码工具：自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节，支持文件转 Base64 / Data URI、粘贴图片预览与解码下载文件，纯本地运行、不上传。">
 
 <!-- ===== SEO：canonical（防重复内容） ===== -->
-<link rel="canonical" href="https://moteful.app/dev/base64.html">
+<link rel="canonical" href="https://moteful.app/dev/base64">
 
 <!-- ===== SEO：结构化数据 JSON-LD（工具应用） ===== -->
 <script type="application/ld+json">
@@ -36,10 +36,10 @@
   "@type": "WebApplication",
   "name": "在线 Base64 编解码工具",
   "alternateName": "Moteful Base64 Encoder / Decoder",
-  "description": "免费在线 Base64 编解码工具：文本与 Base64 双向转换，自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节；支持折行宽度、URL-safe 字符集与填充开关，实时统计字符 / 字节 / 输出长度 / 体积变化。纯前端本地运行，不上传任何内容。",
-  "url": "https://moteful.app/dev/base64.html",
+  "description": "免费在线 Base64 编解码工具：文本与 Base64 双向转换，自动判定编码或解码，正确处理中文与 emoji 的 UTF-8 字节；支持文件转 Base64 / Data URI、粘贴图片预览与把 Base64 解码下载为文件；折行宽度、URL-safe 与填充开关，实时统计。纯前端本地运行，不上传任何内容。",
+  "url": "https://moteful.app/dev/base64",
   "applicationCategory": "DeveloperApplication",
-  "softwareVersion": "2.1.5",
+  "softwareVersion": "2.1.6",
   "operatingSystem": "Web (任何现代浏览器)",
   "inLanguage": ["zh-CN", "en", "es"],
   "offers": {
@@ -55,8 +55,12 @@
     "URL-safe 字符集（- 与 _）与保留填充 = 两个开关",
     "实时统计输入字符、UTF-8 字节、输出长度与体积变化",
     "解码失败给出具体原因与字符位置，结果可一键复制或转为输入",
+    "拖入、选择或粘贴图片与文件，转成纯 Base64 或 Data URI",
+    "把 Base64 / Data URI 解码回原始文件并下载，自动猜测扩展名",
+    "粘贴截图即在导入区显示缩略图与尺寸，单文件上限 5 MB",
+    "图片数据可一键复制 img 标签或 CSS 背景嵌入片段",
     "中文 / English / Español 三语界面",
-    "100% 本地运行，断网可用，正文不上传也不持久化"
+    "100% 本地运行，断网可用，正文与文件不上传也不持久化"
   ],
   "publisher": {
     "@type": "Organization",
@@ -82,8 +86,9 @@ document.documentElement.dataset.theme=v;})();</script>
 <script src="../assets/i18n/zh.js" defer></script>
 <script src="../assets/i18n/es.js" defer></script>
 <script src="../assets/i18n/i18n.js" defer></script>
-  <script src="../assets/js/base64-core.js?v=2.1.5" defer></script>
-  <script src="../assets/js/base64-tool.js?v=2.1.5" defer></script>
+  <script src="../assets/js/base64-core.js?v=2.1.6" defer></script>
+  <script src="../assets/js/image-import.js?v=2.1.6" defer></script>
+  <script src="../assets/js/base64-tool.js?v=2.1.6" defer></script>
   <link rel="stylesheet" href="../assets/css/missing_styles_proposal.css">
   <meta name="moteful-siteurl" content="https://moteful.app">
   <meta name="moteful-pagepath" content="dev/base64">
@@ -412,6 +417,13 @@ document.documentElement.dataset.theme=v;})();</script>
           <label class="seg"><input type="radio" name="b64Wrap" value="64"><span class="seg-t" data-i18n="b64_wrap_64">每 64 字符</span></label>
         </div>
       </div>
+      <div class="field">
+        <span class="field-label" data-i18n="b64_fmt">输出格式</span>
+        <div class="segment" role="radiogroup" aria-label="输出格式" data-i18n-aria="b64_fmt">
+          <label class="seg"><input type="radio" name="b64Fmt" value="b64" checked><span class="seg-t" data-i18n="b64_fmt_b64">纯 Base64</span></label>
+          <label class="seg"><input type="radio" name="b64Fmt" value="datauri"><span class="seg-t" data-i18n="b64_fmt_datauri">Data URI</span></label>
+        </div>
+      </div>
       <div class="b64-switches">
         <label class="switch"><input type="checkbox" id="b64UrlSafe"><span class="sw-track"><span class="sw-thumb"></span></span><span data-i18n="b64_urlsafe">URL-safe（- _）</span></label>
         <label class="switch"><input type="checkbox" id="b64Pad" checked><span class="sw-track"><span class="sw-thumb"></span></span><span data-i18n="b64_pad">保留填充 =</span></label>
@@ -420,15 +432,47 @@ document.documentElement.dataset.theme=v;})();</script>
   </section>
 
   <!-- ===== ② 输入 ===== -->
-  <section class="panel">
+  <section class="panel" id="b64InputPanel">
     <div class="b64-head">
       <h2 class="sec-title b64-title"><i data-lucide="file-braces"></i><span data-i18n="b64_input">输入</span></h2>
       <div class="row b64-in-acts">
+        <button type="button" class="btn btn-secondary btn-sm" id="b64ImportBtn"><i data-lucide="upload"></i><span data-i18n="b64_import">导入文件</span></button>
         <button type="button" class="btn btn-secondary btn-sm" id="b64Sample"><i data-lucide="sparkles"></i><span data-i18n="b64_sample">载入示例</span></button>
         <button type="button" class="btn btn-secondary btn-sm" id="b64Clear"><i data-lucide="trash-2"></i><span data-i18n="b64_clear">清空</span></button>
       </div>
     </div>
     <textarea id="b64Input" class="input b64-input" spellcheck="false" placeholder="把文本或 Base64 粘进来" data-i18n-ph="b64_input_ph" aria-label="Base64 输入" data-i18n-aria="b64_input_aria"></textarea>
+    <div class="dropzone b64-dropzone" id="b64Dropzone" role="button" tabindex="0" aria-label="导入文件" data-i18n-aria="b64_drop_aria">
+      <div class="dz-empty" id="b64DzEmpty">
+        <div class="dz-ico"><i data-lucide="upload"></i></div>
+        <div class="up-main">
+          <strong data-i18n="b64_drop_title">拖入文件，或点击导入</strong>
+          <span class="muted" data-i18n="b64_drop_sub">图片 / 文本 / PDF 等，单个文件不超过 5 MB</span>
+        </div>
+      </div>
+      <div class="dz-gallery" id="b64DzGallery" hidden>
+        <div class="dz-g-head">
+          <span class="dz-count" id="b64FileCount"></span>
+          <div class="dz-g-acts">
+            <button type="button" class="btn btn-secondary btn-sm" id="b64FileDataUri"><i data-lucide="copy"></i><span data-i18n="b64_file_copy_datauri">复制 Data URI</span></button>
+            <button type="button" class="btn btn-secondary btn-sm" id="b64FileRemove"><i data-lucide="trash-2"></i><span data-i18n="b64_file_remove">移除</span></button>
+          </div>
+        </div>
+        <div class="b64-file-row">
+          <div class="dz-thumb b64-thumb" id="b64Thumb">
+            <img id="b64ThumbImg" alt="" hidden>
+            <span class="b64-thumb-ico" id="b64ThumbIco"><i data-lucide="file-text"></i></span>
+          </div>
+          <div class="b64-file-meta">
+            <div class="b64-meta-row"><span class="b64-meta-k" data-i18n="b64_file_type">类型</span><span class="b64-meta-v" id="b64FileType">—</span></div>
+            <div class="b64-meta-row"><span class="b64-meta-k" data-i18n="b64_file_size">大小</span><span class="b64-meta-v" id="b64FileSize">—</span></div>
+            <div class="b64-meta-row" id="b64FileDimsRow" hidden><span class="b64-meta-k" data-i18n="b64_file_dims">尺寸</span><span class="b64-meta-v" id="b64FileDims">—</span></div>
+            <div class="b64-meta-row"><span class="b64-meta-k" data-i18n="b64_file_encoded">编码长度</span><span class="b64-meta-v" id="b64FileEncoded">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input type="file" id="b64File" hidden>
     <div class="alert a-warn b64-warn" id="b64Warn" role="status" hidden>
       <i data-lucide="info" aria-hidden="true"></i>
       <p data-i18n="b64_warn_manual">输入较大，已停止自动转换，点「转换」继续</p>
@@ -444,15 +488,26 @@ document.documentElement.dataset.theme=v;})();</script>
       <div class="row b64-out-acts">
         <button type="button" class="btn btn-secondary btn-sm" id="b64Copy"><i data-lucide="copy"></i><span data-i18n="b64_copy">复制</span></button>
         <button type="button" class="btn btn-secondary btn-sm" id="b64Swap"><i data-lucide="chevrons-left-right"></i><span data-i18n="b64_swap">结果转为输入</span></button>
+        <button type="button" class="btn btn-secondary btn-sm" id="b64Download" disabled><i data-lucide="download"></i><span data-i18n="b64_download">下载文件</span></button>
       </div>
     </div>
     <div class="b64-out-wrap">
       <div class="empty b64-empty" id="b64Empty">
         <div class="e-ico"><i data-lucide="binary"></i></div>
         <h4 data-i18n="b64_empty_title">等待输入</h4>
-        <p data-i18n="b64_empty_hint">输入后自动转换，无需上传任何内容</p>
+        <p data-i18n="b64_empty_hint">输入或导入文件后自动转换，无需上传任何内容</p>
+      </div>
+      <div class="empty b64-binary" id="b64Binary" hidden>
+        <div class="e-ico"><i data-lucide="download"></i></div>
+        <h4 data-i18n="b64_binary_title">已解码为文件</h4>
+        <p data-i18n="b64_binary_hint">内容是二进制数据，无法显示为文本，点「下载文件」保存到本机。</p>
       </div>
       <textarea id="b64Output" class="input b64-output" readonly aria-live="polite" aria-label="转换结果" data-i18n-aria="b64_output_aria" hidden></textarea>
+    </div>
+    <div class="b64-snips" id="b64Snips" hidden>
+      <span class="b64-snips-label" data-i18n="b64_snips_label">嵌入片段</span>
+      <button type="button" class="btn btn-secondary btn-sm" id="b64SnipImg"><i data-lucide="code"></i><span data-i18n="b64_snippet_img">img 标签</span></button>
+      <button type="button" class="btn btn-secondary btn-sm" id="b64SnipCss"><i data-lucide="code"></i><span data-i18n="b64_snippet_css">CSS 背景</span></button>
     </div>
   </section>
 
@@ -488,14 +543,20 @@ document.documentElement.dataset.theme=v;})();</script>
       <table class="table">
         <thead><tr><th data-i18n="b64_f_th1">功能</th><th data-i18n="b64_f_th2">说明</th></tr></thead>
         <tbody>
-          <tr><td data-i18n="b64_f1_name">双向转换</td><td data-i18n="b64_f1_desc">文本与 Base64 互相转换，粘贴即算，也可手动输入。</td></tr>
-          <tr><td data-i18n="b64_f2_name">自动判定</td><td data-i18n="b64_f2_desc">自动识别输入是明文还是 Base64，分别编码或解码；判错可手动锁定方向。</td></tr>
+          <tr><td data-i18n="b64_f1_name">双向转换</td><td data-i18n="b64_f1_desc">文本与 Base64 互相转换，边输入边出结果，也可手动输入或点「载入示例」快速试用。</td></tr>
+          <tr><td data-i18n="b64_f2_name">自动判定</td><td data-i18n="b64_f2_desc">自动区分明文、Base64、Data URI 与三段式 JWT，分别编码或解码；判错可手动锁定方向。</td></tr>
           <tr><td data-i18n="b64_f3_name">方向锁定</td><td data-i18n="b64_f3_desc">自动 / 只编码 / 只解码三档，锁定后不再猜测，无需刷新页面。</td></tr>
-          <tr><td data-i18n="b64_f4_name">折行宽度</td><td data-i18n="b64_f4_desc">输出可选不折行、每 76 或每 64 字符折行，适配 MIME 与代码规范。</td></tr>
-          <tr><td data-i18n="b64_f5_name">URL-safe</td><td data-i18n="b64_f5_desc">一键切换 URL-safe 字符集（- 与 _），可直接放进链接与文件名。</td></tr>
-          <tr><td data-i18n="b64_f6_name">填充开关</td><td data-i18n="b64_f6_desc">可保留或去掉末尾填充符 =，去掉后仍可被本工具重新解出。</td></tr>
-          <tr><td data-i18n="b64_f7_name">实时统计</td><td data-i18n="b64_f7_desc">输入字符、UTF-8 字节、输出长度与体积变化四项实时更新。</td></tr>
-          <tr><td data-i18n="b64_f8_name">隐私本地</td><td data-i18n="b64_f8_desc">纯前端本地运行，不上传任何输入，断网也能用。</td></tr>
+          <tr><td data-i18n="b64_f4_name">输出格式</td><td data-i18n="b64_f4_desc">编码结果可输出为纯 Base64，或带 data:…;base64, 前缀的 Data URI，后者可直接用作图片地址。</td></tr>
+          <tr><td data-i18n="b64_f5_name">折行宽度</td><td data-i18n="b64_f5_desc">输出可选不折行、每 76 或每 64 字符折行，适配 MIME 邮件与 PEM 证书。</td></tr>
+          <tr><td data-i18n="b64_f6_name">URL-safe</td><td data-i18n="b64_f6_desc">一键切换 URL-safe 字符集（- 与 _），产物可直接放进链接与文件名。</td></tr>
+          <tr><td data-i18n="b64_f7_name">填充开关</td><td data-i18n="b64_f7_desc">可保留或去掉末尾填充符 =，去掉后仍可被本工具重新解出。</td></tr>
+          <tr><td data-i18n="b64_f8_name">实时统计</td><td data-i18n="b64_f8_desc">输入字符、UTF-8 字节、输出长度与体积变化四项实时更新。</td></tr>
+          <tr><td data-i18n="b64_f9_name">文件转 Base64</td><td data-i18n="b64_f9_desc">拖入、选择或粘贴文件，得到纯 Base64 或 Data URI，并显示类型、大小、图片尺寸与编码长度。</td></tr>
+          <tr><td data-i18n="b64_f10_name">下载文件</td><td data-i18n="b64_f10_desc">解出二进制时进入文件状态，按类型或文件头猜扩展名；认不出会弹框让你填 1–8 位字母数字，下载名形如 base64-decoded.png。</td></tr>
+          <tr><td data-i18n="b64_f11_name">粘贴预览</td><td data-i18n="b64_f11_desc">直接 Ctrl+V 粘贴截图，在导入区内显示缩略图与尺寸；HEIC / HEIF 浏览器不能内联预览，改用文件图标但仍可正常编码。</td></tr>
+          <tr><td data-i18n="b64_f12_name">嵌入片段</td><td data-i18n="b64_f12_desc">图片类数据可一键复制 img 标签或 CSS background-image 片段，粘贴即用。</td></tr>
+          <tr><td data-i18n="b64_f13_name">大输入保护</td><td data-i18n="b64_f13_desc">输入超过 256K 字符时停止自动转换，点「转换」再执行；结果超过 200K 字符只显示前 50K，复制与下载始终取完整内容。</td></tr>
+          <tr><td data-i18n="b64_f14_name">隐私本地</td><td data-i18n="b64_f14_desc">纯前端本地运行，不上传任何内容，断网也能用；只有方向、折行等选项偏好写进本机 localStorage。</td></tr>
         </tbody>
       </table>
     </div>
@@ -512,11 +573,14 @@ document.documentElement.dataset.theme=v;})();</script>
         <thead><tr><th data-i18n="b64_s_th1">项</th><th data-i18n="b64_s_th2">说明</th></tr></thead>
         <tbody>
           <tr><td data-i18n="b64_s1_name">什么是 Base64</td><td data-i18n="b64_s1_desc">把任意字节按 6 位一组映射到 A–Z、a–z、0–9、+、/ 共 64 个字符，末尾用 = 补齐到 4 的倍数。</td></tr>
-          <tr><td data-i18n="b64_s2_name">自动判定规则</td><td data-i18n="b64_s2_desc">含中文等非 ASCII 字符按明文编码；纯 Base64 字符且能解出文本则解码；解出非文本会提示可能是图片或压缩包。</td></tr>
-          <tr><td data-i18n="b64_s3_name">折行宽度</td><td data-i18n="b64_s3_desc">不折行输出一整行；每 76 字符是 MIME 邮件常用宽度，每 64 字符常见于 PEM 证书。</td></tr>
-          <tr><td data-i18n="b64_s4_name">URL-safe 字符集</td><td data-i18n="b64_s4_desc">把 + 换成 -、/ 换成 _，避免在 URL 与文件名里被转义；可选去掉填充 =。</td></tr>
-          <tr><td data-i18n="b64_s5_name">保留填充 =</td><td data-i18n="b64_s5_desc">标准 Base64 末尾的 = 用于补齐长度；去掉后更短，本工具解码时会自动补回。</td></tr>
-          <tr><td data-i18n="b64_s6_name">中文与 emoji</td><td data-i18n="b64_s6_desc">先按 UTF-8 编码成字节再转 Base64，中文与 emoji 都能正确往返，不会乱码。</td></tr>
+          <tr><td data-i18n="b64_s2_name">自动判定顺序</td><td data-i18n="b64_s2_desc">依次判断：data:…;base64, 前缀 → 三段式 JWT → 长度合规且能解出 UTF-8 文本的 Base64 → 其余按明文编码；解出二进制则进入文件状态。</td></tr>
+          <tr><td data-i18n="b64_s3_name">文件类型识别</td><td data-i18n="b64_s3_desc">纯 Base64 没有 MIME 时按文件头魔数判断 PNG、JPEG、GIF、WEBP、PDF、ZIP、GZIP、WOFF、MP3、WAV、OGG、MP4、WASM 等；认不出则留空，下载前询问扩展名。</td></tr>
+          <tr><td data-i18n="b64_s4_name">折行宽度</td><td data-i18n="b64_s4_desc">不折行输出一整行；每 76 字符是 MIME 邮件常用宽度，每 64 字符常见于 PEM 证书。</td></tr>
+          <tr><td data-i18n="b64_s5_name">URL-safe 字符集</td><td data-i18n="b64_s5_desc">把 + 换成 -、/ 换成 _，避免在 URL 与文件名里被转义；可选去掉填充 =。</td></tr>
+          <tr><td data-i18n="b64_s6_name">保留填充 =</td><td data-i18n="b64_s6_desc">标准 Base64 末尾的 = 用于补齐长度；去掉后更短，本工具解码时会自动补回。</td></tr>
+          <tr><td data-i18n="b64_s7_name">Data URI 结构</td><td data-i18n="b64_s7_desc">形如 data:[MIME][;base64],数据。编码时可生成 Data URI；解码时按是否带 ;base64 分流：带标记的按 Base64 还原，不带标记的按 URL 编码还原成文本。</td></tr>
+          <tr><td data-i18n="b64_s8_name">中文与 emoji</td><td data-i18n="b64_s8_desc">先按 UTF-8 编码成字节再转 Base64，中文与 emoji 都能正确往返，不会乱码。</td></tr>
+          <tr><td data-i18n="b64_s9_name">体积与上限</td><td data-i18n="b64_s9_desc">Base64 比原始字节大约多三分之一；单个文件上限 5 MB，编码后约 6.67 MB。</td></tr>
         </tbody>
       </table>
     </div>
@@ -532,15 +596,18 @@ document.documentElement.dataset.theme=v;})();</script>
       <table class="table">
         <thead><tr><th data-i18n="b64_q_th1">问题</th><th data-i18n="b64_q_th2">答案</th></tr></thead>
         <tbody>
-          <tr><td data-i18n="b64_seo3_q1">我的内容会被上传吗？</td><td data-i18n="b64_seo3_a1">不会。本页是纯前端工具，编码与解码都在你的浏览器里完成，不向任何服务器发送输入内容，也不保存正文；只有方向、折行等选项偏好会写进本机 localStorage，可随时清空。</td></tr>
-          <tr><td data-i18n="b64_seo3_q2">为什么解码失败？</td><td data-i18n="b64_seo3_a2">常见原因有三：含 Base64 以外的字符（会指出第几个）、去掉空白后长度除 4 余 1、填充符 = 之后还有内容。若解出的字节不是文本，会提示可能是图片或压缩包，本版只处理文本。</td></tr>
+          <tr><td data-i18n="b64_seo3_q1">我的内容会被上传吗？</td><td data-i18n="b64_seo3_a1">不会。本页是纯前端工具，编码与解码都在浏览器里完成，不向服务器发送输入内容，也不保存正文或文件字节；只有方向、折行、URL-safe、填充等选项偏好会写进本机 localStorage，可随时清空。</td></tr>
+          <tr><td data-i18n="b64_seo3_q2">为什么解码失败？</td><td data-i18n="b64_seo3_a2">常见原因：含 Base64 以外的字符（会指出第几个）、去掉空白后长度除 4 余 1、填充符 = 之后还有内容。若数据本身合法、只是解出来不是文本，会进入文件下载状态，不算失败。</td></tr>
           <tr><td data-i18n="b64_seo3_q3">自动判定错了怎么办？</td><td data-i18n="b64_seo3_a3">把「转换方向」拨到「只编码」或「只解码」即可锁定，不需要刷新页面。例如一段恰好全是 Base64 字符的明文被误判时，切到「只编码」就会按明文处理。</td></tr>
-          <tr><td data-i18n="b64_seo3_q4">手机上怎么用？</td><td data-i18n="b64_seo3_a4">小屏为单列卡片流：上方选方向与选项，中间输入，下方看结果与统计。输入后自动转换，点「复制」取结果，点「结果转为输入」可继续反向转换。</td></tr>
+          <tr><td data-i18n="b64_seo3_q4">怎么把 Base64 还原成图片或文件？</td><td data-i18n="b64_seo3_a4">切到「只解码」后粘贴内容；解出二进制会显示「已解码为文件」，点「下载文件」保存。类型能从 Data URI 或文件头识别时自动命名，识别不出会弹框让你填扩展名。</td></tr>
+          <tr><td data-i18n="b64_seo3_q5">支持 HEIC / HEIF 吗？</td><td data-i18n="b64_seo3_a5">可以导入并编码。浏览器无法把 HEIC / HEIF 画成缩略图，导入区会显示文件图标且不显示尺寸，但编码、复制与下载都正常。</td></tr>
+          <tr><td data-i18n="b64_seo3_q6">能解析 JWT 吗？</td><td data-i18n="b64_seo3_a6">三段式 JWT 会被自动识别并给出提示，但本工具不拆分 header / payload；请把需要解码的那一段单独粘贴，再按普通 Base64 处理。</td></tr>
+          <tr><td data-i18n="b64_seo3_q7">文件大小有限制吗？</td><td data-i18n="b64_seo3_a7">单个文件上限 5 MB，超过会提示并拒收。文本超过 256K 字符会停止自动转换，点「转换」继续；结果超过 200K 字符只显示前 50K，复制与下载始终是完整内容。</td></tr>
+          <tr><td data-i18n="b64_seo3_q8">手机上怎么用？</td><td data-i18n="b64_seo3_a8">小屏为单列卡片流：上方选方向与选项，中间输入，下方看结果与统计。输入后自动转换，点「复制」取结果，点「结果转为输入」可继续反向转换。</td></tr>
         </tbody>
       </table>
     </div>
   </details>
-
 </main>
 
 <!-- ===== 清空输入 · 二次确认 ===== -->
@@ -552,6 +619,21 @@ document.documentElement.dataset.theme=v;})();</script>
     <div class="modal-foot">
       <button type="button" class="btn btn-ghost" data-close data-i18n="b64_clear_cancel">取消</button>
       <button type="button" class="btn btn-danger" id="b64ClearConfirm" data-i18n="b64_clear_ok">清空</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 无法判断文件类型 · 手工输入扩展名 ===== -->
+<div class="modal" id="b64ExtModal" role="dialog" aria-modal="true" aria-label="无法判断文件类型" data-i18n-aria="b64_ext_title">
+  <div class="modal-mask" data-close></div>
+  <div class="modal-card">
+    <h3 data-i18n="b64_ext_title">无法判断文件类型</h3>
+    <p data-i18n="b64_ext_body">请输入文件扩展名（如 png、pdf、bin），用于命名下载文件。</p>
+    <input class="input b64-ext-input" id="b64ExtInput" maxlength="8" placeholder="bin" data-i18n-ph="b64_ext_ph" aria-label="文件扩展名" data-i18n-aria="b64_ext_input_aria">
+    <p class="muted b64-ext-err" id="b64ExtErr" hidden data-i18n="b64_ext_invalid">扩展名只能包含字母和数字，最多 8 位。</p>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost" data-close data-i18n="b64_ext_cancel">取消</button>
+      <button type="button" class="btn btn-primary" id="b64ExtConfirm" data-i18n="b64_ext_ok">下载</button>
     </div>
   </div>
 </div>
@@ -588,7 +670,7 @@ document.documentElement.dataset.theme=v;})();</script>
   <div class="footer-bar">
     <span data-i18n="foot_copyright">© 2026 Moteful. All tools run locally in your browser.</span>
     <span class="sp"></span>
-    <span data-i18n="foot_version">v2.1.5</span>
+    <span data-i18n="foot_version">v2.1.6</span>
   </div>
 </footer>
 <div id="rec-popup" class="rec-modal" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-aria="rec_title" aria-label="推荐">

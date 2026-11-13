@@ -151,9 +151,97 @@
     return 'plain';
   }
 
+  /* ===== V2.1.6 P1：Data URI / MIME / 文件字节（仍无 DOM、无存储、无网络） ===== */
+  var RE_DATA = /^data:([^;,]*)((?:;[^;,]*)*),([\s\S]*)$/i;
+
+  /* 解析 Data URI；不是 Data URI 返回 null。payload 不在这里清洗，交给 normalize。 */
+  function parseDataUri(raw) {
+    var m = RE_DATA.exec(String(raw).replace(/^\s+|\s+$/g, ''));
+    if (!m) return null;
+    return {
+      mime: (m[1] || 'text/plain').toLowerCase(),
+      isBase64: /(^|;)base64(;|$)/i.test(m[2] || ''),
+      payload: m[3]
+    };
+  }
+  function buildDataUri(mime, b64) {
+    return 'data:' + (mime || 'application/octet-stream') + ';base64,' + String(b64).replace(/\s/g, '');
+  }
+
+  /* 解码到原始字节：只做 §4.2.1 清洗，不做 UTF-8 文本性判定（P1 文件下载用） */
+  function decodeToBytes(raw) {
+    var n = normalize(raw);
+    if (n.error) throw n.error;
+    return n.clean === '' ? new Uint8Array(0) : decodeBytes(n.clean);
+  }
+  function bytesToBase64(bytes) {
+    var parts = [];
+    for (var i = 0; i < bytes.length; i += CHUNK) {
+      parts.push(String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK)));
+    }
+    return btoa(parts.join(''));
+  }
+
+  var EXT_BY_MIME = {
+    'image/png': '.png', 'image/jpeg': '.jpg', 'image/gif': '.gif', 'image/webp': '.webp',
+    'image/svg+xml': '.svg', 'image/bmp': '.bmp', 'image/x-icon': '.ico', 'image/avif': '.avif',
+    'text/plain': '.txt', 'text/html': '.html', 'text/css': '.css', 'text/xml': '.xml',
+    'text/javascript': '.js', 'application/javascript': '.js', 'application/json': '.json',
+    'application/xml': '.xml', 'application/pdf': '.pdf', 'application/zip': '.zip',
+    'application/gzip': '.gz', 'application/x-gzip': '.gz', 'application/x-tar': '.tar',
+    'application/wasm': '.wasm', 'audio/mpeg': '.mp3', 'audio/wav': '.wav', 'audio/ogg': '.ogg',
+    'video/mp4': '.mp4', 'video/webm': '.webm', 'font/woff': '.woff', 'font/woff2': '.woff2',
+    'font/ttf': '.ttf', 'font/otf': '.otf', 'application/octet-stream': '.bin'
+  };
+  var MIME_BY_EXT = {};
+  for (var mk in EXT_BY_MIME) { if (Object.prototype.hasOwnProperty.call(EXT_BY_MIME, mk)) MIME_BY_EXT[EXT_BY_MIME[mk].slice(1)] = mk; }
+
+  function extForMime(mime) {
+    var m = String(mime || '').toLowerCase().split(';')[0].replace(/^\s+|\s+$/g, '');
+    if (EXT_BY_MIME[m]) return EXT_BY_MIME[m];
+    if (/^text\//.test(m)) return '.txt';
+    return '';
+  }
+  function mimeForExt(ext) {
+    var e = String(ext || '').toLowerCase().replace(/^\./, '').replace(/^\s+|\s+$/g, '');
+    return MIME_BY_EXT[e] || '';
+  }
+
+  /* 纯 Base64（无 Data URI MIME）时按魔数猜类型；认不出返回空串 */
+  function sniffMime(b) {
+    if (!b || !b.length) return '';
+    if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47) return 'image/png';
+    if (b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF) return 'image/jpeg';
+    if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x38) return 'image/gif';
+    if (b[0] === 0x42 && b[1] === 0x4D) return 'image/bmp';
+    if (b[0] === 0x00 && b[1] === 0x00 && b[2] === 0x01 && b[3] === 0x00) return 'image/x-icon';
+    if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) return 'image/webp';
+    if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 && b[8] === 0x57 && b[9] === 0x41 && b[10] === 0x56 && b[11] === 0x45) return 'audio/wav';
+    if (b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46) return 'application/pdf';
+    if (b[0] === 0x50 && b[1] === 0x4B && (b[2] === 0x03 || b[2] === 0x05 || b[2] === 0x07)) return 'application/zip';
+    if (b[0] === 0x1F && b[1] === 0x8B) return 'application/gzip';
+    if (b[0] === 0x77 && b[1] === 0x4F && b[2] === 0x46 && b[3] === 0x46) return 'font/woff';
+    if (b[0] === 0x77 && b[1] === 0x4F && b[2] === 0x46 && b[3] === 0x32) return 'font/woff2';
+    if (b[0] === 0x4F && b[1] === 0x67 && b[2] === 0x67 && b[3] === 0x53) return 'audio/ogg';
+    if (b[0] === 0x49 && b[1] === 0x44 && b[2] === 0x33) return 'audio/mpeg';
+    if (b[0] === 0x00 && b[1] === 0x61 && b[2] === 0x73 && b[3] === 0x6D) return 'application/wasm';
+    if (b[4] === 0x66 && b[5] === 0x74 && b[6] === 0x79 && b[7] === 0x70) return 'video/mp4';
+    return '';
+  }
+
+  function fmtSize(n) {
+    n = Number(n) || 0;
+    if (n < 1024) return n + ' B';
+    if (n < 1024 * 1024) return (n / 1024).toFixed(n < 10240 ? 1 : 0) + ' KB';
+    return (n / 1048576).toFixed(2) + ' MB';
+  }
+
   var api = {
     encode: encode, decode: decode, detect: detect, normalize: normalize,
-    wrap: wrap, toUrlSafe: toUrlSafe, fromUrlSafe: fromUrlSafe, measure: measure, isText: isText
+    wrap: wrap, toUrlSafe: toUrlSafe, fromUrlSafe: fromUrlSafe, measure: measure, isText: isText,
+    parseDataUri: parseDataUri, buildDataUri: buildDataUri, decodeToBytes: decodeToBytes,
+    bytesToBase64: bytesToBase64, sniffMime: sniffMime, extForMime: extForMime,
+    mimeForExt: mimeForExt, fmtSize: fmtSize
   };
   root.MFBase64 = api;
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }

@@ -25,14 +25,17 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # moteful �
 cfg = json.load(open(os.path.join(ROOT, '_governance', 'site-config.json'), encoding='utf-8'))
 pages = cfg['pages']
 BASE = 'https://moteful.app'
-TODAY = '2026-11-13'  # 发版日（v2.1.3），与 sitemap lastmod 保持一致
+TODAY = '2026-11-15'  # 发版日（v2.1.6），与 sitemap lastmod 保持一致
 
 # ---------- 1) sitemap.xml ----------
 sm = [p for p in pages if p != '404.html']
 
 
 def loc(p):
-    return BASE + '/' if p == 'index.html' else BASE + '/' + p
+    if p == 'index.html':
+        return BASE + '/'
+    # 托管（Cloudflare）把 .html 307 到无扩展名，sitemap 直接给最终地址
+    return BASE + '/' + (p[:-5] if p.endswith('.html') else p)
 
 
 L = ['<?xml version="1.0" encoding="UTF-8"?>',

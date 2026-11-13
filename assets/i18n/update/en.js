@@ -7,6 +7,24 @@
 
 const CHANGELOG_EN = [
   {
+    "version": "v2.1.6",
+    "date": "2026-11-15",
+    "sections": [
+      {
+        "title": "New",
+        "points": [
+          "Base64 encoder / decoder"
+        ]
+      },
+      {
+        "title": "Improved",
+        "points": [
+          "Markdown editor: added an outline panel, importing .md files (up to 1 MB), exporting HTML files, and synchronized scrolling between the editor and preview"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.1.3",
     "date": "2026-11-13",
     "sections": [

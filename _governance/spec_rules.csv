@@ -149,3 +149,10 @@ B64-07,dev/base64.html,-,document.documentElement.scrollWidth<=document.document
 B64-08,dev/base64.html,-,(function(){return Object.keys(localStorage).every(function(k){return k.indexOf('moteful.b64.')!==0||k==='moteful.b64.config'})})(),true,js,none,must,fail,隐私红线：localStorage 不得出现 moteful.b64.config 以外的本页键（正文不进存储由回归覆盖）
 B64-09,dev/base64.html,-,(function(){var c=document.querySelector('#b64Copy').className;return (c.indexOf('btn-primary')>=0||c.indexOf('btn-secondary')>=0)&&c.indexOf('btn-ghost')<0})(),true,js,none,must,fail,独立按钮禁幽灵样式：#b64Copy 须为 btn-primary 或 btn-secondary
 B64-10,dev/base64.html,-,(function(){var as=document.querySelectorAll('a.menu-item');for(var i=0;i<as.length;i++){var h=as[i].getAttribute('href')||'';if(h.indexOf('base64.html')>=0){return !as[i].classList.contains('soon')&&!as[i].hasAttribute('aria-disabled')}}return false})(),true,js,none,must,fail,占位已解除：顶栏 base64 菜单项无 soon 类与 aria-disabled（真实点击跳转由回归覆盖）
+B64-11,dev/base64.html,-,(function(){var d=document.getElementById('b64Dropzone');if(!d)return false;var e=d.querySelector('.dz-empty');var g=d.querySelector('.dz-gallery');return !!e&&!!g&&!e.hidden&&g.hidden})(),true,js,none,must,fail,导入区双态：拖入区存在且初始空态可见、画廊隐藏（缩略图不另开队列卡）
+B64-12,dev/base64.html,-,(function(){var b=document.getElementById('b64Download');return !!b&&b.disabled&&b.className.indexOf('btn-ghost')<0})(),true,js,none,must,fail,独立按钮禁幽灵样式：#b64Download 初始禁用且须为实心或描边按钮
+B64-13,dev/base64.html,-,document.querySelectorAll('input[name=b64Fmt]').length,2,js,none,must,fail,输出格式两档：纯 Base64 / Data URI（F-11）
+B64-14,dev/base64.html,-,document.querySelectorAll('.dropzone').length,1,js,none,must,fail,导入区唯一：全页仅一个 .dropzone，禁止另开图片队列卡
+B64-15,dev/base64.html,-,(function(){var f=document.getElementById('b64File');return !!f&&f.type==='file'&&f.hidden})(),true,js,none,must,fail,文件选择器存在且默认隐藏：#b64File[type=file]
+B64-16,dev/base64.html,-,!!document.getElementById('b64ExtModal'),true,js,none,must,fail,未知类型下载：扩展名输入弹窗存在
+B64-17,dev/base64.html,-,(function(){return !!window.MFImageImport&&typeof window.MFImageImport.enablePaste==='function'})(),true,js,none,must,fail,粘贴导入复用共享组件：MFImageImport 已加载且暴露 enablePaste（HEIC 缩略图回退由浏览器回归覆盖）

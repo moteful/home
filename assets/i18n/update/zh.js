@@ -12,6 +12,24 @@
 
 const CHANGELOG_ZH = [
   {
+    "version": "v2.1.6",
+    "date": "2026-11-15",
+    "sections": [
+      {
+        "title": "新增",
+        "points": [
+          "Base64 编解码工具"
+        ]
+      },
+      {
+        "title": "优化",
+        "points": [
+          "Markdown 编辑器：新增文章目录、导入 .md 文件（不超过 1 MB）、导出 HTML 文件，编辑区与预览区滚动同步"
+        ]
+      }
+    ]
+  },
+  {
     "version": "v2.1.3",
     "date": "2026-11-13",
     "sections": [

@@ -5,7 +5,7 @@
 一个**隐私优先的图片工具站**，完全运行在你的浏览器里。
 图片在本地处理，**永远不会离开你的设备**——不上传、无服务器、无跟踪。
 
-> 状态：**v2.1.3** · 24 个页面 · 三语（中文 / English / Español）
+> 状态：**v2.1.6** · 25 个页面 · 三语（中文 / English / Español）
 
 ---
 
@@ -30,6 +30,9 @@
 - **界面细节优化（v2.1.1）**——时间戳页小标题与结果区内文对齐、JSON 工具图标换 file-braces、支持类图标统一 heart-handshake、导航「裁切工具」简化为「裁切」并同步首页卡片。
 - **Markdown 编辑器（v2.1.2）**——编辑区与预览区左右对照，支持标题、加粗、斜体、删除线、下划线、列表、对齐、引用、代码、链接、图片、表格；可撤销 / 重做 / 还原，预览区代码块显示语言类型并支持一键复制与收起展开，草稿自动保存、下次打开自动恢复。
 - **默认深色与语种跟随系统（v2.1.3）**——站点默认以深色主题打开并记住你的切换；界面语言默认跟随系统语言（无匹配语种时显示英文），后续新增语言包会被自动识别。图片线 New 标签已下线。
+- **Markdown 编辑器增强（v2.1.4）**——新增文章目录（点击跳转）、导入 `.md` 文件（不超过 1 MB）、导出 HTML，编辑区与预览区滚动同步。
+- **Base64 编解码工具（v2.1.5–v2.1.6）**——文本与 Base64 双向转换，自动识别明文、Base64、Data URI 与 JWT；可输出纯 Base64 或 Data URI，支持折行、URL-safe 与末尾填充控制；文件可转 Base64（单个不超过 5 MB），也能还原成文件下载，支持粘贴预览与一键复制 img / CSS 片段。
+- **地址规范统一（v2.1.6）**——全站 canonical、og:url、结构化数据与 sitemap 统一为托管平台实际返回的无扩展名地址，解决搜索引擎把站内页面判为重复页的问题。
 - **设计即开放**——对隐私工具而言，代码本身就是信任信号。
 
 ---
@@ -57,7 +60,8 @@
 | `dev/regex.html` | 正则测试（Worker 驱动） |
 | `dev/word-counter.html` | 字数统计（汉字 / 英文词 / 字符 / 段落行数） |
 | `dev/timestamp.html` | 时间戳转换（Unix ↔ 日期 / 52 时区 / 夏令时） |
-| `dev/markdown.html` | Markdown 编辑器（左右对照预览 / 格式工具栏 / 草稿恢复） |
+| `dev/markdown.html` | Markdown 编辑器（左右对照预览 / 格式工具栏 / 文章目录 / 导入导出 / 草稿恢复） |
+| `dev/base64.html` | Base64 编解码（文本 ↔ Base64 / Data URI / 文件转换还原） |
 | `games/block-clear.html` | 方块消除（休闲解谜） |
 | `games/snake.html` | 贪吃蛇 |
 | `games/sudoku.html` | 数独 |
@@ -86,7 +90,7 @@ python3 -m http.server 8000
 ### 质量门禁（提交前运行）
 
 ```bash
-node _governance/inject_site.mjs --check   # 24 页漂移检查（必须为 0）
+node _governance/inject_site.mjs --check   # 25 页漂移检查（必须为 0）
 node _governance/lint.mjs                  # 样式/lint（错误数必须为 0）
 node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 ```
@@ -99,7 +103,7 @@ node _governance/assert_spec.mjs           # 规范断言（需要 Playwright）
 moteful/
 ├── index.html, support.html, 404.html
 ├── tools/            # 图片工具（image-tool、stitch、png-compressor、crop-tool、annotate、qrcode、icon-tool、id-photo-tool）
-├── dev/              # 开发者工具（json、regex、word-counter、timestamp、markdown）
+├── dev/              # 开发者工具（json、regex、word-counter、timestamp、markdown、base64）
 ├── games/            # 小游戏（block-clear、snake、sudoku）
 ├── legal/            # about / contact / credits / privacy / terms
 ├── assets/

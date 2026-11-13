@@ -8,6 +8,8 @@ Desktop.ini
 *.bak-*
 *~
 cache/
+__pycache__/
+*.pyc
 
 # ===== 编辑器 / IDE =====
 *.swp

@@ -2,139 +2,145 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://moteful.app/</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://moteful.app/support.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/support</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/legal/about.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/legal/about</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/legal/contact.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/legal/contact</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/legal/credits.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/legal/credits</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/legal/privacy.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/legal/privacy</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/legal/terms.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/legal/terms</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/image-tool.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/image-tool</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/stitch.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/stitch</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/annotate.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/annotate</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/qrcode.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/qrcode</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/icon-tool.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/icon-tool</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/id-photo-tool.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/id-photo-tool</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/png-compressor.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/png-compressor</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/tools/crop-tool.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/tools/crop-tool</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/dev/json.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/dev/json</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/dev/regex.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/dev/regex</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/dev/word-counter.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/dev/word-counter</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/dev/timestamp.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/dev/timestamp</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/dev/markdown.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/dev/markdown</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/games/block-clear.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/dev/base64</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/games/snake.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/games/block-clear</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://moteful.app/games/sudoku.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <loc>https://moteful.app/games/snake</loc>
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://moteful.app/games/sudoku</loc>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

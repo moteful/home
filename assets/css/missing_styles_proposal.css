@@ -1171,3 +1171,30 @@ textarea.md-editor.md-dragover{border-color:var(--primary);outline:2px solid var
   .b64-opts .seg-t{padding-left:10px;padding-right:10px;min-height:44px}
 }
 
+/* v2.1.6 P1：文件导入区（单文件收缩态）、文件信息行、嵌入片段、扩展名输入 */
+.b64-dropzone{min-height:0;padding:16px 18px;gap:0}
+.b64-dropzone .dz-empty{flex-direction:row;align-items:center;gap:14px;text-align:left}
+.b64-dropzone .dz-ico{width:44px;height:44px;border-radius:12px;margin:0;flex:none}
+.b64-dropzone .dz-ico [data-lucide]{width:22px;height:22px}
+.b64-dropzone .up-main{align-items:flex-start;gap:2px;min-width:0}
+.b64-dropzone .up-main strong{font-size:14px}
+.b64-dropzone .up-main .muted{font-size:12px;overflow-wrap:anywhere}
+.b64-file-row{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.b64-thumb{width:72px;height:72px;flex:none;aspect-ratio:auto}
+.b64-thumb-ico{display:grid;place-items:center;width:100%;height:100%;color:var(--text-2)}
+.b64-thumb-ico [data-lucide]{width:26px;height:26px}
+.b64-file-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.b64-meta-row{display:flex;gap:8px;min-width:0}
+.b64-meta-k{color:var(--text-2);flex:none;min-width:56px}
+.b64-meta-v{color:var(--text);min-width:0;overflow-wrap:anywhere}
+.b64-snips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.b64-snips-label{font-size:12px;color:var(--text-2)}
+.b64-ext-input{margin-bottom:8px}
+.b64-ext-err{color:var(--danger);font-size:12px}
+@media (max-width:640px){
+  .b64-dropzone .dz-g-acts .btn{min-height:44px}
+  .b64-dropzone .dz-g-head{gap:8px}
+  .b64-file-row{gap:12px}
+  .b64-thumb{width:64px;height:64px}
+}
+
